@@ -67,7 +67,7 @@
         <div class="container">
             <h3>ISEM - Captura de Entregas</h3>
             <a class="btn btn-default" href="capturaISEM.jsp">Captura de Órdenes de Compra</a>
-            <a class="btn btn-default" href="verFoliosIsem.jsp">Ver Folios Anteriores</a>
+            <!--a class="btn btn-default" href="verFoliosIsem.jsp">Ver Folios Anteriores</a-->
             <form name="FormBusca" action="CapturaPedidos" method="post">
                 <div class="row">
                     <label class="col-sm-2 col-sm-offset-8 text-right">
@@ -220,7 +220,7 @@
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" readonly value="<%=rset.getString(2)%>" name="" id=""/>
                             </div>
-                             <label class="col-sm-1">
+                            <label class="col-sm-1">
                                 <h4>Pres.</h4>
                             </label>
                             <div class="col-sm-3">
@@ -235,9 +235,32 @@
 
                             }
                         %>
-                        
+
 
                         <div class="row">
+                            <%
+                                String cantidad = "0";
+                                try {
+                                    con.conectar();
+                                    ResultSet rset = con.consulta(" select SUM(F_ExiLot) from tb_lote where F_ClaPro = '" + claPro + "' group by F_ClaPro  ");
+                                    while (rset.next()) {
+                                        cantidad = rset.getString(1);
+                                        System.out.println(cantidad);
+                                    }
+                                    if (cantidad == null) {
+                                        cantidad = "0";
+                                    }
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            %>
+                            <label class="col-sm-2 text-center">
+                                <h4>Cant. en Almacen</h4>
+                            </label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" name="CantAlm" id="CantAlm" readonly="" value="<%=cantidad%>" />
+                            </div>
                             <label class="col-sm-1 text-center">
                                 <h4>Prioridad</h4>
                             </label>

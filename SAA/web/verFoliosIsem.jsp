@@ -20,8 +20,17 @@
         response.sendRedirect("indexIsem.jsp");
     }
     ConectionDB con = new ConectionDB();
-    String NoCompra = "", Fecha = "";
+    String proveedor = "", Fecha = "", horEnt = "", claPro = "", desPro = "", NoCompra = "";
+    try {
+        NoCompra = (String) sesion.getAttribute("NoCompra");
+        proveedor = (String) sesion.getAttribute("proveedor");
+        Fecha = (String) sesion.getAttribute("fec_entrega");
+        horEnt = (String) sesion.getAttribute("hor_entrega");
+        claPro = (String) sesion.getAttribute("clave");
+        desPro = (String) sesion.getAttribute("descripcion");
+    } catch (Exception e) {
 
+    }
     try {
         Fecha = request.getParameter("Fecha");
     } catch (Exception e) {
@@ -39,7 +48,6 @@
         NoCompra = "";
     }
 
-    String claPro = "", desPro = "";
 %>
 <!DOCTYPE html>
 <html>
@@ -53,7 +61,7 @@
         <link href="css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
     </head>
-    <body onload="focusLocus();">
+    <body onload="SelectProve(FormBusca);">
         <div class="container">
             <div class="row">
                 <h3>ISEM - Ver Folios</h3>
@@ -72,6 +80,8 @@
                     <div class="col-sm-1">
                         <button class="btn btn-primary" name="accion" value="fecha">Fecha</button>
                     </div>
+                </form>
+                <form method="post" action="CapturaPedidos?accion=verFolio">
                     <label class="col-sm-1">
                         <h4>Folios:</h4>
                     </label>
@@ -97,58 +107,59 @@
                 </form>
             </div>
             <%
-                try {
-                    con.conectar();
-                    ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur from tb_pedidoisem o, tb_proveedor p where o.F_Provee = p.F_ClaProve and F_NoCompra = '" + NoCompra + "'  group by o.F_NoCompra");
-                    while (rset.next()) {
+
             %>
-            <form name="FormBusca" action="CapturaPedidos" method="post">
-            <div class="row">
-                <h4 class="col-sm-1">Folio: </h4>
-                <div class="col-sm-2">
-                    <input class="form-control" value="<%=rset.getString(1)%>" readonly="" />
+            <form name="FormBusca" action="verFoliosIsem.jsp" method="post">
+                <div class="row">
+                    <h4 class="col-sm-1">Folio: </h4>
+                    <div class="col-sm-2">
+                        <input class="form-control" value="<%=NoCompra%>" name="NoCompra" readonly="" />
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <h4 class="col-sm-1">Proveedor: </h4>
-                <div class="col-sm-10">
-                    <input class="form-control" value="<%=rset.getString(2)%>" readonly="" />
+                <div class="row">
+                    <h4 class="col-sm-1">Proveedor: </h4>
+                    <div class="col-sm-10">
+                        <input class="form-control" value="" name="Proveedor1" id="Proveedor1" readonly="" />
+                        <input class="form-control" value="" name="Cla_Prove" id="Cla_Prove" readonly="" />
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <h4 class="col-sm-2">Fecha de Entrega: </h4>
-                <div class="col-sm-2">
-                    <input class="form-control" value="<%=rset.getString(3)%>" readonly="" />
+                <div class="row">
+                    <h4 class="col-sm-2">Fecha de Entrega: </h4>
+                    <div class="col-sm-2">
+                        <input class="form-control" value="" readonly="" id="Fecha1" name="Fecha1" />
+                    </div>
+                    <h4 class="col-sm-2">Hora de Entrega: </h4>
+                    <div class="col-sm-2">
+                        <input class="form-control" value="" id="Hora" name="Hora" readonly="" />
+                    </div>
                 </div>
-                <h4 class="col-sm-2">Hora de Entrega: </h4>
-                <div class="col-sm-2">
-                    <input class="form-control" value="<%=rset.getString(4)%>" readonly="" />
-                </div>
-            </div>
-            <br/>
+                <br/>
 
-            <div class="row">
+                <div class="row">
 
-                <label class="col-sm-1 text-right">
-                    <h4>Clave</h4>
-                </label>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control" id="Clave" name="Clave" />
+                    <label class="col-sm-1 text-right">
+                        <h4>Clave</h4>
+                    </label>
+                    <div class="col-sm-2">
+                        <!--input type="text" class="form-control" id="Clave" name="Clave" /-->
+                        <select name="Clave" id="Clave" class="form-control">
+                            <option>-- Seleccione Clave --</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary btn-block" onclick="return validaClaDes(this);" name="accion" value="ClaveVer">Clave</button>
+                    </div>
+                    <!--label class="col-sm-1 text-right">
+                        <h4>Descripción</h4>
+                    </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="Descripcion" name="Descripcion" />
+                    </div>
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary"  onclick="return validaClaDes(this);" name="accion" value="Descripcion">Descripción</button>
+                    </div-->
                 </div>
-                <div class="col-sm-1">
-                    <button class="btn btn-primary btn-block" onclick="return validaClaDes(this);" name="accion" value="Clave">Clave</button>
-                </div>
-                <label class="col-sm-1 text-right">
-                    <h4>Descripción</h4>
-                </label>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" id="Descripcion" name="Descripcion" />
-                </div>
-                <div class="col-sm-1">
-                    <button class="btn btn-primary"  onclick="return validaClaDes(this);" name="accion" value="Descripcion">Descripción</button>
-                </div>
-            </div>
-            <br/>
+                <br/>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="row">
@@ -215,11 +226,7 @@
             </form>
             <br/>
             <%
-                    }
-                    con.cierraConexion();
-                } catch (Exception e) {
 
-                }
             %>
 
             <div class="row">
@@ -233,8 +240,7 @@
                         <td><strong>Cantidad</strong></td>
                         <td></td>
                     </tr>
-                    <%
-                        try {
+                    <%                        try {
                             con.conectar();
                             ResultSet rset = con.consulta("select s.F_Clave, m.F_DesPro, s.F_Lote, DATE_FORMAT(F_Cadu, '%d/%m/%Y'), s.F_Cant, F_IdIsem from tb_pedidoisem s, tb_medica m where s.F_Clave = m.F_ClaPro and F_IdUsu = '" + (String) sesion.getAttribute("Usuario") + "' and F_NoCompra = '" + NoCompra + "' ");
                             while (rset.next()) {
@@ -270,29 +276,44 @@
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
     <script>
+                            function SelectProve(form) {
 
-                        function focusLocus() {
-                            document.getElementById('Proveedor').focus();
-                            if (document.getElementById('Fecha').value !== "") {
-                                document.getElementById('Clave').focus();
+        <%
+            try {
+                con.conectar();
+                ResultSet rset3 = con.consulta("select DISTINCT F_ClaProve from tb_prodprov order by F_ClaProve");
+                while (rset3.next()) {
+                    out.println("if (form.Cla_Prove.value == '" + rset3.getString(1) + "') {");
+                    out.println("var select = document.getElementById('Clave');");
+                    out.println("select.options.length = 0;");
+                    int i = 1;
+                    ResultSet rset4 = con.consulta("select F_ClaPro from tb_prodprov where F_ClaProve = '" + rset3.getString(1) + "'");
+                    while (rset4.next()) {
+                        out.println("select.options[select.options.length] = new Option('" + rset4.getString(1) + "', '" + rset4.getString(1) + "');"
+                        );
+                        i++;
+                    }
+                    out.println("}");
+                }
+                con.cierraConexion();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        %>
                             }
-                            if (document.getElementById('ClaPro').value !== "") {
-                                document.getElementById('Prioridad').focus();
-                            }
-                        }
 
-                        $(function() {
-                            $("#Fecha").datepicker();
-                            $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                        });
-                        $(function() {
-                            $("#CadPro").datepicker();
-                            $("#CadPro").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                        });
+                            $(function() {
+                                $("#Fecha").datepicker();
+                                $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                            });
+                            $(function() {
+                                $("#Fecha1").datepicker();
+                                $("#Fecha1").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                            });
 
 
-                        $(function() {
-                            var availableTags = [
+                            $(function() {
+                                var availableTags = [
         <%            try {
                 con.conectar();
                 ResultSet rset = con.consulta("SELECT F_DesPro  FROM tb_medica");
@@ -303,50 +324,49 @@
             } catch (Exception e) {
             }
         %>
-                            ];
-                            $("#Descripcion").autocomplete({
-                                source: availableTags
+                                ];
+                                $("#Descripcion").autocomplete({
+                                    source: availableTags
+                                });
                             });
-                        });
 
-                        function validaClaDes(boton) {
-                            var btn = boton.value;
-                            var prove = document.getElementById('Proveedor').value;
-                            var fecha = document.getElementById('Fecha').value;
-                            var hora = document.getElementById('Hora').value;
-                            var NoCompra = document.getElementById('NoCompra').value;
-                            if (prove === "" || fecha === "" || hora === "0:00" || NoCompra === "") {
-                                alert("Complete los datos");
-                                return false;
+                            function validaClaDes(boton) {
+                                var btn = boton.value;
+                                var prove = document.getElementById('Proveedor').value;
+                                var fecha = document.getElementById('Fecha').value;
+                                var hora = document.getElementById('Hora').value;
+                                var NoCompra = document.getElementById('NoCompra').value;
+                                if (prove === "" || fecha === "" || hora === "0:00" || NoCompra === "") {
+                                    alert("Complete los datos");
+                                    return false;
+                                }
+                                var valor = "";
+                                var mensaje = "";
+                                if (btn === "Clave") {
+                                    valor = document.getElementById('Clave').value;
+                                    mensaje = "Introduzca la clave";
+                                }
+                                if (btn === "Descripcion") {
+                                    valor = document.getElementById('Descripcion').value;
+                                    mensaje = "Introduzca la descripcion";
+                                }
+                                if (valor === "") {
+                                    alert(mensaje);
+                                    return false;
+                                }
+                                return true;
                             }
-                            var valor = "";
-                            var mensaje = "";
-                            if (btn === "Clave") {
-                                valor = document.getElementById('Clave').value;
-                                mensaje = "Introduzca la clave";
-                            }
-                            if (btn === "Descripcion") {
-                                valor = document.getElementById('Descripcion').value;
-                                mensaje = "Introduzca la descripcion";
-                            }
-                            if (valor === "") {
-                                alert(mensaje);
-                                return false;
-                            }
-                            return true;
-                        }
 
-                        function validaCaptura() {
-                            var ClaPro = document.getElementById('ClaPro').value;
-                            var DesPro = document.getElementById('DesPro').value;
-                            var CanPro = document.getElementById('CanPro').value;
-                            if (ClaPro === "" || DesPro === "" || CanPro === "") {
-                                alert("Complete los datos");
-                                return false;
+                            function validaCaptura() {
+                                var ClaPro = document.getElementById('ClaPro').value;
+                                var DesPro = document.getElementById('DesPro').value;
+                                var CanPro = document.getElementById('CanPro').value;
+                                if (ClaPro === "" || DesPro === "" || CanPro === "") {
+                                    alert("Complete los datos");
+                                    return false;
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-
 
     </script>
 </html>
