@@ -5,7 +5,7 @@
  */
 package ISEM;
 
-import Correo.Correo;
+import Correo.*;
 import conn.ConectionDB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,6 +27,7 @@ public class CapturaPedidos extends HttpServlet {
     ConectionDB con = new ConectionDB();
     DateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    CancelaCompra correoCancela = new CancelaCompra();
     Correo correo = new Correo();
 
     /**
@@ -211,6 +212,35 @@ public class CapturaPedidos extends HttpServlet {
                 }
                 con.cierraConexion();
                 response.sendRedirect("capturaISEM.jsp");
+            }
+            if (request.getParameter("accion").equals("cancelaOrden")) {
+                con.conectar();
+                try {
+                    byte[] a = request.getParameter("Observaciones").getBytes("ISO-8859-1");
+                    String Obser = (new String(a, "UTF-8")).toUpperCase();
+                    try {
+                        con.insertar("update tb_pedidoisem set F_StsPed = '2' where F_NoCompra = '" + request.getParameter("NoCompra") + "'  ");
+                    } catch (Exception e) {
+                    }
+                    try {
+                        con.insertar("insert into tb_obscancela values('" + request.getParameter("NoCompra") + "','" + Obser + "')");
+                    } catch (Exception e) {
+                    }
+                    try {
+                        correoCancela.cancelaCompra(request.getParameter("NoCompra"), (String) sesion.getAttribute("Usuario"));
+                    } catch (Exception e) {
+                    }
+                    sesion.setAttribute("clave", "");
+                    sesion.setAttribute("descripcion", "");
+                    sesion.setAttribute("proveedor", "");
+                    sesion.setAttribute("fec_entrega", "");
+                    sesion.setAttribute("hor_entrega", "");
+                    sesion.setAttribute("NoCompra", "");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                con.cierraConexion();
+                response.sendRedirect("verFoliosIsem.jsp");
             }
             if (request.getParameter("accion").equals("cancelar")) {
                 con.conectar();

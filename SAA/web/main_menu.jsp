@@ -49,9 +49,9 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SIE <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SAA<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
+                                    <li><a href="captura.jsp">Captura Manual</a></li>
                                     <li><a href="compraAuto2.jsp">Captura Automática</a></li>
                                     <!--li><a href="captura_handheld.jsp">Captura de Insumos handheld</a></li-->
                                     <li><a href="factura.jsp">Facturación Automática</a></li>

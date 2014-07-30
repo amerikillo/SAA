@@ -69,22 +69,21 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SIE <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SAA<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
+                                    <li><a href="captura.jsp">Captura Manual</a></li>
+                                    <li><a href="compraAuto2.jsp">Captura Automática</a></li>
                                     <!--li><a href="captura_handheld.jsp">Captura de Insumos handheld</a></li-->
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="medicamento.jsp">Catálogo de Insumo para la Salud</a></li>
+                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
                                     <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
                                     <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
                                     <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                     <li class="divider"></li>
                                     <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
-
 
                                 </ul>
                             </li>

@@ -4,12 +4,17 @@
     Author     : Americo
 --%>
 
+<%@page import="java.text.*"%>
 <%@page import="conn.ConectionDB"%>
 <%@page import="ISEM.CapturaPedidos"%>
 <%@page import="javax.servlet.http.HttpSession"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    DecimalFormat formatter = new DecimalFormat("#,###,###");
+    DecimalFormatSymbols custom = new DecimalFormatSymbols();
+    custom.setDecimalSeparator(',');
+    formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "";
     if (sesion.getAttribute("Usuario") != null) {
@@ -67,7 +72,7 @@
         <div class="container">
             <h3>ISEM - Captura de Entregas</h3>
             <a class="btn btn-default" href="capturaISEM.jsp">Captura de Órdenes de Compra</a>
-            <!--a class="btn btn-default" href="verFoliosIsem.jsp">Ver Folios Anteriores</a-->
+            <a class="btn btn-default" href="verFoliosIsem.jsp">Ver Órdenes de Compra</a>
             <form name="FormBusca" action="CapturaPedidos" method="post">
                 <div class="row">
                     <label class="col-sm-2 col-sm-offset-8 text-right">
@@ -206,20 +211,36 @@
                                 con.conectar();
                                 ResultSet rset = con.consulta("select pp.F_CantMax, pp.F_CantMin, m.F_PrePro from tb_prodprov pp, tb_medica m where m.F_ClaPro = pp.F_ClaPro and pp.F_ClaPro = '" + claPro + "' ");
                                 while (rset.next()) {
+                                    int cantUsada = 0;
+                                    int cantMax = 0;
+                                    cantMax = rset.getInt(1);
+                                    ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_pedidoisem where F_Clave='" + claPro + "' and F_StsPed !='2'");
+                                    while (rset2.next()) {
+                                        cantUsada = rset2.getInt(1);
+                                    }
+                                    int cantRestante = cantMax - cantUsada;
                         %>
                         <div class="row">
                             <label class="col-sm-2 text-right">
-                                <h4>Cantidad Mínima</h4>
+                                <h4>Cantidad Solicitada</h4>
                             </label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" readonly value="<%=rset.getString(1)%>" name="" id=""/>
+                                <input type="text" class="form-control" readonly value="<%=formatter.format(cantUsada)%>" name="" id=""/>
                             </div>
                             <label class="col-sm-2">
                                 <h4>Cantidad Máxima</h4>
                             </label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" readonly value="<%=rset.getString(2)%>" name="" id=""/>
+                                <input type="text" class="form-control" readonly value="<%=formatter.format(cantMax)%>" name="" id=""/>
                             </div>
+                            <label class="col-sm-2 text-right">
+                                <h4>Cantidad Restante</h4>
+                            </label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" readonly value="<%=formatter.format(cantRestante)%>" name="CantRest" id="CantRest"/>
+                            </div>
+                        </div>
+                        <div class="row">
                             <label class="col-sm-1">
                                 <h4>Pres.</h4>
                             </label>
@@ -288,7 +309,7 @@
                                 <h4>Cantidad</h4>
                             </label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" name="CanPro" id="CanPro" />
+                                <input type="text" class="form-control" name="CanPro" id="CanPro" onKeyPress="return justNumbers(event);" />
                             </div>
                         </div>
                         <br/>
@@ -328,7 +349,7 @@
                     <td><%=rset.getString(2)%></td>
                     <!--td><%=rset.getString(3)%></td>
                     <td><%=rset.getString(4)%></td-->
-                    <td><%=rset.getString(5)%></td>
+                    <td><%=formatter.format(rset.getInt(5))%></td>
                     <td>
                         <form action="CapturaPedidos" method="post">
                             <input name="id" value="<%=rset.getString(6)%>" class="hidden" />
@@ -364,6 +385,14 @@
     <script src="js/bootstrap-datepicker.js"></script>
     <script>
 
+                            function justNumbers(e)
+                            {
+                                var keynum = window.event ? window.event.keyCode : e.which;
+                                if ((keynum === 8) || (keynum === 46))
+                                    return true;
+
+                                return /\d/.test(String.fromCharCode(keynum));
+                            }
                             function focusLocus() {
                                 document.getElementById('Proveedor').focus();
                                 if (document.getElementById('Fecha').value !== "") {
@@ -434,6 +463,16 @@
                                 var ClaPro = document.getElementById('ClaPro').value;
                                 var DesPro = document.getElementById('DesPro').value;
                                 var CanPro = document.getElementById('CanPro').value;
+                                var CanRes = document.getElementById('CantRest').value;
+                                CanRes=CanRes.replace(",","");
+                                CanRes=CanRes.replace(",","");
+                                CanRes=CanRes.replace(",","");
+                                CanRes=CanRes.replace(",","");
+                                CanRes=CanRes.replace(",","");
+                                if (parseInt(CanRes) < parseInt(CanPro)) {
+                                    alert("La Cantidad Solicitada no puede ser mayor a la Cantidad Restante");
+                                    return false;
+                                }
                                 if (ClaPro === "" || DesPro === "" || CanPro === "") {
                                     alert("Complete los datos");
                                     return false;
