@@ -73,59 +73,77 @@ public class CapturaPedidos extends HttpServlet {
                 response.sendRedirect("capturaISEM.jsp");
             }
             if (request.getParameter("accion").equals("Clave")) {
-                String NoCompra = (String) sesion.getAttribute("NoCompra");
-                int ban = 0;
-                con.conectar();
+                System.out.println("Hola");
+                int ordenCapturada = 0;
                 try {
-                    ResultSet rset = con.consulta("select F_ClaPro, F_DesPro from tb_medica where F_ClaPro = '" + request.getParameter("Clave") + "'");
-                    while (rset.next()) {
-                        ban = 1;
-                        sesion.setAttribute("clave", rset.getString(1));
-                        sesion.setAttribute("descripcion", rset.getString(2));
+                    con.conectar();
+                    ResultSet rset2 = con.consulta("select F_IdIsem from tb_pedidoisem where F_Provee = '" + request.getParameter("Proveedor") + "' and F_FecSur = '" + df.format(df2.parse(request.getParameter("Fecha"))) + "' and F_NoCompra !='" + request.getParameter("NoCompra") + "' and F_StsPed!='2' ");
+                    while (rset2.next()) {
+                        ordenCapturada = 1;
                     }
-                    sesion.setAttribute("proveedor", request.getParameter("Proveedor"));
-                    sesion.setAttribute("fec_entrega", request.getParameter("Fecha"));
-                    sesion.setAttribute("hor_entrega", request.getParameter("Hora"));
-                    sesion.setAttribute("NoCompra", request.getParameter("NoCompra"));
-
+                    con.cierraConexion();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-                con.cierraConexion();
-
-                if (ban == 1) {
+                if (ordenCapturada == 1) {
+                    out.println("<script>alert('Orden Ya Capturada Previamente')</script>");
+                    out.println("<script>window.location='capturaISEM.jsp'</script>");
+                } else {
+                    String NoCompra = (String) sesion.getAttribute("NoCompra");
+                    int ban = 0;
+                    con.conectar();
                     try {
-                        if (NoCompra.equals("") || NoCompra == null) {
-                            try {
-                                int ban2 = 0;
-                                con.conectar();
-                                ResultSet rset = con.consulta("select F_IdIsem from tb_pedidoisem where F_NoCompra = '" + request.getParameter("NoCompra") + "'");
-                                while (rset.next()) {
-                                    ban2 = 1;
-                                }
-                                con.cierraConexion();
-                                if (ban2 == 1) {
-                                    sesion.setAttribute("NoCompra", "");
-                                    sesion.setAttribute("clave", "");
-                                    sesion.setAttribute("descripcion", "");
-                                    out.println("<script>alert('Número de Compra ya utilizado')</script>");
-                                    out.println("<script>window.location='capturaISEM.jsp'</script>");
-                                }
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
+                        ResultSet rset = con.consulta("select F_ClaPro, F_DesPro from tb_medica where F_ClaPro = '" + request.getParameter("Clave") + "'");
+                        while (rset.next()) {
+                            ban = 1;
+                            sesion.setAttribute("clave", rset.getString(1));
+                            sesion.setAttribute("descripcion", rset.getString(2));
                         }
+                        sesion.setAttribute("proveedor", request.getParameter("Proveedor"));
+                        sesion.setAttribute("fec_entrega", request.getParameter("Fecha"));
+                        sesion.setAttribute("hor_entrega", request.getParameter("Hora"));
+                        sesion.setAttribute("NoCompra", request.getParameter("NoCompra"));
+
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
+                    con.cierraConexion();
 
-                    out.println("<script>window.location='capturaISEM.jsp'</script>");
-                } else {
-                    sesion.setAttribute("clave", "");
-                    sesion.setAttribute("descripcion", "");
-                    out.println("<script>alert('Insumo Inexistente')</script>");
-                    out.println("<script>window.location='capturaISEM.jsp'</script>");
+                    if (ban == 1) {
+                        try {
+                            if (NoCompra.equals("") || NoCompra == null) {
+                                try {
+                                    int ban2 = 0;
+                                    con.conectar();
+                                    ResultSet rset = con.consulta("select F_IdIsem from tb_pedidoisem where F_NoCompra = '" + request.getParameter("NoCompra") + "'");
+                                    while (rset.next()) {
+                                        ban2 = 1;
+                                    }
+                                    con.cierraConexion();
+                                    if (ban2 == 1) {
+                                        sesion.setAttribute("NoCompra", "");
+                                        sesion.setAttribute("clave", "");
+                                        sesion.setAttribute("descripcion", "");
+                                        out.println("<script>alert('Número de Compra ya utilizado')</script>");
+                                        out.println("<script>window.location='capturaISEM.jsp'</script>");
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+
+                        out.println("<script>window.location='capturaISEM.jsp'</script>");
+                    } else {
+                        sesion.setAttribute("clave", "");
+                        sesion.setAttribute("descripcion", "");
+                        out.println("<script>alert('Insumo Inexistente')</script>");
+                        out.println("<script>window.location='capturaISEM.jsp'</script>");
+                    }
                 }
+
             }
 
             if (request.getParameter("accion").equals("Descripcion")) {
@@ -210,8 +228,9 @@ public class CapturaPedidos extends HttpServlet {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+
                 con.cierraConexion();
-                response.sendRedirect("capturaISEM.jsp");
+                out.println("<script>window.location='capturaISEM.jsp'</script>");
             }
             if (request.getParameter("accion").equals("cancelaOrden")) {
                 con.conectar();
@@ -251,7 +270,6 @@ public class CapturaPedidos extends HttpServlet {
                     sesion.setAttribute("proveedor", "");
                     sesion.setAttribute("fec_entrega", "");
                     sesion.setAttribute("hor_entrega", "");
-                    sesion.setAttribute("NoCompra", "");
                 } catch (Exception e) {
                 }
                 con.cierraConexion();

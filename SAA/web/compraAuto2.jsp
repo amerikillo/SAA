@@ -4,6 +4,8 @@
     Author     : Americo
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.DecimalFormatSymbols"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="conn.*" %>
@@ -11,8 +13,12 @@
 <%java.text.DateFormat df = new java.text.SimpleDateFormat("yyyyMMddhhmmss"); %>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
+<%java.text.DateFormat df1 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%
-
+    DecimalFormat formatter = new DecimalFormat("#,###,###");
+    DecimalFormatSymbols custom = new DecimalFormatSymbols();
+    custom.setDecimalSeparator(',');
+    formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -21,7 +27,40 @@
         response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
-    String fecha = "", noCompra = "", Proveedor = "";
+    ConectionDB_Nube conNube = new ConectionDB_Nube();
+    try {
+        if (request.getParameter("accion").equals("Buscar")) {
+            try {
+                con.conectar();
+                conNube.conectar();
+                ResultSet rsetOrdenes = conNube.consulta("select * from tb_pedidoisem where F_StsPed !=0 ");
+                try {
+                    while (rsetOrdenes.next()) {
+                        try {
+                            con.insertar("insert into tb_pedidoisem values('" + rsetOrdenes.getString(1) + "','" + rsetOrdenes.getString(2) + "','" + rsetOrdenes.getString(3) + "','" + rsetOrdenes.getString(4) + "','" + rsetOrdenes.getString(5) + "','" + rsetOrdenes.getString(6) + "','" + rsetOrdenes.getString(7) + "','" + rsetOrdenes.getString(8) + "','" + rsetOrdenes.getString(9) + "','" + rsetOrdenes.getString(10) + "','" + rsetOrdenes.getString(11) + "','" + rsetOrdenes.getString(12) + "','" + rsetOrdenes.getString(13) + "','" + rsetOrdenes.getString(14) + "','" + rsetOrdenes.getString(15) + "','" + rsetOrdenes.getString(16) + "')");
+                        } catch (Exception e) {
+                            try {
+                                con.insertar("update tb_pedidoisem set F_StsPed = '" + rsetOrdenes.getString(15) + "' where F_IdIsem='" + rsetOrdenes.getString(1) + "'");
+                            } catch (Exception ex) {
+                                
+                            }
+                        }
+                        
+                    }
+                } catch (Exception e) {
+                    
+                }
+                con.cierraConexion();
+                con.cierraConexion();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    } catch (Exception er) {
+        
+    }
+    
+    String fecha = "", noCompra = "", Proveedor = "", Fecha = "";
     try {
         fecha = request.getParameter("Fecha");
     } catch (Exception e) {
@@ -51,34 +90,83 @@
     if (Proveedor == null) {
         Proveedor = "";
     }
-
+    
     String posClave = "0";
     try {
         posClave = sesion.getAttribute("posClave").toString();
     } catch (Exception e) {
-
+        
     }
     if (posClave == null || posClave.equals("")) {
         posClave = "0";
     }
-
+    
     try {
         if (request.getParameter("accion").equals("buscaCompra")) {
             posClave = "0";
         }
     } catch (Exception e) {
-
+        
     }
-
+    
     int numRenglones = 0;
-
+    
     String folioRemi = "";
     try {
-        folioRemi = (String) sesion.getAttribute("folioRemi");
+        con.conectar();
+        ResultSet rset = con.consulta("select F_FolRemi from tb_compra where F_OrdCom  = '" + noCompra + "' group by F_FolRemi");
+        while (rset.next()) {
+            folioRemi = rset.getString(1);
+        }
+        con.cierraConexion();
     } catch (Exception e) {
+        
     }
+    if (folioRemi.equals("")) {
+        try {
+            folioRemi = (String) sesion.getAttribute("folioRemi");
+        } catch (Exception e) {
+        }
+    }
+    
     if (folioRemi == null) {
         folioRemi = "";
+    }
+    try {
+        Fecha = request.getParameter("Fecha");
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+    if (Fecha == null) {
+        Fecha = "";
+    }
+    
+    String CodBar = "", Lote = "", Cadu = "";
+    try {
+        CodBar = (String) sesion.getAttribute("CodBar");
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+    if (CodBar == null) {
+        CodBar = "";
+    }
+    
+    System.out.println(CodBar);
+    try {
+        Lote = (String) sesion.getAttribute("Lote");
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+    if (Lote == null) {
+        Lote = "";
+    }
+    try {
+        Cadu = (String) sesion.getAttribute("Cadu");
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+    if (Cadu == null) {
+        Cadu = "";
     }
 %>
 <html>
@@ -159,28 +247,79 @@
             <form action="compraAuto2.jsp" method="post">
                 <div class="row">
                     <label class="col-sm-2 text-right">
-                        <h4>Número de Compra</h4>
+                        <h4>Proveedor</h4>
+                    </label>
+                    <div class="col-sm-5">
+                        <select class="form-control" name="Proveedor" id="Proveedor" onchange="SelectProve(this.form);
+                                document.getElementById('Fecha').focus()">
+                            <option value="">--Proveedor--</option>
+                            <%
+                                try {
+                                    con.conectar();
+                                    ResultSet rset = con.consulta("select F_ClaProve, F_NomPro from tb_proveedor order by F_NomPro");
+                                    while (rset.next()) {
+                            %>
+                            <option value="<%=rset.getString(1)%>" ><%=rset.getString(2)%></option>
+                            <%
+                                    }
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+                                }
+                            %>
+
+                        </select>
+                    </div>
+                    <label class="col-sm-2 text-right">
+                        <h4>Fecha</h4>
                     </label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="NoCompra" name="NoCompra" value="<%=noCompra%>" />
+                        <input type="text" class="form-control" data-date-format="dd/mm/yyyy" id="Fecha" name="Fecha" value="<%=Fecha%>" />
                     </div>
-
-
                 </div>
-
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-primary btn-block" name="accion" value="Buscar">Buscar</button>
+                    </div>
+                </div>
                 <br/>
                 <div class="row">
-                    <div class="col-xs-12">
-                        <button class="btn btn-block btn-primary" name="accion" value="buscaCompra">Buscar</button>
+                    <label class="col-sm-2">
+                        <h4>&Oacute;rdenes de Compra: </h4>
+                    </label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="NoCompra" onchange="this.form.submit();">
+                            <option value="">-- Proveedor -- Orden de Compra --</option>
+                            <%
+                                String fecha1 = "";
+                                try {
+                                    fecha = df1.format(df3.parse(Fecha));
+                                } catch (Exception e) {
+                                    
+                                }
+                                try {
+                                    con.conectar();
+                                    ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro from tb_pedidoisem o, tb_proveedor p where o.F_Provee = p.F_ClaProve and o.F_FecSur like  '%" + fecha + "%'  and o.F_Provee like '%" + request.getParameter("Proveedor") + "'  and F_StsPed !='2' and F_Recibido=0  group by o.F_NoCompra");
+                                    while (rset.next()) {
+                            %>
+                            <option value="<%=rset.getString(1)%>"><%=rset.getString(2)%> - <%=rset.getString(1)%></option>
+                            <%
+                                    }
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            %>
+                        </select>
                     </div>
                 </div>
+                <br/>
             </form>
-            <form action="CompraAutomatica" method="get">
+            <form action="CompraAutomatica" method="get" name="formulario1">
                 <br/>
                 <%
                     try {
                         con.conectar();
-                        ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0'  group by F_NoCompra");
+                        ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0' group by F_NoCompra");
                         while (rset.next()) {
                 %>
                 <div class="row">
@@ -221,48 +360,198 @@
                                     <td><strong>Cod Bar</strong></td>
                                     <td><strong>Lote</strong></td>
                                     <td><strong>Caducidad</strong></td>
-                                    <td><strong>Cantidad Total</strong></td>
+                                    <td>
+                                        <strong>Cantidad a Recibir</strong>
+                                        <input type="text" value="<%=formatter.format(rset2.getInt(5))%>" class="form-control" name="cantRecibir" id="cantRecibir" onclick="" readonly=""/>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" value="<%=rset2.getString(1)%>" class="form-control" name="ClaPro" id="lot" onclick="" readonly=""/></td>
+                                    <td><input type="text" value="<%=rset2.getString(1)%>" class="form-control" name="ClaPro" id="ClaPro" onclick="" readonly=""/></td>
                                     <td><%=rset2.getString(2)%></td>
                                     <td>
-                                        <input type="text" value="" class="form-control" name="codbar" id="codbar" onclick="" />
+                                        <input type="text" value="<%=CodBar%>" class="form-control" name="codbar" id="codbar" onclick="" onkeypress="checkKey(event);" />
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <button class="btn btn-primary btn-block btn-sm" type="submit" name="accion" id="CodigoBarras" value="CodigoBarras" onclick="">CB</button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button class="btn btn-primary btn-block btn-sm" type="submit" name="accion" id="GeneraCodigo" value="GeneraCodigo" onclick=""><span class="glyphicon glyphicon-barcode"></span></button>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <%
+                                        int contadorLotes = 0;
+                                        String idMarca = "";
+                                        if (!CodBar.equals("")) {
+                                            try {
+                                                con.conectar();
+                                                ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaPro, F_ClaLot, F_FecCad, F_ClaMar");
+                                                while (rset3.next()) {
+                                                    contadorLotes++;
+                                                }
+                                                con.cierraConexion();
+                                            } catch (Exception e) {
+                                                
+                                            }
+                                        }
+                                        if (contadorLotes > 1) {
+                                            //Mas de 1 lote
+                                            %>
+                                    <td>
+                                        <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
+                                        <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
+                                            <option>--Lote--</option>
+                                            <%
+                                                if (!CodBar.equals("")) {
+                                                    try {
+                                                        con.conectar();
+                                                        ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaPro, F_ClaLot, F_FecCad, F_ClaMar");
+                                                        while (rset3.next()) {
+                                                            idMarca = rset3.getString(6);
+                                            %>
+                                            <option><%=rset3.getString(3)%></option>
+                                            <%
+                                                        }
+                                                        con.cierraConexion();
+                                                    } catch (Exception e) {
+                                                        
+                                                    }
+                                                }
+                                            %>
+                                        </select>
                                     </td>
                                     <td>
-                                        <input type="text" value="<%=rset2.getString(3)%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)" onclick=""/>
+                                        <input type="text" value="<%=Cadu%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="
+                                                return LP_data(event, this);
+                                                anade(this, event);
+                                                return tabular(event, this);
+                                               " maxlength="10"/>
+                                        <select class="form-control" name="list_cadu" id="list_cadu">
+                                            <option>--Caducidad--</option>
+                                            <%
+                                                if (!CodBar.equals("")) {
+                                                    try {
+                                                        con.conectar();
+                                                        ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad,'%d/%m/%Y'), F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaPro, F_ClaLot, F_FecCad, F_ClaMar");
+                                                        while (rset3.next()) {
+                                            %>
+                                            <option><%=rset3.getString(4)%></option>
+                                            <%
+                                                        }
+                                                        con.cierraConexion();
+                                                    } catch (Exception e) {
+                                                        
+                                                    }
+                                                }
+                                            %>
+                                        </select>
+                                    </td>
+                                    <%
+                                    } else {
+                                        //1 Lote o menos
+                                    %>
+                                    <td><%    
+                                        if (!CodBar.equals("")) {
+                                            try {
+                                                con.conectar();
+                                                ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaPro, F_ClaLot, F_FecCad, F_ClaMar");
+                                                while (rset3.next()) {
+                                                    idMarca = rset3.getString(6);
+                                                    Lote = rset3.getString(3);
+                                                }
+                                                con.cierraConexion();
+                                            } catch (Exception e) {
+                                                
+                                            }
+                                        }
+                                        %>
+                                        <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                     </td>
                                     <td>
-                                        <input type="text" value="<%=rset2.getString(4)%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="
+                                        <%
+                                            if (!CodBar.equals("")) {
+                                                try {
+                                                    con.conectar();
+                                                    ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad,'%d/%m/%Y'), F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaPro, F_ClaLot, F_FecCad, F_ClaMar");
+                                                    while (rset3.next()) {
+                                                        Cadu = rset3.getString(4);
+                                                    }
+                                                    con.cierraConexion();
+                                                } catch (Exception e) {
+                                                    
+                                                }
+                                            }
+                                        %>
+                                        <input type="text" value="<%=Cadu%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="
                                                 return LP_data(event, this);
                                                 anade(this, event);
                                                 return tabular(event, this);
                                                " maxlength="10"/>
                                     </td>
+                                    <%
+                                        }
+                                    %>
+
                                     <td>
-                                        <input type="text" value="<%=rset2.getString(5)%>" class="form-control" name="cant" id="cant" onclick="" readonly=""/>
+                                        <strong>Cantidad Recibida</strong>
+                                        <%        
+                                            int cantRecibida = 0;
+                                            try {
+                                                con.conectar();
+                                                ResultSet rset3 = con.consulta("select sum(F_CanCom) from tb_compra where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
+                                                while (rset3.next()) {
+                                                    cantRecibida = cantRecibida + rset3.getInt(1);
+                                                }
+                                                rset3 = con.consulta("select sum(F_Pz) from tb_compratemp where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
+                                                while (rset3.next()) {
+                                                    cantRecibida = cantRecibida + rset3.getInt(1);
+                                                }
+                                                con.cierraConexion();
+                                            } catch (Exception e) {
+                                                
+                                            }
+                                        %>
+                                        <input type="text" value="<%=formatter.format(cantRecibida)%>" class="form-control" name="cantRecibida" id="cantRecibida" onclick="" readonly=""/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <strong>Marca</strong>
-                                        <select class="form-control" name="list_marca" onKeyPress="return tabular(event, this)" id="list_marca">
-                                            <option value="">Marca</option>
-                                            <%
-                                                try {
-                                                    con.conectar();
-                                                    ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM tb_marca");
-                                                    while (rset3.next()) {
-                                            %>
-                                            <option value="<%=rset3.getString("F_ClaMar")%>"><%=rset3.getString("F_DesMar")%></option>
-                                            <%
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <strong>Marca</strong>
+                                                <select class="form-control" name="list_marca" onKeyPress="return tabular(event, this)" id="list_marca">
+                                                    <option value="">Marca</option>
+                                                    <%
+                                                        try {
+                                                            con.conectar();
+                                                            ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM tb_marca");
+                                                            while (rset3.next()) {
+                                                    %>
+                                                    <option value="<%=rset3.getString("F_ClaMar")%>"
+                                                            <%
+                                                                if (rset3.getString("F_ClaMar").equals(idMarca)) {
+                                                                    out.println("selected");
+                                                                }
+                                                            %>
+                                                            ><%=rset3.getString("F_DesMar")%></option>
+                                                    <%
+                                                                
+                                                            }
+                                                            con.cierraConexion();
+                                                        } catch (Exception e) {
+                                                        }
+                                                    %>
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                                    }
-                                                    con.cierraConexion();
-                                                } catch (Exception e) {
-                                                }
-                                            %>
-                                        </select>
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-block btn-primary glyphicon glyphicon-refresh" type = "submit" value = "refresh" name = "accion" ></button>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <a href="marcas.jsp" target="_blank"><h4>Alta</h4></a>
+                                        </div>
                                         <input value="<%=rset.getString("p.F_ClaProve")%>" name="claPro" id="claPro" class="hidden" />
                                     </td>
                                     <td colspan="5">
@@ -278,7 +567,7 @@
                                             <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
                                             <div class="col-sm-1">
                                                 <input type="Cajas" class="form-control" id="TarimasC" name="TarimasC" placeholder="0" onKeyPress="return justNumbers(event);
-                                                        return handleEnter(even);" onkeyup="totalPiezas" onclick="" />
+                                                        return handleEnter(even);" onkeyup="totalPiezas()" onclick="" />
                                             </div>
                                             <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
                                             <div class="col-sm-1">
@@ -388,7 +677,7 @@
                         <td>Existencia</td>
                         <td></td>
                     </tr>
-                    <%
+                    <%        
                         int banCompra = 0;
                         String obser = "";
                         try {
@@ -404,7 +693,7 @@
                         <td><%=rset.getString(3)%></td>
                         <td><%=rset.getString(4)%></td>
                         <td><%=df3.format(df2.parse(rset.getString(5)))%></td>
-                        <td><%=rset.getString(6)%></td>                        
+                        <td><%=formatter.format(rset.getInt(6))%></td>                        
                         <td>
 
                             <form method="get" action="Modificaciones">
@@ -419,19 +708,26 @@
                             }
                             con.cierraConexion();
                         } catch (Exception e) {
-
+                            
                         }
                     %>
-                    <%
+                    <%    
                         if (banCompra == 1) {
                     %>
                     <tr>
 
                         <td colspan="7">
-                            <div class="col-lg-3 col-lg-offset-6">
+                            <div class="col-lg-3 col-lg-offset-3">
                                 <form action="nuevoAutomaticaLotes" method="post">
                                     <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
                                     <button  value="Eliminar" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Compra</button>
+                                </form>
+                            </div>
+                            <div class="col-lg-3">
+                                <form action="nuevoAutomaticaLotes" method="post">
+                                    <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
+                                    <button  value="GuardarAbierta" name="accion" class="btn btn-warning  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
+                                            return validaCompra();">Compra Abierta</button>
                                 </form>
                             </div>
                             <div class="col-lg-3">
@@ -487,25 +783,29 @@
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
+                                        
+                                        $(function() {
+                                            $("#Fecha").datepicker();
+                                            $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                                        });
                                         function justNumbers(e)
                                         {
                                             var keynum = window.event ? window.event.keyCode : e.which;
                                             if ((keynum === 8) || (keynum === 46))
                                                 return true;
-
                                             return /\d/.test(String.fromCharCode(keynum));
                                         }
-
+                                        
                                         otro = 0;
                                         function LP_data(e, esto) {
-                                            var key = (document.all) ? e.keyCode : e.which;//codigo de tecla. 
+                                            var key = (document.all) ? e.keyCode : e.which; //codigo de tecla. 
                                             if (key < 48 || key > 57)//si no es numero 
-                                                return false;//anula la entrada de texto.
+                                                return false; //anula la entrada de texto.
                                             else
                                                 anade(esto);
                                         }
                                         function anade(esto) {
-
+                                            
                                             if (esto.value.length > otro) {
                                                 if (esto.value.length === 2) {
                                                     esto.value += "/";
@@ -523,8 +823,8 @@
                                             }
                                             otro = esto.value.length;
                                         }
-
-
+                                        
+                                        
                                         function AvisaID(id) {
                                             //alert(id);
                                         }
@@ -547,8 +847,6 @@
                                                 return this.formatear(num);
                                             }
                                         };
-
-
                                         $(function() {
                                             $("#cad").datepicker();
                                             $("#cad").datepicker('option', {dateFormat: 'dd/mm/yy'});
@@ -585,41 +883,41 @@
                                             var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
                                             document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
                                         }
-
+                                        
                                         function validaCompra() {
-
+                                            
                                             var folioRemi = document.getElementById('folioRemi').value;
                                             if (folioRemi === "") {
                                                 alert("Falta Folio de Remisión");
                                                 document.getElementById('codbar').focus();
                                                 return false;
                                             }
-
+                                            
                                             var codBar = document.getElementById('codbar').value;
                                             if (codBar === "") {
                                                 alert("Falta Código de Barras");
                                                 document.getElementById('codbar').focus();
                                                 return false;
                                             }
-
+                                            
                                             var lot = document.getElementById('lot').value;
                                             if (lot === "" || lot === "-") {
                                                 alert("Falta Lote");
                                                 document.getElementById('lot').focus();
                                                 return false;
                                             }
-
+                                            
                                             var marca = document.getElementById('list_marca').value;
                                             if (marca === "" || marca === "-") {
                                                 alert("Falta Marca");
                                                 document.getElementById('list_marca').focus();
                                                 return false;
                                             }
-
+                                            
                                             var cad = document.getElementById('cad').value;
                                             if (cad === "") {
                                                 alert("Falta Caducidad");
-                                                document.getElementById('lot').focus();
+                                                document.getElementById('cad').focus();
                                                 return false;
                                             } else {
                                                 var dtFechaActual = new Date();
@@ -628,23 +926,36 @@
                                                 var fechaSpl = cad.split("/");
                                                 var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
                                                 /*alert(Caducidad);*/
-
+                                                
                                                 if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
                                                     alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
                                                     document.getElementById('cad').focus();
                                                     return false;
                                                 }
+                                                
                                             }
-
+                                            
                                             var Piezas = document.getElementById('Piezas').value;
                                             if (Piezas === "" || Piezas === "0") {
                                                 document.getElementById('Piezas').focus();
                                                 alert("Favor de llenar todos los datos");
                                                 return false;
                                             }
+                                            
+                                            var cantRecibida = document.getElementById('cantRecibida').value;
+                                            var cantTotal = document.getElementById('cantRecibir').value;
+                                            cantRecibida = cantRecibida.replace(/,/gi, "");
+                                            cantTotal = cantTotal.replace(/,/gi, "");
+                                            Piezas = Piezas.replace(/,/gi, "");
+                                            var nCantidad = parseInt(Piezas) + parseInt(cantRecibida);
+                                            if (nCantidad > parseInt(cantTotal)) {
+                                                alert("Excede la cantidad a recibir, favor de verificar");
+                                                return false;
+                                            }
+                                            
                                         }
-
-
+                                        
+                                        
                                         function tabular(e, obj)
                                         {
                                             tecla = (document.all) ? e.keyCode : e.which;
@@ -665,8 +976,31 @@
                                                 frm.elements[i + 1].focus();
                                             return false;
                                         }
-
-
+                                        
+                                        function cambiaLoteCadu(elemento) {
+                                            var indice = elemento.selectedIndex;
+                                            document.getElementById('list_cadu').selectedIndex = indice;
+                                            document.getElementById('lot').value = document.getElementById('list_lote').value;
+                                            document.getElementById('cad').value = document.getElementById('list_cadu').value;
+                                        }
+                                        
+                                        
+                                        function checkKey(key) {
+                                            var unicode;
+                                            if (key.charCode)
+                                            {
+                                                unicode = key.charCode;
+                                            }
+                                            else
+                                            {
+                                                unicode = key.keyCode;
+                                            }
+                                            //alert(unicode); // Para saber que codigo de tecla presiono , descomentar
+                                            
+                                            if (unicode == 13) {
+                                                document.getElementById('CodigoBarras').click();
+                                            }
+                                        }
     </script>
 
 </html>

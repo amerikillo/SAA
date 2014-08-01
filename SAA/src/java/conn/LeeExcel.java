@@ -67,17 +67,23 @@ public class LeeExcel {
             Vector vectorCellEachRowData = (Vector) vectorData.get(i);
             String qry = "insert into tb_unireq values (";
             // looping every cell in each row
-            for (int j = 0; j < vectorCellEachRowData.size(); j++) {
-                if (j == 0) {
-                    String Clave = agrega((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
-                    qry = qry + "'" + Clave + "' , ";
+            for (int j = 0; j < 3; j++) {
+
+                if (j == 0 || j == 1) {
+                    try {
+                        String Clave = agrega((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
+                        qry = qry + "'" + Clave + "' , ";
+                    } catch (Exception e) {
+                    }
                 } else {
-                    String Clave = agrega((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
-                    qry = qry + "'" + Clave + "' , ";
+                    try {
+                        String Clave = ((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
+                        qry = qry + "'" + Clave + "' , ";
+                    } catch (Exception e) {
+                    }
                 }
             }
             qry = qry + "curdate(), 0, '0')"; // agregar campos fuera del excel
-            System.out.println(qry);
             try {
                 con.conectar();
                 try {

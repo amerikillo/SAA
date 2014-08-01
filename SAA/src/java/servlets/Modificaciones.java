@@ -54,6 +54,10 @@ public class Modificaciones extends HttpServlet {
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
+
+                sesion.setAttribute("CodBar", "");
+                sesion.setAttribute("Lote", "");
+                sesion.setAttribute("Cadu", "");
                 response.sendRedirect("compraAuto2.jsp");
             }
             if (request.getParameter("accion").equals("modificarCompraAuto")) {
@@ -70,6 +74,10 @@ public class Modificaciones extends HttpServlet {
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
+
+                sesion.setAttribute("CodBar", "");
+                sesion.setAttribute("Lote", "");
+                sesion.setAttribute("Cadu", "");
                 response.sendRedirect("captura.jsp");
             }
             if (request.getParameter("accion").equals("modificar")) {

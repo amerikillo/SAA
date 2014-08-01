@@ -46,6 +46,91 @@ public class CompraAutomatica extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         PrintWriter out = response.getWriter();
         try {
+            if (request.getParameter("accion").equals("CodigoBarras")) {
+                try {
+                    String posCla = sesion.getAttribute("posClave").toString();
+                    String folio = request.getParameter("folio");
+                    String folioRemi = request.getParameter("folioRemi");
+                    String CodBar = request.getParameter("codbar");
+                    String lote = request.getParameter("lot").toUpperCase();
+                    String cadu = request.getParameter("cad");
+                    sesion.setAttribute("NoCompra", request.getParameter("folio"));
+                    sesion.setAttribute("folioRemi", folioRemi);
+                    sesion.setAttribute("CodBar", CodBar);
+                    sesion.setAttribute("Lote", "");
+                    sesion.setAttribute("Cadu", "");
+                    response.sendRedirect("compraAuto2.jsp");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            if (request.getParameter("accion").equals("GeneraCodigo")) {
+                String CodBar = "";
+                try {
+                    con.conectar();
+                    ResultSet rset = con.consulta("SELECT MAX(F_IdCb) AS F_IdCb FROM tb_gencb");
+                    while (rset.next()) {
+                        CodBar = rset.getString("F_IdCb");
+                    }
+                    System.out.println(CodBar);
+                    con.insertar("insert into tb_gencb values(0,'GNKL')");
+
+                    con.cierraConexion();
+                } catch (Exception e) {
+
+                }
+                try {
+                    String posCla = sesion.getAttribute("posClave").toString();
+                    String folio = request.getParameter("folio");
+                    String folioRemi = request.getParameter("folioRemi");
+                    String lote = request.getParameter("lot").toUpperCase();
+                    String cadu = request.getParameter("cad");
+                    sesion.setAttribute("NoCompra", request.getParameter("folio"));
+                    sesion.setAttribute("folioRemi", folioRemi);
+                    sesion.setAttribute("CodBar", CodBar);
+                    sesion.setAttribute("Lote", "");
+                    sesion.setAttribute("Cadu", "");
+                    response.sendRedirect("compraAuto2.jsp");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            if (request.getParameter("accion").equals("verFolio")) {
+                try {
+                    String posCla = sesion.getAttribute("posClave").toString();
+                    String folio = request.getParameter("folio");
+                    String folioRemi = request.getParameter("folioRemi");
+                    String CodBar = request.getParameter("codbar");
+                    String lote = request.getParameter("lot").toUpperCase();
+                    String cadu = request.getParameter("cad");
+                    sesion.setAttribute("NoCompra", request.getParameter("folio"));
+                    sesion.setAttribute("folioRemi", folioRemi);
+                    sesion.setAttribute("CodBar", CodBar);
+                    sesion.setAttribute("Lote", lote);
+                    sesion.setAttribute("Cadu", cadu);
+                    response.sendRedirect("compraAuto2.jsp");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            if (request.getParameter("accion").equals("refresh")) {
+                try {
+                    String posCla = sesion.getAttribute("posClave").toString();
+                    String folio = request.getParameter("folio");
+                    String folioRemi = request.getParameter("folioRemi");
+                    String CodBar = request.getParameter("codbar");
+                    String lote = request.getParameter("lot").toUpperCase();
+                    String cadu = request.getParameter("cad");
+                    sesion.setAttribute("NoCompra", request.getParameter("folio"));
+                    sesion.setAttribute("folioRemi", folioRemi);
+                    sesion.setAttribute("CodBar", CodBar);
+                    sesion.setAttribute("Lote", lote);
+                    sesion.setAttribute("Cadu", cadu);
+                    response.sendRedirect("compraAuto2.jsp");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
             if (request.getParameter("accion").equals("siguiente")) {
                 try {
                     String posCla = sesion.getAttribute("posClave").toString();
@@ -57,6 +142,9 @@ public class CompraAutomatica extends HttpServlet {
                     sesion.setAttribute("posClave", posClave);
                     sesion.setAttribute("NoCompra", request.getParameter("folio"));
                     sesion.setAttribute("folioRemi", folioRemi);
+                    sesion.setAttribute("CodBar", "");
+                    sesion.setAttribute("Lote", "");
+                    sesion.setAttribute("Cadu", "");
                     response.sendRedirect("compraAuto2.jsp");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -73,6 +161,9 @@ public class CompraAutomatica extends HttpServlet {
                     sesion.setAttribute("posClave", posClave);
                     sesion.setAttribute("NoCompra", request.getParameter("folio"));
                     sesion.setAttribute("folioRemi", folioRemi);
+                    sesion.setAttribute("CodBar", "");
+                    sesion.setAttribute("Lote", "");
+                    sesion.setAttribute("Cadu", "");
                     response.sendRedirect("compraAuto2.jsp");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -86,6 +177,9 @@ public class CompraAutomatica extends HttpServlet {
                     String folioRemi = request.getParameter("folioRemi");
                     sesion.setAttribute("NoCompra", request.getParameter("folio"));
                     sesion.setAttribute("folioRemi", folioRemi);
+                    sesion.setAttribute("CodBar", "");
+                    sesion.setAttribute("Lote", "");
+                    sesion.setAttribute("Cadu", "");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -146,6 +240,7 @@ public class CompraAutomatica extends HttpServlet {
                 MontoIva = Monto + IVAPro;
                 con.insertar("insert into tb_compratemp values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','" + Marca + "','" + claPro + "','" + CodBar + "','" + Tarimas + "','" + Cajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + claPro + "','" + sesion.getAttribute("nombre") + "')"
                 );
+                con.insertar("insert into tb_cb values(0,'" + CodBar + "','" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "', '" + Marca + "')");
                 //con.insertar("update tb_pedidoisem set F_Recibido = '1' where F_Clave = '" + Clave + "' and  ");
 
                 con.cierraConexion();
@@ -218,7 +313,7 @@ public class CompraAutomatica extends HttpServlet {
                 }
                 con.cierraConexion();
                 int F_IndCom = nuevo.Guardar((String) sesion.getAttribute("nombre"));
-                    sesion.setAttribute("folioRemi", "");
+                sesion.setAttribute("folioRemi", "");
                 out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.location='Ubicaciones/Consultas.jsp'</script>");

@@ -115,14 +115,13 @@
                                 <div class="col-xs-3">
                                     <input type="text" class="form-control" id="Nombre" name="Nombre" maxlength="60" placeholder="Nombre" onKeyPress="return tabular(event, this)" />
                                 </div>
-                               <!--div class="col-lg-2"><a class="btn btn-block btn-danger" onclick="window.close();">Salir</a></div-->
                             </div>
 
                         </div>
-                       
-                       
+
+
                         <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();"> Guardar</button> 
-                              
+                        <a class="btn btn-block btn-danger" onclick="window.close();">Salir</a>
                     </form>
                     <div>
                         <h6>Los campos marcados con * son obligatorios</h6>
@@ -146,7 +145,7 @@
                             <tr class="odd gradeX">
                                 <td><small><%=rset.getString(1)%></small></td>
                                 <td><small><%=rset.getString(2)%></small></td>                                                            
-                                
+
                             </tr>
                             <%
                                     }
@@ -180,9 +179,9 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                                        $(document).ready(function() {
-                                                            $('#datosProv').dataTable();
-                                                        });
+                            $(document).ready(function() {
+                                $('#datosProv').dataTable();
+                            });
 </script>
 <script>
 
@@ -217,7 +216,7 @@
     function valida_alta() {
         /*var Clave = document.formulario1.Clave.value;*/
         var Nombre = document.formulario1.Nombre.value;
-        
+
         if (Nombre === "") {
             alert("Tiene campos vacíos, verifique.");
             return false;

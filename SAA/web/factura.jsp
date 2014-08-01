@@ -4,6 +4,8 @@
     Author     : Americo
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.DecimalFormatSymbols"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="conn.*" %>
@@ -12,7 +14,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    DecimalFormat formatter = new DecimalFormat("#,###,###");
+    DecimalFormatSymbols custom = new DecimalFormatSymbols();
+    custom.setDecimalSeparator(',');
+    formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "", Clave = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -167,7 +172,7 @@
                             <tr class="odd gradeX">
                                 <td><small><%=rset.getString(1)%></small></td>
                                 <td><small><%=rset.getString(2)%></small></td>
-                                <td><small><%=rset.getString(3)%></small></td>
+                                <td><small><%=formatter.format(rset.getInt(3))%></small></td>
 
 
                             </tr>

@@ -1,7 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package conn;
 
 import java.sql.Connection;
@@ -12,11 +14,10 @@ import java.sql.Statement;
 
 /**
  *
- * @author wence
+ * @author Americo
  */
-public class ConectionDB {
-
-//variables miembro
+public class ConectionDB_Nube {
+    //variables miembro
     private String usuario;
     private String clave;
     private String url;
@@ -30,7 +31,7 @@ public class ConectionDB {
 
 //CONSTRUCTORES
     //Constructor que toma los datos de conexion por medio de parametros
-    public ConectionDB(String usuario, String clave, String url, String driverClassName) {
+    public ConectionDB_Nube(String usuario, String clave, String url, String driverClassName) {
         this.usuario = usuario;
         this.clave = clave;
         this.url = url;
@@ -39,17 +40,17 @@ public class ConectionDB {
 
     //Constructor que crea la conexion sin parametros con unos definidos en la clase
     //(meter los datos correspondientes)
-    public ConectionDB() {
+    public ConectionDB_Nube() {
         //poner los datos apropiados
         
-        /*this.usuario = "usr_censosbcn";
+        this.usuario = "usr_censosbcn";
         this.clave = "3A8E4BCFBFC3E";
         this.url = "jdbc:mysql://162.209.67.250:3306/captura_inventarios_bcn";
-        this.driverClassName = "org.gjt.mm.mysql.Driver";*/
-        this.usuario = "root";
+        this.driverClassName = "org.gjt.mm.mysql.Driver";
+        /*this.usuario = "root";
         this.clave = "eve9397";
         this.url = "jdbc:mysql://localhost:3306/gnklmex_consolidada2";
-        this.driverClassName = "org.gjt.mm.mysql.Driver";
+        this.driverClassName = "org.gjt.mm.mysql.Driver";*/
     }
 
     //metodos para recuperar los datos de conexion
@@ -150,4 +151,3 @@ public class ConectionDB {
         return st.executeUpdate(inserta);
     }
 }
-/**/

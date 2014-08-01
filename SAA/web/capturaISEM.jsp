@@ -49,7 +49,6 @@
         NoCompra = "";
     }
 
-    System.out.println(NoCompra);
     if (NoCompra.equals("")) {
         NoCompra = indice.noCompra();
         sesion.setAttribute("NoCompra", NoCompra);
@@ -71,8 +70,16 @@
             SelectProve(FormBusca);">
         <div class="container">
             <h3>ISEM - Captura de Entregas</h3>
-            <a class="btn btn-default" href="capturaISEM.jsp">Captura de Órdenes de Compra</a>
-            <a class="btn btn-default" href="verFoliosIsem.jsp">Ver Órdenes de Compra</a>
+            <div class="row">
+                <div class="col-sm-11">
+                    <a class="btn btn-default" href="capturaISEM.jsp">Captura de Órdenes de Compra</a>
+                    <a class="btn btn-default" href="verFoliosIsem.jsp">Ver Órdenes de Compra</a>
+                </div>
+                <div class="text-right">
+                    <a class="btn btn-danger" href="indexIsem.jsp">Salir</a>
+                </div>
+            </div>
+            <hr/>
             <form name="FormBusca" action="CapturaPedidos" method="post">
                 <div class="row">
                     <label class="col-sm-2 col-sm-offset-8 text-right">
@@ -222,7 +229,7 @@
                         %>
                         <div class="row">
                             <label class="col-sm-2 text-right">
-                                <h4>Cantidad Solicitada</h4>
+                                <h4>Cantidad Enviada</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" readonly value="<%=formatter.format(cantUsada)%>" name="" id=""/>
@@ -266,7 +273,6 @@
                                     ResultSet rset = con.consulta(" select SUM(F_ExiLot) from tb_lote where F_ClaPro = '" + claPro + "' group by F_ClaPro  ");
                                     while (rset.next()) {
                                         cantidad = rset.getString(1);
-                                        System.out.println(cantidad);
                                     }
                                     if (cantidad == null) {
                                         cantidad = "0";
@@ -280,7 +286,7 @@
                                 <h4>Cant. en Almacen</h4>
                             </label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" name="CantAlm" id="CantAlm" readonly="" value="<%=cantidad%>" />
+                                <input type="text" class="form-control" name="CantAlm" id="CantAlm" readonly="" value="<%=formatter.format(Integer.parseInt(cantidad))%>" />
                             </div>
                             <label class="col-sm-1 text-center">
                                 <h4>Prioridad</h4>
@@ -305,8 +311,8 @@
                             </label>
                             <div class="hidden">
                                 <input type="text" class="form-control" data-date-format="dd/mm/yyyy" readonly="" name="CadPro" id="CadPro"/>
-                            </div><label class="col-sm-1 text-right">
-                                <h4>Cantidad</h4>
+                            </div><label class="col-sm-2 text-right">
+                                <h4>Pzs a Entregar</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" name="CanPro" id="CanPro" onKeyPress="return justNumbers(event);" />
@@ -372,7 +378,7 @@
                         <button class="btn btn-success btn-block" name="accion" value="confirmar" onclick="return confirm('¿Seguro que desea CONFIRMAR el pedido?')">Confirmar Orden de Compra</button>
                     </div>
                     <div class="col-sm-6">
-                        <button class="btn btn-danger btn-block" name="accion" value="cancelar" onclick="return confirm('¿Seguro que desea CANCELAR el pedido?')">Cancelar Orden de Compra</button>
+                        <button class="btn btn-danger btn-block" name="accion" value="cancelar" onclick="return confirm('¿Seguro que desea CANCELAR el pedido?')">Limpiar Pantalla</button>
                     </div>
                 </form>
             </div>
@@ -464,11 +470,11 @@
                                 var DesPro = document.getElementById('DesPro').value;
                                 var CanPro = document.getElementById('CanPro').value;
                                 var CanRes = document.getElementById('CantRest').value;
-                                CanRes=CanRes.replace(",","");
-                                CanRes=CanRes.replace(",","");
-                                CanRes=CanRes.replace(",","");
-                                CanRes=CanRes.replace(",","");
-                                CanRes=CanRes.replace(",","");
+                                CanRes = CanRes.replace(",", "");
+                                CanRes = CanRes.replace(",", "");
+                                CanRes = CanRes.replace(",", "");
+                                CanRes = CanRes.replace(",", "");
+                                CanRes = CanRes.replace(",", "");
                                 if (parseInt(CanRes) < parseInt(CanPro)) {
                                     alert("La Cantidad Solicitada no puede ser mayor a la Cantidad Restante");
                                     return false;
