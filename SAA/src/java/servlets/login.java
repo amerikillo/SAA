@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.*;
 import java.sql.*;
 import conn.*;// package que contiene la Clase ConectionDBS
+
 /**
  *
  * @author wence
@@ -39,36 +40,38 @@ public class login extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         try {
             /* TODO output your page here. You may use following sample code. */
+            try {
+                con.conectar();
                 try {
-                    con.conectar();
-                    try {
-                        String F_Usu = "", F_nombre = "", F_TipUsu = "";
-                        int ban = 0;
-                        ResultSet rset = con.consulta(" select F_Usu, F_nombre, F_Status, F_TipUsu from tb_usuario where F_Usu = '" + request.getParameter("nombre") + "' and F_Pass = PASSWORD('" + request.getParameter("pass") + "')  ");
-                        while (rset.next()) {
-                            ban = 1;
-                            F_Usu = rset.getString("F_Usu");
-                            F_nombre = rset.getString("F_nombre");
-                            F_TipUsu = rset.getString("F_TipUsu");
-                        }
-                        if (ban == 1) {//----------------------EL USUARIO ES VÁLIDO
-                            sesion.setAttribute("Usuario", F_Usu);
-                            sesion.setAttribute("nombre", F_nombre);
-                            sesion.setAttribute("Tipo", F_TipUsu);
-                            sesion.setAttribute("posClave","0");
-                            response.sendRedirect("main_menu.jsp");
-                        } else {//--------------------------EL USUARIO NO ES VÁLIDO
-                            out.println("hola");
-                            sesion.setAttribute("mensaje", "Usuario no válido");
-                            response.sendRedirect("index.jsp");
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                    String F_Usu = "", F_nombre = "", F_TipUsu = "";
+                    int ban = 0;
+                    ResultSet rset = con.consulta(" select F_Usu, F_nombre, F_Status, F_TipUsu from tb_usuario where F_Usu = '" + request.getParameter("nombre") + "' and F_Pass = PASSWORD('" + request.getParameter("pass") + "')  ");
+                    while (rset.next()) {
+                        ban = 1;
+                        F_Usu = rset.getString("F_Usu");
+                        F_nombre = rset.getString("F_nombre");
+                        F_TipUsu = rset.getString("F_TipUsu");
                     }
-                    con.cierraConexion();
+                    if (ban == 1) {//----------------------EL USUARIO ES VÁLIDO
+                        sesion.setAttribute("Usuario", F_Usu);
+                        sesion.setAttribute("nombre", F_nombre);
+                        sesion.setAttribute("Tipo", F_TipUsu);
+                        sesion.setAttribute("posClave", "0");
+                        con.insertar("insert into tb_registroentradas values ('" + request.getParameter("nombre") + "',NOW(),1,0)");
+                        response.sendRedirect("main_menu.jsp");
+                    } else {//--------------------------EL USUARIO NO ES VÁLIDO
+                        out.println("hola");
+                        con.insertar("insert into tb_registroentradas values ('" + request.getParameter("nombre") + "',NOW(),0,0)");
+                        sesion.setAttribute("mensaje", "Usuario no válido");
+                        response.sendRedirect("index.jsp");
+                    }
                 } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                    System.out.println(e.getMessage());
                 }
+                con.cierraConexion();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         } finally {
             out.close();
         }

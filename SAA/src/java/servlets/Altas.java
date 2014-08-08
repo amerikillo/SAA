@@ -92,7 +92,8 @@ public class Altas extends HttpServlet {
                         codbar2 = rset.getString("F_IdCb");
                     }
                     System.out.println(codbar2);
-                    con.insertar("insert into tb_gencb values(0,'GNKL')");
+                    Long CB = Long.parseLong(codbar2) + 1;
+                    con.insertar("insert into tb_gencb values('" + CB + "','GNKL')");
                     descr = request.getParameter("descripci");
                     clave = request.getParameter("clave1");
                     rset = con.consulta("select F_PrePro from tb_medica where F_ClaPro='" + clave + "'");
@@ -181,7 +182,8 @@ public class Altas extends HttpServlet {
                     }
                      byte[] a = request.getParameter("Observaciones").getBytes("ISO-8859-1");
                     String Obser = (new String(a, "UTF-8")).toUpperCase();
-                    con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + tarimas + "', '" + cajas + "', '" + piezas + "', '" + tarimaI + "','" + cajasI + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "','"+Obser+"' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "','0') ");
+                    con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + tarimas + "', '" + cajas + "', '" + piezas + "', '" + tarimaI + "','" + cajasI + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "','"+Obser+"' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
+                    con.insertar("insert into tb_compraregistro values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + tarimas + "', '" + cajas + "', '" + piezas + "', '" + tarimaI + "','" + cajasI + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "','"+Obser+"' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
                     con.insertar("insert into tb_cb values(0,'" + request.getParameter("cb") + "','" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "', '" + request.getParameter("Marca") + "')");
                     con.cierraConexion();
 
@@ -243,6 +245,7 @@ public class Altas extends HttpServlet {
                     byte[] a = request.getParameter("Observaciones").getBytes("ISO-8859-1");
                     String Obser = (new String(a, "UTF-8")).toUpperCase();
                     con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + tarimas + "', '" + cajas + "', '" + piezas + "', '" + tarimaI + "','" + cajasI + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' ,'"+Obser+"', '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
+                    con.insertar("insert into tb_compraregistro values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + tarimas + "', '" + cajas + "', '" + piezas + "', '" + tarimaI + "','" + cajasI + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' ,'"+Obser+"', '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
                     con.insertar("insert into tb_cb values(0,'" + request.getParameter("cb") + "','" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "', '" + request.getParameter("Marca") + "')");
                     con.cierraConexion();
 

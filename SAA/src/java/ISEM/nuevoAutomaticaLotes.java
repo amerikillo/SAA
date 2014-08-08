@@ -130,7 +130,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                      *Consulta a compra temporal (MySQL)
                      *con base en fecha y usuario
                      */
-                    ResultSet rsetDatos = con.consulta("SELECT F_ClaPro, F_Lote, F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') AS FECAD, F_FecFab, F_Marca, F_Provee, F_Cb, F_Tarimas, F_Cajas, F_Pz, F_Resto, F_Costo,F_ImpTo, F_ComTot, F_FolRemi, F_OrdCom, F_ClaOrg, F_User, F_Obser FROM tb_compratemp WHERE F_User='" + sesion.getAttribute("nombre") + "' AND F_FecApl=CURDATE()");
+                    ResultSet rsetDatos = con.consulta("SELECT F_ClaPro, F_Lote, F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') AS FECAD, F_FecFab, F_Marca, F_Provee, F_Cb, F_Tarimas, F_Cajas, F_Pz, F_Resto, F_Costo,F_ImpTo, F_ComTot, F_FolRemi, F_OrdCom, F_ClaOrg, F_User, F_Obser FROM tb_compratemp WHERE F_OrdCom='" + request.getParameter("fol_gnkl") + "' AND F_FecApl=CURDATE()");
                     while (rsetDatos.next()) {
                         F_ClaPro = rsetDatos.getString("F_ClaPro");
                         F_Lote = rsetDatos.getString("F_Lote").toUpperCase();
@@ -348,7 +348,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                      *Consulta a compra temporal (MySQL)
                      *con base en fecha y usuario
                      */
-                    ResultSet rsetDatos = con.consulta("SELECT F_ClaPro, F_Lote, F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') AS FECAD, F_FecFab, F_Marca, F_Provee, F_Cb, F_Tarimas, F_Cajas, F_Pz, F_Resto, F_Costo,F_ImpTo, F_ComTot, F_FolRemi, F_OrdCom, F_ClaOrg, F_User, F_Obser FROM tb_compratemp WHERE F_User='" + sesion.getAttribute("nombre") + "' AND F_FecApl=CURDATE()");
+                    ResultSet rsetDatos = con.consulta("SELECT F_ClaPro, F_Lote, F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') AS FECAD, F_FecFab, F_Marca, F_Provee, F_Cb, F_Tarimas, F_Cajas, F_Pz, F_Resto, F_Costo,F_ImpTo, F_ComTot, F_FolRemi, F_OrdCom, F_ClaOrg, F_User, F_Obser FROM tb_compratemp WHERE F_OrdCom='" + request.getParameter("fol_gnkl") + "' AND F_FecApl=CURDATE()");
                     while (rsetDatos.next()) {
                         F_ClaPro = rsetDatos.getString("F_ClaPro");
                         F_Lote = rsetDatos.getString("F_Lote").toUpperCase();
@@ -518,7 +518,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
         sesion.setAttribute("NoCompra", "0");
         out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
         out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
-        out.println("<script>window.location='Ubicaciones/Consultas.jsp'</script>");
+        out.println("<script>window.location='compraAuto2.jsp'</script>");
 
         // out.println("<script>window.location='<form action=reimpReporte.jsp target=_blank><input class=hidden name=fol_gnkl value=<%=F_IndCom%>></form>'</script>");
         //response.sendRedirect("captura.jsp");

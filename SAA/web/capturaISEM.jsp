@@ -13,7 +13,8 @@
 <%
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
-    custom.setDecimalSeparator(',');
+    custom.setDecimalSeparator('.');
+    custom.setGroupingSeparator(',');
     formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "";
@@ -54,6 +55,7 @@
         sesion.setAttribute("NoCompra", NoCompra);
     }
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -65,6 +67,8 @@
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
         <link href="css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
     </head>
     <body onload="focusLocus();
             SelectProve(FormBusca);">
@@ -82,8 +86,8 @@
             <hr/>
             <form name="FormBusca" action="CapturaPedidos" method="post">
                 <div class="row">
-                    <label class="col-sm-2 col-sm-offset-8 text-right">
-                        <h4>Número de Compra</h4>
+                    <label class="col-sm-3 col-sm-offset-7 text-right">
+                        <h4>Número de Orden de Compra</h4>
                     </label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control" id="NoCompra" name="NoCompra" value="<%=NoCompra%>" readonly=""  />
@@ -92,7 +96,7 @@
                 <br/>
                 <div class="row">
                     <label class="col-sm-1">
-                        <h4>Proveedor</h4>
+                        <h4>Proveedor:</h4>
                     </label>
                     <div class="col-sm-7">
                         <select class="form-control" name="Proveedor" id="Proveedor" onchange="SelectProve(this.form);
@@ -123,13 +127,13 @@
                 </div>
                 <div class="row">
                     <label class="col-sm-2">
-                        <h4>Fecha de Entrega</h4>
+                        <h4>Fecha de Entrega:</h4>
                     </label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" data-date-format="dd/mm/yyyy" id="Fecha" name="Fecha" readonly value="<%=fecEnt%>" onchange="document.getElementById('Hora').focus()" />
+                        <input type="date" class="form-control" id="Fecha" name="Fecha" value="<%=fecEnt%>" onchange="document.getElementById('Hora').focus()" />
                     </div>
                     <label class="col-sm-2">
-                        <h4>Hora de Entrega</h4>
+                        <h4>Hora de Entrega:</h4>
                     </label>
                     <div class="col-sm-2">
                         <select class="form-control" id="Hora" name="Hora" onchange="document.getElementById('Clave').focus()">
@@ -172,26 +176,18 @@
                 <div class="row">
 
                     <label class="col-sm-1 text-right">
-                        <h4>Clave</h4>
+                        <h4>Clave:</h4>
                     </label>
                     <div class="col-sm-2">
                         <!--input type="text" class="form-control" id="Clave" name="Clave" /-->
                         <select name="Clave" id="Clave" class="form-control">
-                            <option>-- Seleccione Clave --</option>
+                            <option>-- Seleccione --</option>
                         </select>
                     </div>
                     <div class="col-sm-1">
                         <button class="btn btn-primary btn-block" onclick="return validaClaDes(this);" name="accion" value="Clave">Clave</button>
                     </div>
-                    <!--label class="col-sm-1 text-right">
-                        <h4>Descripción</h4>
-                    </label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" id="Descripcion" name="Descripcion" />
-                    </div>
-                    <div class="col-sm-1">
-                        <button class="btn btn-primary"  onclick="return validaClaDes(this);" name="accion" value="Descripcion">Descripción</button>
-                    </div-->
+                    
                 </div>
             </form>
             <br/>
@@ -200,19 +196,18 @@
                     <div class="panel-body">
                         <div class="row">
                             <label class="col-sm-1 text-right">
-                                <h4>Clave</h4>
+                                <h4>Clave:</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" readonly value="<%=claPro%>" name="ClaPro" id="ClaPro"/>
                             </div>
                             <label class="col-sm-1">
-                                <h4>Descripción</h4>
+                                <h4>Descripción:</h4>
                             </label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" readonly value="<%=desPro%>" name="DesPro" id="DesPro"/>
                             </div>
                         </div>
-                        <br/>
                         <%
                             try {
                                 con.conectar();
@@ -229,33 +224,32 @@
                         %>
                         <div class="row">
                             <label class="col-sm-2 text-right">
-                                <h4>Cantidad Enviada</h4>
+                                <h4>Cantidad Enviada:</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" readonly value="<%=formatter.format(cantUsada)%>" name="" id=""/>
                             </div>
                             <label class="col-sm-2">
-                                <h4>Cantidad Máxima</h4>
+                                <h4>Cantidad Máxima:</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" readonly value="<%=formatter.format(cantMax)%>" name="" id=""/>
                             </div>
                             <label class="col-sm-2 text-right">
-                                <h4>Cantidad Restante</h4>
+                                <h4>Cantidad Restante:</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" readonly value="<%=formatter.format(cantRestante)%>" name="CantRest" id="CantRest"/>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-1">
-                                <h4>Pres.</h4>
+                            <label class="col-sm-2">
+                                <h4>Presentación</h4>
                             </label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-10">
                                 <input type="text" class="form-control" readonly value="<%=rset.getString(3)%>" name="" id=""/>
                             </div>
                         </div>
-                        <br/>
                         <%
                                 }
                                 con.cierraConexion();
@@ -283,13 +277,13 @@
                                 }
                             %>
                             <label class="col-sm-2 text-center">
-                                <h4>Cant. en Almacen</h4>
+                                <h4>Exist. en Almacén:</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" name="CantAlm" id="CantAlm" readonly="" value="<%=formatter.format(Integer.parseInt(cantidad))%>" />
                             </div>
-                            <label class="col-sm-1 text-center">
-                                <h4>Prioridad</h4>
+                            <label class="col-sm-2 text-center">
+                                <h4>No. de Entrega:</h4>
                             </label>
                             <div class="col-sm-2">
                                 <select  class="form-control" name="Prioridad" id="Prioridad" onchange="document.getElementById('CanPro').focus()" >
@@ -312,7 +306,7 @@
                             <div class="hidden">
                                 <input type="text" class="form-control" data-date-format="dd/mm/yyyy" readonly="" name="CadPro" id="CadPro"/>
                             </div><label class="col-sm-2 text-right">
-                                <h4>Pzs a Entregar</h4>
+                                <h4>Pzs a Entregar:</h4>
                             </label>
                             <div class="col-sm-2">
                                 <input type="text" class="form-control" name="CanPro" id="CanPro" onKeyPress="return justNumbers(event);" />
@@ -339,22 +333,24 @@
                 <tr>
                     <td><strong>Clave</strong></td>
                     <td><strong>Descripción</strong></td>
-                    <!--td><strong>Lote</strong></td>
-                    <td><strong>Caducidad</strong></td-->
+                    <td><strong>Fecha</strong></td>
+                    <td><strong>Hora</strong></td>
                     <td><strong>Cantidad</strong></td>
                     <td></td>
                 </tr>
                 <%
+                    int banConfirma = 0;
                     try {
                         con.conectar();
-                        ResultSet rset = con.consulta("select s.F_Clave, m.F_DesPro, s.F_Lote, DATE_FORMAT(F_Cadu, '%d/%m/%Y'), s.F_Cant, F_IdIsem from tb_pedidoisem s, tb_medica m where s.F_Clave = m.F_ClaPro and F_IdUsu = '" + (String) sesion.getAttribute("Usuario") + "' and F_NoCompra = '" + NoCompra + "' and F_StsPed = '0' ");
+                        ResultSet rset = con.consulta("select s.F_Clave, m.F_DesPro, s.F_Lote, DATE_FORMAT(F_Cadu, '%d/%m/%Y'), s.F_Cant, F_IdIsem, DATE_FORMAT(F_FecSur, '%d/%m/%Y'), F_HorSur from tb_pedidoisem s, tb_medica m where s.F_Clave = m.F_ClaPro and F_IdUsu = '" + (String) sesion.getAttribute("Usuario") + "' and F_NoCompra = '" + NoCompra + "' and F_StsPed = '0' ");
                         while (rset.next()) {
+                            banConfirma = 1;
                 %>
                 <tr>
                     <td><%=rset.getString(1)%></td>
                     <td><%=rset.getString(2)%></td>
-                    <!--td><%=rset.getString(3)%></td>
-                    <td><%=rset.getString(4)%></td-->
+                    <td><%=rset.getString(7)%></td>
+                    <td><%=rset.getString(8)%></td>
                     <td><%=formatter.format(rset.getInt(5))%></td>
                     <td>
                         <form action="CapturaPedidos" method="post">
@@ -373,6 +369,9 @@
 
             </table>
             <div class="row">
+                <%
+                    if (banConfirma == 1) {
+                %>
                 <form name="FormCaptura" action="CapturaPedidos" method="post">
                     <div class="col-sm-6">
                         <button class="btn btn-success btn-block" name="accion" value="confirmar" onclick="return confirm('¿Seguro que desea CONFIRMAR el pedido?')">Confirmar Orden de Compra</button>
@@ -381,15 +380,18 @@
                         <button class="btn btn-danger btn-block" name="accion" value="cancelar" onclick="return confirm('¿Seguro que desea CANCELAR el pedido?')">Limpiar Pantalla</button>
                     </div>
                 </form>
+                <%
+                    }
+                %>
             </div>
         </div>
-    </body>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    <script>
+        <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+
+
+        <script type="text/javascript">
 
                             function justNumbers(e)
                             {
@@ -409,34 +411,16 @@
                                 }
                             }
 
-                            $(function() {
-                                $("#Fecha").datepicker();
-                                $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                            });
+                            /*$(function() {
+                             $("#Fecha1").datepicker();
+                             $("#Fecha1").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                             });*/
                             $(function() {
                                 $("#CadPro").datepicker();
                                 $("#CadPro").datepicker('option', {dateFormat: 'dd/mm/yy'});
                             });
 
 
-                            $(function() {
-                                var availableTags = [
-        <%
-            try {
-                con.conectar();
-                ResultSet rset = con.consulta("SELECT F_DesPro  FROM tb_medica");
-                while (rset.next()) {
-                    out.println("\'" + rset.getString("F_DesPro") + "\',");
-                }
-                con.cierraConexion();
-            } catch (Exception e) {
-            }
-        %>
-                                ];
-                                $("#Descripcion").autocomplete({
-                                    source: availableTags
-                                });
-                            });
 
                             function validaClaDes(boton) {
                                 var btn = boton.value;
@@ -469,6 +453,10 @@
                                 var ClaPro = document.getElementById('ClaPro').value;
                                 var DesPro = document.getElementById('DesPro').value;
                                 var CanPro = document.getElementById('CanPro').value;
+                                if (ClaPro === "" || DesPro === "" || CanPro === "") {
+                                    alert("Complete los datos");
+                                    return false;
+                                }
                                 var CanRes = document.getElementById('CantRest').value;
                                 CanRes = CanRes.replace(",", "");
                                 CanRes = CanRes.replace(",", "");
@@ -479,38 +467,40 @@
                                     alert("La Cantidad Solicitada no puede ser mayor a la Cantidad Restante");
                                     return false;
                                 }
-                                if (ClaPro === "" || DesPro === "" || CanPro === "") {
-                                    alert("Complete los datos");
-                                    return false;
-                                }
+
                                 return true;
                             }
 
 
                             function SelectProve(form) {
-        <%
-            try {
-                con.conectar();
-                ResultSet rset3 = con.consulta("select DISTINCT F_ClaProve from tb_prodprov order by F_ClaProve");
-                while (rset3.next()) {
-                    out.println("if (form.Proveedor.value == '" + rset3.getString(1) + "') {");
-                    out.println("var select = document.getElementById('Clave');");
-                    out.println("select.options.length = 0;");
-                    int i = 1;
-                    ResultSet rset4 = con.consulta("select F_ClaPro from tb_prodprov where F_ClaProve = '" + rset3.getString(1) + "'");
-                    while (rset4.next()) {
-                        out.println("select.options[select.options.length] = new Option('" + rset4.getString(1) + "', '" + rset4.getString(1) + "');"
-                        );
-                        i++;
+            <%
+                try {
+                    con.conectar();
+                    ResultSet rset3 = con.consulta("select DISTINCT F_ClaProve from tb_prodprov order by F_ClaProve limit 0,50");
+                    while (rset3.next()) {
+                        out.println("if (form.Proveedor.value == '" + rset3.getString(1) + "') {");
+                        out.println("var select = document.getElementById('Clave');");
+                        out.println("select.options.length = 0;");
+                        int i = 1;
+                        ResultSet rset4 = con.consulta("select F_ClaPro from tb_prodprov where F_ClaProve = '" + rset3.getString(1) + "'");
+
+                        out.println("select.options[select.options.length] = new Option('-Seleccione-', '');");
+                        while (rset4.next()) {
+                            out.println("select.options[select.options.length] = new Option('" + rset4.getString(1) + "', '" + rset4.getString(1) + "');");
+                            i++;
+                        }
+                        out.println("}");
                     }
-                    out.println("}");
+                    con.cierraConexion();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
-                con.cierraConexion();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        %>
+            %>
                             }
 
-    </script>
+
+        </script>
+       
+    </body>
+
 </html>

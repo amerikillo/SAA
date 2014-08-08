@@ -238,7 +238,7 @@ if(Consulta.next()){
 }
 out.println(json);
 }else if (ban == 10){
-QueryDatos = "select F_ClaUbi,F_DesUbi from tb_ubicaciones order by F_Cb+0";
+QueryDatos = "select F_ClaUbi,F_DesUbi from tb_ubica order by F_Cb+0";
 Consulta = Obj.consulta(QueryDatos);
 while(Consulta.next()){
     json.put("claubi",Consulta.getString("F_ClaUbi"));
@@ -248,11 +248,11 @@ while(Consulta.next()){
 }
 out.println(jsona);    
 }else if (ban == 11){
-QueryDatos = "select lt.F_ClaPro,med.F_DesPro from tb_lotes lt INNER JOIN tb_medica med on lt.F_ClaPro=med.F_Clapro where lt.F_ClaPro='"+Clave+"' GROUP BY lt.F_ClaPro";
+QueryDatos = "SELECT F_ClaPro,F_DesPro from tb_medica where F_ClaPro = '"+Clave+"' GROUP BY F_ClaPro";
 Consulta = Obj.consulta(QueryDatos);
 if(Consulta.next()){
-    json.put("clave",Consulta.getString("lt.F_ClaPro"));
-    json.put("descripcion",Consulta.getString("med.F_DesPro"));
+    json.put("clave",Consulta.getString("F_ClaPro"));
+    json.put("descripcion",Consulta.getString("F_DesPro"));
     
 }
 out.println(json);    
@@ -276,19 +276,19 @@ while(Consulta.next()){
 }
 out.println(jsona);    
 }else if(ban == 14){
-    QueryDatos = "SELECT lt.F_Lote from tb_lotes lt where lt.F_ClaPro='"+Clave+"' group by lt.F_Lote";
+    QueryDatos = "SELECT lt.F_ClaLot from tb_lote lt where lt.F_ClaPro='"+Clave+"' group by lt.F_ClaLot";
     Consulta = Obj.consulta(QueryDatos);
     while(Consulta.next()){
-        json.put("lote",Consulta.getString("lt.F_Lote"));
+        json.put("lote",Consulta.getString("lt.F_ClaLot"));
         jsona.add(json);
         json = new JSONObject();
 }
     out.println(jsona);    
 }else if(ban == 15){
-    QueryDatos = "SELECT lt.F_Cadu from tb_lotes lt where lt.F_ClaPro='"+Clave+"' group by lt.F_Cadu";
+    QueryDatos = "SELECT DATE_FORMAT(lt.F_FecCad,'%d/%m/%Y') as F_FecCad from tb_lote lt where lt.F_ClaPro='"+Clave+"' group by lt.F_FecCad";
     Consulta = Obj.consulta(QueryDatos);
     while(Consulta.next()){
-        json.put("cadu",Consulta.getString("lt.F_Cadu"));
+        json.put("cadu",Consulta.getString("F_FecCad"));
         jsona.add(json);
         json = new JSONObject();
 }
@@ -448,6 +448,147 @@ out.println(jsona);
         
         }
     out.println(json);    
+}else if(ban == 27){
+    QueryDatos = "SELECT L.F_ClaOrg,P.F_NomPro FROM tb_lote L INNER JOIN tb_proveedor P ON L.F_ClaOrg=P.F_ClaProve WHERE L.F_ClaPro='"+Clave+"' GROUP BY L.F_ClaOrg,P.F_NomPro ORDER BY L.F_ClaOrg+0";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("claprov",Consulta.getString("L.F_ClaOrg"));
+        json.put("nompro",Consulta.getString("P.F_NomPro"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 28){
+    QueryDatos = "SELECT F_Cb FROM tb_lote where F_ClaPro='"+Clave+"' GROUP BY F_Cb";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("cb",Consulta.getString("F_Cb"));
+        
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 29){
+    QueryDatos = "SELECT COUNT(DISTINCT(F_FolLot)) AS CONTADOR FROM tb_lote WHERE F_ClaPro='"+Clave+"'";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("contador",Consulta.getString("CONTADOR"));        
+}
+    out.println(json);    
+}else if (ban == 30){
+QueryDatos = "SELECT L.F_ClaPro,M.F_DesPro FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro WHERE L.F_ClaPro='"+Clave+"' and L.F_Cb='"+Cb+"' GROUP BY L.F_ClaPro,M.F_DesPro";
+Consulta = Obj.consulta(QueryDatos);
+if(Consulta.next()){
+    json.put("clave",Consulta.getString("F_ClaPro"));
+    json.put("descripcion",Consulta.getString("F_DesPro"));
+    
+}
+out.println(json);    
+}else if (ban == 31){
+QueryDatos = "SELECT L.F_ClaPro,M.F_DesPro FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro WHERE L.F_Cb='"+Cb+"' GROUP BY L.F_ClaPro,M.F_DesPro";
+Consulta = Obj.consulta(QueryDatos);
+if(Consulta.next()){
+    json.put("clave",Consulta.getString("F_ClaPro"));
+    json.put("descripcion",Consulta.getString("F_DesPro"));
+    
+}
+out.println(json);    
+}else if(ban == 32){
+    QueryDatos = "SELECT lt.F_ClaLot from tb_lote lt where lt.F_ClaPro='"+Clave+"' and Lt.F_Cb='"+Cb+"' group by lt.F_ClaLot";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("lote",Consulta.getString("lt.F_ClaLot"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 33){
+    QueryDatos = "SELECT lt.F_ClaLot from tb_lote lt where Lt.F_Cb='"+Cb+"' group by lt.F_ClaLot";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("lote",Consulta.getString("lt.F_ClaLot"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 34){
+    QueryDatos = "SELECT DATE_FORMAT(lt.F_FecCad,'%d/%m/%Y') as F_FecCad from tb_lote lt where lt.F_ClaPro='"+Clave+"' and Lt.F_Cb='"+Cb+"' group by lt.F_FecCad";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("cadu",Consulta.getString("F_FecCad"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 35){
+    QueryDatos = "SELECT DATE_FORMAT(lt.F_FecCad,'%d/%m/%Y') as F_FecCad from tb_lote lt where Lt.F_Cb='"+Cb+"' group by lt.F_FecCad";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("cadu",Consulta.getString("F_FecCad"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 36){
+    QueryDatos = "SELECT mc.F_DesMar,lt.F_ClaMar from tb_lote lt INNER JOIN tb_marca mc on lt.F_ClaMar=mc.F_ClaMar where lt.F_ClaPro='"+Clave+"' and Lt.F_Cb='"+Cb+"' group by mc.F_ClaMar";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("marca",Consulta.getString("mc.F_DesMar"));
+        json.put("clamarca",Consulta.getString("lt.F_ClaMar"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 37){
+    QueryDatos = "SELECT mc.F_DesMar,lt.F_ClaMar from tb_lote lt INNER JOIN tb_marca mc on lt.F_ClaMar=mc.F_ClaMar where Lt.F_Cb='"+Cb+"' group by mc.F_ClaMar";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("marca",Consulta.getString("mc.F_DesMar"));
+        json.put("clamarca",Consulta.getString("lt.F_ClaMar"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 38){
+    QueryDatos = "SELECT L.F_ClaOrg,P.F_NomPro FROM tb_lote L INNER JOIN tb_proveedor P ON L.F_ClaOrg=P.F_ClaProve WHERE L.F_ClaPro='"+Clave+"' and L.F_Cb='"+Cb+"' GROUP BY L.F_ClaOrg,P.F_NomPro ORDER BY L.F_ClaOrg+0";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("claprov",Consulta.getString("L.F_ClaOrg"));
+        json.put("nompro",Consulta.getString("P.F_NomPro"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 39){
+    QueryDatos = "SELECT L.F_ClaOrg,P.F_NomPro FROM tb_lote L INNER JOIN tb_proveedor P ON L.F_ClaOrg=P.F_ClaProve WHERE L.F_Cb='"+Cb+"' GROUP BY L.F_ClaOrg,P.F_NomPro ORDER BY L.F_ClaOrg+0";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("claprov",Consulta.getString("L.F_ClaOrg"));
+        json.put("nompro",Consulta.getString("P.F_NomPro"));
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 40){
+    QueryDatos = "SELECT F_Cb FROM tb_lote where F_ClaPro='"+Clave+"' and F_Cb='"+Cb+"' GROUP BY F_Cb";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("cb",Consulta.getString("F_Cb"));
+        
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
+}else if(ban == 41){
+    QueryDatos = "SELECT F_Cb FROM tb_lote where F_Cb='"+Cb+"' GROUP BY F_Cb";
+    Consulta = Obj.consulta(QueryDatos);
+    while(Consulta.next()){
+        json.put("cb",Consulta.getString("F_Cb"));
+        
+        jsona.add(json);
+        json = new JSONObject();
+}
+    out.println(jsona);    
 }
 
 Obj.CierreConn();

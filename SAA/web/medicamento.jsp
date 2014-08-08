@@ -50,22 +50,30 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SAA<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Captura Automática</a></li>
-                                    <!--li><a href="captura_handheld.jsp">Captura de Insumos handheld</a></li-->
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="captura.jsp">Entrada Manual</a></li>
+                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
+                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
+                                    <li><a href="kardexClave.jsp">Kardex Claves</a></li>
+                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li class="divider"></li>
+                                    <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
                                     <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
                                     <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
                                     <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
-
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -111,32 +119,35 @@
                                 <div class="col-xs-3">
                                     <input type="text" class="form-control" id="Clave" name="Clave" maxlength="60" placeholder="Clave" onKeyPress="return tabular(event, this)"  />
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <!--div class="form-group"-->
                                 <label for="Descripcion" class="col-xs-1 control-label">Descripción</label>
                                 <div class="col-xs-3">
                                     <input type="text" class="form-control" id="Descripcion" maxlength="40" name="Descripcion" placeholder="Descripcion" onKeyPress="return tabular(event, this)"  />
                                 </div>
-                                <label for="list_medica" class="col-xs-1 control-label">Insumo</label>
-                                <div class="col-xs-2">
-                                    <select class="form-control" name="list_medica" onKeyPress="return tabular(event, this)" id="list_medica" onchange="">
-                                        <option value="">Tip. Insumo</option>
-                                        <option value="2504">Medicamento</option>
-                                        <option value="2505">Mat. Curación</option>
-                                    </select>
-                                </div>
-                                <label for="Costo" class="col-xs-2 control-label">Costo</label>
-                                <div class="col-xs-2">
-                                    <input type="text" class="form-control" id="Costo" name="Costo" placeholder="Costo" maxlength="10"  />
-                                </div>
-                            <!--/div-->
-                           
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!--div class="form-group"-->
+
+                            <label for="list_medica" class="col-xs-1 control-label">Insumo</label>
+                            <div class="col-xs-2">
+                                <select class="form-control" name="list_medica" onKeyPress="return tabular(event, this)" id="list_medica" onchange="">
+                                    <option value="">Tip. Insumo</option>
+                                    <option value="2504">Medicamento</option>
+                                    <option value="2505">Mat. Curación</option>
+                                </select>
+                            </div>
+                            <label for="Costo" class="col-xs-2 control-label">Costo</label>
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" id="Costo" name="Costo" placeholder="Costo" maxlength="10"  />
+                            </div>
+                            <label for="Costo" class="col-xs-2 control-label">Presentación</label>
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" id="PresPro" name="PresPro" placeholder="Presentación" maxlength="10"  />
+                            </div>
                         </div>
                         <br/>
                         <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();"> Guardar</button> 
-                              
+
                     </form>
                     <div>
                         <h6>Los campos marcados con * son obligatorios</h6>
@@ -156,14 +167,14 @@
                             <%
                                 try {
                                     con.conectar();
-                                    int tipo=0;
-                                    String DesTipo="";
+                                    int tipo = 0;
+                                    String DesTipo = "";
                                     ResultSet rset = con.consulta("SELECT * FROM tb_medica ORDER BY F_DesPro ASC");
                                     while (rset.next()) {
                                         tipo = Integer.parseInt(rset.getString(4));
-                                        if (tipo == 2504){
+                                        if (tipo == 2504) {
                                             DesTipo = "MEDICAMENTO";
-                                        }else{
+                                        } else {
                                             DesTipo = "MAT. CURACIÓN";
                                         }
                             %>
@@ -172,7 +183,7 @@
                                 <td><small><%=rset.getString(2)%></small></td>
                                 <td><small><%=DesTipo%></small></td>
                                 <td><small><%=rset.getString(5)%></small></td>                            
-                                
+
                             </tr>
                             <%
                                     }
@@ -206,9 +217,9 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                                        $(document).ready(function() {
-                                                            $('#datosProv').dataTable();
-                                                        });
+                            $(document).ready(function() {
+                                $('#datosProv').dataTable();
+                            });
 </script>
 <script>
 
@@ -242,20 +253,28 @@
 
     function valida_alta() {
         var missinginfo = "";
-        if ($("#Clave").val()==""){missinginfo += "\n El campo Clave no debe de estar vacío";}
-        if ($("#Descripcion").val()==""){missinginfo += "\n El campo Descripcion no debe de estar vacío";}
-        if ($("#list_medica").val()==""){missinginfo += "\n Favor de seleccionar un tipo de Medicamento";}        
-        if ($("#Costo").val()==""){missinginfo += "\n El campo Costo no debe de estar vacío";}
-        if (missinginfo != ""){
+        if ($("#Clave").val() == "") {
+            missinginfo += "\n El campo Clave no debe de estar vacío";
+        }
+        if ($("#Descripcion").val() == "") {
+            missinginfo += "\n El campo Descripcion no debe de estar vacío";
+        }
+        if ($("#list_medica").val() == "") {
+            missinginfo += "\n Favor de seleccionar un tipo de Medicamento";
+        }
+        if ($("#Costo").val() == "") {
+            missinginfo += "\n El campo Costo no debe de estar vacío";
+        }
+        if (missinginfo != "") {
             missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
             alert(missinginfo);
-            
+
             return false;
-        }else{
-            
+        } else {
+
             return true;
         }
-        
+
     }
 </script>
 <script language="javascript">

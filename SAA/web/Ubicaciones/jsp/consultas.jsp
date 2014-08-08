@@ -302,7 +302,7 @@
         }
         out.println(jsona);
     } else if (ban == 17) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  L.F_Ubica='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0 ";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  U.F_Cb='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0 ";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             Resultado = Double.parseDouble(Consulta.getString("cant"));
@@ -336,7 +336,7 @@
         }
         out.println(jsona);
     } else if (ban == 19) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  L.F_Ubica='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  U.F_Cb='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -352,7 +352,7 @@
         }
         out.println(jsona);
     } else if (ban == 20) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  L.F_Ubica='" + cb + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  U.F_Cb='" + cb + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -400,7 +400,7 @@
         }
         out.println(jsona);
     } else if (ban == 23) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where L.F_Ubica='" + cb + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where U.F_Cb='" + cb + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -546,6 +546,22 @@
             json.put("lote", Consulta.getString("lote"));
             json.put("caducidad", Consulta.getString("caducidad"));
             json.put("cantidad", Cantidad);
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 32) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant, U.F_ClaUbi AS Claubi,U.F_DesUbi AS ubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi WHERE L.F_Cb='"+cb+"' and L.F_ExiLot>'0'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
             jsona.add(json);
             json = new JSONObject();
         }

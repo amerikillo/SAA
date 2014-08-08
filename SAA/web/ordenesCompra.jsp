@@ -1,18 +1,19 @@
 <%-- 
-    Document   : capturaISEM.jsp
-    Created on : 14-jul-2014, 14:48:02
+    Document   : index
+    Created on : 17/02/2014, 03:34:46 PM
     Author     : Americo
 --%>
 
-<%@page import="java.text.*"%>
-<%@page import="conn.ConectionDB"%>
-<%@page import="ISEM.CapturaPedidos"%>
-<%@page import="javax.servlet.http.HttpSession"%>
+<%@page import="java.text.DecimalFormatSymbols"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="conn.*" %>
+<!DOCTYPE html>
 <%java.text.DateFormat df1 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -47,92 +48,155 @@
 
     String claPro = "", desPro = "";
 %>
-<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ISEM</title>
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
         <link href="css/navbar-fixed-top.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
+        <title>SIALSS</title>
     </head>
-    <body onload="focusLocus();">
+    <body>
         <div class="container">
-            <div class="row">
-                <h3>ISEM - Ver Órdenes de Compra</h3>
-                <a class="btn btn-default" href="capturaISEM.jsp">Captura de Órdenes de Compra</a>
-                <a class="btn btn-default" href="verFoliosIsem.jsp">Ver Órdenes de Compra</a>
+            <h1>SIALSS</h1>
+            <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
+            <div class="navbar navbar-default">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="main_menu.jsp">Inicio</a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="captura.jsp">Entrada Manual</a></li>
+                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
+                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
+                                    <li><a href="kardexClave.jsp">Kardex Claves</a></li>
+                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
+                                    <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
+                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
+                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
+                                </ul>
+                            </li>
+                            <!--li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
+                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
+                                </ul>
+                            </li-->
+                            <%
+                                if (usua.equals("root")) {
+                            %>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
+                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
+                                </ul>
+                            </li>
+                            <%                                }
+                            %>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
+                            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
             </div>
-            <br/>
-            <div class="row">
-                <form method="post" action="verFoliosIsem.jsp">
-                    <div class="row">
-                        <label class="col-sm-1">
-                            <h4>Proveedor</h4>
-                        </label>
-                        <div class="col-sm-6">
-                            <select class="form-control" name="Proveedor" id="Proveedor" onchange="SelectProve(this.form);
-                                    document.getElementById('Fecha').focus()">
-                                <option value="">--Proveedor--</option>
-                                <%
-                                    try {
-                                        con.conectar();
-                                        ResultSet rset = con.consulta("select F_ClaProve, F_NomPro from tb_proveedor p, tb_pedidoisem o where p.F_ClaProve = o.F_Provee group by o.F_Provee order by F_NomPro");
-                                        while (rset.next()) {
-                                %>
-                                <option value="<%=rset.getString(1)%>" ><%=rset.getString(2)%></option>
-                                <%
-                                        }
-                                        con.cierraConexion();
-                                    } catch (Exception e) {
+
+            <form method="post" action="ordenesCompra.jsp">
+                <div class="row">
+                    <label class="col-sm-1">
+                        <h4>Proveedor</h4>
+                    </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="Proveedor" id="Proveedor" onchange="SelectProve(this.form);
+                                document.getElementById('Fecha').focus()">
+                            <option value="">--Proveedor--</option>
+                            <%
+                                try {
+                                    con.conectar();
+                                    ResultSet rset = con.consulta("select F_ClaProve, F_NomPro from tb_proveedor p, tb_pedidoisem o where p.F_ClaProve = o.F_Provee group by o.F_Provee order by F_NomPro");
+                                    while (rset.next()) {
+                            %>
+                            <option value="<%=rset.getString(1)%>" ><%=rset.getString(2)%></option>
+                            <%
                                     }
-                                %>
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+                                }
+                            %>
 
-                            </select>
-                        </div>
-
-                        <label class="col-sm-3">
-                            <h4>Fecha de Entrega a GNKL:</h4>
-                        </label>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" data-date-format="dd/mm/yyyy" id="Fecha" name="Fecha" value="<%=Fecha%>" onchange="document.getElementById('Hora').focus()" />
-                        </div>
+                        </select>
                     </div>
-                    <br/>
-                    <div class="row">
-                        <label class="col-sm-1">
-                            <h4>Usuario:</h4>
-                        </label>
-                        <div class="col-sm-6">
-                            <select class="form-control" name="Usuario" id="Usuario" onchange="">
-                                <option value="">--Usuarios--</option>
-                                <%
-                                    try {
-                                        con.conectar();
-                                        ResultSet rset = con.consulta("select u.F_IdUsu, u.F_Usuario from tb_usuariosisem u, tb_pedidoisem p where F_Usuario !='root' and u.F_IdUsu = p.F_IdUsu group by F_IdUsu");
-                                        while (rset.next()) {
-                                %>
-                                <option value="<%=rset.getString(1)%>" ><%=rset.getString(2)%></option>
-                                <%
-                                        }
-                                        con.cierraConexion();
-                                    } catch (Exception e) {
+
+                    <label class="col-sm-3">
+                        <h4>Fecha de Entrega a GNKL:</h4>
+                    </label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" data-date-format="dd/mm/yyyy" id="Fecha" name="Fecha" value="" onchange="document.getElementById('Hora').focus()" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <label class="col-sm-1">
+                        <h4>Usuario:</h4>
+                    </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="Usuario" id="Usuario" onchange="">
+                            <option value="">--Usuarios--</option>
+                            <%
+                                try {
+                                    con.conectar();
+                                    ResultSet rset = con.consulta("select u.F_IdUsu, u.F_Usuario from tb_usuariosisem u, tb_pedidoisem p where F_Usuario !='root' and u.F_IdUsu = p.F_IdUsu group by F_IdUsu");
+                                    while (rset.next()) {
+                            %>
+                            <option value="<%=rset.getString(1)%>" ><%=rset.getString(2)%></option>
+                            <%
                                     }
-                                %>
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+                                }
+                            %>
 
-                            </select>
-                        </div>
+                        </select>
                     </div>
-                    <br/>
-                    <div class="row">
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-12">
                         <button class="btn btn-primary btn-block" name="accion" value="fecha">Buscar</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
         <br/>
         <div class="row" style="width: 90%; margin: auto;">
@@ -199,8 +263,15 @@
                                 ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, F_Usuario, F_StsPed from tb_pedidoisem o, tb_proveedor p, tb_usuariosisem u where u.F_IdUsu = o.F_IdUsu and  o.F_Provee = p.F_ClaProve and F_NoCompra = '" + NoCompra + "'  group by o.F_NoCompra");
                                 while (rset.next()) {
                         %>
-                        <div class="panel-heading">
-                            Orden: <%=NoCompra%>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <h4>
+                                    Orden: <%=NoCompra%>
+                                </h4>
+                            </div>
+                            <div class="col-sm-1 col-sm-offset-9">
+                                <a class="btn btn-default" target="_blank" href="imprimeOrdenCompra.jsp?ordenCompra=<%=NoCompra%>"><span class="glyphicon glyphicon-print"></span></a>
+                            </div>
                         </div>
                         <div class="panel-body">
                             <form name="FormBusca" action="CapturaPedidos" method="post">
@@ -240,16 +311,7 @@
                                     </div>
                                 </div>
                                 <%
-                                    if (!rset.getString("F_StsPed").equals("2")) {
-                                %>
-                                <br/>
-                                <textarea class="form-control" name="Observaciones" id="Observaciones" placeholder="Observaciones para cancelar"></textarea>
-                                <br>
-                                <div class="row">
-                                    <button class="btn btn-danger btn-block" name="accion" value="cancelaOrden" onclick="return CancelaCompra();">CANCELAR ORDEN DE COMPRA</button>
-                                </div>
-                                <%
-                                    }
+
                                     if (rset.getString("F_StsPed").equals("2")) {
                                         ResultSet rset2 = con.consulta("select F_Observaciones from tb_obscancela where F_NoCompra = '" + NoCompra + "' ");
                                         while (rset2.next()) {
@@ -309,110 +371,32 @@
                 </div>
             </div>
         </div>
+        <br><br><br>
+        <div class="navbar navbar-fixed-bottom navbar-inverse">
+            <div class="text-center text-muted">
+                GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
+                Todos los Derechos Reservados
+            </div>
+        </div>
     </body>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- 
+    ================================================== -->
+    <!-- Se coloca al final del documento para que cargue mas rapido -->
+    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
     <script src="js/jquery-1.9.1.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
-                                        $(document).ready(function() {
-                                            $('#datosCompras').dataTable();
-                                        });
+                            $(document).ready(function() {
+                                $('#datosCompras').dataTable();
+                            });
 
-                                        function CancelaCompra() {
-                                            var confirma = confirm("¿Seguro que desea cancelar la orden? ");
-                                            if (confirma === true) {
-                                                var obser = document.getElementById('Observaciones').value;
-                                                if (obser === "") {
-                                                    alert('Favor de llenar el campo de observaciones');
-                                                    document.getElementById('Observaciones').focus();
-                                                    return false;
-                                                } else {
-                                                    return true;
-                                                }
-                                            } else {
-                                                return false;
-                                            }
-                                        }
-                                        function focusLocus() {
-                                            document.getElementById('Proveedor').focus();
-                                            if (document.getElementById('Fecha').value !== "") {
-                                                document.getElementById('Clave').focus();
-                                            }
-                                            if (document.getElementById('ClaPro').value !== "") {
-                                                document.getElementById('Prioridad').focus();
-                                            }
-                                        }
-
-                                        $(function() {
-                                            $("#Fecha").datepicker();
-                                            $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                                        });
-                                        $(function() {
-                                            $("#CadPro").datepicker();
-                                            $("#CadPro").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                                        });
-
-
-                                        $(function() {
-                                            var availableTags = [
-        <%            try {
-                con.conectar();
-                ResultSet rset = con.consulta("SELECT F_DesPro  FROM tb_medica");
-                while (rset.next()) {
-                    out.println("\'" + rset.getString("F_DesPro") + "\',");
-                }
-                con.cierraConexion();
-            } catch (Exception e) {
-            }
-        %>
-                                            ];
-                                            $("#Descripcion").autocomplete({
-                                                source: availableTags
-                                            });
-                                        });
-
-                                        function validaClaDes(boton) {
-                                            var btn = boton.value;
-                                            var prove = document.getElementById('Proveedor').value;
-                                            var fecha = document.getElementById('Fecha').value;
-                                            var hora = document.getElementById('Hora').value;
-                                            var NoCompra = document.getElementById('NoCompra').value;
-                                            if (prove === "" || fecha === "" || hora === "0:00" || NoCompra === "") {
-                                                alert("Complete los datos");
-                                                return false;
-                                            }
-                                            var valor = "";
-                                            var mensaje = "";
-                                            if (btn === "Clave") {
-                                                valor = document.getElementById('Clave').value;
-                                                mensaje = "Introduzca la clave";
-                                            }
-                                            if (btn === "Descripcion") {
-                                                valor = document.getElementById('Descripcion').value;
-                                                mensaje = "Introduzca la descripcion";
-                                            }
-                                            if (valor === "") {
-                                                alert(mensaje);
-                                                return false;
-                                            }
-                                            return true;
-                                        }
-
-                                        function validaCaptura() {
-                                            var ClaPro = document.getElementById('ClaPro').value;
-                                            var DesPro = document.getElementById('DesPro').value;
-                                            var CanPro = document.getElementById('CanPro').value;
-                                            if (ClaPro === "" || DesPro === "" || CanPro === "") {
-                                                alert("Complete los datos");
-                                                return false;
-                                            }
-                                            return true;
-                                        }
-
-
+                            $(function() {
+                                $("#Fecha").datepicker();
+                                $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                            });
     </script>
 </html>
+

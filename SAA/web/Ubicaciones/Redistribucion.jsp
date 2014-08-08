@@ -56,26 +56,32 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SIE <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-
-                                    <li><a href="../captura.jsp">Captura de Insumos</a></li>
-                                    <li><a href="../compraAuto2.jsp">Captura Automática</a></li>
-                                    <!--li><a href="captura_handheld.jsp">Captura de Insumos handheld</a></li-->
-                                    <li><a href="../factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="../captura.jsp">Entrada Manual</a></li>
+                                    <li><a href="../compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                    <li><a href="../reimpresion.jsp">Reimpresión de Compras</a></li>
+                                    <li><a href="../ordenesCompra.jsp">Órdenes de Compras</a></li>
+                                    <li><a href="../kardexClave.jsp">Kardex Claves</a></li>
+                                    <li><a href="Consultas.jsp">Ubicaciones</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
                                     <li><a href="../requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li class="divider"></li>
+                                    <li><a href="../factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="../reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
                                     <li><a href="../medicamento.jsp">Catálogo de Insumo para la Salud</a></li>
                                     <li><a href="../catalogo.jsp">Catálogo de Proveedores</a></li>
                                     <li><a href="../marcas.jsp">Catálogo de Marcas</a></li>
-                                    <li><a href="../reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="../reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="Consultas.jsp">Ubicaciones</a></li>
-
                                 </ul>
                             </li>
-
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>

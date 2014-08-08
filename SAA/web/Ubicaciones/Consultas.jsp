@@ -11,14 +11,14 @@
     String usua = "";
     String Usuario = "", Valida = "", Nombre = "";
     int Tipo = 0;
-
+    
     if (sesion.getAttribute("nombre") != null) {
-        Usuario = (String) sesion.getAttribute("Usuario");
+        usua = (String) sesion.getAttribute("Usuario");
         Nombre = (String) sesion.getAttribute("nombre");
         Tipo = Integer.parseInt((String) sesion.getAttribute("Tipo"));
         System.out.println(Usuario + Nombre + Tipo);
     } else {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("SAA/index.jsp");
     }
 
 %>
@@ -60,26 +60,32 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SIE <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-
-                                    <li><a href="../captura.jsp">Captura de Insumos</a></li>
-                                    <li><a href="../compraAuto2.jsp">Captura Automática</a></li>
-                                    <!--li><a href="captura_handheld.jsp">Captura de Insumos handheld</a></li-->
-                                    <li><a href="../factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="../captura.jsp">Entrada Manual</a></li>
+                                    <li><a href="../compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                    <li><a href="../reimpresion.jsp">Reimpresión de Compras</a></li>
+                                    <li><a href="../ordenesCompra.jsp">Órdenes de Compras</a></li>
+                                    <li><a href="../kardexClave.jsp">Kardex Claves</a></li>
+                                    <li><a href="Consultas.jsp">Ubicaciones</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
                                     <li><a href="../requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li class="divider"></li>
+                                    <li><a href="../factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="../reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
                                     <li><a href="../medicamento.jsp">Catálogo de Insumo para la Salud</a></li>
                                     <li><a href="../catalogo.jsp">Catálogo de Proveedores</a></li>
                                     <li><a href="../marcas.jsp">Catálogo de Marcas</a></li>
-                                    <li><a href="../reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="../reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="Consultas.jsp">Ubicaciones</a></li>
-
                                 </ul>
                             </li>
-
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -104,16 +110,23 @@
                             <input type="text" id="txtf_lote" class="form-control" placeholder="Ingrese Lote" size="10">
                         </div>
                         <div class="col-lg-1">
-                            Por CB
+                            CB Ubicaciones
                         </div>
                         <div class="col-lg-2">
-                            <input type="text"  class="form-control" id="txtf_cb" placeholder="Ingrese Concepto" size="10">
+                            <input type="text"  class="form-control" id="txtf_cb" placeholder="Ingrese CB " size="10">
                         </div> 
+                        <div class="col-lg-1">
+                            CB Medicamento
+                        </div>
+                        <div class="col-lg-2">
+                            <input type="text"  class="form-control" id="txtf_cbm" placeholder="Ingrese CB " size="10">
+                        </div> 
+
                     </div>
                     <br/>
                     <div class="text-center">
-                        <%if (Tipo == 3) {%>
-                        <button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
+                        <%if (Tipo == 3 || Tipo == 5) {%>
+                        <button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%} else {%>
                         <button class="btn btn-sm btn-primary" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi2">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar2">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%}%>
@@ -151,6 +164,7 @@
                 var clave = $("#txtf_clave").val();
                 var lote = $("#txtf_lote").val();
                 var cb = $("#txtf_cb").val();
+                var cbm = $("#txtf_cbm").val();
                 if ((clave != "") && (lote != "") && (cb != "")) {
                     var dir = 'jsp/consultas.jsp?ban=17&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
                 } else if ((clave != "") && (lote != "")) {
@@ -165,6 +179,8 @@
                     var dir = 'jsp/consultas.jsp?ban=22&lote=' + lote + ''
                 } else if ((cb != "")) {
                     var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
+                }else if ((cbm != "")) {
+                    var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
                 }
                 $.ajax({
                     url: dir,
@@ -700,6 +716,9 @@
 
             ////FIN BOTONES USUARIOS CONSULTAS/////
 
+        });
+        $("#btn-clave").click(function(){
+          self.location='Agregar.jsp';
         });
     </script>
 </html>

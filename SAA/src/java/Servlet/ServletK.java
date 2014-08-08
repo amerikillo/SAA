@@ -5,8 +5,7 @@
  */
 package Servlet;
 
-import conn.ConectionDB;
-import conn.conection;
+import conn.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -25,8 +24,9 @@ import javax.servlet.http.HttpSession;
  */
 public class ServletK extends HttpServlet {
 
-    ConectionDB Obj = new ConectionDB();
+    
     conection ObjMySQL = new conection();
+    ConectionDB_SQLServer ObjSql = new ConectionDB_SQLServer();
     String Query;
     ResultSet Consultas = null;
 
@@ -73,14 +73,18 @@ public class ServletK extends HttpServlet {
         try {
             processRequest(request, response);
             PrintWriter out = response.getWriter();
-            String Folio = "", Ubicacion = "", QueryDatos = "", Id = "", Fabricacion = "", CB = "", PiezasL = "";
+            HttpSession sesion = request.getSession(true);
+            String Folio = "", Ubicacion = "", QueryDatos = "", QueryDatosSQL = "", Id = "", Fabricacion = "", CB = "", PiezasL = "",an1="", mes="", dia="";
             int ban, posi = 0, CajasM = 0, RestoM = 0, Piezas = 0, Existencia = 0, Cantidad = 0, CantidadM = 0, Resultado = 0, Diferencia = 0, ban2 = 0, CajasN = 0, x = 0;
-            int posiid = 0, Org = 0, Marca = 0, TipoM = 0;
+            int posiid = 0, Org = 0, Marca = 0, TipoM = 0, FolioL = 0, FolioLote = 0, Cont = 0, ann1 = 0, difeann1=0, FolMov=0, FolMovi=0;
             double Costo = 0.0, Monto = 0.0, Iva = 0.0, IvaT = 0.0, MontoT = 0.0;
+            double ExistenciaSql=0.0, RestoMSql=0.0, ResultadoSql=0.0;
             ResultSet Consulta = null;
+            ResultSet ConsultaSQL = null;
 
             ban = Integer.parseInt(request.getParameter("ban"));
             String Usuario = request.getParameter("usuario");
+            String Usuario2 = request.getParameter("usua");
             String Pass = request.getParameter("password");
             String Cadena = request.getParameter("folio");
             String Folio1 = request.getParameter("folio1");
@@ -92,12 +96,19 @@ public class ServletK extends HttpServlet {
             String Clave = request.getParameter("clave");
             String Lote = request.getParameter("lote");
             String Caducidad = request.getParameter("caducidad");
+            String Caducidad2 = request.getParameter("caducidad");
             String Pzcj = request.getParameter("piezas");
             String Unidad = request.getParameter("nombre");
+            String Provee = request.getParameter("proveedor");
+            String CBM = request.getParameter("cb");
+            String MarcaM = request.getParameter("marca");
             HttpSession Session = request.getSession(true);
-            Obj.conectar();
+            
             ObjMySQL.conectar();
-            // out.println(ban);
+            ObjSql.conectar();
+            
+             out.println(ban);
+             
             switch (ban) {
                 case 1:
                     Query = "SELECT F_Usu,F_Nombre,F_TipUsu FROM tb_usuario WHERE F_Usu='" + Usuario + "' AND F_Pass=PASSWORD('" + Pass + "') AND F_Status='A'";
@@ -163,7 +174,6 @@ public class ServletK extends HttpServlet {
                     if (Resto != "") {
                         RestoM = Integer.parseInt(Resto);
                         CantidadM = RestoM;
-
                     }
 
                     QueryDatos = "select F_ExiLot as EXI from tb_lote where F_FolLot='" + Folio + "' AND F_Ubica='" + Ubinew + "'";
@@ -272,13 +282,118 @@ public class ServletK extends HttpServlet {
                         response.sendRedirect("MarbeteT.jsp");
                     }
                     break;
+                  case 9:
+                    RestoM = Integer.parseInt(Resto);
+                    RestoMSql = Double.parseDouble(Resto);
+                    QueryDatos = "SELECT F_TipMed,F_Costo FROM tb_medica where F_ClaPro='"+Clave+"'";
+                    Consulta = ObjMySQL.consulta(QueryDatos);
+                    if (Consulta.next()) {
+                        Costo = Double.parseDouble(Consulta.getString("F_Costo"));
+                        TipoM = Integer.parseInt(Consulta.getString("F_TipMed"));                        
+                    }
+                    QueryDatos = "SELECT STR_TO_DATE('"+Caducidad+"', '%d/%m/%Y')";
+                    Consulta = ObjMySQL.consulta(QueryDatos);
+                    if (Consulta.next()) { 
+                        Caducidad= Consulta.getString("STR_TO_DATE('"+Caducidad+"', '%d/%m/%Y')");
+                    }
+                    if (TipoM == 2504) {
+                        Iva = 0.0;
+                        an1 = Caducidad.substring(0,4);
+                        mes = Caducidad.substring(5,7);
+                        dia = Caducidad.substring(8,10);
+                        ann1 = Integer.parseInt(an1);
+                        difeann1 = ann1 - 3;
+                        Fabricacion = difeann1 +"-"+ mes +"-"+ dia;
+                        
+                    } else {
+                        Iva = 0.16;
+                        an1 = Caducidad.substring(0,4);
+                        mes = Caducidad.substring(5,7);
+                        dia = Caducidad.substring(8,10);
+                        ann1 = Integer.parseInt(an1);
+                        difeann1 = ann1 - 5;
+                        Fabricacion = difeann1 + mes + dia;
+                    }
+                    IvaT = (RestoM * Costo) * Iva;
+                    Monto = RestoM * Costo;
+                    MontoT = Monto + IvaT;
+                    
+                    //////************************** consulta mysql********//////////////
+                    QueryDatos = "SELECT F_FolLot, F_ExiLot FROM tb_lote WHERE F_ClaPro='"+Clave+"' AND F_ClaLot='"+Lote+"' AND F_FecCad='"+Caducidad+"' AND F_Ubica='"+Ubinew+"' AND F_ClaOrg='"+Provee+"' AND F_Cb='"+CBM+"' AND F_ClaMar='"+MarcaM+"'";
+                    Consulta = ObjMySQL.consulta(QueryDatos);
+                    if (Consulta.next()) {  
+                        Cont ++;
+                        FolioL = Integer.parseInt(Consulta.getString("F_FolLot"));                        
+                        Existencia = Integer.parseInt(Consulta.getString("F_ExiLot"));                        
+                    }
+                    if (Cont > 0 ){
+                        Resultado = Existencia + RestoM;
+                        ObjMySQL.actualizar("UPDATE tb_lote SET F_ExiLot='"+Resultado+"' where F_FolLot='"+FolioL+"' AND F_Ubica='"+Ubinew+"'");
+                        ObjMySQL.actualizar("INSERT INTO tb_movinv values(0,curdate(),'0','2','"+Clave+"','"+RestoM+"','"+Costo+"','"+MontoT+"','1','"+FolioL+"','"+Ubinew+"','"+Provee+"',CURTIME(),'" + sesion.getAttribute("nombre") + "')");
+                        
+                        out.println(Resultado);
+                    }else{                        
+                        QueryDatos = "SELECT F_IndLote FROM tb_indice";
+                        Consulta = ObjMySQL.consulta(QueryDatos);
+                        if (Consulta.next()) {                              
+                            FolioL = Integer.parseInt(Consulta.getString("F_IndLote"));                                                    
+                        }
+                        FolioLote = FolioL + 1;
+                        ObjMySQL.actualizar("update tb_indice set F_IndLote='"+FolioLote+"'");
+                        ObjMySQL.actualizar("INSERT INTO tb_lote VALUES (0,'"+Clave+"','"+Lote+"','"+Caducidad+"','"+RestoM+"','"+FolioL+"','"+Provee+"','"+Ubinew+"','"+Fabricacion+"','"+CBM+"','"+MarcaM+"')");
+                        ObjMySQL.actualizar("INSERT INTO tb_movinv values(0,curdate(),'0','2','"+Clave+"','"+RestoM+"','"+Costo+"','"+MontoT+"','1','"+FolioL+"','"+Ubinew+"','"+Provee+"',CURTIME(),'" + sesion.getAttribute("nombre") + "')");                       
+                        
+                    }
+                    //////**************************fin consulta mysql********//////////////
+                    
+                    //////************************** consulta sql********//////////////
+                    
+                    QueryDatosSQL = "SELECT F_FolLot, F_ExiLot FROM tb_lote WHERE F_ClaPro='"+Clave+"' AND F_ClaLot='"+Lote+"' AND F_FecCad='"+Caducidad2+"' AND F_ClaPrv='"+Provee+"' AND F_ClaMar='"+MarcaM+"'";
+                    ConsultaSQL = ObjSql.consulta(QueryDatosSQL);
+                    if (ConsultaSQL.next()) {  
+                        Cont ++;
+                        FolioL = Integer.parseInt(ConsultaSQL.getString("F_FolLot"));                        
+                        ExistenciaSql = Double.parseDouble(ConsultaSQL.getString("F_ExiLot"));                        
+                    }
+                    QueryDatosSQL = "select F_IM from TB_Indice";
+                    ConsultaSQL = ObjSql.consulta(QueryDatosSQL);
+                    if (ConsultaSQL.next()) {                              
+                        FolMov = Integer.parseInt(ConsultaSQL.getString("F_IM"));                                                    
+                    }
+                    FolMovi = FolMov + 1;
+                    ObjSql.actualizar("UPDATE TB_Indice SET F_IM='"+FolMovi+"'");
+                        
+                    if (Cont > 0 ){                        
+                        ResultadoSql = ExistenciaSql + RestoMSql;
+                        ObjSql.actualizar("UPDATE tb_lote SET F_ExiLot='"+ResultadoSql+"' where F_FolLot='"+FolioL+"'");
+                        ObjSql.actualizar("INSERT INTO tb_movinv values(CONVERT (date, GETDATE()),'0','','11','"+Clave+"','"+RestoMSql+"','"+Costo+"','"+IvaT+"','"+MontoT+"','1','"+FolioL+"','"+FolMov+"','A','0','','','','"+Provee+"','" + sesion.getAttribute("nombre") + "')");
+                        
+                        out.println(Resultado);
+                    }else{                        
+                        QueryDatosSQL = "SELECT F_IL FROM tb_indice";
+                        ConsultaSQL = ObjSql.consulta(QueryDatosSQL);
+                        if (ConsultaSQL.next()) {                              
+                            FolioL = Integer.parseInt(ConsultaSQL.getString("F_IL"));                                                    
+                        }
+                        FolioLote = FolioL + 1;
+                        ObjSql.actualizar("update tb_indice set F_IL='"+FolioLote+"'");
+                        ObjSql.actualizar("INSERT INTO tb_lote VALUES ('"+Lote+"','"+Clave+"','"+Caducidad2+"','"+RestoMSql+"','"+Costo+"','"+FolioL+"','1','','1','"+Fabricacion+"','0','"+Provee+"','','"+MarcaM+"')");
+                        ObjSql.actualizar("INSERT INTO tb_movinv values(CONVERT (date, GETDATE()),'0','','11','"+Clave+"','"+RestoMSql+"','"+Costo+"','"+IvaT+"','"+MontoT+"','1','"+FolioL+"','"+FolMov+"','A','0','','','','"+Provee+"','" + sesion.getAttribute("nombre") + "')");
+                        
+                    }
+                    
+                    //////**************************fin consulta mysql********//////////////
+                    response.sendRedirect("Ubicaciones/Agregar.jsp");
+                    break;
 
             }
-
-            Obj.cierraConexion();
+            
+            
             ObjMySQL.CierreConn();
+            ObjSql.cierraConexion();
             out.close();
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 

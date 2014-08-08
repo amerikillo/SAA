@@ -222,7 +222,7 @@ public class CapturaPedidos extends HttpServlet {
                 }
 
                 try {
-                    con.insertar("insert into tb_pedidoisem values(0,'" + (String) sesion.getAttribute("NoCompra") + "','" + (String) sesion.getAttribute("proveedor") + "','" + ClaPro + "','','" + Priori + "','" + Lote + "','" + df.format(df2.parse(Cadu)) + "','" + Cant + "','" + Observaciones + "',CURRENT_TIMESTAMP(),'" + df.format(df2.parse((String) sesion.getAttribute("fec_entrega"))) + "','" + (String) sesion.getAttribute("hor_entrega") + "','" + (String) sesion.getAttribute("Usuario") + "','0','0')");
+                    con.insertar("insert into tb_pedidoisem values(0,'" + (String) sesion.getAttribute("NoCompra") + "','" + (String) sesion.getAttribute("proveedor") + "','" + ClaPro + "','','" + Priori + "','" + Lote + "','" + df.format(df2.parse(Cadu)) + "','" + Cant + "','" + Observaciones + "',CURRENT_TIMESTAMP(),'" + (String) sesion.getAttribute("fec_entrega") + "','" + (String) sesion.getAttribute("hor_entrega") + "','" + (String) sesion.getAttribute("Usuario") + "','0','0')");
                     sesion.setAttribute("clave", "");
                     sesion.setAttribute("descripcion", "");
                 } catch (Exception e) {

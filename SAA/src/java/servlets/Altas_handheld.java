@@ -23,11 +23,10 @@ import javax.servlet.http.HttpSession;
  */
 public class Altas_handheld extends HttpServlet {
 
-    ConectionDB con = new ConectionDB();  
+    ConectionDB con = new ConectionDB();
     ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
     java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy");
     java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,7 +42,7 @@ public class Altas_handheld extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession sesion = request.getSession(true);
-        String clave = "", descr = "", cb="", Cuenta="", Marca="", codbar2="";
+        String clave = "", descr = "", cb = "", Cuenta = "", Marca = "", codbar2 = "";
         int ban1 = 0;
         String boton = request.getParameter("accion");
         try {
@@ -56,14 +55,14 @@ public class Altas_handheld extends HttpServlet {
                         cb = rset.getString("F_Cb");
                         Cuenta = rset.getString("cuenta");
                     }
-                    if (Cuenta.equals("")){
+                    if (Cuenta.equals("")) {
                         Cuenta = "0";
                         cb = request.getParameter("codigo");
                         ban1 = 2;
                     }
                     con.cierraConexion();
                 } catch (Exception e) {
-                   
+
                 }
             }
             if (request.getParameter("accion").equals("clave")) {
@@ -86,9 +85,11 @@ public class Altas_handheld extends HttpServlet {
                     ResultSet rset = con.consulta("SELECT MAX(F_IdCb) AS F_IdCb FROM tb_gencb");
                     while (rset.next()) {
                         ban1 = 1;
-                        codbar2 = rset.getString("F_IdCb");                        
+                        codbar2 = rset.getString("F_IdCb");
                     }
-                    con.insertar("insert into tb_gencb values(0,'GNKL')");
+                    System.out.println(codbar2);
+                    Long CB = Long.parseLong(codbar2) + 1;
+                    con.insertar("insert into tb_gencb values('" + CB + "','GNKL')");
                     descr = request.getParameter("descripci");
                     clave = request.getParameter("clave1");
                     Marca = request.getParameter("Marca");
@@ -115,7 +116,7 @@ public class Altas_handheld extends HttpServlet {
                 try {
                     ban1 = 1;
                     descr = request.getParameter("descripci");
-                    clave = request.getParameter("clave1");         
+                    clave = request.getParameter("clave1");
                 } catch (Exception e) {
 
                 }
@@ -123,20 +124,20 @@ public class Altas_handheld extends HttpServlet {
             if (request.getParameter("accion").equals("capturar")) {
                 ban1 = 1;
                 String cla_pro = request.getParameter("clave1");
-                String Tipo="",FechaC="",FechaF="";
-                double Costo = 0.0, IVA=0.0,Monto=0.0, IVAPro=0.0, MontoIva=0.0;
-                int fcdu=0,anofec=0;
-                String lot_pro =  request.getParameter("Lote");
-                String cdd =  request.getParameter("cdd");
-                String cmm =  request.getParameter("cmm");
-                String caa =  request.getParameter("caa");                
-                String FeCad = caa+"-"+cmm+"-"+cdd;
-                
+                String Tipo = "", FechaC = "", FechaF = "";
+                double Costo = 0.0, IVA = 0.0, Monto = 0.0, IVAPro = 0.0, MontoIva = 0.0;
+                int fcdu = 0, anofec = 0;
+                String lot_pro = request.getParameter("Lote");
+                String cdd = request.getParameter("cdd");
+                String cmm = request.getParameter("cmm");
+                String caa = request.getParameter("caa");
+                String FeCad = caa + "-" + cmm + "-" + cdd;
+
                 try {
                     int cajas = 0;
                     int piezas = 0;
                     int resto = 0;
-                    
+
                     try {
                         cajas = Integer.parseInt(request.getParameter("Cajas"));
                     } catch (Exception e) {
@@ -153,41 +154,42 @@ public class Altas_handheld extends HttpServlet {
                         resto = 0;
                     }
                     int cantidad = (cajas * piezas) + resto;
-                    
+
                     con.conectar();
-                   
-                    ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='"+cla_pro+"'");
-                    while(rset_medica.next()){
+
+                    ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + cla_pro + "'");
+                    while (rset_medica.next()) {
                         Tipo = rset_medica.getString("F_TipMed");
                         Costo = Double.parseDouble(rset_medica.getString("F_Costo"));
-                        if (Tipo.equals("2504")){
+                        if (Tipo.equals("2504")) {
                             IVA = 0.0;
                             fcdu = Integer.parseInt(caa);
                             anofec = fcdu - 3;
-                        }else{
+                        } else {
                             IVA = 0.16;
                             fcdu = Integer.parseInt(caa);
                             anofec = fcdu - 5;
                         }
                     }
-                    String FeFab = anofec+"-"+cmm+"-"+cdd;
+                    String FeFab = anofec + "-" + cmm + "-" + cdd;
                     IVAPro = (cantidad * Costo) * IVA;
                     Monto = cantidad * Costo;
                     MontoIva = Monto + IVAPro;
-                   /* FechaC = request.getParameter("Caducidad");
-                    FechaF = request.getParameter("FecFab");
-                    ResultSet Fechac = con.consulta("SELECT STR_TO_DATE('"+FechaC+"', '%d/%m/%Y')");
-                    while(Fechac.next()){
-                        FechaC= Fechac.getString("STR_TO_DATE('"+FechaC+"', '%d/%m/%Y')");
-                    }
-                    ResultSet Fechaf = con.consulta("SELECT STR_TO_DATE('"+FechaF+"', '%d/%m/%Y')");
-                    while(Fechaf.next()){
-                        FechaF= Fechaf.getString("STR_TO_DATE('"+FechaF+"', '%d/%m/%Y')");
-                    }*/
-                    con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','"+lot_pro+"','"+FeCad+"','"+FeFab+"','"+request.getParameter("Marca")+"','"+request.getParameter("provee")+"','"+request.getParameter("cb")+"', '" + cantidad + "', '"+cajas+"', '"+piezas+"', '"+resto+"', '" + Costo + "', '"+IVAPro+"', '" + MontoIva + "' , '"+request.getParameter("folio_remi")+"', '"+request.getParameter("orden")+"','"+request.getParameter("provee")+"' ,'" + sesion.getAttribute("nombre") + "') ");
-                    con.insertar("insert into tb_cb values(0,'"+request.getParameter("cb")+"','"+cla_pro.toUpperCase()+"','"+lot_pro+"','"+FeCad+"','"+FeFab+"'), '"+request.getParameter("Marca")+"'");
+                    /* FechaC = request.getParameter("Caducidad");
+                     FechaF = request.getParameter("FecFab");
+                     ResultSet Fechac = con.consulta("SELECT STR_TO_DATE('"+FechaC+"', '%d/%m/%Y')");
+                     while(Fechac.next()){
+                     FechaC= Fechac.getString("STR_TO_DATE('"+FechaC+"', '%d/%m/%Y')");
+                     }
+                     ResultSet Fechaf = con.consulta("SELECT STR_TO_DATE('"+FechaF+"', '%d/%m/%Y')");
+                     while(Fechaf.next()){
+                     FechaF= Fechaf.getString("STR_TO_DATE('"+FechaF+"', '%d/%m/%Y')");
+                     }*/
+                    con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + cantidad + "', '" + cajas + "', '" + piezas + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
+                    con.insertar("insert into tb_compraregistro values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + cantidad + "', '" + cajas + "', '" + piezas + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
+                    con.insertar("insert into tb_cb values(0,'" + request.getParameter("cb") + "','" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "'), '" + request.getParameter("Marca") + "'");
                     con.cierraConexion();
-                    
+
                 } catch (Exception e) {
 
                 }
@@ -195,17 +197,17 @@ public class Altas_handheld extends HttpServlet {
             if (request.getParameter("accion").equals("capturarcb")) {
                 ban1 = 1;
                 String cla_pro = request.getParameter("clave1");
-                String Tipo="",FechaC="",FechaF="";
-                double Costo = 0.0, IVA=0.0,Monto=0.0, IVAPro=0.0, MontoIva=0.0;
-                String lot_pro =  request.getParameter("Lote");
-                String FeCad =  request.getParameter("cdd");                
-                String FeFab =  request.getParameter("fdd");
-                
+                String Tipo = "", FechaC = "", FechaF = "";
+                double Costo = 0.0, IVA = 0.0, Monto = 0.0, IVAPro = 0.0, MontoIva = 0.0;
+                String lot_pro = request.getParameter("Lote");
+                String FeCad = request.getParameter("cdd");
+                String FeFab = request.getParameter("fdd");
+
                 try {
                     int cajas = 0;
                     int piezas = 0;
                     int resto = 0;
-                    
+
                     try {
                         cajas = Integer.parseInt(request.getParameter("Cajas"));
                     } catch (Exception e) {
@@ -222,36 +224,37 @@ public class Altas_handheld extends HttpServlet {
                         resto = 0;
                     }
                     int cantidad = (cajas * piezas) + resto;
-                    
+
                     con.conectar();
-                   
-                    ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='"+cla_pro+"'");
-                    while(rset_medica.next()){
+
+                    ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + cla_pro + "'");
+                    while (rset_medica.next()) {
                         Tipo = rset_medica.getString("F_TipMed");
                         Costo = Double.parseDouble(rset_medica.getString("F_Costo"));
-                        if (Tipo.equals("2504")){
+                        if (Tipo.equals("2504")) {
                             IVA = 0.0;
-                        }else{
+                        } else {
                             IVA = 0.16;
                         }
                     }
-                    
+
                     IVAPro = (cantidad * Costo) * IVA;
                     Monto = cantidad * Costo;
                     MontoIva = Monto + IVAPro;
-                   
-                    ResultSet Fechac = con.consulta("SELECT STR_TO_DATE('"+FeCad+"', '%d/%m/%Y')");
-                    while(Fechac.next()){
-                        FeCad= Fechac.getString("STR_TO_DATE('"+FeCad+"', '%d/%m/%Y')");
+
+                    ResultSet Fechac = con.consulta("SELECT STR_TO_DATE('" + FeCad + "', '%d/%m/%Y')");
+                    while (Fechac.next()) {
+                        FeCad = Fechac.getString("STR_TO_DATE('" + FeCad + "', '%d/%m/%Y')");
                     }
-                    ResultSet Fechaf = con.consulta("SELECT STR_TO_DATE('"+FeFab+"', '%d/%m/%Y')");
-                    while(Fechaf.next()){
-                        FeFab= Fechaf.getString("STR_TO_DATE('"+FeFab+"', '%d/%m/%Y')");
+                    ResultSet Fechaf = con.consulta("SELECT STR_TO_DATE('" + FeFab + "', '%d/%m/%Y')");
+                    while (Fechaf.next()) {
+                        FeFab = Fechaf.getString("STR_TO_DATE('" + FeFab + "', '%d/%m/%Y')");
                     }
-                    con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','"+lot_pro+"','"+FeCad+"','"+FeFab+"','"+request.getParameter("Marca")+"','"+request.getParameter("provee")+"','"+request.getParameter("cb")+"', '" + cantidad + "', '"+cajas+"', '"+piezas+"', '"+resto+"', '" + Costo + "', '"+IVAPro+"', '" + MontoIva + "' , '"+request.getParameter("folio_remi")+"', '"+request.getParameter("orden")+"','"+request.getParameter("provee")+"' ,'" + sesion.getAttribute("nombre") + "') ");
-                    con.insertar("insert into tb_cb values(0,'"+request.getParameter("cb")+"','"+cla_pro.toUpperCase()+"','"+lot_pro+"','"+FeCad+"','"+FeFab+"', '"+request.getParameter("Marca")+"')");
+                    con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + cantidad + "', '" + cajas + "', '" + piezas + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
+                    con.insertar("insert into tb_compraregistro values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + cantidad + "', '" + cajas + "', '" + piezas + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
+                    con.insertar("insert into tb_cb values(0,'" + request.getParameter("cb") + "','" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "', '" + request.getParameter("Marca") + "')");
                     con.cierraConexion();
-                    
+
                 } catch (Exception e) {
 
                 }
@@ -279,16 +282,14 @@ public class Altas_handheld extends HttpServlet {
         if (ban1 == 0) {
             out.println("<script>alert('Clave Inexistente')</script>");
             out.println("<script>window.location='captura_handheld.jsp'</script>");
-        } else if (ban1 == 1){
+        } else if (ban1 == 1) {
             out.println("<script>window.location='captura_handheld.jsp'</script>");
-        }else{
+        } else {
             out.println("<script>alert('CB Inexistente, Favor de Llenar todos los Campos')</script>");
             out.println("<script>window.location='captura_handheld.jsp'</script>");
         }
         //response.sendRedirect("captura.jsp");
     }
-
-   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -120,7 +120,7 @@ public class Medicamentos extends HttpServlet {
                         }else{
                             TpMed = Integer.parseInt(request.getParameter("list_medica").toUpperCase());
                         
-                             con.insertar("insert into tb_medica values ('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','A','"+TpMed+"','" + request.getParameter("Costo").toUpperCase() + "');");
+                             con.insertar("insert into tb_medica values ('" + request.getParameter("Clave").toUpperCase() + "','" + request.getParameter("Descripcion").toUpperCase() + "','A','"+TpMed+"','" + request.getParameter("Costo").toUpperCase() + "','"+ request.getParameter("PresPro").toUpperCase()+"');");
                         }
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
