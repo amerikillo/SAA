@@ -52,7 +52,7 @@ public class Nuevo extends HttpServlet {
                     consql.conectar();
 
                     try {
-                        con.insertar("delete from tb_compratemp where F_FecApl=CURDATE() AND F_User='" + sesion.getAttribute("nombre") + "' ");
+                        con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"' ");
                     } catch (Exception e) {
 
                     }
@@ -266,7 +266,7 @@ public class Nuevo extends HttpServlet {
                         FolioLoteSQL = "";
                     }
 
-                    con.actualizar("delete from tb_compratemp where F_User='" + sesion.getAttribute("nombre") + "' AND F_FecApl=CURDATE()");
+                    con.actualizar("delete from tb_compratemp where F_OrdCom = '"+F_OrdCom+"'");
                     con.cierraConexion();
                     consql.cierraConexion();
                 } catch (Exception e) {

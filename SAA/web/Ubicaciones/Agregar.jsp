@@ -83,6 +83,12 @@
                                     <li><a href="../marcas.jsp">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="../Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
+                                </ul>
+                            </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -93,7 +99,7 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div><h5>Ingresa Clave:<input type="text" id="txtf_clave" placeholder="Ingrese Clave" size="15" class="text-center">&nbsp;&nbsp;Ingresa CB Med:<input type="text" id="txtf_cb" placeholder="Ingrese CB" size="20" class="text-center">&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button></h5></div>
+                    <div><h5>Ingresa Clave:<input type="text" id="txtf_clave" placeholder="Ingrese Clave" size="15" class="text-center">&nbsp;&nbsp;Ingresa CB Med:<input type="text" id="txtf_cb" placeholder="Ingrese CB" size="20" class="text-center">&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;<button class="btn btn-sm btn-success" id="btn-regresar">REGRESAR&nbsp;<label class="glyphicon glyphicon-hand-left"></label></button></h5></div>
                 </div>
             </div>                
             <div class="container">
@@ -522,6 +528,9 @@
                     return true;
                 }
 
+            });
+            $("#btn-regresar").click(function(){
+                self.location='Consultas.jsp';
             });
         });
     </script>

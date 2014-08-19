@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compras" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6336019d-9f1f-4558-a5b6-5fcef7ba5fdd">
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="1118"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="folcom" class="java.lang.String"/>
 	<queryString>
@@ -22,6 +22,7 @@
 	C.F_ImpTo,
 	C.F_ComTot,
 	M.F_PrePro,
+	C.F_FolRemi,
 	(@csum := @csum + F_ComTot) AS totales,
 	C.F_Obser as ObserGNKL,
 	I.F_Obser as ObserISEM
@@ -161,7 +162,7 @@ ORDER BY
 				<reportElement uuid="38e72cb6-b35e-495a-84cf-1ab2fecaa36c" x="3" y="11" width="749" height="1" forecolor="#666666"/>
 			</line>
 			<staticText>
-				<reportElement uuid="e2f7ec75-4c24-4ec7-b501-f56d903c319b" mode="Opaque" x="70" y="0" width="80" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="e2f7ec75-4c24-4ec7-b501-f56d903c319b" mode="Opaque" x="100" y="0" width="150" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
@@ -217,7 +218,7 @@ ORDER BY
 				<text><![CDATA[IMPORTE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="74b50de5-22ce-458e-a49f-7eabc7498417" mode="Opaque" x="3" y="0" width="50" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="74b50de5-22ce-458e-a49f-7eabc7498417" mode="Opaque" x="61" y="1" width="39" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
@@ -237,6 +238,13 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[IVA]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="d28eaa12-a25e-454c-94cc-d525e4b18793" mode="Opaque" x="3" y="0" width="56" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FOL. REMISIÓN]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -245,7 +253,7 @@ ORDER BY
 				<reportElement uuid="d635f727-2cd1-435a-aadc-b06bc9985991" positionType="FixRelativeToBottom" x="1" y="46" width="752" height="1"/>
 			</line>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="21d4b8be-235b-4865-a1b4-a2dbef6f9912" x="70" y="2" width="180" height="10"/>
+				<reportElement uuid="21d4b8be-235b-4865-a1b4-a2dbef6f9912" x="100" y="1" width="150" height="10"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -287,8 +295,8 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="7a8e774b-76ab-4902-afb5-5a5bbf8ac623" x="0" y="2" width="69" height="10"/>
-				<textElement>
+				<reportElement uuid="7a8e774b-76ab-4902-afb5-5a5bbf8ac623" x="61" y="1" width="39" height="10"/>
+				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
@@ -349,6 +357,13 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[Observaciones ISEM:]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="7ff957cb-c649-469a-8cab-4462fda5a303" x="3" y="1" width="56" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_FolRemi}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

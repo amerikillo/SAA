@@ -52,7 +52,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                     consql.conectar();
 
                     try {
-                        con.insertar("delete from tb_compratemp where F_FecApl=CURDATE() AND F_User='" + sesion.getAttribute("nombre") + "' ");
+                        con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"' ");
                     } catch (Exception e) {
 
                     }
@@ -266,7 +266,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                         FolioLoteSQL = "";
                     }
 
-                    con.actualizar("delete from tb_compratemp where F_User='" + sesion.getAttribute("nombre") + "' AND F_FecApl=CURDATE()");
+                    con.actualizar("delete from tb_compratemp where F_OrdCom = '"+F_OrdCom+"'");
                     con.actualizar("update tb_pedidoisem set F_Recibido = '1' where F_NoCompra = '" + F_OrdCom + "'");
                     con.cierraConexion();
                     consql.cierraConexion();
@@ -484,7 +484,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                         FolioLoteSQL = "";
                     }
 
-                    con.actualizar("delete from tb_compratemp where F_User='" + sesion.getAttribute("nombre") + "' AND F_FecApl=CURDATE()");
+                    con.actualizar("delete from tb_compratemp where F_OrdCom = '"+F_OrdCom+"'");
                     //con.actualizar("update tb_pedidoisem set F_Recibido = '1' where F_NoCompra = '" + F_OrdCom + "'");
                     con.cierraConexion();
                     consql.cierraConexion();

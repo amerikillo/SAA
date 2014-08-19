@@ -82,6 +82,12 @@
                                     <li><a href="../marcas.jsp">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="../Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
+                                </ul>
+                            </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -129,7 +135,16 @@
                             <td><input type="text" name="ubin" id="ubin" placeholder="" readonly="" class="form-control" onKeyPress="return justNumbers(event);" /></td>
                             <td colspan="2"><input type="text" id="actual" value="<%=ubicac1%>" placeholder="" readonly="" class="form-control" onKeyPress="return justNumbers(event);" /></td>
                         </tr>
-                        <tr><td colspan="6"><button id="btn-distribuir" class="btn btn-primary btn-block" name="ban" value="3">Re Distribuir</button></td></tr>
+                        <tr>
+                            <td colspan="6">
+                                <div class="col-lg-6">
+                                <button id="btn-distribuir" class="btn btn-lg btn-primary btn-block" name="ban" value="3">Re Distribuir</button>
+                                </div>
+                                <div class="col-lg-6">
+                                <button class="btn btn-lg btn-success btn-block" id="btn-regresar">REGRESAR&nbsp;<label class="glyphicon glyphicon-hand-left"></label></button>
+                                </div>
+                            </td>
+                        </tr>
 
                     </table>
                 </form>
@@ -263,6 +278,9 @@
                 } else {
                     return true;
                 }
+            });
+            $("#btn-regresar").click(function(){
+                self.location='Consultas.jsp';
             });
         });
     </script>

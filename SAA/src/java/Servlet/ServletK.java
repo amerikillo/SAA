@@ -385,6 +385,17 @@ public class ServletK extends HttpServlet {
                     //////**************************fin consulta mysql********//////////////
                     response.sendRedirect("Ubicaciones/Agregar.jsp");
                     break;
+                case 10:
+                    posi = Cadena.indexOf(':');
+                    posiid = Cadena.lastIndexOf(';');
+                    Folio = Cadena.substring(0, posi);
+                    Ubicacion = Cadena.substring(posi + 1, posiid);
+                    Id = Cadena.substring(posiid + 1);
+                    Session.setAttribute("folio", Folio);
+                    Session.setAttribute("ubicacion", Ubicacion);
+                    Session.setAttribute("id", Id);
+                    response.sendRedirect("Ubicaciones/Redistribucion.jsp");
+                    break;   
 
             }
             

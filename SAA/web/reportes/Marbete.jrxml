@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="folmar" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT F_ClaPro,F_DesPro,F_ClaLot,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as F_FecCad,F_Cb FROM tb_marbetes where F_ClaDoc=$P{folmar}]]>
+		<![CDATA[SELECT F_ClaPro,F_DesPro,F_ClaLot,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as F_FecCad,F_Cb,F_OrdCom,F_Pieza FROM tb_marbetes where F_ClaDoc=$P{folmar}]]>
 	</queryString>
 	<field name="F_ClaPro" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -22,6 +22,12 @@
 	<field name="F_Cb" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="F_OrdCom" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Pieza" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band/>
 	</background>
@@ -30,72 +36,93 @@
 	</title>
 	<columnHeader>
 		<band height="132">
-			<staticText>
-				<reportElement uuid="8017297a-ac18-448f-a355-b2dfd3358853" mode="Opaque" x="302" y="18" width="139" height="46" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="36" isBold="true"/>
-				</textElement>
-				<text><![CDATA[CLAVE]]></text>
-			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="5ea55e41-044f-472e-97ac-fca7391c0758" x="127" y="64" width="515" height="60"/>
+				<reportElement uuid="5ea55e41-044f-472e-97ac-fca7391c0758" x="0" y="65" width="752" height="60"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial Black" size="42"/>
+					<font fontName="Arial Black" size="100"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement uuid="95ad4b3c-9cb9-4917-b03b-b33e480e735d" x="480" y="18" width="272" height="53"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
-					<jr:codeExpression><![CDATA[$F{F_Cb}]]></jr:codeExpression>
-				</jr:barbecue>
-			</componentElement>
+			<staticText>
+				<reportElement uuid="055f32ec-6521-4891-bccf-62e9c1aa24b9" x="0" y="12" width="157" height="33"/>
+				<textElement>
+					<font fontName="Arial" size="25"/>
+				</textElement>
+				<text><![CDATA[N° COMPRA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="31fb7bcd-49dd-4ba0-a352-382f9a4fe959" x="428" y="12" width="141" height="33"/>
+				<textElement>
+					<font fontName="Arial" size="25"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="038b26c2-7639-4ce5-a5f7-b8dc3b2062f7" x="178" y="12" width="214" height="52"/>
+				<textElement>
+					<font fontName="Arial" size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_OrdCom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="05b34e54-71e4-47b5-8862-bd51f6c7eef7" x="580" y="7" width="172" height="52"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Pieza}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="280">
+		<band height="293">
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="79a53dd9-83ae-4dc8-87f2-55da051f66ab" x="0" y="48" width="752" height="77"/>
+				<reportElement uuid="79a53dd9-83ae-4dc8-87f2-55da051f66ab" x="0" y="64" width="752" height="77"/>
 				<textElement>
 					<font fontName="Arial Black" size="36"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_DesPro}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="a3cb6261-449f-435e-9c0e-c8eae8ef5f10" x="0" y="221" width="351" height="59"/>
+				<reportElement uuid="a3cb6261-449f-435e-9c0e-c8eae8ef5f10" x="0" y="190" width="392" height="69"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial Black" size="36"/>
+					<font fontName="Arial Black" size="45"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="18a15e74-4323-4ef4-9fc0-05b21c86aacf" x="407" y="221" width="273" height="59"/>
+				<reportElement uuid="18a15e74-4323-4ef4-9fc0-05b21c86aacf" x="407" y="200" width="273" height="59"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Black" size="36"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_FecCad}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5377696e-b599-4494-bc88-f8f4757b9a81" mode="Opaque" x="86" y="161" width="113" height="48" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="5377696e-b599-4494-bc88-f8f4757b9a81" mode="Opaque" x="86" y="168" width="139" height="29" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="36" isBold="true"/>
+					<font fontName="Arial" size="25" isBold="true"/>
 				</textElement>
 				<text><![CDATA[LOTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a004ef0f-c7dc-438b-b2a5-39d4e95bcb9d" mode="Opaque" x="264" y="0" width="253" height="50" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="a004ef0f-c7dc-438b-b2a5-39d4e95bcb9d" mode="Opaque" x="264" y="14" width="253" height="50" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="36" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DESCRIPCIÓN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="17645458-6049-4a01-adbe-bdd4f6608c0b" mode="Opaque" x="407" y="161" width="235" height="48" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="17645458-6049-4a01-adbe-bdd4f6608c0b" mode="Opaque" x="407" y="170" width="235" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="36" isBold="true"/>
+					<font fontName="Arial" size="25" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CADUCIDAD:]]></text>
 			</staticText>
+			<componentElement>
+				<reportElement uuid="95ad4b3c-9cb9-4917-b03b-b33e480e735d" x="247" y="261" width="311" height="31"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{F_Cb}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
 		</band>
 	</detail>
 	<columnFooter>

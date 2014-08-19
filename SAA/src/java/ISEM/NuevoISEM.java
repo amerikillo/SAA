@@ -209,7 +209,7 @@ public class NuevoISEM {
                 FolioLoteSQL = "";
             }
 
-            con.actualizar("delete from tb_compratemp where F_User='" + nombre + "' AND F_FecApl=CURDATE()");
+            con.actualizar("delete from tb_compratemp where F_OrdCom = '"+F_OrdCom+"'");
             con.cierraConexion();
             consql.cierraConexion();
         } catch (Exception e) {

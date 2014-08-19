@@ -40,7 +40,7 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
+                            <span clss="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
@@ -73,6 +73,12 @@
                                     <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
                                     <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
                                     <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
                                 </ul>
                             </li>
                             <!--li class="dropdown">

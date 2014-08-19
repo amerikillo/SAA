@@ -46,19 +46,36 @@ public class CompraAutomatica extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         PrintWriter out = response.getWriter();
         try {
+            System.out.println(request.getParameter("accion")+"*****");
+            if (request.getParameter("accion").equals("seleccionaClave")) {
+                String folio = request.getParameter("folio");
+                String folioRemi = request.getParameter("folioRemi");
+                String seleccionaClave = request.getParameter("selectClave");
+                sesion.setAttribute("NoCompra", request.getParameter("folio"));
+                sesion.setAttribute("folioRemi", folioRemi);
+                sesion.setAttribute("Lote", "");
+                sesion.setAttribute("Cadu", "");
+                sesion.setAttribute("CodBar", "");
+                sesion.setAttribute("claveSeleccionada", seleccionaClave);
+                response.sendRedirect("compraAuto2.jsp");
+            }
             if (request.getParameter("accion").equals("CodigoBarras")) {
                 try {
+
                     String posCla = sesion.getAttribute("posClave").toString();
                     String folio = request.getParameter("folio");
                     String folioRemi = request.getParameter("folioRemi");
                     String CodBar = request.getParameter("codbar");
                     String lote = request.getParameter("lot").toUpperCase();
                     String cadu = request.getParameter("cad");
+                    String seleccionaClave = request.getParameter("ClaPro");
+                    System.out.println(seleccionaClave+"----6666666");
                     sesion.setAttribute("NoCompra", request.getParameter("folio"));
                     sesion.setAttribute("folioRemi", folioRemi);
                     sesion.setAttribute("CodBar", CodBar);
                     sesion.setAttribute("Lote", "");
                     sesion.setAttribute("Cadu", "");
+                    sesion.setAttribute("claveSeleccionada", seleccionaClave);
                     response.sendRedirect("compraAuto2.jsp");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -200,10 +217,14 @@ public class CompraAutomatica extends HttpServlet {
                 String Marca = request.getParameter("list_marca");
                 byte[] a = request.getParameter("Obser").getBytes("ISO-8859-1");
                 String F_Obser = (new String(a, "UTF-8")).toUpperCase();
+                
+                String TCajas = request.getParameter("TCajas");
+                TCajas = TCajas.replace(",", "");
 
                 if (Tarimas.equals("")) {
                     Tarimas = "0";
                 }
+                Tarimas = Tarimas.replace(",", "");
                 String Cajas = request.getParameter("Cajas");
                 if (Cajas.equals("")) {
                     Cajas = "0";
@@ -218,14 +239,17 @@ public class CompraAutomatica extends HttpServlet {
                 if (TarimasI.equals("")) {
                     TarimasI = "0";
                 }
+                TarimasI = TarimasI.replace(",", "");
                 String CajasxTI = request.getParameter("CajasxTI");
                 if (CajasxTI.equals("")) {
                     CajasxTI = "0";
                 }
+                CajasxTI = CajasxTI.replace(",", "");
                 String Resto = request.getParameter("Resto");
                 if (Resto.equals("")) {
                     Resto = "0";
                 }
+                Resto = Resto.replace(",", "");
                 ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + Clave + "'");
                 while (rset_medica.next()) {
                     Tipo = rset_medica.getString("F_TipMed");
@@ -239,9 +263,9 @@ public class CompraAutomatica extends HttpServlet {
                 IVAPro = (Double.parseDouble(Piezas) * Costo) * IVA;
                 Monto = Double.parseDouble(Piezas) * Costo;
                 MontoIva = Monto + IVAPro;
-                con.insertar("insert into tb_compratemp values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','" + Marca + "','" + claPro + "','" + CodBar + "','" + Tarimas + "','" + Cajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + claPro + "','" + sesion.getAttribute("nombre") + "')"
+                con.insertar("insert into tb_compratemp values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','" + Marca + "','" + claPro + "','" + CodBar + "','" + Tarimas + "','" + TCajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + claPro + "','" + sesion.getAttribute("nombre") + "')"
                 );
-                con.insertar("insert into tb_compraregistro values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','" + Marca + "','" + claPro + "','" + CodBar + "','" + Tarimas + "','" + Cajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + claPro + "','" + sesion.getAttribute("nombre") + "')"
+                con.insertar("insert into tb_compraregistro values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','" + Marca + "','" + claPro + "','" + CodBar + "','" + Tarimas + "','" + TCajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + claPro + "','" + sesion.getAttribute("nombre") + "')"
                 );
                 con.insertar("insert into tb_cb values(0,'" + CodBar + "','" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "', '" + Marca + "')");
                 //con.insertar("update tb_pedidoisem set F_Recibido = '1' where F_Clave = '" + Clave + "' and  ");

@@ -21,8 +21,10 @@
     formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "";
+    String tipo = "";
     if (sesion.getAttribute("Usuario") != null) {
         usua = (String) sesion.getAttribute("Usuario");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("indexIsem.jsp");
     }
@@ -100,6 +102,12 @@
                                     <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
                                     <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
                                     <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -260,8 +268,9 @@
                     <div class="panel-body">
                         <%                try {
                                 con.conectar();
-                                ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, F_Usuario, F_StsPed from tb_pedidoisem o, tb_proveedor p, tb_usuariosisem u where u.F_IdUsu = o.F_IdUsu and  o.F_Provee = p.F_ClaProve and F_NoCompra = '" + NoCompra + "'  group by o.F_NoCompra");
+                                ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, F_Usuario, F_StsPed, F_Recibido from tb_pedidoisem o, tb_proveedor p, tb_usuariosisem u where u.F_IdUsu = o.F_IdUsu and  o.F_Provee = p.F_ClaProve and F_NoCompra = '" + NoCompra + "'  group by o.F_NoCompra");
                                 while (rset.next()) {
+                                    int recibido = rset.getInt("F_Recibido");
                         %>
                         <div class="row">
                             <div class="col-sm-2">
@@ -269,9 +278,26 @@
                                     Orden: <%=NoCompra%>
                                 </h4>
                             </div>
+                            <%
+                                if (recibido == 1 && tipo.equals("3")) {
+                            %>
+                            <div class="col-sm-2 col-sm-offset-7">
+                                <form action="CapturaPedidos?NoCompra=<%=NoCompra%>" method="post">
+                                    <button class="btn btn-success btn-block" name="accion" id="reactivar" value="reactivar">Reactivar</button>
+                                </form>
+                            </div>
+                            <div class="col-sm-1">
+                                <a class="btn btn-default btn-block" target="_blank" href="imprimeOrdenCompra.jsp?ordenCompra=<%=NoCompra%>"><span class="glyphicon glyphicon-print"></span></a>
+                            </div>
+                            <%
+                            } else {
+                            %>
                             <div class="col-sm-1 col-sm-offset-9">
                                 <a class="btn btn-default" target="_blank" href="imprimeOrdenCompra.jsp?ordenCompra=<%=NoCompra%>"><span class="glyphicon glyphicon-print"></span></a>
                             </div>
+                            <%
+                                }
+                            %>
                         </div>
                         <div class="panel-body">
                             <form name="FormBusca" action="CapturaPedidos" method="post">
@@ -289,8 +315,26 @@
                                 <%
                                     System.out.println("###" + rset.getString("F_StsPed"));
                                     if (rset.getString("F_StsPed").equals("2")) {
+                                        String obserRechazo = "";
+                                        ResultSet rset2 = con.consulta("select F_Observaciones from tb_obscancela where F_NoCompra = '" + rset.getString(1) + "' ");
+                                        while (rset2.next()) {
+                                            obserRechazo = rset2.getString(1);
+                                        }
                                 %>
                                 <h4 class="text-danger">FOLIO CANCELADO</h4>
+                                <textarea rows="7" class="form-control" readonly=""><%=obserRechazo%></textarea>
+                                <br/>
+                                <%
+                                } else if (rset.getString(7).equals("2")) {
+                                    String obserRechazo = "";
+                                    ResultSet rset2 = con.consulta("select F_Observaciones from tb_rechazos where F_NoCompra = '" + rset.getString(1) + "' ");
+                                    while (rset2.next()) {
+                                        obserRechazo = rset2.getString(1);
+                                    }
+                                %>
+                                <h4 class="text-danger">FOLIO RECHAZADO</h4>
+                                <textarea rows="7" class="form-control" readonly=""><%=obserRechazo%></textarea>
+                                <br/>
                                 <%
                                     }
                                 %>

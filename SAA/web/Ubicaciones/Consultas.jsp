@@ -86,6 +86,12 @@
                                     <li><a href="../marcas.jsp">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="../Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
+                                </ul>
+                            </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -131,7 +137,7 @@
                         <button class="btn btn-sm btn-primary" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi2">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar2">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%}%>
                     </div>
-
+                    
                 </div>
             </div>
             <div id="container">
@@ -140,6 +146,8 @@
                     <div id="dynamic"></div>
                 </form>
             </div>
+                    <br />
+                    <h3>Total Piezas:<input type="text" id="txtf_exis" readonly="true" size="10"></h3>
             <div class="row-fluid">
                 <footer class="span12">
                 </footer>
@@ -200,6 +208,7 @@
                 function MostrarFecha(data) {
                     var json = JSON.parse(data);
                     var aDataSet = [];
+                    var exist = 0;
                     for (var i = 0; i < json.length; i++) {
                         var clave = json[i].clave;
                         var lote = json[i].lote;
@@ -209,8 +218,9 @@
                         var folio = json[i].folio;
                         var id = json[i].id;
                         var claubi = json[i].claubi;
+                        exist =parseInt(cantidad)+parseInt(exist);
                         //var cajas=parseInt(cantidad/piezas);
-                        var cadena = '<button id="folio" name="folio" value="' + folio + ":" + claubi + ";" + id + '">ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
+                        var cadena = '<button id="folio" name="folio" value="' + folio + ":" + claubi + ";" + id + '">ReDistribuir<input type=hidden value=2 id=ban name=ban /></button><!--button id="folio" name="folio" value="' + folio + ":" + claubi + ";" + id + '">Modificar<input type=hidden value=10 id=ban name=ban /></button-->';
                         var formatNumber = {
                             separador: ",", // separador para los miles
                             sepDecimal: '.', // separador para los decimales
@@ -231,8 +241,11 @@
                             }
                         }
                         var numero = formatNumber.new(cantidad);
+                        var numero1 = formatNumber.new(exist);
                         aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
+                    
+                        
                     $(document).ready(function() {
                         $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
                         $('#example').dataTable({
@@ -259,6 +272,7 @@
                     $("#txtf_clave").val(null);
                     $("#txtf_lote").val(null);
                     $("#txtf_cb").val(null);
+                    $("#txtf_exis").val(numero1);
 
                 }
 
@@ -287,6 +301,7 @@
                     var json = JSON.parse(data);
 
                     var aDataSet = [];
+                    var exist = 0;
                     for (var i = 0; i < json.length; i++) {
                         var clave = json[i].clave;
                         var lote = json[i].lote;
@@ -296,6 +311,7 @@
                         var folio = json[i].folio;
                         var id = json[i].id;
                         var claubi = json[i].claubi;
+                        exist =parseInt(cantidad)+parseInt(exist);
                         //var cajas=parseInt(cantidad/piezas);
                         var cadena = '<button id="folio" name="folio" value="' + folio + ":" + claubi + ";" + id + '"  >ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
                         var formatNumber = {
@@ -318,6 +334,7 @@
                             }
                         }
                         var numero = formatNumber.new(cantidad);
+                        var numero1 = formatNumber.new(exist);
                         aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
                     $(document).ready(function() {
@@ -346,6 +363,7 @@
                     $("#txtf_clave").val(null);
                     $("#txtf_lote").val(null);
                     $("#txtf_cb").val(null);
+                    $("#txtf_exis").val(numero1);
 
                 }
 
@@ -376,6 +394,7 @@
                     var json = JSON.parse(data);
 
                     var aDataSet = [];
+                    var exist = 0;
                     for (var i = 0; i < json.length; i++) {
                         var clave = json[i].clave;
                         var lote = json[i].lote;
@@ -385,6 +404,7 @@
                         var folio = json[i].folio;
                         var id = json[i].id;
                         var claubi = json[i].claubi;
+                        exist =parseInt(cantidad)+parseInt(exist);
                         //var cajas=parseInt(cantidad/piezas);
                         var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
                         var formatNumber = {
@@ -407,6 +427,7 @@
                             }
                         }
                         var numero = formatNumber.new(cantidad);
+                        var numero1 = formatNumber.new(exist);
                         aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
                     $(document).ready(function() {
@@ -435,6 +456,7 @@
                     $("#txtf_clave").val(null);
                     $("#txtf_lote").val(null);
                     $("#txtf_cb").val(null);
+                    $("#txtf_exis").val(numero1);
 
                 }
 
@@ -659,7 +681,7 @@
                         //var piezas = json[i].piezas;
                         var claubi = json[i].claubi;
                         //var cajas=parseInt(cantidad/piezas);
-                        var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
+                        var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button><button id="folio" name="folio" value=' + folio + ":" + claubi + '>Modificar<input type=hidden value=10 id=ban name=ban /></button>';
                         var formatNumber = {
                             separador: ",", // separador para los miles
                             sepDecimal: '.', // separador para los decimales
@@ -713,6 +735,54 @@
 
 
             });
+            
+            var dir = 'jsp/consultas.jsp?ban=33'
+            $.ajax({
+                    url: dir,
+                    type: 'json',
+                    async: false,
+                    success: function(data) {
+                        limpiarTabla();
+                        MostrarFecha(data);
+                    },
+                    error: function() {
+                        alert("Ha ocurrido un error");
+                    }
+                });
+                function limpiarTabla() {
+                    $(".table tr:not(.cabecera)").remove();
+                }
+                function MostrarFecha(data) {
+                    var json = JSON.parse(data);
+
+                    var aDataSet = [];
+                    for (var i = 0; i < json.length; i++) {
+                        var existencia = json[i].existencia;
+                        
+                        
+                        var formatNumber = {
+                            separador: ",", // separador para los miles
+                            sepDecimal: '.', // separador para los decimales
+                            formatear: function(num) {
+                                num += '';
+                                var splitStr = num.split('.');
+                                var splitLeft = splitStr[0];
+                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                                var regx = /(\d+)(\d{3})/;
+                                while (regx.test(splitLeft)) {
+                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                                }
+                                return this.simbol + splitLeft + splitRight;
+                            },
+                            new : function(num, simbol) {
+                                this.simbol = simbol || '';
+                                return this.formatear(num);
+                            }
+                        }
+                        var numeroexi = formatNumber.new(existencia);
+                        $("#txtf_exis").val(numeroexi);
+                    }
+                }
 
             ////FIN BOTONES USUARIOS CONSULTAS/////
 
@@ -721,4 +791,5 @@
           self.location='Agregar.jsp';
         });
     </script>
+    
 </html>

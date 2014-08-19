@@ -566,6 +566,15 @@
             json = new JSONObject();
         }
         out.println(jsona);
+    }else if (ban == 33) {
+        QueryDatos = "SELECT sum(f_exilot) as cant  FROM tb_lote ";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("existencia", Consulta.getString("cant"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
     }
 
     Obj.CierreConn();

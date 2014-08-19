@@ -44,7 +44,7 @@ public class ConectionDB_SQLServer {
         this.usuario = "sa";
         this.clave = "gnklmex";
         //this.url = "jdbc:sqlserver://localhost:1433;databaseName=gnklmex_consolidada;";
-        this.url = "jdbc:sqlserver://192.168.2.170:1433;databaseName=gnklmex_consolidada;";
+        this.url = "jdbc:sqlserver://192.168.2.160:1433;databaseName=gnklmex_consolidada;";
         this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
     }

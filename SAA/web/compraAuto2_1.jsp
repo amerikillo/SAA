@@ -39,30 +39,30 @@
             sesion.setAttribute("folioRemi", "");
             sesion.setAttribute("CodBar", "");
             /*try {
-             con.conectar();
-             conNube.conectar();
-             ResultSet rsetOrdenes = conNube.consulta("select * from tb_pedidoisem where F_StsPed !=0 ");
-             try {
-             while (rsetOrdenes.next()) {
-             try {
-             con.insertar("insert into tb_pedidoisem values('" + rsetOrdenes.getString(1) + "','" + rsetOrdenes.getString(2) + "','" + rsetOrdenes.getString(3) + "','" + rsetOrdenes.getString(4) + "','" + rsetOrdenes.getString(5) + "','" + rsetOrdenes.getString(6) + "','" + rsetOrdenes.getString(7) + "','" + rsetOrdenes.getString(8) + "','" + rsetOrdenes.getString(9) + "','" + rsetOrdenes.getString(10) + "','" + rsetOrdenes.getString(11) + "','" + rsetOrdenes.getString(12) + "','" + rsetOrdenes.getString(13) + "','" + rsetOrdenes.getString(14) + "','" + rsetOrdenes.getString(15) + "','" + rsetOrdenes.getString(16) + "')");
-             } catch (Exception e) {
-             try {
-             con.insertar("update tb_pedidoisem set F_StsPed = '" + rsetOrdenes.getString(15) + "' where F_IdIsem='" + rsetOrdenes.getString(1) + "'");
-             } catch (Exception ex) {
+                con.conectar();
+                conNube.conectar();
+                ResultSet rsetOrdenes = conNube.consulta("select * from tb_pedidoisem where F_StsPed !=0 ");
+                try {
+                    while (rsetOrdenes.next()) {
+                        try {
+                            con.insertar("insert into tb_pedidoisem values('" + rsetOrdenes.getString(1) + "','" + rsetOrdenes.getString(2) + "','" + rsetOrdenes.getString(3) + "','" + rsetOrdenes.getString(4) + "','" + rsetOrdenes.getString(5) + "','" + rsetOrdenes.getString(6) + "','" + rsetOrdenes.getString(7) + "','" + rsetOrdenes.getString(8) + "','" + rsetOrdenes.getString(9) + "','" + rsetOrdenes.getString(10) + "','" + rsetOrdenes.getString(11) + "','" + rsetOrdenes.getString(12) + "','" + rsetOrdenes.getString(13) + "','" + rsetOrdenes.getString(14) + "','" + rsetOrdenes.getString(15) + "','" + rsetOrdenes.getString(16) + "')");
+                        } catch (Exception e) {
+                            try {
+                                con.insertar("update tb_pedidoisem set F_StsPed = '" + rsetOrdenes.getString(15) + "' where F_IdIsem='" + rsetOrdenes.getString(1) + "'");
+                            } catch (Exception ex) {
 
-             }
-             }
+                            }
+                        }
 
-             }
-             } catch (Exception e) {
+                    }
+                } catch (Exception e) {
 
-             }
-             con.cierraConexion();
-             con.cierraConexion();
-             } catch (Exception e) {
-             System.out.println(e.getMessage());
-             }*/
+                }
+                con.cierraConexion();
+                con.cierraConexion();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }*/
         }
     } catch (Exception er) {
 
@@ -238,12 +238,6 @@
                                     <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
-                                </ul>
-                            </li>
                             <!--li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -365,44 +359,18 @@
                             <div class="row">
                                 <h4 class="col-sm-12">Fecha y Hora de Entrega: <%=df3.format(df2.parse(rset.getString(2)))%> <%=rset.getString(3)%></h4>
                             </div>
-                            <div class="row">
-                                <h4 class="col-sm-1">Clave:</h4>
-                                <div class="col-sm-2">
-                                    <select class="form-control" name="selectClave" id="selectClave">
-                                        <option>-Seleccione-</option>
-                                        <%
-                                            try {
-                                                con.conectar();
-                                                ResultSet rset2 = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' ");
-                                                while (rset2.next()) {
-                                                    out.print("<option>" + rset2.getString(1) + "</option>");
-                                                }
-                                                con.cierraConexion();
-                                            } catch (Exception e) {
-
-                                            }
-                                        %>
-                                    </select>
-                                </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-primary btn-block" name="accion" value="seleccionaClave">Clave</button>
-                                </div>
-                                <div class="col-sm-2 col-lg-offset-6">
-                                    <a href="#" class="btn btn-danger btn-block" data-toggle="modal" data-target="#Rechazar">Rechazar</a>
-                                </div>
-                            </div>
                         </div>
                         <div class="panel-body">
+
                             <%
                                 try {
-                                    System.out.println("*****" + (String) sesion.getAttribute("claveSeleccionada"));
                                     con.conectar();
                                     ResultSet rset2 = con.consulta("select s.F_Clave, m.F_DesPro, s.F_Lote, DATE_FORMAT(F_Cadu, '%d/%m/%Y'), s.F_Cant, F_IdIsem, F_Obser from tb_pedidoisem s, tb_medica m where s.F_Clave = m.F_ClaPro and F_NoCompra = '" + rset.getString(1) + "' and F_StsPed = '1'");
                                     while (rset2.next()) {
                                         rset2.last();
                                         numRenglones = rset2.getRow() - 1;
                                     }
-                                    rset2 = con.consulta("select s.F_Clave, m.F_DesPro, s.F_Lote, DATE_FORMAT(F_Cadu, '%d/%m/%Y'), s.F_Cant, F_IdIsem, F_Obser from tb_pedidoisem s, tb_medica m where s.F_Clave = m.F_ClaPro and F_NoCompra = '" + rset.getString(1) + "' and F_Clave = '" + sesion.getAttribute("claveSeleccionada") + "' ");
+                                    rset2 = con.consulta("select s.F_Clave, m.F_DesPro, s.F_Lote, DATE_FORMAT(F_Cadu, '%d/%m/%Y'), s.F_Cant, F_IdIsem, F_Obser from tb_pedidoisem s, tb_medica m where s.F_Clave = m.F_ClaPro and F_NoCompra = '" + rset.getString(1) + "' and F_StsPed = '1' limit " + posClave + ",1 ");
                                     while (rset2.next()) {
 
                             %>
@@ -423,7 +391,7 @@
                                     <td><input type="text" value="<%=rset2.getString(1)%>" class="form-control" name="ClaPro" id="ClaPro" onclick="" readonly=""  onkeypress="return tabular(event, this)"/></td>
                                     <td><%=rset2.getString(2)%></td>
                                     <td>
-                                        <input type="text" value="<%=CodBar%>" class="form-control" name="codbar" id="codbar" onclick="" onkeypress="return checkKey(event, this);" />
+                                        <input type="text" value="<%=CodBar%>" class="form-control" name="codbar" id="codbar" onclick="" onkeypress="checkKey(event);" />
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <button class="btn btn-primary btn-block btn-sm" type="submit" name="accion" id="CodigoBarras" value="CodigoBarras" onclick="">CB</button>
@@ -579,7 +547,7 @@
                                                     <%
                                                         try {
                                                             con.conectar();
-                                                            ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM tb_marca");
+                                                            ResultSet rset3 = con.consulta("SELECT m.F_ClaMar, m.F_DesMar FROM tb_marca m, tb_marcaclave mc where m.F_ClaMar = mc.F_ClaMar and mc.F_ClaPro = '"+rset2.getString(1)+"' ");
                                                             while (rset3.next()) {
                                                     %>
                                                     <option value="<%=rset3.getString("F_ClaMar")%>"
@@ -657,25 +625,17 @@
                                         <h5><strong>Totales</strong></h5>
                                         <div class="row">
 
-                                            <label for="Cajas" class="col-sm-1 control-label">Tarimas</label>
+                                            <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
                                             <div class="col-sm-1">
                                                 <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
                                                         return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
                                             </div>
-                                            <label for="pzsxcaja" class="col-sm-1 control-label">Cajas Completas</label>
+                                            <label for="pzsxcaja" class="col-sm-2 control-label">Cajas</label>
                                             <div class="col-sm-1">
                                                 <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                                             </div>
-                                            <label for="CajasIn" class="col-sm-1 control-label">Cajas Incompletas</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" class="form-control" id="CajasIn" name="CajasIn" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
-                                            </div>
-                                            <label for="TCajas" class="col-sm-1 control-label">Total Cajas</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
-                                            </div>
-                                            <label for="Resto" class="col-sm-1 control-label">Piezas</label>
-                                            <div class="col-sm-1">
+                                            <label for="Resto" class="col-sm-2 control-label">Piezas</label>
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" />
                                             </div>
                                         </div>
@@ -690,7 +650,7 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <%if (!posClave.equals("0")) {%>
-                                    <!--button class="btn btn-block btn-danger" name="accion" id="accion" value="anterior" >Clave Anterior</button-->
+                                    <button class="btn btn-block btn-danger" name="accion" id="accion" value="anterior" >Clave Anterior</button>
                                     <%}%>
                                 </div>
                                 <div class="col-sm-4">
@@ -698,7 +658,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <%if (!posClave.equals(numRenglones + "")) {%>
-                                    <!--button class="btn btn-block btn-danger" name="accion" id="accion" value="siguiente" >Siguiente Clave</button-->
+                                    <button class="btn btn-block btn-danger" name="accion" id="accion" value="siguiente" >Siguiente Clave</button>
                                     <%}%>
 
                                 </div>
@@ -731,7 +691,6 @@
             <div class="panel-body panel-default">
                 <table class="table table-bordered table-striped">
                     <tr>
-                        <td>Remisión</td>
                         <td><a name="ancla"></a>Código de Barras</td>
                         <td>Clave</td>
                         <td>Descripción</td>                       
@@ -748,12 +707,12 @@
                         String obser = "";
                         try {
                             con.conectar();
-                            ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "'");
+                            ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_FecApl=CURDATE() AND F_OrdCom='" + noCompra + "'");
                             while (rset.next()) {
                                 banCompra = 1;
+
                     %>
                     <tr>
-                        <td><%=rset.getString("C.F_FolRemi")%></td>
                         <td><%=rset.getString(1)%></td>
                         <td><%=rset.getString(2)%></td>
                         <td><%=rset.getString(3)%></td>
@@ -785,7 +744,7 @@
                     %>
                     <tr>
 
-                        <td colspan="11">
+                        <td colspan="10">
                             <div class="col-lg-3 col-lg-offset-3">
                                 <form action="nuevoAutomaticaLotes" method="post">
                                     <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
@@ -847,38 +806,6 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-
-
-        <!--
-        Modal
-        -->
-        <div class="modal fade" id="Rechazar" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="Rechazos" method="post">
-                        <div class="modal-header">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <h4 class="modal-title" id="myModalLabel">Rechazar Orden de Compra</h4>
-                                </div>
-                                <div class="col-sm-2">
-                                    <input name="NoCompraRechazo" id="NoCompraRechazo" value="<%=noCompra%>" class="form-control" readonly="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-body">
-                            <h4>Observaciones de Rechazo</h4>
-                            <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser"></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary" onclick="return validaRechazo();
-                                    " name="accion" value="Rechazar">Rechazar OC</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </body>
 
 
@@ -892,274 +819,251 @@
     <script src="js/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
 
-                                function validaRechazo() {
-                                    var obser = document.getElementById('rechazoObser').value;
-                                    if (obser === "") {
-                                        alert('Rellene el campo de observaciones de rechazo.');
-                                        return false;
-                                    }
-                                    var con = confirm('¿Seguro que desea rechazar la OC?');
-                                    if (con === false) {
-                                        return false;
-                                    }
-                                }
-
-                                $(function() {
-                                    $("#Fecha").datepicker();
-                                    $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                                });
-                                function justNumbers(e)
-                                {
-                                    var keynum = window.event ? window.event.keyCode : e.which;
-                                    if ((keynum === 8) || (keynum === 46))
-                                        return true;
-                                    return /\d/.test(String.fromCharCode(keynum));
-                                }
-
-                                otro = 0;
-                                function LP_data(e, esto) {
-                                    var key = (document.all) ? e.keyCode : e.which; //codigo de tecla. 
-                                    if (key < 48 || key > 57)//si no es numero 
-                                        return false; //anula la entrada de texto.
-                                    else
-                                        anade(esto);
-                                }
-                                function anade(esto) {
-
-                                    if (esto.value.length > otro) {
-                                        if (esto.value.length === 2) {
-                                            esto.value += "/";
+                                        $(function() {
+                                            $("#Fecha").datepicker();
+                                            $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                                        });
+                                        function justNumbers(e)
+                                        {
+                                            var keynum = window.event ? window.event.keyCode : e.which;
+                                            if ((keynum === 8) || (keynum === 46))
+                                                return true;
+                                            return /\d/.test(String.fromCharCode(keynum));
                                         }
-                                    }
-                                    if (esto.value.length > otro) {
-                                        if (esto.value.length === 5) {
-                                            esto.value += "/";
+
+                                        otro = 0;
+                                        function LP_data(e, esto) {
+                                            var key = (document.all) ? e.keyCode : e.which; //codigo de tecla. 
+                                            if (key < 48 || key > 57)//si no es numero 
+                                                return false; //anula la entrada de texto.
+                                            else
+                                                anade(esto);
                                         }
-                                    }
-                                    if (esto.value.length < otro) {
-                                        if (esto.value.length === 2 || esto.value.length === 5) {
-                                            esto.value = esto.value.substring(0, esto.value.length - 1);
+                                        function anade(esto) {
+
+                                            if (esto.value.length > otro) {
+                                                if (esto.value.length === 2) {
+                                                    esto.value += "/";
+                                                }
+                                            }
+                                            if (esto.value.length > otro) {
+                                                if (esto.value.length === 5) {
+                                                    esto.value += "/";
+                                                }
+                                            }
+                                            if (esto.value.length < otro) {
+                                                if (esto.value.length === 2 || esto.value.length === 5) {
+                                                    esto.value = esto.value.substring(0, esto.value.length - 1);
+                                                }
+                                            }
+                                            otro = esto.value.length;
                                         }
-                                    }
-                                    otro = esto.value.length;
-                                }
 
 
-                                function AvisaID(id) {
-                                    //alert(id);
-                                }
-                                var formatNumber = {
-                                    separador: ",", // separador para los miles
-                                    sepDecimal: '.', // separador para los decimales
-                                    formatear: function(num) {
-                                        num += '';
-                                        var splitStr = num.split('.');
-                                        var splitLeft = splitStr[0];
-                                        var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                        var regx = /(\d+)(\d{3})/;
-                                        while (regx.test(splitLeft)) {
-                                            splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                                        function AvisaID(id) {
+                                            //alert(id);
                                         }
-                                        return this.simbol + splitLeft + splitRight;
-                                    },
-                                    new : function(num, simbol) {
-                                        this.simbol = simbol || '';
-                                        return this.formatear(num);
-                                    }
-                                };
-                                /*$(function() {
-                                 $("#cad").datepicker();
-                                 $("#cad").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                                 });*/
-                                function totalPiezas() {
-                                    var TarimasC = document.getElementById('TarimasC').value;
-                                    var CajasxTC = document.getElementById('CajasxTC').value;
-                                    var PzsxCC = document.getElementById('PzsxCC').value;
-                                    var TarimasI = document.getElementById('TarimasI').value;
-                                    var CajasxTI = document.getElementById('CajasxTI').value;
-                                    var Resto = document.getElementById('Resto').value;
-                                    if (TarimasC === "") {
-                                        TarimasC = 0;
-                                    }
-                                    if (CajasxTC === "") {
-                                        CajasxTC = 0;
-                                    }
-                                    if (PzsxCC === "") {
-                                        PzsxCC = 0;
-                                    }
-                                    if (TarimasI === "") {
-                                        TarimasI = 0;
-                                    }
-                                    if (CajasxTI === "") {
-                                        CajasxTI = 0;
-                                    }
-                                    if (Resto === "") {
-                                        Resto = 0;
-                                        var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
-                                        document.getElementById('TCajas').value = formatNumber.new(totalCajas);
-                                    } else {
-                                        var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
-                                        document.getElementById('TCajas').value = formatNumber.new(totalCajas + 1);
-                                        document.getElementById('CajasIn').value = formatNumber.new(1);
-                                    }
-                                    var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
-                                    document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
-                                    var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
-                                    document.getElementById('Cajas').value = formatNumber.new(totalCajas);
-                                    var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
-                                    document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
+                                        var formatNumber = {
+                                            separador: ",", // separador para los miles
+                                            sepDecimal: '.', // separador para los decimales
+                                            formatear: function(num) {
+                                                num += '';
+                                                var splitStr = num.split('.');
+                                                var splitLeft = splitStr[0];
+                                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                                                var regx = /(\d+)(\d{3})/;
+                                                while (regx.test(splitLeft)) {
+                                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                                                }
+                                                return this.simbol + splitLeft + splitRight;
+                                            },
+                                            new : function(num, simbol) {
+                                                this.simbol = simbol || '';
+                                                return this.formatear(num);
+                                            }
+                                        };
+                                        /*$(function() {
+                                         $("#cad").datepicker();
+                                         $("#cad").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                                         });*/
+                                        function totalPiezas() {
+                                            var TarimasC = document.getElementById('TarimasC').value;
+                                            var CajasxTC = document.getElementById('CajasxTC').value;
+                                            var PzsxCC = document.getElementById('PzsxCC').value;
+                                            var TarimasI = document.getElementById('TarimasI').value;
+                                            var CajasxTI = document.getElementById('CajasxTI').value;
+                                            var Resto = document.getElementById('Resto').value;
+                                            if (TarimasC === "") {
+                                                TarimasC = 0;
+                                            }
+                                            if (CajasxTC === "") {
+                                                CajasxTC = 0;
+                                            }
+                                            if (PzsxCC === "") {
+                                                PzsxCC = 0;
+                                            }
+                                            if (TarimasI === "") {
+                                                TarimasI = 0;
+                                            }
+                                            if (CajasxTI === "") {
+                                                CajasxTI = 0;
+                                            }
+                                            if (Resto === "") {
+                                                Resto = 0;
+                                            }
+                                            var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
+                                            document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
+                                            var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                                            document.getElementById('Cajas').value = formatNumber.new(totalCajas);
+                                            var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
+                                            document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
+                                        }
 
-                                }
-
-                                function validaCadu() {
-                                    var cad = document.getElementById('cad').value;
-                                    if (cad === "") {
-                                        alert("Falta Caducidad");
-                                        document.getElementById('cad').focus();
-                                        return false;
-                                    } else {
-                                        if (cad.length < 10) {
-                                            alert("Caducidad Incorrecta");
-                                            document.getElementById('cad').focus();
-                                            return false;
-                                        } else {
-                                            var dtFechaActual = new Date();
-                                            var sumarDias = parseInt(276);
-                                            dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
-                                            var fechaSpl = cad.split("/");
-                                            var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
-                                            /*alert(Caducidad);*/
-
-                                            if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
-                                                alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
+                                        function validaCadu() {
+                                            var cad = document.getElementById('cad').value;
+                                            if (cad === "") {
+                                                alert("Falta Caducidad");
                                                 document.getElementById('cad').focus();
                                                 return false;
+                                            } else {
+                                                if (cad.length < 10) {
+                                                    alert("Caducidad Incorrecta");
+                                                    document.getElementById('cad').focus();
+                                                    return false;
+                                                } else {
+                                                    var dtFechaActual = new Date();
+                                                    var sumarDias = parseInt(276);
+                                                    dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
+                                                    var fechaSpl = cad.split("/");
+                                                    var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
+                                                    /*alert(Caducidad);*/
+
+                                                    if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
+                                                        alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
+                                                        document.getElementById('cad').focus();
+                                                        return false;
+                                                    }
+                                                }
                                             }
                                         }
-                                    }
-                                }
 
-                                function validaCompra() {
+                                        function validaCompra() {
 
-                                    var folioRemi = document.getElementById('folioRemi').value;
-                                    if (folioRemi === "") {
-                                        alert("Falta Folio de Remisión");
-                                        document.getElementById('codbar').focus();
-                                        return false;
-                                    }
+                                            var folioRemi = document.getElementById('folioRemi').value;
+                                            if (folioRemi === "") {
+                                                alert("Falta Folio de Remisión");
+                                                document.getElementById('codbar').focus();
+                                                return false;
+                                            }
 
-                                    var codBar = document.getElementById('codbar').value;
-                                    if (codBar === "") {
-                                        alert("Falta Código de Barras");
-                                        document.getElementById('codbar').focus();
-                                        return false;
-                                    }
+                                            var codBar = document.getElementById('codbar').value;
+                                            if (codBar === "") {
+                                                alert("Falta Código de Barras");
+                                                document.getElementById('codbar').focus();
+                                                return false;
+                                            }
 
-                                    var lot = document.getElementById('lot').value;
-                                    if (lot === "" || lot === "-") {
-                                        alert("Falta Lote");
-                                        document.getElementById('lot').focus();
-                                        return false;
-                                    }
+                                            var lot = document.getElementById('lot').value;
+                                            if (lot === "" || lot === "-") {
+                                                alert("Falta Lote");
+                                                document.getElementById('lot').focus();
+                                                return false;
+                                            }
 
-                                    var marca = document.getElementById('list_marca').value;
-                                    if (marca === "" || marca === "-") {
-                                        alert("Falta Marca");
-                                        document.getElementById('list_marca').focus();
-                                        return false;
-                                    }
+                                            var marca = document.getElementById('list_marca').value;
+                                            if (marca === "" || marca === "-") {
+                                                alert("Falta Marca");
+                                                document.getElementById('list_marca').focus();
+                                                return false;
+                                            }
 
-                                    var cad = document.getElementById('cad').value;
-                                    if (cad === "") {
-                                        alert("Falta Caducidad");
-                                        document.getElementById('cad').focus();
-                                        return false;
-                                    } else {
-                                        var dtFechaActual = new Date();
-                                        var sumarDias = parseInt(276);
-                                        dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
-                                        var fechaSpl = cad.split("/");
-                                        var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
-                                        /*alert(Caducidad);*/
+                                            var cad = document.getElementById('cad').value;
+                                            if (cad === "") {
+                                                alert("Falta Caducidad");
+                                                document.getElementById('cad').focus();
+                                                return false;
+                                            } else {
+                                                var dtFechaActual = new Date();
+                                                var sumarDias = parseInt(276);
+                                                dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
+                                                var fechaSpl = cad.split("/");
+                                                var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
+                                                /*alert(Caducidad);*/
 
-                                        if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
-                                            alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
-                                            document.getElementById('cad').focus();
+                                                if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
+                                                    alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
+                                                    document.getElementById('cad').focus();
+                                                    return false;
+                                                }
+
+                                            }
+
+                                            var Piezas = document.getElementById('Piezas').value;
+                                            if (Piezas === "" || Piezas === "0") {
+                                                document.getElementById('Piezas').focus();
+                                                alert("Favor de llenar todos los datos");
+                                                return false;
+                                            }
+
+                                            var cantRecibida = document.getElementById('cantRecibida').value;
+                                            var cantTotal = document.getElementById('cantRecibir').value;
+                                            cantRecibida = cantRecibida.replace(/,/gi, "");
+                                            cantTotal = cantTotal.replace(/,/gi, "");
+                                            Piezas = Piezas.replace(/,/gi, "");
+                                            var nCantidad = parseInt(Piezas) + parseInt(cantRecibida);
+                                            if (nCantidad > parseInt(cantTotal)) {
+                                                alert("Excede la cantidad a recibir, favor de verificar");
+                                                return false;
+                                            }
+
+                                        }
+
+
+                                        function tabular(e, obj)
+                                        {
+                                            tecla = (document.all) ? e.keyCode : e.which;
+                                            if (tecla != 13)
+                                                return;
+                                            frm = obj.form;
+                                            for (i = 0; i < frm.elements.length; i++)
+                                                if (frm.elements[i] == obj)
+                                                {
+                                                    if (i == frm.elements.length - 1)
+                                                        i = -1;
+                                                    break
+                                                }
+                                            /*ACA ESTA EL CAMBIO*/
+                                            if (frm.elements[i + 1].disabled == true)
+                                                tabular(e, frm.elements[i + 1]);
+                                            else
+                                                frm.elements[i + 1].focus();
                                             return false;
                                         }
 
-                                    }
-
-                                    var Piezas = document.getElementById('Piezas').value;
-                                    if (Piezas === "" || Piezas === "0") {
-                                        document.getElementById('Piezas').focus();
-                                        alert("Favor de llenar todos los datos");
-                                        return false;
-                                    }
-
-                                    var cantRecibida = document.getElementById('cantRecibida').value;
-                                    var cantTotal = document.getElementById('cantRecibir').value;
-                                    cantRecibida = cantRecibida.replace(/,/gi, "");
-                                    cantTotal = cantTotal.replace(/,/gi, "");
-                                    Piezas = Piezas.replace(/,/gi, "");
-                                    var nCantidad = parseInt(Piezas) + parseInt(cantRecibida);
-                                    if (nCantidad > parseInt(cantTotal)) {
-                                        alert("Excede la cantidad a recibir, favor de verificar");
-                                        return false;
-                                    }
-
-                                }
-
-
-                                function tabular(e, obj)
-                                {
-                                    tecla = (document.all) ? e.keyCode : e.which;
-                                    if (tecla != 13)
-                                        return;
-                                    frm = obj.form;
-                                    for (i = 0; i < frm.elements.length; i++)
-                                        if (frm.elements[i] == obj)
-                                        {
-                                            if (i == frm.elements.length - 1)
-                                                i = -1;
-                                            break
+                                        function cambiaLoteCadu(elemento) {
+                                            var indice = elemento.selectedIndex;
+                                            document.getElementById('list_cadu').selectedIndex = indice;
+                                            document.getElementById('lot').value = document.getElementById('list_lote').value;
+                                            document.getElementById('cad').value = document.getElementById('list_cadu').value;
                                         }
-                                    /*ACA ESTA EL CAMBIO*/
-                                    if (frm.elements[i + 1].disabled == true)
-                                        tabular(e, frm.elements[i + 1]);
-                                    else
-                                        frm.elements[i + 1].focus();
-                                    return false;
-                                }
-
-                                function cambiaLoteCadu(elemento) {
-                                    var indice = elemento.selectedIndex;
-                                    document.getElementById('list_cadu').selectedIndex = indice;
-                                    document.getElementById('lot').value = document.getElementById('list_lote').value;
-                                    document.getElementById('cad').value = document.getElementById('list_cadu').value;
-                                }
 
 
-                                function checkKey(e, obj) {
-                                    tecla = (document.all) ? e.keyCode : e.which;
-                                    if (tecla != 13)
-                                        return;
-                                    frm = obj.form;
-                                    for (i = 0; i < frm.elements.length; i++)
-                                        if (frm.elements[i] == obj)
-                                        {
-                                            if (i == frm.elements.length - 1)
-                                                i = -1;
-                                            break
+                                        function checkKey(key) {
+                                            var unicode;
+                                            if (key.charCode)
+                                            {
+                                                unicode = key.charCode;
+                                            }
+                                            else
+                                            {
+                                                unicode = key.keyCode;
+                                            }
+                                            //alert(unicode); // Para saber que codigo de tecla presiono , descomentar
+
+                                            if (unicode == 13) {
+                                                document.getElementById('CodigoBarras').click();
+                                            }
                                         }
-                                    /*ACA ESTA EL CAMBIO*/
-                                    if (frm.elements[i + 1].disabled == true)
-                                        tabular(e, frm.elements[i + 1]);
-                                    else
-                                        frm.elements[i + 1].focus();
-                                    document.getElementById('CodigoBarras').click();
-                                    return false;
-                                }
     </script>
 
 </html>

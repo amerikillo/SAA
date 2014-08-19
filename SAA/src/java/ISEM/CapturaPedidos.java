@@ -291,6 +291,17 @@ public class CapturaPedidos extends HttpServlet {
                 con.cierraConexion();
                 response.sendRedirect("capturaISEM.jsp");
             }
+            if (request.getParameter("accion").equals("reactivar")) {
+                con.conectar();
+                try {
+                    con.insertar("update tb_pedidoisem set F_Recibido='0' where F_NoCompra = '"+request.getParameter("NoCompra")+"'  ");
+                    con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"'  ");
+                } catch (Exception e) {
+                }
+                con.cierraConexion();
+                out.println("<script>alert('Se reactivo la orden "+request.getParameter("NoCompra")+" corrercetamente')</script>");
+                out.println("<script>window.location='ordenesCompra.jsp'</script>");
+            }
         } catch (Exception e) {
         }
     }
