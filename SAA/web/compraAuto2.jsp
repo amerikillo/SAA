@@ -895,7 +895,7 @@
                                 function validaRechazo() {
                                     var obser = document.getElementById('rechazoObser').value;
                                     if (obser === "") {
-                                        alert('Rellene el campo de observaciones de rechazo.');
+                                        alert('Ingrese las observaciones del rechazo.');
                                         return false;
                                     }
                                     var con = confirm('¿Seguro que desea rechazar la OC?');

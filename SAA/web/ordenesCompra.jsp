@@ -283,7 +283,7 @@
                             %>
                             <div class="col-sm-2 col-sm-offset-7">
                                 <form action="CapturaPedidos?NoCompra=<%=NoCompra%>" method="post">
-                                    <button class="btn btn-success btn-block" name="accion" id="reactivar" value="reactivar">Reactivar</button>
+                                    <button class="btn btn-success btn-block" name="accion" id="reactivar" value="reactivar" onclick="return confirm('¿Seguro que desea confirmar la orden de comrpa?')">Reactivar</button>
                                 </form>
                             </div>
                             <div class="col-sm-1">
