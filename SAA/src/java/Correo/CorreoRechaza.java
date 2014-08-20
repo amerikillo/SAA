@@ -49,7 +49,7 @@ public class CorreoRechaza extends HttpServlet {
 
     }
 
-    public void enviaCorreo(String folio, String Hora, String Fecha, String correoProvee) {
+    public void enviaCorreo(String folio, String Hora, String Fecha, String correoProvee, String claves) {
         try {
             System.out.println("hola");
             /* TODO output your page here. You may use following sample code. */
@@ -70,7 +70,7 @@ public class CorreoRechaza extends HttpServlet {
             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("anibal.rincon@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("americo.guzman@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("omar_23sh@hotmail.com"));//Aqui se pone la direccion a donde se enviara el correo
-            /*message.addRecipient(Message.RecipientType.TO, new InternetAddress("marioreyesflores22@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("marioreyesflores22@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("irisolmorales1@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("mgarduno418@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("gerardo.morales@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
@@ -108,7 +108,7 @@ public class CorreoRechaza extends HttpServlet {
             mensaje = mensaje + "Clave\t\t\tCantidad\n";
             try {
                 obj.conectar();
-                ResultSet rset = obj.consulta("select F_Clave, F_Cant, F_Obser from tb_pedidoisem where F_NoCompra = '" + folio + "' ");
+                ResultSet rset = obj.consulta("select F_Clave, F_Cant, F_Obser from tb_pedidoisem where F_NoCompra = '" + folio + "' and (F_Clave in (" + claves + ")) ");
                 while (rset.next()) {
                     mensaje = mensaje + rset.getString(1) + "\t\t" + rset.getString(2) + "\t\t" + rset.getString(3) + "\n";
                 }

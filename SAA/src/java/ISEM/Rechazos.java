@@ -47,6 +47,18 @@ public class Rechazos extends HttpServlet {
                     try {
                         con.conectar();
                         String fechaA = "", horaA = "";
+                        String[] claveschk = request.getParameterValues("chkCancela");
+                        String claves = "";
+                        if (claves != null && claveschk.length > 0) {
+                            for (int i = 0; i < claveschk.length; i++) {
+                                if (i == claveschk.length - 1) {
+                                    claves = claves + claveschk[i];
+                                } else {
+                                    claves = claves + claveschk[i] + ",";
+                                }
+                            }
+                        }
+                        System.out.println(claves);
                         ResultSet rset = con.consulta("select F_FecSur, F_HorSur from tb_pedidoisem where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "'");
                         while (rset.next()) {
                             fechaA = rset.getString(1);
@@ -57,8 +69,8 @@ public class Rechazos extends HttpServlet {
 
                         con.insertar("insert into tb_rechazos values (0,'" + request.getParameter("NoCompraRechazo") + "','" + Observaciones + "', NOW())");
                         con.insertar("update tb_pedidoisem set F_FecSur = '" + request.getParameter("FechaOrden") + "' , F_HorSur = '" + request.getParameter("HoraOrden") + "' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
-                        //con.insertar("update tb_pedidoisem set F_Recibido = '2' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
-                        correo.enviaCorreo(request.getParameter("NoCompraRechazo"), horaA, fechaA, request.getParameter("correoProvee"));
+                        con.insertar("update tb_pedidoisem set F_Recibido = '2' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
+                        correo.enviaCorreo(request.getParameter("NoCompraRechazo"), horaA, fechaA, request.getParameter("correoProvee"), claves);
                         con.cierraConexion();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());

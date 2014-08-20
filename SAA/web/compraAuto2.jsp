@@ -855,9 +855,9 @@
         Modal
         -->
         <div class="modal fade" id="Rechazar" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form action="Rechazos" method="post">
+                    <form action="Rechazos" method="get">
                         <div class="modal-header">
                             <div class="row">
                                 <div class="col-sm-5">
@@ -908,6 +908,53 @@
                                 <div class="col-sm-12">
                                     <h4>Correo del proveedor</h4>
                                     <input type="email" class="form-control" id="correoProvee" name="correoProvee" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Claves a Cancelar</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered">
+                                        <%
+                                            try {
+                                                con.conectar();
+                                                ResultSet rset = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' ");
+                                                int columna = 1;
+                                                while (rset.next()) {
+
+                                                    if (columna == 1) {
+                                        %>
+                                        <tr>
+                                            <%
+                                                }
+                                            %>
+                                            <td>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" checked="" name="chkCancela" value="<%=rset.getString(1)%>"><%=rset.getString(1)%>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <%
+                                            System.out.println(columna % 5);
+                                                if (columna % 5 == 0) {
+                                            %>
+                                        </tr>
+                                        <%
+                                                        columna = 0;
+                                                    }
+                                                    columna++;
+
+                                                }
+                                                con.cierraConexion();
+                                            } catch (Exception e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                        %>
+                                    </table>
                                 </div>
                             </div>
                             <div class="text-center" id="imagenCarga" style="display: none;" > 
@@ -1139,7 +1186,7 @@
                                         return false;
                                     } else {
                                         var dtFechaActual = new Date();
-                                        var sumarDias = parseInt(276);
+                                        var sumarDias = parseInt(365);
                                         dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
                                         var fechaSpl = cad.split("/");
                                         var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
