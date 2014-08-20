@@ -216,7 +216,7 @@
                                 <td class="text-center"><%=rset.getString(5)%></td>
                                 <td class="text-center"><%=rset.getString(6)%></td>
                                 <td><%=rset.getString(7)%></td>
-                                <td><a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#recalendarizar<%=rset.getString("F_Id")%>"><span class="glyphicon glyphicon-calendar"></span></a></td>
+                                <td><!--a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#recalendarizar<%=rset.getString("F_Id")%>"><span class="glyphicon glyphicon-calendar"></span></a--></td>
                             </tr>
                             <%
                                     }
