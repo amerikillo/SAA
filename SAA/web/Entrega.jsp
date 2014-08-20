@@ -4,6 +4,7 @@
     Author     : Americo
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="java.text.DecimalFormatSymbols"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.sql.ResultSet"%>
@@ -35,16 +36,16 @@
     } catch (Exception e) {
 
     }
-    if(fechaCap==null){
-        fechaCap="";
+    if (fechaCap == null) {
+        fechaCap = "";
     }
     try {
         Proveedor = request.getParameter("Proveedor");
     } catch (Exception e) {
 
     }
-    if(Proveedor==null){
-        Proveedor="";
+    if (Proveedor == null) {
+        Proveedor = "";
     }
 %>
 <html>
@@ -105,7 +106,8 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
+                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>        
+                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                 
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -185,6 +187,7 @@
                                 <td class="text-center">Hora Entrega2</td> 
                                 <td class="text-center">Bodega Recibo CEDIS GNKL</td> 
                                 <td class="text-center">Observación</td> 
+                                <td class="text-center"></td> 
                             </tr>
                         </thead>
                         <tbody>
@@ -192,18 +195,18 @@
                                 try {
                                     con.conectar();
                                     ResultSet rset = null;
-                                    if ((Proveedor.equals("")) && (fechaCap.equals(""))){
-                                        
-                                    rset = con.consulta("select F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs from TB_FecEnt");
-                                    }else if (!(Proveedor.equals("")) && (fechaCap.equals(""))){
-                                        
-                                    rset = con.consulta("select F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs from TB_FecEnt WHERE F_Provee = '"+Proveedor+"'");                                        
-                                    }else{                     
-                                        
-                                    rset = con.consulta("select F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs from TB_FecEnt WHERE F_F1 like '%" + fechaCap + "%' or F_F2 like '%" + fechaCap + "%' ");
+                                    if ((Proveedor.equals("")) && (fechaCap.equals(""))) {
+
+                                        rset = con.consulta("select F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs,F_Id from TB_FecEnt");
+                                    } else if (!(Proveedor.equals("")) && (fechaCap.equals(""))) {
+
+                                        rset = con.consulta("select F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs,F_Id from TB_FecEnt WHERE F_Provee = '" + Proveedor + "'");
+                                    } else {
+
+                                        rset = con.consulta("select F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs,F_Id from TB_FecEnt WHERE F_F1 like '%" + fechaCap + "%' or F_F2 like '%" + fechaCap + "%' ");
                                     }
                                     while (rset.next()) {
-                                       
+
                             %>
                             <tr>
                                 <td><%=rset.getString(1)%></td>
@@ -213,6 +216,7 @@
                                 <td class="text-center"><%=rset.getString(5)%></td>
                                 <td class="text-center"><%=rset.getString(6)%></td>
                                 <td><%=rset.getString(7)%></td>
+                                <td><a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#recalendarizar<%=rset.getString("F_Id")%>"><span class="glyphicon glyphicon-calendar"></span></a></td>
                             </tr>
                             <%
                                     }
@@ -233,6 +237,115 @@
                 Todos los Derechos Reservados
             </div>
         </div>
+        <!--
+        Modal
+        -->
+        <%
+            try {
+                con.conectar();
+                ResultSet rset = null;
+                if ((Proveedor.equals("")) && (fechaCap.equals(""))) {
+
+                    rset = con.consulta("select F_Id, F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs from TB_FecEnt");
+                } else if (!(Proveedor.equals("")) && (fechaCap.equals(""))) {
+
+                    rset = con.consulta("select F_Id, F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs from TB_FecEnt WHERE F_Provee = '" + Proveedor + "'");
+                } else {
+
+                    rset = con.consulta("select F_Id, F_Provee,F_F1,F_H1,F_F2,F_H2,F_Bodega,F_obs from TB_FecEnt WHERE F_F1 like '%" + fechaCap + "%' or F_F2 like '%" + fechaCap + "%' ");
+                }
+                while (rset.next()) {
+
+        %>
+        <div class="modal fade" id="recalendarizar<%=rset.getString(1)%>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="Rechazos" method="post">
+                        <div class="modal-header">
+                            <div class="row">
+                                <div class="col-sm-7">
+                                    <h4 class="modal-title" id="myModalLabel">Recalendarizar Orden de Compra</h4>
+                                </div>
+                                <div class="hidden">
+                                    <input name="NoCompraRechazo" id="NoCompraRechazo" value="<%=rset.getString(1)%>" class="form-control" readonly="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Fecha Original</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="FechaOrden<%=rset.getString(1)%>" name="FechaOrden<%=rset.getString(1)%>" value="<%=rset.getString(3)%>" readonly="" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="FechaOrden<%=rset.getString(1)%>" name="FechaOrden<%=rset.getString(1)%>" value="<%=rset.getString(4)%>" readonly="" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Fecha de nueva recepción</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="date" min="<%=df2.format(new Date())%>" class="form-control" id="FechaOrden" name="FechaOrden" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="HoraOrden" name="HoraOrden">
+                                        <%
+                                            for (int i = 0; i < 24; i++) {
+                                                if (i != 24) {
+                                        %>
+                                        <option value="<%=i%>:00"><%=i%>:00</option>
+                                        <option value="<%=i%>:30"><%=i%>:30</option>
+                                        <%
+                                        } else {
+                                        %>
+                                        <option value="<%=i%>:00"><%=i%>:00</option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Observaciones de Rechazo</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Correo del proveedor</h4>
+                                    <input type="email" class="form-control" id="correoProvee" name="correoProvee" />
+                                </div>
+                            </div>
+                            <div class="text-center" id="imagenCarga" style="display: none;" > 
+                                <img src="imagenes/ajax-loader-1.gif">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary" onclick="return validaRecalendariza();
+                                    " name="accion" value="Recalendarizar">Rechazar OC</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%
+                }
+                con.cierraConexion();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        %>
+        <!--
+        /Modal
+        -->
     </body>
 </html>
 
@@ -248,13 +361,40 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
+                                function validaRecalendariza() {
+                                    var obser = document.getElementById('rechazoObser').value;
+                                    var fechaN = document.getElementById('FechaOrden').value;
+                                    var horaN = document.getElementById('HoraOrden').value;
+                                    var correoProvee = document.getElementById('correoProvee').value;
+                                    if (obser === "") {
+                                        alert('Ingrese las observaciones del rechazo.');
+                                        return false;
+                                    }
+                                    if (fechaN === "") {
+                                        alert('Ingrese nueva fecha de recepción.');
+                                        return false;
+                                    }
+                                    if (horaN === "0:00") {
+                                        alert('Ingrese nueva hora de recepción.');
+                                        return false;
+                                    }
+                                    if (correoProvee === "0:00") {
+                                        alert('Ingrese correo de proveedor.');
+                                        return false;
+                                    }
+                                    var con = confirm('¿Seguro que desea rechazar la OC?');
+                                    if (con === false) {
+                                        return false;
+                                    }
+                                    document.getElementById('imagenCarga').style.display = 'block';
+                                    return false;
+                                }
                                 $(document).ready(function() {
                                     $('#datosCompras').dataTable();
                                 });
-</script>
-<script>
-    $(function() {
-        $("#Fecha").datepicker();
-        $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
+
+                                $(function() {
+                                    $("#Fecha").datepicker();
+                                    $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                                });
 </script>

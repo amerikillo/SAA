@@ -79,7 +79,8 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
+                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>    
+                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                     
                                 </ul>
                             </li>
                             <!--li class="dropdown">

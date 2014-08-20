@@ -242,7 +242,8 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                    
+                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>     
+                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                  
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -452,7 +453,7 @@
                                         }
                                         if (contadorLotes > 1) {
                                             //Mas de 1 lote
-                                    %>
+%>
                                     <td>
                                         <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                         <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
@@ -922,6 +923,9 @@
                 </div>
             </div>
         </div>
+        <!--
+        /Modal
+        -->
     </body>
 
 

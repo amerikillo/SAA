@@ -130,7 +130,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                      *Consulta a compra temporal (MySQL)
                      *con base en fecha y usuario
                      */
-                    ResultSet rsetDatos = con.consulta("SELECT F_ClaPro, F_Lote, F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') AS FECAD, F_FecFab, F_Marca, F_Provee, F_Cb, F_Tarimas, F_Cajas, F_Pz, F_Resto, F_Costo,F_ImpTo, F_ComTot, F_FolRemi, F_OrdCom, F_ClaOrg, F_User, F_Obser FROM tb_compratemp WHERE F_OrdCom='" + request.getParameter("fol_gnkl") + "' AND F_FecApl=CURDATE()");
+                    ResultSet rsetDatos = con.consulta("SELECT F_ClaPro, F_Lote, F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') AS FECAD, F_FecFab, F_Marca, F_Provee, F_Cb, F_Tarimas, F_Cajas, F_Pz, F_Resto, F_Costo,F_ImpTo, F_ComTot, F_FolRemi, F_OrdCom, F_ClaOrg, F_User, F_Obser FROM tb_compratemp WHERE F_OrdCom='" + request.getParameter("fol_gnkl") + "'");
                     while (rsetDatos.next()) {
                         F_ClaPro = rsetDatos.getString("F_ClaPro");
                         F_Lote = rsetDatos.getString("F_Lote").toUpperCase();
@@ -348,7 +348,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                      *Consulta a compra temporal (MySQL)
                      *con base en fecha y usuario
                      */
-                    ResultSet rsetDatos = con.consulta("SELECT F_ClaPro, F_Lote, F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') AS FECAD, F_FecFab, F_Marca, F_Provee, F_Cb, F_Tarimas, F_Cajas, F_Pz, F_Resto, F_Costo,F_ImpTo, F_ComTot, F_FolRemi, F_OrdCom, F_ClaOrg, F_User, F_Obser FROM tb_compratemp WHERE F_OrdCom='" + request.getParameter("fol_gnkl") + "' AND F_FecApl=CURDATE()");
+                    ResultSet rsetDatos = con.consulta("SELECT F_ClaPro, F_Lote, F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') AS FECAD, F_FecFab, F_Marca, F_Provee, F_Cb, F_Tarimas, F_Cajas, F_Pz, F_Resto, F_Costo,F_ImpTo, F_ComTot, F_FolRemi, F_OrdCom, F_ClaOrg, F_User, F_Obser FROM tb_compratemp WHERE F_OrdCom='" + request.getParameter("fol_gnkl") + "'");
                     while (rsetDatos.next()) {
                         F_ClaPro = rsetDatos.getString("F_ClaPro");
                         F_Lote = rsetDatos.getString("F_Lote").toUpperCase();
