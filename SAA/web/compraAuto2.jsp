@@ -4,6 +4,7 @@
     Author     : Americo
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.DecimalFormatSymbols"%>
 <%@page import="java.sql.ResultSet"%>
@@ -451,7 +452,7 @@
                                         }
                                         if (contadorLotes > 1) {
                                             //Mas de 1 lote
-%>
+                                    %>
                                     <td>
                                         <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                         <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
@@ -867,8 +868,50 @@
                             </div>
                         </div>
                         <div class="modal-body">
-                            <h4>Observaciones de Rechazo</h4>
-                            <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser"></textarea>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Observaciones de Rechazo</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Fecha de nueva recepción</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="date" min="<%=df2.format(new Date())%>" class="form-control" id="FechaOrden" name="FechaOrden" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="HoraOrden" name="HoraOrden">
+                                        <%
+                                            for (int i = 0; i < 24; i++) {
+                                                if (i != 24) {
+                                        %>
+                                        <option value="<%=i%>:00"><%=i%>:00</option>
+                                        <option value="<%=i%>:30"><%=i%>:30</option>
+                                        <%
+                                        } else {
+                                        %>
+                                        <option value="<%=i%>:00"><%=i%>:00</option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Correo del proveedor</h4>
+                                    <input type="email" class="form-control" id="correoProvee" name="correoProvee" />
+                                </div>
+                            </div>
+                            <div class="text-center" id="imagenCarga" style="display: none;" > 
+                                <img src="imagenes/ajax-loader-1.gif">
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -891,17 +934,33 @@
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
-
                                 function validaRechazo() {
                                     var obser = document.getElementById('rechazoObser').value;
+                                    var fechaN = document.getElementById('FechaOrden').value;
+                                    var horaN = document.getElementById('HoraOrden').value;
+                                    var correoProvee = document.getElementById('correoProvee').value;
                                     if (obser === "") {
                                         alert('Ingrese las observaciones del rechazo.');
+                                        return false;
+                                    }
+                                    if (fechaN === "") {
+                                        alert('Ingrese nueva fecha de recepción.');
+                                        return false;
+                                    }
+                                    if (horaN === "0:00") {
+                                        alert('Ingrese nueva hora de recepción.');
+                                        return false;
+                                    }
+                                    if (correoProvee === "0:00") {
+                                        alert('Ingrese correo de proveedor.');
                                         return false;
                                     }
                                     var con = confirm('¿Seguro que desea rechazar la OC?');
                                     if (con === false) {
                                         return false;
                                     }
+                                    document.getElementById('imagenCarga').style.display = 'block';
+                                    //return false;
                                 }
 
                                 $(function() {
@@ -1160,6 +1219,7 @@
                                     document.getElementById('CodigoBarras').click();
                                     return false;
                                 }
+
     </script>
 
 </html>

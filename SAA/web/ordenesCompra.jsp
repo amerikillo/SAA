@@ -325,17 +325,21 @@
                                 <textarea rows="7" class="form-control" readonly=""><%=obserRechazo%></textarea>
                                 <br/>
                                 <%
-                                } else if (rset.getString(7).equals("2")) {
+                                } else {
                                     String obserRechazo = "";
-                                    ResultSet rset2 = con.consulta("select F_Observaciones from tb_rechazos where F_NoCompra = '" + rset.getString(1) + "' ");
+                                    int banRechazo=0;
+                                    ResultSet rset2 = con.consulta("select F_Observaciones, F_Fecha from tb_rechazos where F_NoCompra = '" + rset.getString(1) + "' ");
                                     while (rset2.next()) {
-                                        obserRechazo = rset2.getString(1);
+                                        obserRechazo = obserRechazo+"Fecha: "+rset2.getString(2)+"\nObservaciones: "+rset2.getString(1)+"\n";
+                                        banRechazo=1;
                                     }
+                                    if(banRechazo==1){
                                 %>
                                 <h4 class="text-danger">FOLIO RECHAZADO</h4>
                                 <textarea rows="7" class="form-control" readonly=""><%=obserRechazo%></textarea>
                                 <br/>
                                 <%
+                                    }
                                     }
                                 %>
                                 <div class="row">
@@ -433,14 +437,14 @@
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
-                            $(document).ready(function() {
-                                $('#datosCompras').dataTable();
-                            });
+                                        $(document).ready(function() {
+                                            $('#datosCompras').dataTable();
+                                        });
 
-                            $(function() {
-                                $("#Fecha").datepicker();
-                                $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                            });
+                                        $(function() {
+                                            $("#Fecha").datepicker();
+                                            $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                                        });
     </script>
 </html>
 

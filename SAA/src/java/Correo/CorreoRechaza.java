@@ -49,8 +49,9 @@ public class CorreoRechaza extends HttpServlet {
 
     }
 
-    public void enviaCorreo(String folio) {
+    public void enviaCorreo(String folio, String Hora, String Fecha, String correoProvee) {
         try {
+            System.out.println("hola");
             /* TODO output your page here. You may use following sample code. */
             Properties props = new Properties();
             props.setProperty("mail.smtp.host", "smtp.gmail.com");
@@ -70,32 +71,35 @@ public class CorreoRechaza extends HttpServlet {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("americo.guzman@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("omar_23sh@hotmail.com"));//Aqui se pone la direccion a donde se enviara el correo
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("marioreyesflores22@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("irisolmorales1@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("mgarduno418@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("gerardo.morales@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("oscargnkl@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("joseluis.chavez@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("javier.calero@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("mario.garcia@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("yolanda.orozco@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("vicente.flores@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
-             message.addRecipient(Message.RecipientType.TO, new InternetAddress("msergio0505@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
-             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("javier.calero@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
-             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("mario.garcia@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
-             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("joseluis.chavez@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo*/
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("irisolmorales1@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("mgarduno418@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("gerardo.morales@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("oscargnkl@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("joseluis.chavez@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("javier.calero@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("mario.garcia@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("yolanda.orozco@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("vicente.flores@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("msergio0505@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(correoProvee));//Aqui se pone la direccion a donde se enviara el correo
+            //message.addRecipient(Message.RecipientType.TO,new InternetAddress("javier.calero@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
+            //message.addRecipient(Message.RecipientType.TO,new InternetAddress("mario.garcia@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
+            //message.addRecipient(Message.RecipientType.TO,new InternetAddress("joseluis.chavez@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo*/
             message.setSubject("Se ha rechazado el folio " + folio + " / GNK Logística");
             System.out.println("Se ha rechazado el folio " + folio + " / GNK Logística");
             String mensaje = "Se ha rechazado el folio " + folio + "\n";
             try {
                 obj.conectar();
-                ResultSet rset = obj.consulta("select F_Observaciones from tb_rechazos where F_NoCompra = '"+folio+"'  ");
+                ResultSet rset = obj.consulta("select F_Observaciones, F_Fecha from tb_rechazos where F_NoCompra = '" + folio + "'  ");
                 while (rset.next()) {
+                    mensaje = mensaje + "Fecha de rechazo: " + rset.getString(2) + "\n";
                     mensaje = mensaje + "Observaciones de rechazo: " + rset.getString(1) + "\n";
                 }
                 rset = obj.consulta("select p.F_FecSur, p.F_HorSur, pro.F_NomPro, u.F_Usuario from tb_pedidoisem p, tb_proveedor pro, tb_usuariosisem u where u.F_IdUsu = p.F_IdUsu and p.F_Provee = pro.F_ClaProve and  F_NoCompra = '" + folio + "' group by pro.F_NomPro ");
                 while (rset.next()) {
                     mensaje = mensaje + "Proveedor: " + rset.getString(3) + "\n"
-                            + "Fecha de Entrega: " + rset.getString(1) + " " + rset.getString(2) + "\n"
+                            + "Fecha de entrega anterior: " + Fecha + " " + Hora + "\n"
+                            + "Fecha de nueva entrega: " + rset.getString(1) + " " + rset.getString(2) + "\n"
                             + "Orden capurada por: " + rset.getString(4) + "\n";
                 }
                 obj.cierraConexion();
