@@ -69,6 +69,7 @@
 
     }
 
+    int totalClaves = 0, clavesCapturadas = 0;
     String fecha = "", noCompra = "", Proveedor = "", Fecha = "";
     try {
         fecha = request.getParameter("Fecha");
@@ -378,6 +379,7 @@
                                                 ResultSet rset2 = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' ");
                                                 while (rset2.next()) {
                                                     out.print("<option>" + rset2.getString(1) + "</option>");
+                                                    totalClaves++;
                                                 }
                                                 con.cierraConexion();
                                             } catch (Exception e) {
@@ -389,9 +391,26 @@
                                 <div class="col-sm-1">
                                     <button class="btn btn-primary btn-block" name="accion" value="seleccionaClave">Clave</button>
                                 </div>
-                                <div class="col-sm-2 col-lg-offset-6">
+                                <div class="col-sm-6">
+                                    <%
+                                        try {
+                                            con.conectar();
+                                            ResultSet rset5 = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "'");
+                                            while (rset5.next()) {
+                                                clavesCapturadas++;
+                                            }
+                                            con.cierraConexion();
+                                        } catch (Exception e) {
+
+                                        }
+                                    %>
+
+                                    <h4>Claves ingresadas <%=clavesCapturadas%>/<%=totalClaves%></h4>
+                                </div>
+                                <div class="col-sm-2">
                                     <a href="#" class="btn btn-danger btn-block" data-toggle="modal" data-target="#Rechazar">Rechazar</a>
                                 </div>
+
                             </div>
                         </div>
                         <div class="panel-body">
@@ -408,7 +427,7 @@
                                     while (rset2.next()) {
 
                             %>
-                            <h4 class="bg-primary" style="padding: 5px">CLAVE <%=Integer.parseInt(posClave) + 1%> / <%=numRenglones + 1%> | <%=rset2.getString(1)%> <%=rset2.getString(2)%></h4>
+                            <h4 class="bg-primary" style="padding: 5px">CLAVE | <%=rset2.getString(1)%> <%=rset2.getString(2)%></h4>
                             <table class="table table-bordered table-condensed table-striped">
                                 <tr>
                                     <td><strong>Clave</strong></td>
@@ -781,8 +800,6 @@
                         } catch (Exception e) {
 
                         }
-                    %>
-                    <%
                         if (banCompra == 1) {
                     %>
                     <tr>
@@ -867,6 +884,27 @@
                                     <input name="NoCompraRechazo" id="NoCompraRechazo" value="<%=noCompra%>" class="form-control" readonly="" />
                                 </div>
                             </div>
+                            <div class="row">
+                                <%
+                                    try {
+                                        con.conectar();
+                                        ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0' group by F_NoCompra");
+                                        while (rset.next()) {
+                                %>
+                                <div class="col-sm-12">
+                                    Proveedor:<%=rset.getString("p.F_NomPro")%>
+                                </div>
+                                <div class="col-sm-12">
+                                    Fecha y Hora <%=rset.getString("i.F_FecSur")%> - <%=rset.getString("i.F_HorSur")%>
+                                </div>
+                                <%
+                                        }
+                                        con.cierraConexion();
+                                    } catch (Exception e) {
+
+                                    }
+                                %>
+                            </div>
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -874,7 +912,7 @@
                                     <h4>Observaciones de Rechazo</h4>
                                 </div>
                                 <div class="col-sm-12">
-                                    <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser"></textarea>
+                                    <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser" rows="5"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -911,8 +949,16 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <h4>Claves a Cancelar</h4>
+                                    <h6>*Deseleccione las claves que no va a cancelar</h6>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <h4><input type="checkbox" checked name="todosChk" id="todosChk" onclick="checkea(this)">Seleccionar todas</h4>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -939,7 +985,7 @@
                                                 </div>
                                             </td>
                                             <%
-                                            System.out.println(columna % 5);
+                                                System.out.println(columna % 5);
                                                 if (columna % 5 == 0) {
                                             %>
                                         </tr>
@@ -962,9 +1008,9 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary" onclick="return validaRechazo();
                                     " name="accion" value="Rechazar">Rechazar OC</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </form>
                 </div>
@@ -985,6 +1031,32 @@
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
+                                /*$('#todosChk').click(function(event) {
+                                 alert('hola');
+                                 if (this.checked) {
+                                 $(':chkCancela').each(function() {
+                                 this.checked = true;
+                                 });
+                                 } else {
+                                 $(':chkCancela').each(function() {
+                                 this.checked = false;
+                                 });
+                                 }
+                                 });*/
+                                function checkea(obj) {
+                                    var cbs = document.getElementsByName('chkCancela');
+                                    if (obj.checked) {
+                                        for (var i = 0; i < cbs.length; i++)
+                                        {
+                                            cbs[i].checked = true;
+                                        }
+                                    } else {
+                                        for (var i = 0; i < cbs.length; i++)
+                                        {
+                                            cbs[i].checked = false;
+                                        }
+                                    }
+                                }
                                 function validaRechazo() {
                                     var obser = document.getElementById('rechazoObser').value;
                                     var fechaN = document.getElementById('FechaOrden').value;

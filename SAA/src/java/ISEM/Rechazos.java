@@ -5,17 +5,19 @@
  */
 package ISEM;
 
-import Correo.CorreoRechaza;
-import conn.ConectionDB;
+import Correo.*;
+import conn.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -35,16 +37,18 @@ public class Rechazos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ConectionDB con = new ConectionDB();
+        ConectionDB_Nube con = new ConectionDB_Nube();
         DateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         PrintWriter out = response.getWriter();
-        CorreoRechaza correo = new CorreoRechaza();
+
+        HttpSession sesion = request.getSession(true);
         try {
             try {
 
                 if (request.getParameter("accion").equals("Rechazar")) {
                     try {
+                        CorreoRechaza correo = new CorreoRechaza();
                         con.conectar();
                         String fechaA = "", horaA = "";
                         String[] claveschk = request.getParameterValues("chkCancela");
@@ -76,6 +80,66 @@ public class Rechazos extends HttpServlet {
                         System.out.println(e.getMessage());
                     }
                     response.sendRedirect("compraAuto2.jsp");
+                }
+                if (request.getParameter("accion").equals("Recalendarizar")) {
+
+                    CorreoCambiaFecha correo = new CorreoCambiaFecha();
+                    String folio = request.getParameter("NoRecalendarizar");
+                    System.out.println(folio);
+
+                    String fecha1 = request.getParameter("FechaOrden1_" + folio);
+                    String fecha2 = request.getParameter("FechaOrden2_" + folio);
+                    String hora1 = request.getParameter("HoraOrden1_" + folio);
+                    String hora2 = request.getParameter("HoraOrden2_" + folio);
+                    String fechaA1 = request.getParameter("FechaA1_" + folio);
+                    String fechaA2 = request.getParameter("FechaA2_" + folio);
+                    String horaA1 = request.getParameter("HoraA1_" + folio);
+                    String horaA2 = request.getParameter("HoraA2_" + folio);
+                    String bodega = request.getParameter("Bode_" + folio);
+                    String email = request.getParameter("correoProvee_" + folio);
+
+                    String obser = "";
+                    byte[] a = request.getParameter("recaObser_" + folio).getBytes("ISO-8859-1");
+                    String Observaciones = (new String(a, "UTF-8"));
+                    try {
+                        con.conectar();
+                        try {
+                            ResultSet rset = con.consulta("select F_Obs from TB_FecEnt where F_Id = '" + folio + "' ");
+                            while (rset.next()) {
+                                obser = rset.getString(1);
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        con.cierraConexion();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    obser = obser + "\n" + df2.format(new Date()) + ": " + Observaciones;
+
+                    String query = "";
+                    if (!fecha1.equals("") && fecha2.equals("")) {
+                        query = "update TB_FecEnt set F_F1 = '" + df2.format(df.parse(fecha1)) + "', F_H1 = '" + hora1 + "', F_Obs = '" + obser + "', F_Bodega = '" + bodega + "' where F_Id = '" + folio + "' ;";
+                    } else if (!fecha2.equals("") && fecha1.equals("")) {
+                        query = "update TB_FecEnt set F_F2 = '" + df2.format(df.parse(fecha2)) + "', F_H2 = '" + hora2 + "', F_Obs = '" + obser + "', F_Bodega = '" + bodega + "' where F_Id = '" + folio + "' ;";
+                    } else if (!fecha1.equals("") && fecha2.equals("")) {
+                        query = "update TB_FecEnt set F_F1 = '" + df2.format(df.parse(fecha1)) + "', F_H1 = '" + hora1 + "', F_F2 = '" + df2.format(df.parse(fecha2)) + "', F_H2 = '" + hora2 + "', F_Obs = '" + obser + "', F_Bodega = '" + bodega + "' where F_Id = '" + folio + "' ;";
+                    }
+                    try {
+                        con.conectar();
+                        try {
+                            con.insertar(query);
+                            con.insertar("insert into tb_regcambiofechas values (0,'" + sesion.getAttribute("nombre") + "',NOW(),'" + folio + "','" + fecha1 + "','" + hora1 + "','" + fecha2 + "','" + hora2 + "','" + obser + "')");
+                            correo.enviaCorreo(folio, (String) sesion.getAttribute("nombre"), email, fechaA1, fechaA2, horaA1, horaA2);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        con.cierraConexion();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    response.sendRedirect("Entrega.jsp");
                 }
             } catch (Exception e) {
             }

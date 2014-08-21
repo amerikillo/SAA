@@ -26,7 +26,7 @@
     } else {
         //response.sendRedirect("index.jsp");
     }
-    ConectionDB con = new ConectionDB();
+    ConectionDB_Nube con = new ConectionDB_Nube();
     String Fecha = "";
     String fechaCap = "";
     String Proveedor = "";
@@ -215,8 +215,8 @@
                                 <td class="text-center"><%=rset.getString(4)%></td>
                                 <td class="text-center"><%=rset.getString(5)%></td>
                                 <td class="text-center"><%=rset.getString(6)%></td>
-                                <td><%=rset.getString(7)%></td>
-                                <td><!--a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#recalendarizar<%=rset.getString("F_Id")%>"><span class="glyphicon glyphicon-calendar"></span></a--></td>
+                                <td><textarea class="form-control" rows="5" cols="60" readonly=""><%=rset.getString(7)%></textarea></td>
+                                <td><a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#recalendarizar<%=rset.getString("F_Id")%>"><span class="glyphicon glyphicon-calendar"></span></a></td>
                             </tr>
                             <%
                                     }
@@ -260,38 +260,41 @@
         <div class="modal fade" id="recalendarizar<%=rset.getString(1)%>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="Rechazos" method="post">
+                    <form action="Rechazos" method="get">
                         <div class="modal-header">
                             <div class="row">
                                 <div class="col-sm-7">
                                     <h4 class="modal-title" id="myModalLabel">Recalendarizar Orden de Compra</h4>
                                 </div>
-                                <div class="hidden">
-                                    <input name="NoCompraRechazo" id="NoCompraRechazo" value="<%=rset.getString(1)%>" class="form-control" readonly="" />
+                                <div class="">
+                                    <input name="NoRecalendarizar" id="NoRecalendarizar" value="<%=rset.getString(1)%>" class="hidden" readonly="" />
                                 </div>
                             </div>
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <h4>Fecha Original</h4>
+                                <div class="col-sm-6">
+                                    <h4>Fecha Entrega 1</h4>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="FechaOrden<%=rset.getString(1)%>" name="FechaOrden<%=rset.getString(1)%>" value="<%=rset.getString(3)%>" readonly="" />
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="FechaOrden<%=rset.getString(1)%>" name="FechaOrden<%=rset.getString(1)%>" value="<%=rset.getString(4)%>" readonly="" />
+                                    <h4>Nueva Fecha 1</h4>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <h4>Fecha de nueva recepción</h4>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" value="<%=rset.getString(3)%>" readonly="" name="FechaA1_<%=rset.getString(1)%>" />
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="date" min="<%=df2.format(new Date())%>" class="form-control" id="FechaOrden" name="FechaOrden" />
+                                    <input type="date" class="form-control" id="FechaOrden1_<%=rset.getString(1)%>" name="FechaOrden1_<%=rset.getString(1)%>" value="" />
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" value="<%=rset.getString(4)%>" readonly="" name="HoraA1_<%=rset.getString(1)%>"/>
                                 </div>
                                 <div class="col-sm-6">
-                                    <select class="form-control" id="HoraOrden" name="HoraOrden">
+                                    <select class="form-control" id="HoraOrden1_<%=rset.getString(1)%>" name="HoraOrden1_<%=rset.getString(1)%>">
                                         <%
                                             for (int i = 0; i < 24; i++) {
                                                 if (i != 24) {
@@ -309,18 +312,75 @@
                                     </select>
                                 </div>
                             </div>
+                            <hr/>
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <h4>Observaciones de Rechazo</h4>
+                                <div class="col-sm-6">
+                                    <h4>Fecha Entrega 2</h4>
                                 </div>
-                                <div class="col-sm-12">
-                                    <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser"></textarea>
+                                <div class="col-sm-6">
+                                    <h4>Nueva Fecha 2</h4>
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" value="<%=rset.getString(5)%>" readonly="" name="FechaA2_<%=rset.getString(1)%>"/>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" id="FechaOrden2_<%=rset.getString(1)%>" name="FechaOrden2_<%=rset.getString(1)%>" value="" />
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" value="<%=rset.getString(6)%>" readonly="" name="HoraA2_<%=rset.getString(1)%>"/>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="HoraOrden2_<%=rset.getString(1)%>" name="HoraOrden2_<%=rset.getString(1)%>">
+                                        <%
+                                            for (int i = 0; i < 24; i++) {
+                                                if (i != 24) {
+                                        %>
+                                        <option value="<%=i%>:00"><%=i%>:00</option>
+                                        <option value="<%=i%>:30"><%=i%>:30</option>
+                                        <%
+                                        } else {
+                                        %>
+                                        <option value="<%=i%>:00"><%=i%>:00</option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr/>
+                            
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Bodega</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <select name="Bode_<%=rset.getString(1)%>" id="Bode_<%=rset.getString(1)%>" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <option <% if (rset.getString("F_Bodega").equals("Industria Automotriz No. 18 interior 3-C")){out.println("Selected");} %>>Industria Automotriz No. 18 interior 3-C</option>
+                                        <option <% if (rset.getString("F_Bodega").equals("Avenida Emiliano Zapata Lote 2")){out.println("Selected");} %>>Avenida Emiliano Zapata Lote 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                                
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Observaciones de Recalendarización</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" placeholder="Observaciones" name="recaObser_<%=rset.getString(1)%>" id="recaObser_<%=rset.getString(1)%>" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
                                 <div class="col-sm-12">
                                     <h4>Correo del proveedor</h4>
-                                    <input type="email" class="form-control" id="correoProvee" name="correoProvee" />
+                                    <input type="email" class="form-control" id="correoProvee_<%=rset.getString(1)%>" name="correoProvee_<%=rset.getString(1)%>" />
                                 </div>
                             </div>
                             <div class="text-center" id="imagenCarga" style="display: none;" > 
@@ -328,9 +388,9 @@
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" onclick="return validaRecalendariza(<%=rset.getString(1)%>);
+                                    " name="accion" value="Recalendarizar">RECALENDARIZAR OC</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary" onclick="return validaRecalendariza();
-                                    " name="accion" value="Recalendarizar">Rechazar OC</button>
                         </div>
                     </form>
                 </div>
@@ -361,33 +421,56 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                function validaRecalendariza() {
-                                    var obser = document.getElementById('rechazoObser').value;
-                                    var fechaN = document.getElementById('FechaOrden').value;
-                                    var horaN = document.getElementById('HoraOrden').value;
-                                    var correoProvee = document.getElementById('correoProvee').value;
-                                    if (obser === "") {
-                                        alert('Ingrese las observaciones del rechazo.');
+                                function validaRecalendariza(id) {
+                                    var fecha1 = document.getElementById('FechaOrden1_' + id).value;
+                                    var hora1 = document.getElementById('HoraOrden1_' + id).value;
+                                    var fecha2 = document.getElementById('FechaOrden2_' + id).value;
+                                    var hora2 = document.getElementById('HoraOrden2_' + id).value;
+                                    var observaciones = document.getElementById('recaObser_' + id).value;
+                                    var correo = document.getElementById('correoProvee_' + id).value;
+                                    var bodega = document.getElementById('Bode_' + id).value;
+
+                                    if (fecha1 === "" && hora1 !== "0:00") {
+                                        alert("Capture la Fecha 1");
                                         return false;
                                     }
-                                    if (fechaN === "") {
-                                        alert('Ingrese nueva fecha de recepción.');
+                                    if (fecha1 !== "" && hora1 === "0:00") {
+                                        alert("Capture la Hora 1");
                                         return false;
                                     }
-                                    if (horaN === "0:00") {
-                                        alert('Ingrese nueva hora de recepción.');
+
+
+                                    if (fecha2 === "" && hora2 !== "0:00") {
+                                        alert("Capture la Fecha 2");
                                         return false;
                                     }
-                                    if (correoProvee === "0:00") {
-                                        alert('Ingrese correo de proveedor.');
+                                    if (fecha2 !== "" && hora2 === "0:00") {
+                                        alert("Capture la Hora 2");
                                         return false;
                                     }
-                                    var con = confirm('¿Seguro que desea rechazar la OC?');
-                                    if (con === false) {
+
+
+                                    if (fecha1 === "" && hora1 === "0:00" && fecha2 === "" && hora2 === "0:00") {
+                                        alert("Seleccione las fechas a recalendarizar");
+                                        return false;
+                                    }
+
+                                    if (observaciones === "") {
+                                        alert("Ingrese las Observaciones");
+                                        return false;
+                                    }
+                                    
+                                    if (correo === "") {
+                                        alert("Ingrese correo");
+                                        return false;
+                                    }
+                                    
+                                    if (bodega === "") {
+                                        alert("Seleccione una Bodega");
                                         return false;
                                     }
                                     document.getElementById('imagenCarga').style.display = 'block';
-                                    return false;
+
                                 }
                                 $(document).ready(function() {
                                     $('#datosCompras').dataTable();
