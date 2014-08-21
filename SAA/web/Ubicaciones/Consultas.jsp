@@ -138,6 +138,7 @@
                             <%} else {%>
                         <button class="btn btn-sm btn-primary" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi2">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar2">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%}%>
+                        
                     </div>
                     
                 </div>

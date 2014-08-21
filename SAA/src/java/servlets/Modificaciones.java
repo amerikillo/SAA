@@ -93,13 +93,23 @@ public class Modificaciones extends HttpServlet {
 
                 try {
                     con.conectar();
+                    String idTemp = "";
+                    ResultSet rsetId = con.consulta("select * from tb_compratemp where F_IdCom = '" + request.getParameter("id") + "'");
+                    while (rsetId.next()) {
+                        ResultSet rset = con.consulta("select F_IdCom from tb_compraregistro where F_ClaPro = '"+rsetId.getString("F_ClaPro")+"' and F_Lote = '"+rsetId.getString("F_Lote")+"' and F_FecCad = '"+rsetId.getString("F_FecCad")+"' and F_FecFab = '"+rsetId.getString("F_FecFab")+"' and F_Marca = '"+rsetId.getString("F_Marca")+"' and F_Cb = '"+rsetId.getString("F_Cb")+"' and F_Pz = '"+rsetId.getString("F_Pz")+"' and F_Resto = '"+rsetId.getString("F_Resto")+"' and F_ComTot = '"+rsetId.getString("F_ComTot")+"' and F_FolRemi = '"+rsetId.getString("F_FolRemi")+"' and F_OrdCom = '"+rsetId.getString("F_OrdCom")+"' ");
+                        while(rset.next()){
+                            idTemp = rset.getString(1);
+                        }
+                    }
+                    
+                    
                     byte[] a = request.getParameter("pres").getBytes("ISO-8859-1");
                     String pres = new String(a, "UTF-8");
                     a = request.getParameter("Marca").getBytes("ISO-8859-1");
                     String marca = new String(a, "UTF-8");
                     con.actualizar("update tb_compratemp set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "' where F_IdCom = '" + request.getParameter("id") + "' ");
 
-                    con.actualizar("update tb_compraregistro set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_User = '" + sesion.getAttribute("nombre") + "'  where F_IdCom = '" + request.getParameter("id") + "' ");
+                    con.actualizar("update tb_compraregistro set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_User = '" + sesion.getAttribute("nombre") + "'  where F_IdCom = '" + idTemp + "' ");
                     con.cierraConexion();
                     con.cierraConexion();
                     out.println("<script>alert('Modificación Correcta')</script>");
@@ -119,13 +129,25 @@ public class Modificaciones extends HttpServlet {
 
                 try {
                     con.conectar();
+                    String idTemp = "";
+                    ResultSet rsetId = con.consulta("select * from tb_compratemp where F_IdCom = '" + request.getParameter("id") + "'");
+                    while (rsetId.next()) {
+                        ResultSet rset = con.consulta("select F_IdCom from tb_compraregistro where F_ClaPro = '"+rsetId.getString("F_ClaPro")+"' and F_Lote = '"+rsetId.getString("F_Lote")+"' and F_FecCad = '"+rsetId.getString("F_FecCad")+"' and F_FecFab = '"+rsetId.getString("F_FecFab")+"' and F_Marca = '"+rsetId.getString("F_Marca")+"' and F_Cb = '"+rsetId.getString("F_Cb")+"' and F_Pz = '"+rsetId.getString("F_Pz")+"' and F_Resto = '"+rsetId.getString("F_Resto")+"' and F_ComTot = '"+rsetId.getString("F_ComTot")+"' and F_FolRemi = '"+rsetId.getString("F_FolRemi")+"' and F_OrdCom = '"+rsetId.getString("F_OrdCom")+"' ");
+                        while(rset.next()){
+                            idTemp = rset.getString(1);
+                        }
+                    }
+                    
+                    
+                    
                     byte[] a = request.getParameter("pres").getBytes("ISO-8859-1");
                     String pres = new String(a, "UTF-8");
                     a = request.getParameter("Marca").getBytes("ISO-8859-1");
                     String marca = new String(a, "UTF-8");
-                    con.actualizar("update tb_compratemp set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "' where F_IdCom = '" + request.getParameter("id") + "' ");
                     
-                    con.actualizar("update tb_compraregistro set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_User = '"+sesion.getAttribute("nombre")+"'  where F_IdCom = '" + request.getParameter("id") + "' ");
+                    
+                    con.actualizar("update tb_compratemp set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "' where F_IdCom = '" + request.getParameter("id") + "' ");
+                    con.actualizar("update tb_compraregistro set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_User = '" + sesion.getAttribute("nombre") + "'  where F_IdCom = '" + idTemp + "' ");
                     con.cierraConexion();
                     out.println("<script>alert('Modificación Correcta')</script>");
                     out.println("<script>window.location='compraAuto2.jsp'</script>");
