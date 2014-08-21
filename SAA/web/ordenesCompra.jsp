@@ -65,7 +65,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            <div class="navbar navbar-default">
+            <!--div class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -82,8 +82,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="captura.jsp">Entrada Manual</a></li>
                                     <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
                                     <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
+                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
                                     <li><a href="kardexClave.jsp">Kardex Claves</a></li>
                                     <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
                                 </ul>
@@ -107,39 +107,29 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>    
-                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                     
+                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>     
+                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                  
                                 </ul>
                             </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
-                                </ul>
-                            </li>
-                            <%                                }
-                            %>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-                            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
+            <!--li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="../captura.jsp">Captura de Insumos</a></li>
+                    <li class="divider"></li>
+                    <li><a href="../catalogo.jsp">Catálogo de Proveedores</a></li>
+                    <li><a href="../reimpresion.jsp">Reimpresión de Docs</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
+            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
+        </ul>
+    </div><!--/.nav-collapse >
+</div>
+</div-->
+            <hr/>
 
             <form method="post" action="ordenesCompra.jsp">
                 <div class="row">
@@ -328,19 +318,19 @@
                                 <%
                                 } else {
                                     String obserRechazo = "";
-                                    int banRechazo=0;
+                                    int banRechazo = 0;
                                     ResultSet rset2 = con.consulta("select F_Observaciones, F_Fecha from tb_rechazos where F_NoCompra = '" + rset.getString(1) + "' ");
                                     while (rset2.next()) {
-                                        obserRechazo = obserRechazo+"Fecha: "+rset2.getString(2)+"\nObservaciones: "+rset2.getString(1)+"\n";
-                                        banRechazo=1;
+                                        obserRechazo = obserRechazo + "Fecha: " + rset2.getString(2) + "\nObservaciones: " + rset2.getString(1) + "\n";
+                                        banRechazo = 1;
                                     }
-                                    if(banRechazo==1){
+                                    if (banRechazo == 1) {
                                 %>
                                 <h4 class="text-danger">FOLIO RECHAZADO</h4>
                                 <textarea rows="7" class="form-control" readonly=""><%=obserRechazo%></textarea>
                                 <br/>
                                 <%
-                                    }
+                                        }
                                     }
                                 %>
                                 <div class="row">

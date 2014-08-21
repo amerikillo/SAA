@@ -47,7 +47,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            <div class="navbar navbar-default">
+            <!--div class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -98,9 +98,10 @@
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
                             <li class="active"><a href="../index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
                         </ul>
-                    </div><!--/.nav-collapse -->
+                    </div><!--/.nav-collapse>
                 </div>
-            </div>
+            </div-->
+            <hr/>
             <div class="container">
                 <div class="row">
                     <div class="row">

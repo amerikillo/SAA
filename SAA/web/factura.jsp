@@ -67,10 +67,10 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="captura.jsp">Entrada Manual</a></li>
                                     <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
-                                    <li><a href="kardexClave.jsp">Kardex Claves</a></li>
-                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
+                                    <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
+                                    <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
+                                    <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
+                                    <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -84,16 +84,16 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
+                                    <li><a href="#" onclick="window.open('medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
+                                    <li><a href="#" onclick="window.open('catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
+                                    <li><a href="#" onclick="window.open('marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>        
-                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                 
+                                    <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
+                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                      
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -119,7 +119,7 @@
                             %>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
                             <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
                         </ul>
                     </div><!--/.nav-collapse -->

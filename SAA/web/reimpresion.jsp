@@ -56,7 +56,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            <div class="navbar navbar-default">
+            <!--div class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -102,40 +102,30 @@
                                     <li><a href="historialOC.jsp">Historial OC</a></li>                                  
                                 </ul>
                             </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="../captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="../catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="../reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
-                                </ul>
-                            </li>
-                            <%                                }
-                            %>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-                            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
+            <!--li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="../captura.jsp">Captura de Insumos</a></li>
+                    <li class="divider"></li>
+                    <li><a href="../catalogo.jsp">Catálogo de Proveedores</a></li>
+                    <li><a href="../reimpresion.jsp">Reimpresión de Docs</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
+            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
+        </ul>
+    </div><!--/.nav-collapse >
+</div>
+</div-->
+            <hr/>
 
             <div>
                 <h3>Reimpresion de folios de Compras</h3>
                 <h4>Seleccione el folio a imprimir</h4>
-                
+
                 <br />
                 <div class="panel panel-primary">
                     <div class="panel-body">

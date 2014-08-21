@@ -75,22 +75,37 @@
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">SAA<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Captura Automática</a></li>
-                                    <!--li><a href="captura_handheld.jsp">Captura de Insumos handheld</a></li-->
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="captura.jsp">Entrada Manual</a></li>
+                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                    <li><a href="reimpresion.jsp" target="blank_">Reimpresión de Compras</a></li>
+                                    <li><a href="ordenesCompra.jsp" target="blank_">Órdenes de Compras</a></li>
+                                    <li><a href="kardexClave.jsp" target="blank_">Kardex Claves</a></li>
+                                    <li><a href="Ubicaciones/Consultas.jsp" target="blank_">Ubicaciones</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
+                                    <li><a href="factura.jsp">Facturación Automática</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
-
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="medicamento.jsp" target="blank_">Catálogo de Medicamento</a></li>
+                                    <li><a href="catalogo.jsp" target="blank_">Catálogo de Proveedores</a></li>
+                                    <li><a href="marcas.jsp" target="blank_">Catálogo de Marcas</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="Entrega.jsp" target="blank_">Fecha de Recibo en CEDIS</a></li> 
+                                    <li><a href="historialOC.jsp" target="blank_">Historial OC</a></li>                                      
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -116,7 +131,7 @@
                             %>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
                             <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
