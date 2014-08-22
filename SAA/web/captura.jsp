@@ -14,9 +14,10 @@
 <%
 
     HttpSession sesion = request.getSession();
-    String usua = "";
+    String usua = "", tipo="";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("index.jsp");
     }
@@ -106,6 +107,13 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="captura.jsp">Entrada Manual</a></li>
                                     <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                        <%
+                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                        %>
+                                    <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
+                                        <%
+                                            }
+                                        %>
                                     <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>

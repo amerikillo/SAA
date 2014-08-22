@@ -122,7 +122,22 @@
     int numRenglones = 0;
 
     String folioRemi = "";
+    try {
+        con.conectar();
+        ResultSet rset = con.consulta("select F_FolRemi from tb_compra where F_OrdCom  = '" + noCompra + "' group by F_FolRemi");
+        while (rset.next()) {
+            folioRemi = rset.getString(1);
+        }
+        if (folioRemi.equals("")) {
+            rset = con.consulta("select F_FolRemi from tb_compratemp where F_OrdCom  = '" + noCompra + "' group by F_FolRemi");
+            while (rset.next()) {
+                folioRemi = rset.getString(1);
+            }
+        }
+        con.cierraConexion();
+    } catch (Exception e) {
 
+    }
     if (folioRemi.equals("")) {
         try {
             folioRemi = (String) sesion.getAttribute("folioRemi");
@@ -203,13 +218,6 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="captura.jsp">Entrada Manual</a></li>
                                     <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                        <%
-                                            if (tipo.equals("2") || tipo.equals("3")) {
-                                        %>
-                                    <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
-                                        <%
-                                            }
-                                        %>
                                     <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
@@ -354,15 +362,6 @@
                                 <div class="col-sm-2"><input class="form-control" value="<%=rset.getString(1)%>" readonly="" name="folio" id="folio" onkeypress="return tabular(event, this)" /></div>
                                 <h4 class="col-sm-2 text-right">Folio de Remisión:</h4>
                                 <div class="col-sm-2"><input class="form-control" value="" name="folioRemi" id="folioRemi" onkeypress="return tabular(event, this)" /></div>
-                                <div class="col-sm-2">
-                                    <%
-                                        if (tipo.equals("2") || tipo.equals("3")) {
-                                    %>
-                                    <a class="btn btn-default" href="verificarCompraAuto.jsp">Verificar Remisión</a>
-                                    <%
-                                        }
-                                    %>
-                                </div>
                             </div>
                             <div class="row">
                                 <h4 class="col-sm-12">Proveedor: <%=rset.getString(4)%></h4>
@@ -378,7 +377,7 @@
                                         <%
                                             try {
                                                 con.conectar();
-                                                ResultSet rset2 = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' and F_Recibido = '0' ");
+                                                ResultSet rset2 = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' ");
                                                 while (rset2.next()) {
                                                     out.print("<option>" + rset2.getString(1) + "</option>");
                                                     totalClaves++;
@@ -474,7 +473,7 @@
                                         }
                                         if (contadorLotes > 1) {
                                             //Mas de 1 lote
-                                    %>
+%>
                                     <td>
                                         <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                         <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
@@ -793,8 +792,8 @@
                                 <button class="btn btn-warning" name="accion" value="modificarCompraAuto"><span class="glyphicon glyphicon-pencil" ></span></button>
                                 <button class="btn btn-danger" onclick="return confirm('¿Seguro de que desea eliminar?');" name="accion" value="eliminarCompraAuto"><span class="glyphicon glyphicon-remove"></span>
                                 </button>
-                                <!--button class="btn btn-success" onclick="return confirm('¿Seguro de Verificar?');" name="accion" value="verificarCompraAuto"><span class="glyphicon glyphicon-ok"></span>
-                                </button-->
+                                <button class="btn btn-success" onclick="return confirm('¿Seguro de Verificar?');" name="accion" value="verificarCompraAuto"><span class="glyphicon glyphicon-ok"></span>
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -809,22 +808,16 @@
                     <tr>
 
                         <td colspan="11">
-                            <div class="col-lg-3 col-lg-offset-6">
+                            <div class="col-lg-3 col-lg-offset-3">
                                 <form action="nuevoAutomaticaLotes" method="post">
                                     <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
-                                    <button  value="Eliminar" name="accion" class="btn btn-danger btn-block" onclick="return confirm('¿Seguro que desea eliminar la compra?');">Cancelar Compra</button>
-                                </form>
-                            </div>
-                            <div class="col-lg-3">
-                                <form action="Modificaciones" method="post">
-                                    <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
-                                    <button  value="verificarCompraAuto" name="accion" class="btn btn-success btn-block" onclick="return confirm('¿Seguro que desea verificar la compra?');">Verificar Compra</button>
+                                    <button  value="Eliminar" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Compra</button>
                                 </form>
                             </div>
                             <%
                                 if (tipo.equals("2") || tipo.equals("3")) {
                             %>
-                            <!--div class="col-lg-3">
+                            <div class="col-lg-3">
                                 <form action="nuevoAutomaticaLotes" method="post">
                                     <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
                                     <button  value="GuardarAbierta" name="accion" class="btn btn-warning  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
@@ -837,7 +830,7 @@
                                     <button  value="Guardar" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
                                             return validaCompra();">Confirmar Compra</button>
                                 </form>
-                            </div-->
+                            </div>
                             <%
                                 }
                             %>
@@ -1236,7 +1229,7 @@
                                     var folioRemi = document.getElementById('folioRemi').value;
                                     if (folioRemi === "") {
                                         alert("Falta Folio de Remisión");
-                                        document.getElementById('folioRemi').focus();
+                                        document.getElementById('codbar').focus();
                                         return false;
                                     }
 
