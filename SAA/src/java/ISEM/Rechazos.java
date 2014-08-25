@@ -38,6 +38,7 @@ public class Rechazos extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         ConectionDB_Nube con = new ConectionDB_Nube();
+        ConectionDB con1 = new ConectionDB();
         DateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         PrintWriter out = response.getWriter();
@@ -49,7 +50,7 @@ public class Rechazos extends HttpServlet {
                 if (request.getParameter("accion").equals("Rechazar")) {
                     try {
                         CorreoRechaza correo = new CorreoRechaza();
-                        con.conectar();
+                        con1.conectar();
                         String fechaA = "", horaA = "";
                         String[] claveschk = request.getParameterValues("chkCancela");
                         String claves = "";
@@ -63,7 +64,7 @@ public class Rechazos extends HttpServlet {
                             }
                         }
                         System.out.println(claves);
-                        ResultSet rset = con.consulta("select F_FecSur, F_HorSur from tb_pedidoisem where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "'");
+                        ResultSet rset = con1.consulta("select F_FecSur, F_HorSur from tb_pedidoisem where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "'");
                         while (rset.next()) {
                             fechaA = rset.getString(1);
                             horaA = rset.getString(2);
@@ -71,11 +72,11 @@ public class Rechazos extends HttpServlet {
                         byte[] a = request.getParameter("rechazoObser").getBytes("ISO-8859-1");
                         String Observaciones = (new String(a, "UTF-8"));
 
-                        con.insertar("insert into tb_rechazos values (0,'" + request.getParameter("NoCompraRechazo") + "','" + Observaciones + "', NOW())");
-                        con.insertar("update tb_pedidoisem set F_FecSur = '" + request.getParameter("FechaOrden") + "' , F_HorSur = '" + request.getParameter("HoraOrden") + "' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
-                        con.insertar("update tb_pedidoisem set F_Recibido = '2' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
+                        con1.insertar("insert into tb_rechazos values (0,'" + request.getParameter("NoCompraRechazo") + "','" + Observaciones + "', NOW())");
+                        con1.insertar("update tb_pedidoisem set F_FecSur = '" + request.getParameter("FechaOrden") + "' , F_HorSur = '" + request.getParameter("HoraOrden") + "' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
+                        con1.insertar("update tb_pedidoisem set F_Recibido = '2' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
                         correo.enviaCorreo(request.getParameter("NoCompraRechazo"), horaA, fechaA, request.getParameter("correoProvee"), claves);
-                        con.cierraConexion();
+                        con1.cierraConexion();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -130,6 +131,7 @@ public class Rechazos extends HttpServlet {
                         con.conectar();
                         try {
                             con.insertar(query);
+                            System.out.println("insert into tb_regcambiofechas values (0,'" + sesion.getAttribute("nombre") + "',NOW(),'" + folio + "','" + fecha1 + "','" + hora1 + "','" + fecha2 + "','" + hora2 + "','" + obser + "')");
                             con.insertar("insert into tb_regcambiofechas values (0,'" + sesion.getAttribute("nombre") + "',NOW(),'" + folio + "','" + fecha1 + "','" + hora1 + "','" + fecha2 + "','" + hora2 + "','" + obser + "')");
                             correo.enviaCorreo(folio, (String) sesion.getAttribute("nombre"), email, fechaA1, fechaA2, horaA1, horaA2);
                         } catch (Exception e) {

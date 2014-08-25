@@ -262,6 +262,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 out.println("<script>alert('Compra ABIERTA realizada, datos transferidos correctamente')</script>");
                 out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
+                out.println("<script>window.open('reimpISEM.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.location='verificarCompraAuto.jsp'</script>");
 
             }
@@ -453,7 +454,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
 
                         FolioLote = "";
                         FolioLoteSQL = "";
-                        con.actualizar("update tb_pedidoisem set F_Recibido = '1' where F_NoCompra = '" + F_OrdCom + "' and F_Clave = '"+F_ClaPro+"' ");
+                        con.actualizar("update tb_pedidoisem set F_Recibido = '1' where F_NoCompra = '" + F_OrdCom + "' and F_Clave = '" + F_ClaPro + "' ");
                     }
 
                     con.actualizar("delete from tb_compratemp where F_OrdCom = '" + request.getParameter("vOrden") + "' and F_FolRemi = '" + request.getParameter("vRemi") + "'");
@@ -468,6 +469,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 out.println("<script>alert('Compra realizada, datos transferidos correctamente')</script>");
                 out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
+                out.println("<script>window.open('reimpISEM.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.location='verificarCompraAuto.jsp'</script>");
             }
 
@@ -943,6 +945,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
         sesion.setAttribute("NoCompra", "0");
         out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
         out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
+        out.println("<script>window.open('reimpISEM.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
         out.println("<script>window.location='compraAuto2.jsp'</script>");
 
         // out.println("<script>window.location='<form action=reimpReporte.jsp target=_blank><input class=hidden name=fol_gnkl value=<%=F_IndCom%>></form>'</script>");

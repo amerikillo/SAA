@@ -139,6 +139,7 @@
                                     <td>Usuario</td>
                                     <td>Proveedor</td>
                                     <td>Compra</td>
+                                    <td>REP ISEM</td>
                                     <td>Marbete</td>
                                     <td>Ver Compra</td>
                                 </tr>
@@ -166,6 +167,12 @@
                                         </form>
                                     </td>
                                     <td>
+                                        <form action="reimpISEM.jsp" target="_blank">
+                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
+                                            <button class="btn btn-block btn-primary">Imprimir</button>
+                                        </form>
+                                    </td>
+                                    <td>
                                         <form action="reimp_marbete.jsp" target="_blank">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
                                             <button class="btn btn-block btn-primary">Imprimir</button>
@@ -177,6 +184,7 @@
                                             <button class="btn btn-block btn-primary">Ver Compra</button>
                                         </form>
                                     </td>
+                                    
                                 </tr>
                                 <%
                                             }
