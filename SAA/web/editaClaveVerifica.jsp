@@ -237,7 +237,7 @@
                             </div>
                             <label for="cb" class="col-sm-2 control-label">Código de Barras</label>
                             <div class="col-sm-2">
-                                <input type="cb" class="form-control" id="cb" name="cb" placeholder="C. B." readonly="" onKeyPress="return tabular(event, this)" value="<%=cod_bar%>" />
+                                <input type="cb" class="form-control" id="cb" name="cb" placeholder="C. B." onKeyPress="return tabular(event, this)" value="<%=cod_bar%>" />
                             </div>
                         </div>
                         <br/>

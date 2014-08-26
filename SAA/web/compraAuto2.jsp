@@ -698,7 +698,7 @@
                                                 <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                                             </div>
                                             <label for="Resto" class="col-sm-1 control-label">Piezas</label>
-                                            <div class="col-sm-1">
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" />
                                             </div>
                                         </div>
@@ -716,9 +716,15 @@
                                     <!--button class="btn btn-block btn-danger" name="accion" id="accion" value="anterior" >Clave Anterior</button-->
                                     <%}%>
                                 </div>
+                                <%
+                                if(tipo.equals("2") || tipo.equals("3") || tipo.equals("1")){
+                                %>
                                 <div class="col-sm-4">
                                     <button class="btn btn-block btn-primary" name="accion" id="accion" value="guardarLote" onclick="return validaCompra();" >Guardar Lote</button>
                                 </div>
+                                <%
+                                }
+                                %>
                                 <div class="col-sm-4">
                                     <%if (!posClave.equals(numRenglones + "")) {%>
                                     <!--button class="btn btn-block btn-danger" name="accion" id="accion" value="siguiente" >Siguiente Clave</button-->
@@ -1193,6 +1199,7 @@
                                         var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
                                         document.getElementById('TCajas').value = formatNumber.new(totalCajas + 1);
                                         document.getElementById('CajasIn').value = formatNumber.new(1);
+                                        TarimasI = TarimasI + 1;
                                     }
                                     var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
                                     document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);

@@ -91,7 +91,7 @@ public class CorreoCambiaFecha extends HttpServlet {
             String mensaje = "Se acaba de recalendarizar la siguiente orden de compra: \n";
             try {
                 obj.conectar();
-                ResultSet rset = obj.consulta("select * from tb_fecent where F_Id = '" + folio + "'  ");
+                ResultSet rset = obj.consulta("select * from TB_FecEnt where F_Id = '" + folio + "'  ");
                 while (rset.next()) {
                     mensaje = mensaje + "Recalendarizó: " + usuario + "\n"
                             + "Proveedor: " + rset.getString("F_Provee") + "\n\n\n"
