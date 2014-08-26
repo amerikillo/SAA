@@ -149,21 +149,11 @@ ORDER BY
 			</staticText>
 			<image>
 				<reportElement uuid="a58b9e71-ce6c-4497-8d05-d1476c94a7eb" x="19" y="0" width="100" height="94"/>
-				<imageExpression><![CDATA["C:\\Users\\Americo\\Documents\\GitHub\\SAA\\SAA\\web\\reportes\\escudoedomex.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["escudoedomex.jpg"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement uuid="a2236891-99f8-4791-a46c-0ba20537a103" x="324" y="124" width="128" height="15"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[FECHA DE LA FACTURA:]]></text>
-			</staticText>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="637171e1-7b08-4c05-802e-5f263562e3e5" x="463" y="124" width="100" height="15"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{F_FecApl}]]></textFieldExpression>
-			</textField>
 			<image>
 				<reportElement uuid="8c06cece-eb62-4c27-8fa2-a3fb547d147c" x="612" y="0" width="102" height="35"/>
-				<imageExpression><![CDATA["C:\\Users\\Americo\\Documents\\GitHub\\SAA\\SAA\\web\\reportes\\isem1.gif"]]></imageExpression>
+				<imageExpression><![CDATA["isem1.gif"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement uuid="223d9dfa-1bcf-42d9-9225-bcc243833448" x="552" y="35" width="43" height="15"/>
@@ -352,7 +342,7 @@ ORDER BY
 			</staticText>
 			<image>
 				<reportElement uuid="fc4dc97d-1cde-4ba1-a0a9-fd5eb7c0e04a" x="3" y="92" width="61" height="50"/>
-				<imageExpression><![CDATA["C:\\Users\\Americo\\Documents\\GitHub\\SAA\\SAA\\web\\reportes\\logoeruviel.JPG"]]></imageExpression>
+				<imageExpression><![CDATA["logoeruviel.JPG"]]></imageExpression>
 			</image>
 		</band>
 	</pageFooter>

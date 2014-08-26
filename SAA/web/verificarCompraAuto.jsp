@@ -259,15 +259,15 @@
                                         <input name="vOrden" type="text" style="" class="hidden" value='<%=vOrden%>' />
                                         <input name="vRemi" type="text" style="" class="hidden" value='<%=vRemi%>' />
                                         <div class="col-lg-3 col-lg-offset-3">
-                                            <button  value="EliminarVerifica" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Compra</button>
+                                            <button  value="EliminarVerifica" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Remisión</button>
                                         </div>
                                         <div class="col-lg-3">
                                             <button  value="GuardarAbiertaVerifica" name="accion" class="btn btn-warning  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
-                                                    return validaCompra();">Compra Abierta</button>
+                                                    return validaCompra();">Remisión Abierta</button>
                                         </div>
                                         <div class="col-lg-3">
                                             <button  value="GuardarVerifica" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
-                                                    return validaCompra();">Confirmar Compra</button>
+                                                    return validaCompra();">Confirmar Remisión</button>
                                         </div>
                                     </form>
                                 </td>

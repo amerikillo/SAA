@@ -353,7 +353,7 @@
                                 <h4 class="col-sm-3">Folio Orden de Compra:</h4>
                                 <div class="col-sm-2"><input class="form-control" value="<%=rset.getString(1)%>" readonly="" name="folio" id="folio" onkeypress="return tabular(event, this)" /></div>
                                 <h4 class="col-sm-2 text-right">Folio de Remisión:</h4>
-                                <div class="col-sm-2"><input class="form-control" value="" name="folioRemi" id="folioRemi" onkeypress="return tabular(event, this)" /></div>
+                                <div class="col-sm-2"><input class="form-control" value="<%=folioRemi%>" name="folioRemi" id="folioRemi" onkeypress="return tabular(event, this)" /></div>
                                 <div class="col-sm-2">
                                     <%
                                         if (tipo.equals("2") || tipo.equals("3")) {
@@ -474,7 +474,7 @@
                                         }
                                         if (contadorLotes > 1) {
                                             //Mas de 1 lote
-                                    %>
+%>
                                     <td>
                                         <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                         <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
@@ -818,7 +818,7 @@
                             <div class="col-lg-3">
                                 <form action="Modificaciones" method="post">
                                     <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
-                                    <button  value="verificarCompraAuto" name="accion" class="btn btn-success btn-block" onclick="return confirm('¿Seguro que desea verificar la compra?');">Verificar Compra</button>
+                                    <button  value="verificarCompraAuto" name="accion" class="btn btn-success btn-block" onclick="return confirm('¿Seguro que desea verificar la compra?');">Ingresar OC</button>
                                 </form>
                             </div>
                             <%

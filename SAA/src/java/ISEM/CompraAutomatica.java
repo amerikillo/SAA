@@ -194,7 +194,7 @@ public class CompraAutomatica extends HttpServlet {
                     String folio = request.getParameter("folio");
                     String folioRemi = request.getParameter("folioRemi");
                     sesion.setAttribute("NoCompra", request.getParameter("folio"));
-                    sesion.setAttribute("folioRemi", folioRemi);
+                    sesion.setAttribute("folioRemi", "");
                     sesion.setAttribute("CodBar", "");
                     sesion.setAttribute("Lote", "");
                     sesion.setAttribute("Cadu", "");
