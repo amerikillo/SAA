@@ -140,8 +140,30 @@
                                     <input type="text" class="form-control" id="Clave" name="Clave" placeholder="Clave" onKeyPress="return tabular(event, this)" autofocus >
                                 </div-->
                                 <label for="Nombre" class="col-xs-1 control-label">Clave Unidad</label>
-                                <div class="col-xs-3">
-                                    <input type="text" class="form-control" id="Nombre" name="Nombre" maxlength="60" placeholder="Clave Unidad" value="<%=Clave%>" onKeyPress="return tabular(event, this)" />
+                                <div class="col-xs-7">
+                                    <select id="Nombre" name="Nombre" class="form-control">
+                                        <option value="">Unidad</option>
+                                        <%
+                                        try{
+                                            con.conectar();
+                                            ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn where F_StsCli = 'A'");
+                                            while(rset.next()){
+                                               %>
+                                               <option value="<%=rset.getString(1)%>"
+                                                       <%
+                                                       if(Clave.equals(rset.getString(1))){
+                                                           out.println("selected");
+                                                       }
+                                                       %>
+                                                       ><%=rset.getString(2)%></option>
+                                               <%
+                                            }
+                                            con.cierraConexion();
+                                        }catch(Exception e){
+                                            
+                                        }
+                                        %>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-1"></div>

@@ -198,7 +198,7 @@
                             <div class="form-group">
                                 <label for="fol_rem" class="col-sm-2 control-label">Folio Remisión</label>
                                 <div class="col-sm-3">
-                                    <input type="fol_rem" class="form-control" id="folio_remi" name="folio_remi" placeholder="Folio Remisión" onKeyPress="return tabular(event, this)"  value="<%=folio_remi%>" readonly>
+                                    <input type="fol_rem" class="form-control" id="folio_remi" name="folio_remi" placeholder="Folio Remisión" onKeyPress="return tabular(event, this)"  value="<%=folio_remi%>" >
                                 </div>
                                 <label for="orden" class="col-sm-2 control-label">Orden de Compra</label>
                                 <div class="col-sm-3">
