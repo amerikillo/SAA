@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compras" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6336019d-9f1f-4558-a5b6-5fcef7ba5fdd">
 	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="921"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="folcom" class="java.lang.String"/>
 	<queryString>
@@ -281,8 +281,8 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{F_Resto}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0">
-				<reportElement uuid="8ec655f1-9ab9-42e8-a23e-fa32ee9f036e" x="569" y="2" width="47" height="10"/>
-				<textElement>
+				<reportElement uuid="8ec655f1-9ab9-42e8-a23e-fa32ee9f036e" x="570" y="2" width="35" height="10"/>
+				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_CanCom}]]></textFieldExpression>
@@ -302,8 +302,8 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="$#,##0.00">
-				<reportElement uuid="6f7032d4-4614-43ee-ae10-3b64fde92943" x="616" y="2" width="33" height="10"/>
-				<textElement>
+				<reportElement uuid="6f7032d4-4614-43ee-ae10-3b64fde92943" x="605" y="2" width="44" height="10"/>
+				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Costo}]]></textFieldExpression>
@@ -324,7 +324,7 @@ ORDER BY
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="$#,##0.00">
 				<reportElement uuid="439dc72a-363e-4bc1-8e77-af2ca4415ca2" x="649" y="2" width="44" height="10"/>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ImpTo}]]></textFieldExpression>
