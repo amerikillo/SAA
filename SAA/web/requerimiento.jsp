@@ -15,8 +15,10 @@
 
     HttpSession sesion = request.getSession();
     String usua = "";
+    String tipo = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("index.jsp");
     }
@@ -54,6 +56,13 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="captura.jsp">Entrada Manual</a></li>
                                     <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                        <%
+                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                        %>
+                                    <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
+                                        <%
+                                            }
+                                        %>
                                     <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
@@ -65,7 +74,9 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                    <li><a href="reimp_factura.jsp">Reimpresión Concentrados Globales</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -77,33 +88,13 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                      
+                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
                                 </ul>
                             </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
-                                </ul>
-                            </li>
-                            <%                                }
-                            %>
+
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -122,9 +113,9 @@
                     <form method="post" class="jumbotron"  action="FileUploadServlet" enctype="multipart/form-data" name="form1">
                         <div class="form-group">
                             <div class="form-group">
-                                 <div class="col-lg-4 text-success">
-                                     <h4>Seleccione el Excel a Cargar</h4>
-                                 </div>
+                                <div class="col-lg-4 text-success">
+                                    <h4>Seleccione el Excel a Cargar</h4>
+                                </div>
                                 <!--label for="Clave" class="col-xs-2 control-label">Clave*</label>
                                 <div class="col-xs-2">
                                     <input type="text" class="form-control" id="Clave" name="Clave" placeholder="Clave" onKeyPress="return tabular(event, this)" autofocus >
@@ -133,20 +124,20 @@
                                 <div class="col-sm-5">
                                     <input class="form-control" type="file" name="file1" accept=".xlsx"/>                                    
                                 </div>
-                               
+
                             </div>
 
                         </div>
-                       
-                       
+
+
                         <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();"> Cargar Archivo</button> 
-                              
+
                     </form>
                     <div>
                         <h6>Los campos marcados con * son obligatorios</h6>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <br><br><br>
@@ -170,9 +161,9 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                                        $(document).ready(function() {
-                                                            $('#datosProv').dataTable();
-                                                        });
+                            $(document).ready(function() {
+                                $('#datosProv').dataTable();
+                            });
 </script>
 <script>
 
@@ -207,7 +198,7 @@
     function valida_alta() {
         /*var Clave = document.formulario1.Clave.value;*/
         var Nombre = document.formulario1.Nombre.value;
-        
+
         if (Nombre === "") {
             alert("Tiene campos vacíos, verifique.");
             return false;

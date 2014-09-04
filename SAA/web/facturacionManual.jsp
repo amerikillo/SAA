@@ -95,7 +95,9 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                    <li><a href="reimp_factura.jsp">Reimpresión Concentrados Globales</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -107,33 +109,12 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                      
+                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
                                 </ul>
                             </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
-                                </ul>
-                            </li>
-                            <%                                }
-                            %>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>

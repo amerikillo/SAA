@@ -221,6 +221,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                 </ul>
                             </li>
@@ -233,10 +234,10 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                      
+                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -474,7 +475,7 @@
                                         }
                                         if (contadorLotes > 1) {
                                             //Mas de 1 lote
-%>
+                                    %>
                                     <td>
                                         <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                         <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
@@ -648,11 +649,11 @@
                                             </div>
                                             <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
                                             <div class="col-sm-1">
-                                                <input type="pzsxcaja" class="form-control" id="CajasxTC" name="CajasxTC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
+                                                <input type="text" class="form-control" id="CajasxTC" name="CajasxTC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
                                             </div>
                                             <label for="Resto" class="col-sm-2 control-label">Piezas x Caja</label>
                                             <div class="col-sm-1">
-                                                <input type="Resto" class="form-control" id="PzsxCC" name="PzsxCC%>" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
+                                                <input type="text" class="form-control" id="PzsxCC" name="PzsxCC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
                                             </div>
                                         </div>
                                         <br/>
@@ -717,13 +718,13 @@
                                     <%}%>
                                 </div>
                                 <%
-                                if(tipo.equals("2") || tipo.equals("3") || tipo.equals("1")){
+                                    if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")) {
                                 %>
                                 <div class="col-sm-4">
                                     <button class="btn btn-block btn-primary" name="accion" id="accion" value="guardarLote" onclick="return validaCompra();" >Guardar Lote</button>
                                 </div>
                                 <%
-                                }
+                                    }
                                 %>
                                 <div class="col-sm-4">
                                     <%if (!posClave.equals(numRenglones + "")) {%>

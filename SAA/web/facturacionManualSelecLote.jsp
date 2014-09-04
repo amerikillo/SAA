@@ -98,6 +98,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                 </ul>
                             </li>
@@ -309,9 +310,9 @@
                                     }
 
                                     /*var confirma = confirm('Seguro de usar esta ubicación?');
-                                    if (confirma === false) {
-                                        return false;
-                                    }*/
+                                     if (confirma === false) {
+                                     return false;
+                                     }*/
                                 }
     </script>
 </html>

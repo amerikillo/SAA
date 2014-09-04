@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import Correo.CorreoConfirmaRemision;
 import conn.ConectionDB;
 import conn.ConectionDB_SQLServer;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class Nuevo extends HttpServlet {
 
     ConectionDB con = new ConectionDB();
     ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+    CorreoConfirmaRemision correoConfirma = new CorreoConfirmaRemision();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,7 +54,7 @@ public class Nuevo extends HttpServlet {
                     consql.conectar();
 
                     try {
-                        con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"' ");
+                        con.insertar("delete from tb_compratemp where F_OrdCom = '" + request.getParameter("NoCompra") + "' ");
                     } catch (Exception e) {
 
                     }
@@ -80,7 +82,7 @@ public class Nuevo extends HttpServlet {
                     con.conectar();
                     consql.conectar();
                     String F_ClaPro = "", F_Lote = "", F_FecCad = "", F_FecFab = "", F_Marca = "", F_Provee = "", F_Cb = "", F_Tarimas = "", F_Costo = "", F_ImpTo = "", F_ComTot = "", F_User = "", F_FolRemi = "", F_OrdCom = "";
-                    String FolioLote = "", ExiLote = "", F_Caja = "", F_Resto = "", F_Piezas = "", F_Obser="";
+                    String FolioLote = "", ExiLote = "", F_Caja = "", F_Resto = "", F_Piezas = "", F_Obser = "";
 
                     int ExiLot = 0, cantidad = 0, sumalote = 0, FolLot = 0, FolioLot = 0, F_IndComT = 0, F_Origen = 0, FolMov = 0, FolioMovi = 0, FolMovSQL = 0, FolioMoviSQL = 0;
                     double compraB = 0.0;
@@ -151,7 +153,7 @@ public class Nuevo extends HttpServlet {
                         F_Origen = Integer.parseInt(rsetDatos.getString("F_ClaOrg"));
                         F_User = rsetDatos.getString("F_User");
                         try {
-                            byte[] a =  rsetDatos.getString("F_Obser").getBytes("ISO-8859-1");
+                            byte[] a = rsetDatos.getString("F_Obser").getBytes("ISO-8859-1");
                             F_Obser = (new String(a, "UTF-8")).toUpperCase();
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
@@ -257,7 +259,7 @@ public class Nuevo extends HttpServlet {
                         // FIN CONSULTA SQL
                         con.insertar("insert into tb_movinv values (0,curdate(),'" + F_IndCom + "','1', '" + F_ClaPro + "', '" + F_Piezas + "', '" + F_Costo + "', '" + F_ComTot + "' ,'1', '" + FolioLote + "', 'NUEVA', '" + F_Provee + "',curtime(),'" + F_User + "') ");
                         con.insertar("insert into tb_compra values (0,'" + F_IndCom + "','" + F_Provee + "','A',curdate(), '" + F_ClaPro + "', '" + F_Piezas + "', '" + F_Costo + "', '" + F_Caja + "', '0', '" + F_Tarimas + "', '" + F_ImpTo + "' ,'" + F_ComTot + "', '" + FolioLote + "', '" + F_FolRemi + "', '" + F_OrdCom + "', '" + F_Origen + "', '" + F_Cb + "', curtime(), '" + F_User + "','" + F_Obser + "','0') ");
-                        con.insertar("insert into tb_pedidoisem values(0,'"+F_OrdCom+"','"+F_Provee+"','"+F_ClaPro+"','','ND','-','0002-11-30','"+F_ComTot+"','',NOW(),CURDATE(),CURTIME(),'1','1','1')");
+                        con.insertar("insert into tb_pedidoisem values(0,'" + F_OrdCom + "','" + F_Provee + "','" + F_ClaPro + "','','ND','-','0002-11-30','" + F_ComTot + "','',NOW(),CURDATE(),CURTIME(),'1','1','1')");
                         consql.insertar("insert into TB_MovInv values (CONVERT(date,GETDATE()),'" + FolioCompra + "','','1', '" + F_ClaPro + "', '" + F_Piezas + "', '" + F_Costo + "','" + F_ImpTo + "', '" + F_ComTot + "' ,'1', '" + FolioLoteSQL + "', '" + FolioMovi + "','M', '0', '','','','" + F_ClaPrvSQL + "','" + F_User + "') ");
                         consql.insertar("insert into TB_Compra values ('C','" + FolioCompra + "','" + F_ClaPrvSQL + "','A','CD',CONVERT(date,GETDATE()),'', '" + F_ClaPro + "','','','1', '" + F_Piezas + "', '1','" + F_ComTot + "','0','" + F_ComTot + "','" + F_ComTot + "','0', '" + F_ImpTo + "','" + F_ComTot + "', '" + F_Costo + "', '" + FolioLoteSQL + "','D',CONVERT(date,GETDATE()), '" + F_User + "','0','0','','" + F_FolRemi + "','' ) ");
                         consql.insertar("insert into TB_Bitacora values ('" + F_User + "',CONVERT(date,GETDATE()),'COMPRA - MANUAL','REGISTRAR','" + FolioCompra + "','1','COMPRAS') ");
@@ -266,7 +268,7 @@ public class Nuevo extends HttpServlet {
                         FolioLoteSQL = "";
                     }
 
-                    con.actualizar("delete from tb_compratemp where F_OrdCom = '"+F_OrdCom+"'");
+                    con.actualizar("delete from tb_compratemp where F_OrdCom = '" + F_OrdCom + "'");
                     con.cierraConexion();
                     consql.cierraConexion();
                 } catch (Exception e) {
@@ -297,6 +299,7 @@ public class Nuevo extends HttpServlet {
         }
         out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
         out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
+        //correoConfirma.enviaCorreo(F_IndCom);
         out.println("<script>window.location='captura.jsp'</script>");
 
         // out.println("<script>window.location='<form action=reimpReporte.jsp target=_blank><input class=hidden name=fol_gnkl value=<%=F_IndCom%>></form>'</script>");

@@ -106,6 +106,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                 </ul>
                             </li>
@@ -118,10 +119,10 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                      
+                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
                                 </ul>
                             </li>
 
@@ -162,7 +163,7 @@
                 <br/>
             </form>
         </div>
-                        <div style="width: 90%; margin: auto;">
+        <div style="width: 90%; margin: auto;">
             <br/>
 
             <div class="row">
@@ -217,12 +218,12 @@
                                 <td></td>
                             </tr>
                             <%
-                                int banBtn=0;
+                                int banBtn = 0;
                                 try {
                                     con.conectar();
                                     ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi, C.F_Obser FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + vOrden + "' and F_FolRemi = '" + vRemi + "'  and F_Estado = '2'");
                                     while (rset.next()) {
-                                        banBtn=1;
+                                        banBtn = 1;
                             %>
                             <tr>
                                 <td><%=rset.getString("C.F_FolRemi")%></td>
@@ -250,7 +251,7 @@
                                 } catch (Exception e) {
 
                                 }
-                                if(banBtn==1){
+                                if (banBtn == 1) {
                             %>
                             <tr>
 
@@ -274,7 +275,7 @@
                             </tr>
                             <%
                                 }
-                                %>
+                            %>
 
                         </table>
 

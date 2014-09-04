@@ -14,7 +14,7 @@ import java.sql.Statement;
  *
  * @author wence
  */
-public class ConectionDB_SQLServer {
+public class ConectionDB_Linux {
 
 //variables miembro
     private String usuario;
@@ -30,7 +30,7 @@ public class ConectionDB_SQLServer {
 
 //CONSTRUCTORES
     //Constructor que toma los datos de conexion por medio de parametros
-    public ConectionDB_SQLServer(String usuario, String clave, String url, String driverClassName) {
+    public ConectionDB_Linux(String usuario, String clave, String url, String driverClassName) {
         this.usuario = usuario;
         this.clave = clave;
         this.url = url;
@@ -39,12 +39,17 @@ public class ConectionDB_SQLServer {
 
     //Constructor que crea la conexion sin parametros con unos definidos en la clase
     //(meter los datos correspondientes)
-    public ConectionDB_SQLServer() {
+    public ConectionDB_Linux() {
         //poner los datos apropiados
-        this.usuario = "sa";
-        this.clave = "gnklmex";
-        this.url = "jdbc:sqlserver://187.176.10.50:1433;databaseName=gnklmex_consolidada;";
-        this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
+        /* this.usuario = "isemusr";
+         this.clave = "AfQaufdC7S";
+         this.url = "jdbc:mysql://162.209.67.250:3306/isemcc";
+         this.driverClassName = "org.gjt.mm.mysql.Driver";*/
+        this.usuario = "root";
+        this.clave = "eve9397";
+        this.url = "jdbc:mysql://192.168.2.180:3306/gnklmex_consolidada2";
+        this.driverClassName = "org.gjt.mm.mysql.Driver";
     }
 
     //metodos para recuperar los datos de conexion
@@ -61,6 +66,14 @@ public class ConectionDB_SQLServer {
     }
 
     public Connection getConn() {
+        try {
+            Class.forName(this.driverClassName).newInstance();
+            this.conn = DriverManager.getConnection(this.url, this.usuario, this.clave);
+//            System.out.println("Se conectó de FORMA EXITOSA ");
+
+        } catch (Exception err) {
+            System.out.println("Error " + err.getMessage());
+        }
         return conn;
     }
 
@@ -94,7 +107,7 @@ public class ConectionDB_SQLServer {
         try {
             Class.forName(this.driverClassName).newInstance();
             this.conn = DriverManager.getConnection(this.url, this.usuario, this.clave);
-//           System.out.println("Se conectó de FORMA EXITOSA ");
+//            System.out.println("Se conectó de FORMA EXITOSA ");
 
         } catch (Exception err) {
             System.out.println("Error " + err.getMessage());

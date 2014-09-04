@@ -56,10 +56,10 @@
                 Clave = rset.getString(1);
             }
             con.cierraConexion();
-            qryLote = ("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') from tb_cb where F_Cb = '" + request.getParameter("CB") + "' group by F_ClaLot, F_FecCad");
+            qryLote = ("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') from tb_lote where F_Cb = '" + request.getParameter("CB") + "' group by F_FecCad, F_ClaLot");
         }
         if (request.getParameter("accion").equals("Clave")) {
-            qryLote = ("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') from tb_cb where F_ClaPro = '" + request.getParameter("Clave") + "' group by F_ClaLot, F_FecCad");
+            qryLote = ("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') from tb_lote where F_ClaPro = '" + request.getParameter("Clave") + "' group by F_FecCad, F_ClaLot");
             CB = "";
         }
     } catch (Exception e) {

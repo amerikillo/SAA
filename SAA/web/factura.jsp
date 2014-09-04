@@ -21,9 +21,11 @@
     formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "", Clave = "";
+    String tipo = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
         Clave = (String) session.getAttribute("clave");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("index.jsp");
     }
@@ -62,61 +64,52 @@
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Entrada Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
-                                    <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
-                                    <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
-                                    <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="window.open('medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
-                                    <li><a href="#" onclick="window.open('catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
-                                    <li><a href="#" onclick="window.open('marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                      
-                                </ul>
-                            </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
-                                </ul>
-                            </li>
-                            <%                                }
-                            %>
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="captura.jsp">Entrada Manual</a></li>
+                                        <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                            <%
+                                                if (tipo.equals("2") || tipo.equals("3")) {
+                                            %>
+                                        <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
+                                            <%
+                                                }
+                                            %>
+                                        <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
+                                        <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
+                                        <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
+                                        <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
+                                        <li><a href="factura.jsp">Facturación Automática</a></li>
+                                        <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
+                                        <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                        <li><a href="reimp_factura.jsp">Reimpresión Concentrados Globales</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" onclick="window.open('medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
+                                        <li><a href="#" onclick="window.open('catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
+                                        <li><a href="#" onclick="window.open('marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
+                                        <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
+                                    </ul>
+                                </li>
+
+                            </ul>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -144,24 +137,24 @@
                                     <select id="Nombre" name="Nombre" class="form-control">
                                         <option value="">Unidad</option>
                                         <%
-                                        try{
-                                            con.conectar();
-                                            ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn where F_StsCli = 'A'");
-                                            while(rset.next()){
-                                               %>
-                                               <option value="<%=rset.getString(1)%>"
-                                                       <%
-                                                       if(Clave.equals(rset.getString(1))){
-                                                           out.println("selected");
-                                                       }
-                                                       %>
-                                                       ><%=rset.getString(2)%></option>
-                                               <%
+                                            try {
+                                                con.conectar();
+                                                ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn where F_StsCli = 'A'");
+                                                while (rset.next()) {
+                                        %>
+                                        <option value="<%=rset.getString(1)%>"
+                                                <%
+                                                    if (Clave.equals(rset.getString(1))) {
+                                                        out.println("selected");
+                                                    }
+                                                %>
+                                                ><%=rset.getString(2)%></option>
+                                        <%
+                                                }
+                                                con.cierraConexion();
+                                            } catch (Exception e) {
+
                                             }
-                                            con.cierraConexion();
-                                        }catch(Exception e){
-                                            
-                                        }
                                         %>
                                     </select>
                                 </div>
@@ -182,7 +175,8 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();">Facturar</button> 
+                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardarGlobal" onclick="return valida_alta();">Generar Concentrado</button> 
+                        <br/><br/>
                         <button class="btn btn-block btn-danger" type="submit" name="accion" value="cancelar" onclick="return confirm('¿Seguro que desea CANCELAR esta orden?');">Cancelar</button> 
                     </form>
                     <div>
@@ -195,8 +189,8 @@
                             <tr>
                                 <td>Clave</td>
                                 <td>Descripción</td>
-                                <td>Cantidad</td>
-
+                                <td>Cajas</td>
+                                <td>Piezas</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -204,15 +198,14 @@
                                 try {
 
                                     con.conectar();
-                                    ResultSet rset = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CantReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + Clave + "' and F_Status =0");
+                                    ResultSet rset = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, REQ.F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + Clave + "' and F_Status =0");
                                     while (rset.next()) {
                             %>
                             <tr class="odd gradeX">
                                 <td><small><%=rset.getString(1)%></small></td>
                                 <td><small><%=rset.getString(2)%></small></td>
                                 <td><small><%=formatter.format(rset.getInt(3))%></small></td>
-
-
+                                <td><small><%=formatter.format(rset.getInt(4))%></small></td>
                             </tr>
                             <%
                                     }

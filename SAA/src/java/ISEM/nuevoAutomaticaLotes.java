@@ -5,6 +5,7 @@
  */
 package ISEM;
 
+import Correo.CorreoConfirmaRemision;
 import conn.ConectionDB;
 import conn.ConectionDB_SQLServer;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
 
     ConectionDB con = new ConectionDB();
     ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+    CorreoConfirmaRemision correoConfirma = new CorreoConfirmaRemision();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -263,6 +265,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.open('reimpISEM.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
+                //correoConfirma.enviaCorreo(F_IndCom);
                 out.println("<script>window.location='verificarCompraAuto.jsp'</script>");
 
             }
@@ -470,6 +473,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.open('reimpISEM.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
+                //correoConfirma.enviaCorreo(F_IndCom);
                 out.println("<script>window.location='verificarCompraAuto.jsp'</script>");
             }
 
@@ -946,6 +950,7 @@ public class nuevoAutomaticaLotes extends HttpServlet {
         out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
         out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
         out.println("<script>window.open('reimpISEM.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
+        //correoConfirma.enviaCorreo(F_IndCom);
         out.println("<script>window.location='compraAuto2.jsp'</script>");
 
         // out.println("<script>window.location='<form action=reimpReporte.jsp target=_blank><input class=hidden name=fol_gnkl value=<%=F_IndCom%>></form>'</script>");

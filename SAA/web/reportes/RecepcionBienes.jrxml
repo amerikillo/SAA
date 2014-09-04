@@ -121,30 +121,36 @@ ORDER BY
 			<staticText>
 				<reportElement uuid="52d2fa2a-5055-426e-b397-31ef21a9e30e" x="237" y="10" width="264" height="20"/>
 				<textElement textAlignment="Center">
-					<font isBold="true"/>
+					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FORMATO DE ENTREGA - RECEPCIÓN DE BIENES]]></text>
 			</staticText>
 			<textField>
 				<reportElement uuid="3539ccb5-f06a-4c79-9366-394d08b46fe8" x="161" y="99" width="340" height="14"/>
 				<textElement>
-					<font fontName="Arial" size="12"/>
+					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_NomPro}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="e843ba86-9914-4320-a19d-ece658b92f27" x="0" y="99" width="154" height="14"/>
-				<textElement/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[NOMBRE DEL PROVEEDOR:]]></text>
 			</staticText>
 			<textField>
 				<reportElement uuid="d3aab696-23fe-46cc-a39d-a9a18e41fbf7" x="187" y="124" width="113" height="15"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{F_FolRemi}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="2329c1b1-b538-4f7c-bdb6-59f1dc5de85a" x="0" y="124" width="177" height="15"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[NÚMERO DE FACTURA O REMISIÓN:]]></text>
 			</staticText>
 			<image>
@@ -157,17 +163,23 @@ ORDER BY
 			</image>
 			<staticText>
 				<reportElement uuid="223d9dfa-1bcf-42d9-9225-bcc243833448" x="552" y="35" width="43" height="15"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[FOLIO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="31dba6c0-3567-4726-a05f-59fbb9c0bc42" x="552" y="57" width="43" height="15"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[FECHA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="e58270c8-9674-413c-90b6-444e90f0ee20" x="501" y="79" width="94" height="15"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[NO. CONTRATO:]]></text>
 			</staticText>
 			<rectangle>
@@ -175,7 +187,9 @@ ORDER BY
 			</rectangle>
 			<textField pattern="#000">
 				<reportElement uuid="442b0100-85ed-42f9-8708-22112bf0064d" x="608" y="36" width="100" height="15"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaDoc}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -191,28 +205,28 @@ ORDER BY
 			<staticText>
 				<reportElement uuid="17b841c6-95d1-4592-bbe5-57d9154e3808" mode="Opaque" x="276" y="1" width="50" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[LOTE]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="7ca9cf6b-9fc4-43a4-ac1f-30a8c81d2617" mode="Opaque" x="395" y="0" width="64" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CADUCIDAD]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="c1377c8d-ef63-4d0f-a38a-168836bc3f5b" mode="Opaque" x="546" y="1" width="62" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="74b50de5-22ce-458e-a49f-7eabc7498417" mode="Opaque" x="119" y="1" width="61" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CLAVE]]></text>
 			</staticText>
@@ -226,28 +240,28 @@ ORDER BY
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="6e0bca1d-c1c5-4500-8727-aadb2113486b" x="395" y="1" width="71" height="16"/>
 				<textElement>
-					<font size="10"/>
+					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_FecCad}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0">
 				<reportElement uuid="8ec655f1-9ab9-42e8-a23e-fa32ee9f036e" x="546" y="2" width="73" height="15"/>
 				<textElement>
-					<font size="10"/>
+					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_CanCom}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="d3ffe466-d8a8-4074-9c98-0bc6e86e25d3" x="266" y="1" width="76" height="16"/>
 				<textElement>
-					<font size="10"/>
+					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="7a8e774b-76ab-4902-afb5-5a5bbf8ac623" x="119" y="2" width="61" height="15"/>
 				<textElement textAlignment="Center">
-					<font size="10"/>
+					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
 			</textField>
@@ -260,22 +274,30 @@ ORDER BY
 		<band height="166">
 			<textField>
 				<reportElement uuid="1c658009-a7f0-4fc1-8301-2d75dd0b9eb2" mode="Opaque" x="552" y="149" width="157" height="13" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement uuid="c10718d7-795f-4fa9-af85-2f67ead803ef" mode="Opaque" x="711" y="149" width="40" height="13" backcolor="#FFFFFF"/>
-				<textElement/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement uuid="fff0ba61-ccec-4d5f-9024-de79d5d7c71a" x="0" y="149" width="100" height="13"/>
-				<textElement/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="c24b2c49-355c-4f18-875b-31a2c6b2b5e5" x="3" y="0" width="100" height="13"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[Observaciones:]]></text>
 			</staticText>
 			<rectangle>
@@ -283,17 +305,23 @@ ORDER BY
 			</rectangle>
 			<staticText>
 				<reportElement uuid="0a31a3f9-cd42-4774-a34f-06f289935a36" x="43" y="32" width="100" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[Visto Bueno]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="0e37195e-d127-4324-ae8e-d15e91e136c6" x="342" y="32" width="100" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[Sello]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="eb52032f-72eb-405d-bc33-1a230d50cd27" x="603" y="32" width="100" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<text><![CDATA[GNK S.A. de C.V.]]></text>
 			</staticText>
 			<line>
@@ -308,35 +336,35 @@ ORDER BY
 			<staticText>
 				<reportElement uuid="c36c5d51-75bc-4a91-b9af-4c5fbf044c05" x="19" y="76" width="145" height="11"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[REPRESENTANTE DE RECURSOS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="db00b009-f643-41d8-8850-cda6fe37b4fe" x="294" y="76" width="201" height="11"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[SUBDIRECCION DE RECURSOS MATERIALES]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="d1bbec5b-3398-467b-a091-4caeef18a92c" x="584" y="75" width="145" height="11"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[EMPRESA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="4dfd889c-5e04-4c6a-bdb5-6cb1a9d543ce" x="164" y="92" width="26" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOTA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="36fbf92f-2470-48d8-a56e-3483c85ed32a" x="214" y="92" width="521" height="44"/>
 				<textElement verticalAlignment="Top">
-					<font size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[En pleno complimiento y responsabilidad de acuerdo a las cláusulas del contrato establecido con el Instituto de Salud del Estado de México, en el que manifiesta responsabilidad de recepción, revisión resguardo y control de insumos quedan a cargo de la empresa GNK S.A. de C.V. La Subdirección de Recursos Materiales, solo acude para verificar la entrega-recepción de insumos por parte del proveedor.]]></text>
 			</staticText>

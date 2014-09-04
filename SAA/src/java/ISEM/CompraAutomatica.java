@@ -5,6 +5,7 @@
  */
 package ISEM;
 
+import Correo.CorreoConfirmaRemision;
 import conn.ConectionDB;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,6 +28,7 @@ public class CompraAutomatica extends HttpServlet {
 
     ConectionDB con = new ConectionDB();
     NuevoISEM nuevo = new NuevoISEM();
+    CorreoConfirmaRemision correoConfirma = new CorreoConfirmaRemision();
 
     DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat df3 = new SimpleDateFormat("dd/MM/yyyy");
@@ -46,7 +48,7 @@ public class CompraAutomatica extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         PrintWriter out = response.getWriter();
         try {
-            System.out.println(request.getParameter("accion")+"*****");
+            System.out.println(request.getParameter("accion") + "*****");
             if (request.getParameter("accion").equals("seleccionaClave")) {
                 String folio = request.getParameter("folio");
                 String folioRemi = request.getParameter("folioRemi");
@@ -69,7 +71,7 @@ public class CompraAutomatica extends HttpServlet {
                     String lote = request.getParameter("lot").toUpperCase();
                     String cadu = request.getParameter("cad");
                     String seleccionaClave = request.getParameter("ClaPro");
-                    System.out.println(seleccionaClave+"----6666666");
+                    System.out.println(seleccionaClave + "----6666666");
                     sesion.setAttribute("NoCompra", request.getParameter("folio"));
                     sesion.setAttribute("folioRemi", folioRemi);
                     sesion.setAttribute("CodBar", CodBar);
@@ -217,7 +219,7 @@ public class CompraAutomatica extends HttpServlet {
                 String Marca = request.getParameter("list_marca");
                 byte[] a = request.getParameter("Obser").getBytes("ISO-8859-1");
                 String F_Obser = (new String(a, "UTF-8")).toUpperCase();
-                
+
                 String TCajas = request.getParameter("TCajas");
                 TCajas = TCajas.replace(",", "");
 
@@ -267,6 +269,7 @@ public class CompraAutomatica extends HttpServlet {
                 );
                 con.insertar("insert into tb_compraregistro values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','" + Marca + "','" + claPro + "','" + CodBar + "','" + Tarimas + "','" + TCajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + claPro + "','" + sesion.getAttribute("nombre") + "')"
                 );
+                con.insertar("insert into tb_pzcaja values (0,'" + claPro + "','" + Marca + "','" + request.getParameter("PzsxCC") + "')");
                 con.insertar("insert into tb_cb values(0,'" + CodBar + "','" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "', '" + Marca + "')");
                 //con.insertar("update tb_pedidoisem set F_Recibido = '1' where F_Clave = '" + Clave + "' and  ");
 
@@ -289,6 +292,7 @@ public class CompraAutomatica extends HttpServlet {
                         String fecFab = (df2.format(c1.getTime()));
                         String CodBar = request.getParameter("codbar_" + rset.getString("F_IdIsem"));
                         String Tarimas = request.getParameter("Tarimas_" + rset.getString("F_IdIsem"));
+                        String Marca = request.getParameter("list_marca");
                         byte[] a = request.getParameter("Obser_" + rset.getString("F_IdIsem")).getBytes("ISO-8859-1");
                         String F_Obser = (new String(a, "UTF-8")).toUpperCase();
 
@@ -334,6 +338,7 @@ public class CompraAutomatica extends HttpServlet {
                         );
                         con.insertar("insert into tb_compraregistro values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','1','" + rset.getString("F_Provee") + "','" + CodBar + "','" + Tarimas + "','" + Cajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + rset.getString("F_Provee") + "','" + sesion.getAttribute("nombre") + "')"
                         );
+
                         System.out.println("update tb_pedidoisem set F_Recibido = '1' where F_IdIsem = '" + rset.getString("F_IdIsem") + "' ");
                         con.insertar("update tb_pedidoisem set F_Recibido = '1' where F_IdIsem = '" + rset.getString("F_IdIsem") + "' ");
                     }
@@ -345,6 +350,7 @@ public class CompraAutomatica extends HttpServlet {
                 sesion.setAttribute("folioRemi", "");
                 out.println("<script>window.open('reimpReporte.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
+                //correoConfirma.enviaCorreo(F_IndCom);
                 out.println("<script>window.location='Ubicaciones/Consultas.jsp'</script>");
             }
         } catch (Exception e) {

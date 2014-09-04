@@ -187,6 +187,8 @@ public class Altas_handheld extends HttpServlet {
                      }*/
                     con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + cantidad + "', '" + cajas + "', '" + piezas + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "','1') ");
                     con.insertar("insert into tb_compraregistro values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + cantidad + "', '" + cajas + "', '" + piezas + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
+
+                    con.insertar("insert into tb_pzcaja values (0,'" + request.getParameter("provee") + "','" + Marca + "','" + request.getParameter("PzsxCC") + "')");
                     con.insertar("insert into tb_cb values(0,'" + request.getParameter("cb") + "','" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "'), '" + request.getParameter("Marca") + "'");
                     con.cierraConexion();
 
@@ -252,6 +254,8 @@ public class Altas_handheld extends HttpServlet {
                     }
                     con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + cantidad + "', '" + cajas + "', '" + piezas + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "','1') ");
                     con.insertar("insert into tb_compraregistro values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + cantidad + "', '" + cajas + "', '" + piezas + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
+
+                    con.insertar("insert into tb_pzcaja values (0,'" + request.getParameter("provee") + "','" + Marca + "','" + request.getParameter("PzsxCC") + "')");
                     con.insertar("insert into tb_cb values(0,'" + request.getParameter("cb") + "','" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "', '" + request.getParameter("Marca") + "')");
                     con.cierraConexion();
 
