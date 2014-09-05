@@ -24,7 +24,7 @@
 	l.F_IdLote
 FROM
 	tb_facttemp f,
-	tb_lotetemp l,
+	tb_lote l,
 	tb_uniatn u,
 	tb_pzxcaja p,
 tb_medica m
@@ -33,7 +33,8 @@ WHERE
 AND l.F_ClaPro = m.F_ClaPro
 AND f.F_ClaCli = u.F_ClaCli
 AND p.F_ClaPro = l.F_ClaPro
-AND F_IdFact = $P{idFact};]]>
+AND F_IdFact = $P{idFact}
+;]]>
 	</queryString>
 	<field name="F_NomCli" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

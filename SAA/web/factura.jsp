@@ -90,7 +90,8 @@
                                         <li><a href="factura.jsp">Facturación Automática</a></li>
                                         <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                         <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                        <li><a href="reimp_factura.jsp">Reimpresión Concentrados Globales</a></li>
+                                        <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
+                                        <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">

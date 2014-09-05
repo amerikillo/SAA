@@ -46,6 +46,29 @@ public class Facturacion extends HttpServlet {
         String clave = "", descr = "";
         int ban1 = 0;
         try {
+             if (request.getParameter("accion").equals("actualizarCB")) {
+                try {
+                    con.conectar();
+                    con.insertar("update tb_lote set F_Cb='" + request.getParameter("F_Cb") + "' WHERE F_FolLot= '" + request.getParameter("F_FolLot") + "'");
+                    con.insertar("update tb_compra set F_Cb='" + request.getParameter("F_Cb") + "' WHERE F_FolLot= '" + request.getParameter("F_FolLot") + "'");
+                    con.cierraConexion();
+                } catch (Exception e) {
+
+                }
+                out.println("<script>alert('CB actualizado Correctamente, ingrese el CB')</script>");
+                out.println("<script>window.location='validacionSurtido.jsp'</script>");
+            }
+            if (request.getParameter("accion").equals("validaRegistro")) {
+                try {
+                    con.conectar();
+                    con.insertar("update tb_facttemp set F_StsFact='1' WHERE F_Id= '" + request.getParameter("folio") + "'");
+                    con.cierraConexion();
+                } catch (Exception e) {
+
+                }
+                out.println("<script>alert('Clave Validada Correctamente, ingrese el siguiente CB del proveedor correspondiente.')</script>");
+                out.println("<script>window.location='validacionSurtido.jsp'</script>");
+            }
             if (request.getParameter("accion").equals("EliminaConcentrado")) {
                 try {
                     con.conectar();
@@ -126,49 +149,61 @@ public class Facturacion extends HttpServlet {
                             Org = Integer.parseInt(r_Org.getString("F_ClaOrg"));
 
                             if (Org == 1) {
-                                ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,L.F_ExiLot AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot, L.F_IdLote FROM tb_lotetemp L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' AND L.F_ClaOrg='" + Org + "' GROUP BY L.F_IdLote ORDER BY L.F_FecCad ASC");
+                                ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,(L.F_ExiLot) AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' GROUP BY L.F_IdLote ORDER BY L.F_FecCad ASC");
                                 while (FechaLote.next()) {
                                     FolioLote = FechaLote.getString("F_FolLot");
                                     String IdLote = FechaLote.getString("F_IdLote");
                                     existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
+                                    ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_facttemp where F_IdLot = '" + IdLote + "'");
+                                    while (rset2.next()) {
+                                        existencia = existencia - rset2.getInt(1);
+                                    }
                                     Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
-                                    if (piezas > existencia) {
-                                        diferencia = piezas - existencia;
-                                        con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
-                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0')");
-                                        piezas = diferencia;
-                                    } else {
-                                        diferencia = existencia - piezas;
-                                        con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
-                                        if (piezas > 0) {
-                                            con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0')");
+                                    if (existencia != 0) {
+                                        if (piezas > existencia) {
+                                            diferencia = piezas - existencia;
+                                            con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
+                                            con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0')");
+                                            piezas = diferencia;
+                                        } else {
+                                            diferencia = existencia - piezas;
                                             con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
+                                            if (piezas > 0) {
+                                                con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0')");
+                                                con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
+                                            }
+                                            piezas = 0;
                                         }
-                                        piezas = 0;
                                     }
                                 }
                             } else {
-                                ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,L.F_ExiLot AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' GROUP BY L.F_IdLote ORDER BY L.F_FecCad ASC");
+                                ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,(L.F_ExiLot) AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' GROUP BY L.F_IdLote ORDER BY L.F_FecCad ASC");
                                 while (FechaLote.next()) {
                                     FolioLote = FechaLote.getString("F_FolLot");
                                     String IdLote = FechaLote.getString("F_IdLote");
                                     existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
+                                    ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_facttemp where F_IdLot = '" + IdLote + "'");
+                                    while (rset2.next()) {
+                                        existencia = existencia - rset2.getInt(1);
+                                    }
                                     Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
-                                    if (piezas > existencia) {
-                                        diferencia = piezas - existencia;
-                                        con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
+                                    if (existencia != 0) {
+                                        if (piezas > existencia) {
+                                            diferencia = piezas - existencia;
+                                            con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
 
-                                        con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0')");
-                                        piezas = diferencia;
-                                    } else {
-                                        diferencia = existencia - piezas;
-                                        con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
-
-                                        if (piezas >= 1) {
-                                            con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0')");
+                                            con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0')");
+                                            piezas = diferencia;
+                                        } else {
+                                            diferencia = existencia - piezas;
                                             con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
+
+                                            if (piezas >= 1) {
+                                                con.insertar("insert into tb_facttemp values('" + FolFact + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0')");
+                                                con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
+                                            }
+                                            piezas = 0;
                                         }
-                                        piezas = 0;
                                     }
                                 }
                             }

@@ -81,6 +81,17 @@ public class LeeExcel {
                     try {
                         String ClaPro = ((vectorCellEachRowData.get(j).toString()) + "");
                         System.out.println(ClaPro);
+                        String[] punto = ClaPro.split("\\.");
+                        System.out.println(punto.length);
+                        if (punto.length > 1) {
+                            System.out.println(ClaPro + "***" + punto[0] + "////" + punto[1]);
+                            if (punto[1].equals("01")) {
+                                ClaPro = agrega(punto[0]) + ".01";
+                            } else {
+                                ClaPro = agrega(punto[0]);
+                            }
+                            System.out.println(ClaPro);
+                        }
                         String tipMed = "";
                         con.conectar();
                         ResultSet rset2 = con.consulta("select F_TipMed from tb_medica where F_ClaPro='" + ClaPro + "'");
