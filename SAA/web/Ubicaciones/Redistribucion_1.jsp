@@ -142,13 +142,22 @@
                         <tr>
 
                             <td>Existencia a Mover</td>
+                            <td>Ubicación</td>
                             <td>Ubicación Seleccionada</td>
-                            <td colspan="3">Ubicación Actual</td>
+                            <td colspan="2">Ubicación Actual</td>
 
                         </tr>
                         <tr>                           
                             <td><input type="text" name="restom" id="restom" placeholder="" class="form-control" required="true" onKeyPress="return justNumbers(event);" /></td>
-                            
+                            <% if(Usuario.equals("Ana")){ %>
+                            <td><select id="selectq" class="form-control">
+                                    <option id="op">--Ubicación--</option>
+                                </select></td>
+                            <%}else{%>
+                            <td><select id="select" class="form-control">
+                                    <option id="op">--Ubicación--</option>
+                                </select></td>
+                           <%}%>
                            <td><input type="text" name="ubin" id="ubin" placeholder="" onKeyUp="Ubicacionc()" class="form-control" /><datalist id="Ubicaciones"></datalist></td>
                             <td colspan="2"><input type="text" id="actual" value="<%=ubicac1%>" placeholder="" readonly="" class="form-control" onKeyPress="return justNumbers(event);" /></td>
                         </tr>
@@ -418,34 +427,10 @@
                 var resultado = parseInt(restom);
                 if (resultado > existencia) {
                     missinginfo += "\n La cantidad a mover es mayor al existente.";
-                    $("#restom").val(null);
                 }
                 if ($("#ubin").val() == "") {
                     missinginfo += "\n El campo Ubicación Seleccionada no debe estar Vacio.";
-                }else{
-                    var text = $("#ubin").val();
-                    var dir = 'jsp/consultas.jsp?ban=45&text='+text+''
-                    $.ajax({
-                url: dir,
-                type: 'json',
-                async: false,
-                success: function(data) {
-                    MostrarUbi3(data);
-                },
-                error: function() {
-                    alert("Ha ocurrido un error a");
-
                 }
-
-            });
-            function MostrarUbi3(data) {
-                var json = JSON.parse(data);
-                if(json.length == 0){
-                missinginfo += "\n Ubicación no Existente";
-                $("#ubin").val(null);
-               }
-            }
-        }
                 if (ubica == actual ){
                     missinginfo += "\n No se puede mover por ser misma Ubicación";
                 }
@@ -453,8 +438,7 @@
 
                     missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN:\n" + missinginfo + "\n\n";
                     alert(missinginfo);
-                    
-                    
+                    $("#restom").val(null);
                     return false;
 
                 } else {

@@ -19,16 +19,19 @@
 	l.F_Cb,
 	p.F_Pzs,
 	(f.F_Cant DIV p.F_Pzs),
-	(f.F_Cant MOD p.F_Pzs)
+	(f.F_Cant MOD p.F_Pzs),
+	m.F_DesPro
 FROM
 	tb_facttemp f,
 	tb_lote l,
 	tb_uniatn u,
-	tb_pzxcaja p
+	tb_pzxcaja p,
+	tb_medica m
 WHERE
 	f.F_IdLot = l.F_IdLote
 AND f.F_ClaCli = u.F_ClaCli
 AND p.F_ClaPro = l.F_ClaPro
+AND m.F_ClaPro = l.F_ClaPro
 AND F_IdFact = $P{idFact};]]>
 	</queryString>
 	<field name="F_NomCli" class="java.lang.String">
@@ -59,6 +62,9 @@ AND F_IdFact = $P{idFact};]]>
 	</field>
 	<field name="(f.F_Cant DIV p.F_Pzs)" class="java.lang.Long"/>
 	<field name="(f.F_Cant MOD p.F_Pzs)" class="java.lang.Double"/>
+	<field name="F_DesPro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="(f.F_Cant DIV p.F_Pzs)_1" class="java.lang.Long" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{(f.F_Cant DIV p.F_Pzs)}]]></variableExpression>
 	</variable>
@@ -198,7 +204,7 @@ AND F_IdFact = $P{idFact};]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="17" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<textField>
 				<reportElement uuid="01db694b-de64-467a-8a0f-8dd5ff6680b7" x="150" y="2" width="65" height="12"/>
 				<textElement>
@@ -256,18 +262,37 @@ AND F_IdFact = $P{idFact};]]>
 				<textFieldExpression><![CDATA[$F{F_Cant}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="b1ab397b-9946-4f91-9239-a89a42a71031" x="0" y="14" width="572" height="1" forecolor="#CCCCCC"/>
+				<reportElement uuid="b1ab397b-9946-4f91-9239-a89a42a71031" x="0" y="35" width="572" height="1" forecolor="#CCCCCC"/>
 			</line>
+			<textField>
+				<reportElement uuid="9e723926-9f0e-4913-81da-a75665de8795" x="0" y="16" width="572" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_DesPro}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="31" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="33" splitType="Stretch"/>
+		<band height="19" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement uuid="a68a748e-f2e0-4c1e-ae53-fa329a1a85f9" mode="Opaque" x="526" y="4" width="40" height="13" backcolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d6c324cc-ce19-47bd-8d79-c88d1f7ef2c1" mode="Opaque" x="11" y="4" width="515" height="13" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="91749f50-e7e8-44b0-a365-78d53e3eb1b4" x="227" y="14" width="65" height="12"/>
 				<textElement>

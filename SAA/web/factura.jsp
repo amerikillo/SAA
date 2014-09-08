@@ -88,10 +88,13 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                         <li><a href="factura.jsp">Facturación Automática</a></li>
+                                        <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
+                                        <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                        <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
                                         <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                         <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                         <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
-                                        <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
+                                        <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -169,9 +172,7 @@
                             <div class="form-group">
                                 <label for="FecFab" class="col-sm-1 control-label">Fec Entrega</label>
                                 <div class="col-sm-2">
-                                    <input data-date-format="dd/mm/yyyy" readonly="readonly" type="text" class="form-control" id="FecFab" name="FecFab" placeholder="FecFab" onKeyPress="LP_data();
-                                            anade(this);
-                                            return tabular(event, this)" maxlength="10" />
+                                    <input type="date" class="form-control" id="FecFab" name="FecFab" placeholder="FecFab" maxlength="10" />
                                 </div>
                             </div>
                         </div>
@@ -368,9 +369,10 @@
             frm.elements[i + 1].focus();
         return false;
     }
-
-    $(function() {
-        $("#FecFab").datepicker();
-        $("#FecFab").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
+    /*
+     $(function() {
+     $("#FecFab").datepicker();
+     $("#FecFab").datepicker('option', {dateFormat: 'dd/mm/yy'});
+     });
+     */
 </script> 

@@ -87,30 +87,33 @@ public class LeeExcel {
                             System.out.println(ClaPro + "***" + punto[0] + "////" + punto[1]);
                             if (punto[1].equals("01")) {
                                 ClaPro = agrega(punto[0]) + ".01";
+                            } else if (punto[1].equals("00")) {
+                                ClaPro = agrega(punto[0]);
                             } else {
                                 ClaPro = agrega(punto[0]);
                             }
                             System.out.println(ClaPro);
                         }
-                        String tipMed = "";
-                        con.conectar();
-                        ResultSet rset2 = con.consulta("select F_TipMed from tb_medica where F_ClaPro='" + ClaPro + "'");
-                        while (rset2.next()) {
-                            tipMed = rset2.getString(1);
-                        }
-                        con.cierraConexion();
-                        if (tipMed.equals("2504")) {
-                            String[] dec = ClaPro.split("\\.");
-                            System.out.println(dec.length);
-                            System.out.println(ClaPro + "***" + dec[0] + "////" + dec[1]);
-                            if (dec[1].equals("01")) {
-                                qry = qry + "'" + agrega(dec[0]) + ".01" + "' , ";
-                            } else {
-                                qry = qry + "'" + agrega(ClaPro) + "' , ";
-                            }
-                        } else {
-                            qry = qry + "'" + agrega(ClaPro) + "' , ";
-                        }
+                        qry = qry + "'" + agrega(ClaPro) + "' , ";
+                        /*String tipMed = "";
+                         con.conectar();
+                         ResultSet rset2 = con.consulta("select F_TipMed from tb_medica where F_ClaPro='" + ClaPro + "'");
+                         while (rset2.next()) {
+                         tipMed = rset2.getString(1);
+                         }
+                         con.cierraConexion();
+                         if (tipMed.equals("2504")) {
+                         String[] dec = ClaPro.split("\\.");
+                         System.out.println(dec.length);
+                         System.out.println(ClaPro + "***" + dec[0] + "////" + dec[1]);
+                         if (dec[1].equals("01")) {
+                         qry = qry + "'" + agrega(dec[0]) + ".01" + "' , ";
+                         } else {
+                         qry = qry + "'" + agrega(ClaPro) + "' , ";
+                         }
+                         } else {
+                         qry = qry + "'" + agrega(ClaPro) + "' , ";
+                         }*/
 
                     } catch (Exception e) {
                         System.out.println(e.getMessage());

@@ -272,9 +272,14 @@
                             <%
                                 if (recibido == 1 && tipo.equals("3")) {
                             %>
-                            <div class="col-sm-2 col-sm-offset-7">
+                            <div class="col-sm-3 col-sm-offset-2">
                                 <form action="CapturaPedidos?NoCompra=<%=NoCompra%>" method="post">
-                                    <button class="btn btn-success btn-block" name="accion" id="reactivar" value="reactivar" onclick="return confirm('¿Seguro que desea confirmar la orden de comrpa?')">Reactivar</button>
+                                    <button class="btn btn-danger btn-block" name="accion" id="cerrar" value="cerrar" onclick="return confirm('¿Seguro que desea cerrar la orden de comrpa?')">Cerrar</button>
+                                </form>
+                            </div>
+                            <div class="col-sm-3">
+                                <form action="CapturaPedidos?NoCompra=<%=NoCompra%>" method="post">
+                                    <button class="btn btn-success btn-block" name="accion" id="reactivar" value="reactivar" onclick="return confirm('¿Seguro que desea reactivar la orden de comrpa?')">Reactivar</button>
                                 </form>
                             </div>
                             <div class="col-sm-1">
@@ -283,6 +288,11 @@
                             <%
                             } else {
                             %>
+                            <div class="col-sm-3 col-sm-offset-2">
+                                <form action="CapturaPedidos?NoCompra=<%=NoCompra%>" method="post">
+                                    <button class="btn btn-danger btn-block" name="accion" id="cerrar" value="cerrar" onclick="return confirm('¿Seguro que desea cerrar la orden de comrpa?')">Cerrar</button>
+                                </form>
+                            </div>
                             <div class="col-sm-1 col-sm-offset-9">
                                 <a class="btn btn-default" target="_blank" href="imprimeOrdenCompra.jsp?ordenCompra=<%=NoCompra%>"><span class="glyphicon glyphicon-print"></span></a>
                             </div>

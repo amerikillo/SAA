@@ -93,10 +93,13 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
+                                    <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                    <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                        <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
-                                        <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
+                                    <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
+                                    <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -134,9 +137,9 @@
                             <thead>
                                 <tr>
                                     <td>No. Folio</td>
-                                    <td>Folio Remisión</td>
-                                    <td>Orden de Compra</td>
-                                    <td>Fecha</td>
+                                    <td>Punto de Entrega</td>
+                                    <td>Fecha de Entrega</td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -152,9 +155,8 @@
                                 <tr>
 
                                     <td><%=rset.getString(1)%></td>
-                                    <td><%=rset.getString(2)%></td>
                                     <td><%=rset.getString(3)%></td>
-                                    <td><%=rset.getString(4)%></td>
+                                    <td><%=rset.getString("F_FecEnt")%></td>
                                     <td>
                                         <form action="reimpFactura.jsp" target="_blank">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
@@ -166,6 +168,9 @@
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
                                             <button class="btn btn-block btn-primary">Ver Factura</button>
                                         </form>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-block btn-success" href="gnrFacturaExcel.jsp?fol_gnkl=<%=rset.getString(1)%>">Excel</a>
                                     </td>
                                 </tr>
                                 <%

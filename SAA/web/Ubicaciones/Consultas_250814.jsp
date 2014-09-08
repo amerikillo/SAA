@@ -29,7 +29,6 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="ckeditor/ckeditor.js"></script>
         <link href=bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
         <!--link href="css/flat-ui.css" rel="stylesheet"-->
         <!--link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet"-->
         <!--link href="css/gnkl_style_default.css" rel="stylesheet"-->
@@ -38,20 +37,11 @@
             @import "table_js/demo_table.css";
             @import "table_js/TableTools.css";
         </style>
-        <style type="text/css">
-            .container2 {
-                margin-top: 30px;
-                width: 400px;
-                
-            }
-        </style>
         <script type="text/javascript" language="javascript" src="table_js/jquery.js"></script>
         <script type="text/javascript" language="javascript" src="table_js/jquery.dataTables.js"></script>
         <script type="text/javascript" charset="utf-8" src="table_js/ZeroClipboard.js"></script>
         <script type="text/javascript" charset="utf-8" src="table_js/TableTools.js"></script>
         <script type="text/javascript" src="table_js/TableTools.min.js"></script>
-        
-        
     </head>
     <body>
         <div class="container">
@@ -114,65 +104,50 @@
             <hr/>
             <div class="container">
                 <div class="row">
-                    
                     <div class="row">
-                        
                         <div class="col-lg-1">
                             Por Clave:
                         </div>
                         <div class="col-lg-2">
-                            <input type="text" id="txtf_clave" class="form-control" placeholder="Ingrese Clave" size="10" onkeypress="enter(event)">
+                            <input type="text" id="txtf_clave" class="form-control" placeholder="Ingrese Clave" size="10">
                         </div>
                         <div class="col-lg-1">
                             Por Lote
                         </div>
                         <div class="col-lg-2">
-                            <input type="text" id="txtf_lote" class="form-control" placeholder="Ingrese Lote" size="10" onkeypress="enter(event)">
+                            <input type="text" id="txtf_lote" class="form-control" placeholder="Ingrese Lote" size="10">
                         </div>
                         <div class="col-lg-1">
                             CB Ubicaciones
                         </div>
                         <div class="col-lg-2">
-                            <input type="text"  class="form-control" id="txtf_cb" placeholder="Ingrese CB " size="10" onkeypress="enter(event)">
+                            <input type="text"  class="form-control" id="txtf_cb" placeholder="Ingrese CB " size="10">
                         </div> 
                         <div class="col-lg-1">
                             CB Medicamento
                         </div>
                         <div class="col-lg-2">
-                            <input type="text"  class="form-control" id="txtf_cbm" placeholder="Ingrese CB " size="10" onkeypress="enter(event)">
+                            <input type="text"  class="form-control" id="txtf_cbm" placeholder="Ingrese CB " size="10">
                         </div> 
 
                     </div>
                     <br/>
                     <div class="text-center">
-                        <%if (Tipo == 3 || Tipo == 5) {
-                            if ((usua.equals("Ana")) || (usua.equals("salvador"))){%>
-                        <button class="btn btn-sm btn-primary" id="btn-buscarq">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrarq">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->      
-                        <%}else{%>
+                        <%if (Tipo == 3 || Tipo == 5) {%>
                         <button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
-                            <%}
-                        } else {%>
+                            <%} else {%>
                         <button class="btn btn-sm btn-primary" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi2">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar2">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%}%>
                         <a class="btn btn-primary" href="Consultas.jsp">Actualizar</a>
                     </div>
-                       
-                 </div>
-                       
-            </div>
-            <div class="container2">
-                <div class="progress progress-striped active">
-                    <div class="bar" style="width: 0%;"></div>
+                    
                 </div>
-            </div>      
- 
+            </div>
             <div id="container">
                 <form name="form" id="form" method="post" action="../ServletK">
                     <div id="demo"></div>
                     <div id="dynamic"></div>
                 </form>
-                    
-                </div>
             </div>
                     <br />
                     <h3>Total Piezas:<input type="text" id="txtf_exis" readonly="true" size="10"></h3>
@@ -191,147 +166,10 @@
     <script src="js/bootstrap-switch.js"></script>
     <script src="js/flatui-checkbox.js"></script>
     <script src="js/flatui-radio.js"></script>
-    <script src="js/jquery-1.9.1"></script>
-
     <script>
         $("footer").load("footer.html");
     </script>
     <script type="text/javascript" charset="utf-8">
-        
-        function enter(e) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13){
-        var clave = $("#txtf_clave").val();
-                var lote = $("#txtf_lote").val();
-                var cb = $("#txtf_cb").val();
-                var cbm = $("#txtf_cbm").val();
-                if ((clave != "") && (lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=17&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=18&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=19&clave=' + clave + '&cb=' + cb + ''
-                } else if ((lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=20&lote=' + lote + '&cb=' + cb + ''
-                } else if ((clave != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=21&clave=' + clave + ''
-                } else if ((lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=22&lote=' + lote + ''
-                } else if ((cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
-                }else if ((cbm != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
-                }
-                
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
-    
-                $.ajax({
-                    url: dir,
-                    type: 'json',
-                    async: false,
-                    success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
-                    },
-                    error: function() {
-                        alert("Ha ocurrido un error");
-                    }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        <%if (Tipo == 3 || Tipo == 5) {%>
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                        <%}else{%>
-                         aDataSet.push([descripc, lote, caducidad, numero, ubicacion]);   
-                         
-                            <%}%>
-                    }
-                    
-                    
-                        
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet, "button": 'aceptar',
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                <%if (Tipo == 3 || Tipo == 5) {%>
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                                <%}%>
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-    }
-        }
         $(document).ready(function() {
             $("#btn-buscar").click(function() {
                 var clave = $("#txtf_clave").val();
@@ -355,19 +193,6 @@
                 }else if ((cbm != "")) {
                     var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
                 }
-                
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
-    
                 $.ajax({
                     url: dir,
                     type: 'json',
@@ -397,10 +222,8 @@
                         var id = json[i].id;
                         var claubi = json[i].claubi;
                         exist =parseInt(cantidad)+parseInt(exist);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
                         //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
+                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button><button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
                         var formatNumber = {
                             separador: ",", // separador para los miles
                             sepDecimal: '.', // separador para los decimales
@@ -422,9 +245,8 @@
                         }
                         var numero = formatNumber.new(cantidad);
                         var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+                        aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
-                    
                     
                         
                     $(document).ready(function() {
@@ -463,18 +285,6 @@
             $("#btn-ubi").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=24'
 
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
-
                 $.ajax({
                     url: dir,
                     type: 'json',
@@ -505,12 +315,8 @@
                         var id = json[i].id;
                         var claubi = json[i].claubi;
                         exist =parseInt(cantidad)+parseInt(exist);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
                         //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                
-                        
+                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button><button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
                         var formatNumber = {
                             separador: ",", // separador para los miles
                             sepDecimal: '.', // separador para los decimales
@@ -532,7 +338,7 @@
                         }
                         var numero = formatNumber.new(cantidad);
                         var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+                        aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
                     $(document).ready(function() {
                         $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
@@ -572,19 +378,6 @@
 
             $("#btn-mostrar").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=29'
-                
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-                  
-                  
                 $.ajax({
                     url: dir,
                     type: 'json',
@@ -614,12 +407,9 @@
                         var folio = json[i].folio;
                         var id = json[i].id;
                         var claubi = json[i].claubi;
-                        
                         exist =parseInt(cantidad)+parseInt(exist);
                         //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
+                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button><button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
                         var formatNumber = {
                             separador: ",", // separador para los miles
                             sepDecimal: '.', // separador para los decimales
@@ -641,9 +431,8 @@
                         }
                         var numero = formatNumber.new(cantidad);
                         var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+                        aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
-                    
                     $(document).ready(function() {
                         $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
                         $('#example').dataTable({
@@ -697,19 +486,7 @@
                 } else if ((cb != "")) {
                     var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
                 }
-
-                      var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
-                 $.ajax({
+                $.ajax({
                     url: dir,
                     type: 'json',
                     async: false,
@@ -727,7 +504,6 @@
                 function MostrarFecha(data) {
                     var json = JSON.parse(data);
                     var aDataSet = [];
-                    var exist = 0;
                     for (var i = 0; i < json.length; i++) {
                         var clave = json[i].clave;
                         var lote = json[i].lote;
@@ -738,9 +514,6 @@
                         // var piezas = json[i].piezas;
                         var claubi = json[i].claubi;
                         //var cajas=parseInt(cantidad/piezas);
-                        var descrip = json[i].descrip;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
                         var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
                         var formatNumber = {
                             separador: ",", // separador para los miles
@@ -762,8 +535,7 @@
                             }
                         }
                         var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion]);
+                        aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
                     $(document).ready(function() {
                         $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
@@ -790,7 +562,6 @@
                     $("#txtf_clave").val(null);
                     $("#txtf_lote").val(null);
                     $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
 
                 }
 
@@ -799,19 +570,6 @@
 
             $("#btn-ubi2").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=24'
-
-                      var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
-
                 $.ajax({
                     url: dir,
                     type: 'json',
@@ -831,7 +589,6 @@
                     var json = JSON.parse(data);
 
                     var aDataSet = [];
-                    var exist = 0;
                     for (var i = 0; i < json.length; i++) {
                         var clave = json[i].clave;
                         var lote = json[i].lote;
@@ -842,9 +599,6 @@
                         //var piezas = json[i].piezas;
                         var claubi = json[i].claubi;
                         //var cajas=parseInt(cantidad/piezas);
-                        var descrip = json[i].descrip;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
                         var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
                         var formatNumber = {
                             separador: ",", // separador para los miles
@@ -866,8 +620,7 @@
                             }
                         }
                         var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+                        aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
                     $(document).ready(function() {
                         $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
@@ -895,8 +648,6 @@
                     $("#txtf_clave").val(null);
                     $("#txtf_lote").val(null);
                     $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-                    
 
                 }
 
@@ -904,19 +655,6 @@
 
             $("#btn-mostrar2").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=29'
-
-                      var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
-                
                 $.ajax({
                     url: dir,
                     type: 'json',
@@ -936,7 +674,6 @@
                     var json = JSON.parse(data);
 
                     var aDataSet = [];
-                    var exist = 0;
                     for (var i = 0; i < json.length; i++) {
                         var clave = json[i].clave;
                         var lote = json[i].lote;
@@ -947,10 +684,7 @@
                         //var piezas = json[i].piezas;
                         var claubi = json[i].claubi;
                         //var cajas=parseInt(cantidad/piezas);
-                        var descrip = json[i].descrip;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
+                        var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button><button id="folio" name="folio" value=' + folio + ":" + claubi + '>Modificar<input type=hidden value=10 id=ban name=ban /></button>';
                         var formatNumber = {
                             separador: ",", // separador para los miles
                             sepDecimal: '.', // separador para los decimales
@@ -971,8 +705,7 @@
                             }
                         }
                         var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+                        aDataSet.push([clave, lote, caducidad, numero, ubicacion, cadena]);
                     }
                     $(document).ready(function() {
                         $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
@@ -1000,7 +733,6 @@
                     $("#txtf_clave").val(null);
                     $("#txtf_lote").val(null);
                     $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
 
                 }
 
@@ -1008,8 +740,6 @@
             });
             
             var dir = 'jsp/consultas.jsp?ban=33'
-            
-            
             $.ajax({
                     url: dir,
                     type: 'json',
@@ -1058,246 +788,8 @@
                 }
 
             ////FIN BOTONES USUARIOS CONSULTAS/////
-            
-            
-            
-            ////*****CONSULTA QUIMICA******//////
-            
-            $("#btn-buscarq").click(function() {
-                var clave = $("#txtf_clave").val();
-                var lote = $("#txtf_lote").val();
-                var cb = $("#txtf_cb").val();
-                var cbm = $("#txtf_cbm").val();
-                if ((clave != "") && (lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=34&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=35&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=36&clave=' + clave + '&cb=' + cb + ''
-                } else if ((lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=37&lote=' + lote + '&cb=' + cb + ''
-                } else if ((clave != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=38&clave=' + clave + ''
-                } else if ((lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=39&lote=' + lote + ''
-                } else if ((cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=40&cb=' + cb + ''
-                }else if ((cbm != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=41&cb=' + cbm + ''
-                }
 
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
-    
-                $.ajax({
-                    url: dir,
-                    type: 'json',
-                    async: false,
-                    success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
-                    },
-                    error: function() {
-                        alert("Ha ocurrido un error");
-                    }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    
-                        
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet, "button": 'aceptar',
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
-            });
-
-            $("#btn-mostrarq").click(function() {
-                var dir = 'jsp/consultas.jsp?ban=42'
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-                
-                
-                $.ajax({
-                    url: dir,
-                    type: 'json',
-                    async: false,
-                    success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
-                    },
-                    error: function() {
-                        alert("Ha ocurrido un error");
-                    }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        //var cajas=parseInt(cantidad/piezas);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet,
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
-            });
-          });
-       
-
-    
-
-
+        });
         $("#btn-clave").click(function(){
           self.location='Agregar.jsp';
         });

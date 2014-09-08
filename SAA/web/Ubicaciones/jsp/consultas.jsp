@@ -302,7 +302,7 @@
         }
         out.println(jsona);
     } else if (ban == 17) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  U.F_Cb='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0 ";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  U.F_Cb='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0 ";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             Resultado = Double.parseDouble(Consulta.getString("cant"));
@@ -315,12 +315,13 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
         out.println(jsona);
     } else if (ban == 18) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -331,12 +332,13 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
         out.println(jsona);
     } else if (ban == 19) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  U.F_Cb='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  U.F_Cb='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -347,12 +349,13 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
         out.println(jsona);
     } else if (ban == 20) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  U.F_Cb='" + cb + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  U.F_Cb='" + cb + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -363,12 +366,13 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
         out.println(jsona);
     } else if (ban == 21) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -379,12 +383,13 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
         out.println(jsona);
     } else if (ban == 22) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -395,12 +400,13 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
         out.println(jsona);
     } else if (ban == 23) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where U.F_Cb='" + cb + "' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where U.F_Cb='" + cb + "' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -411,12 +417,13 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
         out.println(jsona);
     } else if (ban == 24) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where L.F_Ubica='NUEVA' AND L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where L.F_Ubica='NUEVA' AND L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -427,6 +434,7 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
@@ -447,7 +455,7 @@
         }
         out.println(json);
     } else if (ban == 26) {
-        QueryDatos = "select F_ClaUbi,F_DesUbi from tb_ubica order by F_DesUbi asc";
+        QueryDatos = "select F_ClaUbi,F_DesUbi from tb_ubica order by F_Cb+0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("claubi", Consulta.getString("F_ClaUbi"));
@@ -506,7 +514,7 @@
         }
         out.println(jsona);
     } else if (ban == 29) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  L.F_ExiLot>0";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  L.F_ExiLot>0";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -517,6 +525,7 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
@@ -551,7 +560,7 @@
         }
         out.println(jsona);
     }else if (ban == 32) {
-        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant, U.F_ClaUbi AS Claubi,U.F_DesUbi AS ubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi WHERE L.F_Cb='"+cb+"' and L.F_ExiLot>'0'";
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant, U.F_ClaUbi AS Claubi,U.F_DesUbi AS ubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi  INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro WHERE L.F_Cb='"+cb+"' and L.F_ExiLot>'0'";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("clave", Consulta.getString("clave"));
@@ -562,6 +571,7 @@
             json.put("folio", Consulta.getString("folio"));
             json.put("id", Consulta.getString("L.F_IdLote"));
             json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
             jsona.add(json);
             json = new JSONObject();
         }
@@ -571,6 +581,246 @@
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("existencia", Consulta.getString("cant"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 34) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi where  U.F_Cb='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0 OR L.F_Ubica LIKE '%CH%' AND L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            Resultado = Double.parseDouble(Consulta.getString("cant"));
+            Cantidad = (int) Resultado;
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Cantidad);
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 35) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0 OR L.F_Ubica LIKE '%CH%' AND L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    } else if (ban == 36) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  U.F_Cb='" + cb + "' AND L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>0 OR L.F_Ubica LIKE '%CH%' AND L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    } else if (ban == 37) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  U.F_Cb='" + cb + "' AND L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0 OR L.F_Ubica LIKE '%CH%' AND L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    } else if (ban == 38) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>0 OR L.F_Ubica LIKE '%CH%' AND L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    } else if (ban == 39) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where L.F_ClaLot='" + Lote + "' AND L.F_ExiLot>0 OR L.F_Ubica LIKE '%CH%' AND L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    } else if (ban == 40) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where U.F_Cb='" + cb + "' AND L.F_ExiLot>0 OR L.F_Ubica LIKE '%CH%' AND L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 41) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant, U.F_ClaUbi AS Claubi,U.F_DesUbi AS ubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro WHERE L.F_Cb='"+cb+"' and L.F_ExiLot>'0' OR L.F_Ubica LIKE '%CH%' AND L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 42) {
+        QueryDatos = "SELECT L.F_IdLote,L.F_ClaPro AS clave, L.F_ClaLot AS lote,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS Cadu,L.F_ExiLot AS cant,U.F_DesUbi AS ubi, L.F_Ubica AS Claubi, L.F_FolLot AS folio,M.F_DesPro FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where  L.F_ExiLot>0 AND L.F_Ubica LIKE '%CH%' OR L.F_Ubica LIKE'%CJ%'";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("clave"));
+            json.put("lote", Consulta.getString("lote"));
+            json.put("caducidad", Consulta.getString("cadu"));
+            json.put("cantidad", Consulta.getString("cant"));
+            json.put("ubicacion", Consulta.getString("ubi"));
+            json.put("folio", Consulta.getString("folio"));
+            json.put("id", Consulta.getString("L.F_IdLote"));
+            json.put("claubi", Consulta.getString("Claubi"));
+            json.put("descrip", Consulta.getString("M.F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 43) {
+        QueryDatos = "select F_ClaUbi,F_DesUbi from tb_ubica WHERE F_DesUbi LIKE '%CH%' OR F_DesUbi LIKE '%CJ%' order by F_Cb+0";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("claubi", Consulta.getString("F_ClaUbi"));
+            json.put("desubi", Consulta.getString("F_DesUbi"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 44) {
+        QueryDatos = "SELECT COUNT(F_ClaPro) as cantidad FROM tb_lote WHERE F_ExiLot>0";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("cantidad", Consulta.getString("cantidad"));
+            
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 45) {
+        QueryDatos = "select F_ClaUbi from tb_ubica where F_ClaUbi like '%" + text + "%' order by F_Cb+0 LIMIT 0,10";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("ubicac", Consulta.getString("F_ClaUbi"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 46) {
+        QueryDatos = "select F_ClaUbi from tb_ubica where F_ClaUbi LIKE '%CH%' OR F_ClaUbi LIKE '%CJ%' order by F_Cb+0 LIMIT 0,10";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("ubicac", Consulta.getString("F_ClaUbi"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 47) {
+        QueryDatos = "SELECT p.F_NomPro,c.F_ClaPro,l.F_ClaLot,SUM(F_CanCom) as cantidad,DATE_FORMAT(F_FecApl,'%d/%m/%Y') as fecha,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User,m.F_Costo,(m.F_Costo * SUM(F_CanCom)) as monto FROM tb_compra c INNER JOIN tb_proveedor p on c.F_ClaOrg=p.F_ClaProve INNER JOIN (SELECT F_FolLot,F_ClaLot FROM tb_lote GROUP BY F_FolLot) l on c.F_Lote=l.F_FolLot INNER JOIN tb_medica m on c.F_ClaPro=m.F_ClaPro where p.F_NomPro='"+text+"' GROUP BY p.F_NomPro,c.F_ClaPro,l.F_ClaLot,c.F_FecApl,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("proveedor", Consulta.getString("p.F_NomPro"));
+            json.put("clave", Consulta.getString("c.F_ClaPro"));
+            json.put("lote", Consulta.getString("l.F_ClaLot"));
+            json.put("cantidad", Consulta.getString("cantidad"));
+            json.put("fecha", Consulta.getString("fecha"));
+            json.put("oc", Consulta.getString("c.F_OrdCom"));
+            json.put("documento", Consulta.getString("c.F_ClaDoc"));
+            json.put("remision", Consulta.getString("c.F_FolRemi"));
+            json.put("user", Consulta.getString("c.F_User"));
+            json.put("costo", Consulta.getString("m.F_Costo"));
+            json.put("monto", Consulta.getString("monto"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 48) {
+        QueryDatos = "SELECT F_NomPro FROM tb_proveedor ORDER BY F_ClaProve+0";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("proveed", Consulta.getString("F_NomPro"));
+            
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 49) {
+        QueryDatos = "SELECT p.F_NomPro,c.F_ClaPro,l.F_ClaLot,SUM(F_CanCom) as cantidad,DATE_FORMAT(F_FecApl,'%d/%m/%Y') as fecha,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User,m.F_Costo,(m.F_Costo * SUM(F_CanCom)) as monto FROM tb_compra c INNER JOIN tb_proveedor p on c.F_ClaOrg=p.F_ClaProve INNER JOIN (SELECT F_FolLot,F_ClaLot FROM tb_lote GROUP BY F_FolLot) l on c.F_Lote=l.F_FolLot INNER JOIN tb_medica m on c.F_ClaPro=m.F_ClaPro where c.F_FecApl='"+text+"' GROUP BY p.F_NomPro,c.F_ClaPro,l.F_ClaLot,c.F_FecApl,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("proveedor", Consulta.getString("p.F_NomPro"));
+            json.put("clave", Consulta.getString("c.F_ClaPro"));
+            json.put("lote", Consulta.getString("l.F_ClaLot"));
+            json.put("cantidad", Consulta.getString("cantidad"));
+            json.put("fecha", Consulta.getString("fecha"));
+            json.put("oc", Consulta.getString("c.F_OrdCom"));
+            json.put("documento", Consulta.getString("c.F_ClaDoc"));
+            json.put("remision", Consulta.getString("c.F_FolRemi"));
+            json.put("user", Consulta.getString("c.F_User"));
+            json.put("costo", Consulta.getString("m.F_Costo"));
+            json.put("monto", Consulta.getString("monto"));
             jsona.add(json);
             json = new JSONObject();
         }

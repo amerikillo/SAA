@@ -9,16 +9,17 @@
 <%
     HttpSession sesion = request.getSession();
     String usua = "";
-    String Usuario = "", Valida = "", Nombre = "";
+    String Usuario = "", Valida = "", Nombre = "", Cadu="", Modificau="";
     int Tipo = 0;
 
     if (sesion.getAttribute("nombre") != null) {
         Usuario = (String) sesion.getAttribute("Usuario");
         Nombre = (String) sesion.getAttribute("nombre");
+        Modificau = (String) sesion.getAttribute("modificau");
         Tipo = Integer.parseInt((String) sesion.getAttribute("Tipo"));
         System.out.println(Usuario + Nombre + Tipo);
     } else {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("Consultas.jsp");
     }
     String Folio = (String) sesion.getAttribute("folio");
     String ubicac1 = (String) sesion.getAttribute("ubicacion");
@@ -30,31 +31,18 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="ckeditor/ckeditor.js"></script>
         <link href=bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
-        
-        <link rel="stylesheet" href="js_auto/jquery-ui.css">
-        <script src="js_auto/jquery-1.9.1.js"></script>
-        <script src="js_auto/jquery-ui.js"></script>
-        <link rel="stylesheet" href="js_auto/style.css">
         <!--link href="css/flat-ui.css" rel="stylesheet"-->
         <!--link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet"-->
         <!--link href="css/gnkl_style_default.css" rel="stylesheet"-->
-        <!--script type="text/javascript" language="javascript" src="table_js/jquery.js"></script>
+        <script type="text/javascript" language="javascript" src="table_js/jquery.js"></script>
         <script type="text/javascript" language="javascript" src="table_js/jquery.dataTables.js"></script>
         <script type="text/javascript" charset="utf-8" src="table_js/ZeroClipboard.js"></script>
         <script type="text/javascript" charset="utf-8" src="table_js/TableTools.js"></script>
-        <script type="text/javascript" src="table_js/TableTools.min.js"></script-->
-        <style type="text/css">
-            .container2 {
-                margin-top: 30px;
-                width: 400px;
-                
-            }
-        </style>
+        <script type="text/javascript" src="table_js/TableTools.min.js"></script>
     </head>
     <body>
         <div class="container">
-            <h1>SIALSS - MODULO DE REUBICAR</h1>
+            <h1>SIALSS- MODIFICACIÓN DE CLAVES</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
             <!--div class="navbar navbar-default">
                 <div class="container">
@@ -111,11 +99,6 @@
                 </div>
             </div-->
             <hr/>
-            <div class="container2">
-                <div class="progress progress-striped active">
-                    <div class="bar" style="width: 0%;"></div>
-                </div>
-            </div>  
             <div class="container">
                 <form id="form" name="form" method="post" action="../ServletK">
                     <table class="table table-bordered">
@@ -141,26 +124,28 @@
                         </tr>
                         <tr>
 
-                            <td>Existencia a Mover</td>
-                            <td>Ubicación Seleccionada</td>
-                            <td colspan="3">Ubicación Actual</td>
+                            <td>Nuevo Lote </td>                            
+                            <td>Nuevo Caducidad </td>
+                            <td colspan="2">Ubicación Actual</td>
 
                         </tr>
                         <tr>                           
-                            <td><input type="text" name="restom" id="restom" placeholder="" class="form-control" required="true" onKeyPress="return justNumbers(event);" /></td>
+                            <td><input type="text" name="lotenew" id="lotenew" placeholder="Nuevo Lote" class="form-control" /></td>
                             
-                           <td><input type="text" name="ubin" id="ubin" placeholder="" onKeyUp="Ubicacionc()" class="form-control" /><datalist id="Ubicaciones"></datalist></td>
+                            <td><input type="text" value="<%=Cadu%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="                                
+                                                return LP_data(event, this);
+                                                anade(this, event);
+                                                return tabular(event, this);
+                                               " maxlength="10" onblur="validaCadu();"/></td>
                             <td colspan="2"><input type="text" id="actual" value="<%=ubicac1%>" placeholder="" readonly="" class="form-control" onKeyPress="return justNumbers(event);" /></td>
                         </tr>
                         <tr>
                             <td colspan="6">
                                 <div class="col-lg-6">
-                                <button id="btn-distribuir" class="btn btn-lg btn-primary btn-block" name="ban" value="3">Re Distribuir</button>
+                                <button id="btn-distribuir" class="btn btn-lg btn-info btn-block" name="ban" value="11">Modificar</button>
                                 </div>
-                                <br />
-                                <br />
                                 <div class="col-lg-6">
-                                <button class="btn btn-lg btn-success btn-block" id="btn-regresar">REGRESAR&nbsp;<label class="glyphicon glyphicon-hand-left"></label></button>
+                                <button class="btn btn-lg btn-warning btn-block" id="btn-regresar" name="ban" value="14">REGRESAR&nbsp;<label class="glyphicon glyphicon-hand-left"></label></button>
                                 </div>
                             </td>
                         </tr>
@@ -175,101 +160,15 @@
 
         </div>
     </body>
-    
+    <script src="js/jquery-1.8.3.min.js"></script>
     <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.placeholder.js"></script>
-    <!--script src="js/jquery-1.8.3.min.js"></script>
     <script src="js/bootstrap-select.js"></script>
     <script src="js/bootstrap-switch.js"></script>
     <script src="js/flatui-checkbox.js"></script>
     <script src="js/flatui-radio.js"></script>
-    <script src="js/jquery-1.9.1"></script-->
-    <script>
-        
-        function Ubicacionc(){
-           var text = $("#ubin").val();
-            var dir = 'jsp/consultas.jsp?ban=45&text='+text+''
-            
-                    $.ajax({
-                        url: dir,
-                        type: 'json',
-                        async: false,
-                        success: function(data){
-                            MostrarDatos2(data);
-                        }, 
-                                error: function() {
-                            alert("Ha ocurrido un error");	
-                        }
-                    });
-                   function MostrarDatos2(data){
-                       var x = 0;
-                      
-                       var json = JSON.parse(data);
-                       for(var i = 0; i < json.length; i++) {
-                           x++;
-                           var uni = json[i].ubicac;
-                       
-                           if (x < json.length){
-                               
-                               if (x == 1){
-                                   var unid1 = uni;
-                               }else if (x == 2){
-                               var unid2 = uni;
-                               }else if (x == 3){
-                               var unid3 = uni;
-                               }else if (x == 4){
-                               var unid4 = uni;
-                               }else if (x == 5){
-                               var unid5 = uni;
-                               }else if (x == 6){
-                               var unid6 = uni;
-                               }else if (x == 7){
-                               var unid7 = uni;
-                               }else if (x == 8){
-                               var unid8 = uni;
-                               }else if (x == 9){
-                               var unid9 = uni;
-                               }
-                           }else{
-                              var unid10 = uni;
-                              
-                           }
-                           if (json.length == 1){
-                               var availableTags = [unid10];
-                           }else if (json.length == 2){
-                               var availableTags = [unid1,unid10];
-                           }else if (json.length == 3){
-                               var availableTags = [unid1,unid2,unid10];
-                           }else if (json.length == 4){
-                               var availableTags = [unid1,unid2,unid3,unid10];
-                           }else if (json.length == 5){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid10];
-                           }else if (json.length == 6){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid10];
-                           }else if (json.length == 7){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid6,unid10];
-                           }else if (json.length == 8){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid6,unid7,unid10];
-                           }else if (json.length == 9){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid6,unid7,unid8,unid10];
-                           }else if (json.length == 10){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid6,unid7,unid8,unid9,unid10];
-                           } 
-                               
-                           
-                           
-                           $( "#ubin" ).autocomplete({
-                               source: availableTags
-                           }); 
-
-                       }  
-        }
-        
-        };
-        
-    </script>
     <script>
         // cargar header y footer
         $("footer").load("footer.html");
@@ -281,25 +180,11 @@
 
             return /\d/.test(String.fromCharCode(keynum));
         }
-        
-                
         $(document).ready(function() {
             var fol = <%=Folio%>;
             var id = <%=id%>;
             var ubica = $("#actual").val();
-            
             var dir = 'jsp/consultas.jsp?ban=25&folio=' + fol + '&ubicacion=' + ubica + '&id=' + id + ''
-            
-            var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+200);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
 
             $.ajax({
                 url: dir,
@@ -344,8 +229,9 @@
 
             }
         });
-        $(document).ready(function() {   
-        var dir = 'jsp/consultas.jsp?ban=26'
+        $(document).ready(function() {
+
+            var dir = 'jsp/consultas.jsp?ban=26'
             $.ajax({
                 url: dir,
                 type: 'json',
@@ -370,91 +256,31 @@
                 }
 
             }
+
             
-            var dir = 'jsp/consultas.jsp?ban=43'
-            $.ajax({
-                url: dir,
-                type: 'json',
-                async: false,
-                success: function(data) {
-                    MostrarUbi2(data);
-                },
-                error: function() {
-                    alert("Ha ocurrido un error a");
-
-                }
-
+           
+            $("#btn-regresar").click(function(){
+                self.location='Consultas.jsp';
             });
-            function MostrarUbi2(data) {
-
-                var json = JSON.parse(data);
-                for (var x = 0; x < json.length; x++) {
-                    var claubi = json[x].claubi;
-                    var desubi = json[x].desubi;
-                    $("#selectq").append($("<option></option>").text(desubi).val(claubi));
-
-                }
-
-            }
-            
-
-            $('#select').change(function() {
-                var valor = $('#select').val();
-                $('#ubin').val(valor);
-            });
-            
-            $('#selectq').change(function() {
-                var valor = $('#selectq').val();
-                $('#ubin').val(valor);
-            });
+            $("#btn-distribuir").click(function(){
                  
-
-            $("#form").submit(function() {
                 var missinginfo = "";
-                var restom = $("#restom").val();
-                var ubica = $("#ubin").val();
-                var actual = $("#actual").val();
-                var existencia = $("#exist").text();
-                var resultado = parseInt(restom);
-                if (resultado > existencia) {
-                    missinginfo += "\n La cantidad a mover es mayor al existente.";
-                    $("#restom").val(null);
-                }
-                if ($("#ubin").val() == "") {
-                    missinginfo += "\n El campo Ubicación Seleccionada no debe estar Vacio.";
-                }else{
-                    var text = $("#ubin").val();
-                    var dir = 'jsp/consultas.jsp?ban=45&text='+text+''
-                    $.ajax({
-                url: dir,
-                type: 'json',
-                async: false,
-                success: function(data) {
-                    MostrarUbi3(data);
-                },
-                error: function() {
-                    alert("Ha ocurrido un error a");
-
-                }
-
-            });
-            function MostrarUbi3(data) {
-                var json = JSON.parse(data);
-                if(json.length == 0){
-                missinginfo += "\n Ubicación no Existente";
-                $("#ubin").val(null);
-               }
-            }
-        }
-                if (ubica == actual ){
-                    missinginfo += "\n No se puede mover por ser misma Ubicación";
-                }
+                var lote = $("#lotenew").val();
+                var cadu = $("#cad").val();
+                var lote2 = $("#lote").text();
+                var cadu2 = $("#caducidad").text();
+                
+                if(lote =="" && cadu==""){
+                 missinginfo += "\n Lote y Caducidad Nuevo no debe estar Vacio.";
+                }else if(lote ==lote2 || cadu==cadu2){
+                 missinginfo += "\n Lote 'O' Caducidad Son iguales.";
+                }               
+               
                 if (missinginfo != "") {
 
                     missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN:\n" + missinginfo + "\n\n";
                     alert(missinginfo);
-                    
-                    
+                    $("#restom").val(null);
                     return false;
 
                 } else {
@@ -462,18 +288,75 @@
                 }
             });
             
-           
-            $("#btn-regresar").click(function(){
-                self.location='Consultas.jsp';
-            });
-         
-         
-    
-           
         });
+        function validaCadu() {
+            var cad = document.getElementById('cad').value;
+            if (cad === "") {
+                
+                
+            } else if (cad.length < 10) {
+                    alert("Caducidad Incorrecta");
+                    document.getElementById('cad').focus();
+                    return false;
+                } else {
+                    var dtFechaActual = new Date();
+                    var sumarDias = parseInt(365);
+                    dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
+                    var fechaSpl = cad.split("/");
+                    var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
+                    /*alert(Caducidad);*/
+                    if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
+                        alert("La fecha de caducidad no puede ser menor a 12 meses próximos");
+                        document.getElementById('cad').focus();
+                        return false;
+                    }
+                }
+        }
         
+        otro = 0;
+        function LP_data(e, esto) {
+            var key = (document.all) ? e.keyCode : e.which; //codigo de tecla. 
+             if (key < 48 || key > 57)//si no es numero 
+                 return false; //anula la entrada de texto.
+               else
+                 anade(esto);
+       }
+       function tabular(e, obj){
+           tecla = (document.all) ? e.keyCode : e.which;
+           if (tecla != 13)
+               return;
+           frm = obj.form;
+           for (i = 0; i < frm.elements.length; i++)
+               if (frm.elements[i] == obj)
+           {
+               if (i == frm.elements.length - 1)
+                   i = -1;
+               break
+           }
+           /*ACA ESTA EL CAMBIO*/
+           if (frm.elements[i + 1].disabled == true)
+               tabular(e, frm.elements[i + 1]);
+           else
+               frm.elements[i + 1].focus();
+           return false;
+       }
+       function anade(esto) {
+           if (esto.value.length > otro) {
+               if (esto.value.length === 2) {
+                   esto.value += "/";
+               }
+           }
+           if (esto.value.length > otro) {
+               if (esto.value.length === 5) {
+                   esto.value += "/";
+               }
+           }
+           if (esto.value.length < otro) {
+               if (esto.value.length === 2 || esto.value.length === 5) {
+                   esto.value = esto.value.substring(0, esto.value.length - 1);
+               }
+           }
+           otro = esto.value.length;
+        }    
     </script>
-    
-        
-            
 </html>

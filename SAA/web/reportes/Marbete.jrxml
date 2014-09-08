@@ -104,7 +104,7 @@
 				<text><![CDATA[LOTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a004ef0f-c7dc-438b-b2a5-39d4e95bcb9d" mode="Opaque" x="264" y="0" width="253" height="50" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="a004ef0f-c7dc-438b-b2a5-39d4e95bcb9d" mode="Opaque" x="157" y="0" width="438" height="50" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="36" isBold="true"/>
 				</textElement>

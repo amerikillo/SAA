@@ -44,10 +44,7 @@
         F_Cb = "";
     }
     if (Clave == null) {
-        Clave = (String) sesion.getAttribute("Nombre");
-        if (Clave == null) {
-            Clave="";
-        }
+        Clave = "";
     }
 %>
 <html>
@@ -154,11 +151,11 @@
             </div>
 
             <h3>
-                Validación Area de Surtido
+                Validación Auditores
             </h3>
             <div class="panel panel-primary">
                 <div class="panel-body">
-                    <form method="post" action="validacionSurtido.jsp">
+                    <form method="post" action="validacionAuditores.jsp">
                         <div class="row">
                         </div>
 
@@ -201,7 +198,7 @@
                                 <input class="form-control" name="F_Clave" />
                             </div>
                             <div class="col-sm-2">
-                                <button class="btn btn-block btn-primary" onclick="return validaCliente()">Buscar</button>
+                                <button class="btn btn-block btn-primary">Buscar</button>
                             </div>
                         </div>
                     </form>
@@ -210,11 +207,11 @@
                             con.conectar();
                             ResultSet rset = null;
                             if (F_Cb != "") {
-                                rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND F_Cb='" + F_Cb + "' and f.F_ClaCli = '" + Clave + "' group by f.F_IdFact;");
+                                rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND F_Cb='" + F_Cb + "' and f.F_ClaCli = '" + Clave + "' group by f.F_Id;");
                             }
 
                             if (F_Clave != "") {
-                                rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND l.F_ClaPro='" + F_Clave + "' and f.F_ClaCli = '" + Clave + "' group by f.F_IdFact;");
+                                rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND l.F_ClaPro='" + F_Clave + "' and f.F_ClaCli = '" + Clave + "' group by f.F_Id;");
                             }
 
                             while (rset.next()) {
@@ -250,11 +247,11 @@
                                 con.conectar();
                                 ResultSet rset = null;
                                 if (F_Cb != "") {
-                                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as cadu,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id,m.F_DesPro  FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE m.F_ClaPro = l.F_ClaPro and 	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND F_Cb='" + F_Cb + "' and f.F_ClaCli = '" + Clave + "' and f.F_StsFact=0 group by f.F_Id;");
+                                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND F_Cb='" + F_Cb + "' and f.F_ClaCli = '" + Clave + "' and f.F_StsFact=1 group by f.F_Id;");
                                 }
 
                                 if (F_Clave != "") {
-                                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as cadu,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id,m.F_DesPro  FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE m.F_ClaPro = l.F_ClaPro and f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND l.F_ClaPro='" + F_Clave + "' and f.F_ClaCli = '" + Clave + "' and f.F_StsFact=0 group by f.F_Id;");
+                                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND l.F_ClaPro='" + F_Clave + "' and f.F_ClaCli = '" + Clave + "' and f.F_StsFact=1 group by f.F_Id;");
                                 }
                                 while (rset.next()) {
                         %>
@@ -262,25 +259,17 @@
                             <td><%=rset.getString("F_Cb")%></td>
                             <td><%=rset.getString("F_ClaPro")%></td>
                             <td><%=rset.getString("F_ClaLot")%></td>
-                            <td><%=rset.getString("cadu")%></td>
+                            <td><%=rset.getString("fecha")%></td>
                             <td><%=rset.getString("F_Ubica")%></td>
                             <td><%=rset.getString("cajas")%></td>
                             <td><%=rset.getString("resto")%></td>
                             <td><%=rset.getString("F_Cant")%></td>
                             <td>
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <a href="#" class="btn btn-warning btn-block" data-toggle="modal" data-target="#Rechazar<%=rset.getString("F_Id")%>"><span class="glyphicon glyphicon-barcode"></span></a>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <a class="btn btn-block btn-success" onclick="return confirm('Desea Validar Esta Clave?')" href="Facturacion?accion=validaRegistro&folio=<%=rset.getString("F_Id")%>&Nombre=<%=Clave%>"><span class="glyphicon glyphicon-ok"></span></a>
-                                    </div>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="10">
-                                <%=rset.getString("F_DesPro")%>
                             </td>
                         </tr>
                         <%
@@ -311,11 +300,11 @@
                 con.conectar();
                 ResultSet rset = null;
                 if (F_Cb != "") {
-                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, l.F_FolLot FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND F_Cb='" + F_Cb + "' and f.F_ClaCli = '" + Clave + "' group by f.F_Id;");
+                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, l.F_FolLot FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND F_Cb='" + F_Cb + "' and f.F_ClaCli = '" + Clave + "' group by f.F_IdFact;");
                 }
 
                 if (F_Clave != "") {
-                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, l.F_FolLot FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND l.F_ClaPro='" + F_Clave + "' and f.F_ClaCli = '" + Clave + "' group by f.F_Id;");
+                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, l.F_FolLot FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND l.F_ClaPro='" + F_Clave + "' and f.F_ClaCli = '" + Clave + "' group by f.F_IdFact;");
                 }
                 while (rset.next()) {
         %>
@@ -359,7 +348,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" onclick="return confirm('Desea Actualizar el CB?');
-                                    " name="accion" value="actualizarCB">Actualizar</button>
+                                    " name="accion" value="actualizarCBAuditor">Actualizar</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </form>
@@ -384,16 +373,6 @@
     <script src="js/jquery-1.9.1.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    
-    <script>
-        function validaCliente(){
-            var Cliente = document.getElementById('Nombre').value;
-            if(Cliente===""){
-                alert('Seleccione el Punto de Entrega')
-                return false;
-            }
-        }
-    </script>
 
 </html>
 

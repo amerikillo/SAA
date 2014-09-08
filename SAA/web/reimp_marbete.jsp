@@ -43,23 +43,30 @@
             Orden = rset.getString("C.F_OrdCom");
 
             Tarimas = TTarimas - TarimasI;
-            Piezas = TPiezas - Resto;
-            PiezasC = Piezas / TCajas;
-
-            Cajas = TCajas - CajasI;
-            PiezasT = Cajas * PiezasC;
-
-            if (Cajas > 0 && Tarimas != 0) {
-                TotalP = PiezasT / Tarimas;
-                for (int i = 0; i < Tarimas; i++) {
-                    con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '" + Orden + "', '" + TotalP + "','0')");
+                Piezas = TPiezas - Resto;
+                if(Resto > 0){
+                    if (TCajas > 1){
+                    PiezasC = Piezas / (TCajas - 1);
+                    }
+                    Cajas = TCajas - ( CajasI + 1 );  
+                }else{
+                PiezasC = Piezas / TCajas;    
+                Cajas = TCajas - CajasI;  
                 }
+                
+                //Cajas = TCajas - CajasI;                 
+                PiezasT = Cajas * PiezasC;
+                
+                if (Cajas > 0 && Tarimas != 0){
+                    TotalP = PiezasT / Tarimas;
+                for (int i = 0; i < Tarimas; i++) {
+                    con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ TotalP +"','0')");
             }
-
-            PiezasTI = (CajasI * PiezasC) + Resto;
-
-            con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '" + Orden + "', '" + PiezasTI + "','0')");
-
+                }
+                
+                PiezasTI = (CajasI * PiezasC) + Resto;                
+                con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ PiezasTI +"','0')");
+                
         }
         con.cierraConexion();
     } catch (Exception e) {

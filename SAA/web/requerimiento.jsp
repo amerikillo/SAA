@@ -74,10 +74,13 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
+                                    <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                    <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                        <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
-                                        <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
+                                    <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
+                                    <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -123,22 +126,19 @@
                                 </div-->
                                 <label for="Nombre" class="col-xs-2 control-label">Nombre Archivo*</label>
                                 <div class="col-sm-5">
-                                    <input class="form-control" type="file" name="file1" accept=".xlsx"/>                                    
+                                    <input class="form-control" type="file" name="file1" id="file1" accept=".xlsx"/>                                    
                                 </div>
-
                             </div>
-
                         </div>
-
-
-                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();"> Cargar Archivo</button> 
-
+                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();"> Cargar Archivo</button>
                     </form>
+                    <div style="display: none;" class="text-center" id="Loader">
+                        <img src="imagenes/ajax-loader-1.gif" height="150" />
+                    </div>
                     <div>
                         <h6>Los campos marcados con * son obligatorios</h6>
                     </div>
                 </div>
-
             </div>
         </div>
         <br><br><br>
@@ -198,12 +198,13 @@
 
     function valida_alta() {
         /*var Clave = document.formulario1.Clave.value;*/
-        var Nombre = document.formulario1.Nombre.value;
+        var Nombre = document.getElementById('file1').value;
 
         if (Nombre === "") {
             alert("Tiene campos vacíos, verifique.");
             return false;
         }
+        document.getElementById('Loader').style.display='block';
     }
 </script>
 <script language="javascript">
