@@ -55,14 +55,29 @@ public class FacturacionManual extends HttpServlet {
         } catch (Exception e) {
         }
         try {
-            System.out.println(request.getParameter("accion"));
-            if (request.getParameter("accion").equals("quitarInsumo")) {
-                System.out.println(request.getParameter("Nombre") + "*****");
-                sesion.setAttribute("Nombre", request.getParameter("Nombre"));
-                con.conectar();
-                con.insertar("update tb_facttemp set F_StsFact = '1' where F_Id = '" + request.getParameter("IdQuitar") + "' ");
-                con.cierraConexion();
-                out.println("<script>window.location='remisionarCamion.jsp'</script>");
+            if (request.getParameter("accion").equals("devolucion")) {
+                String idFact=request.getParameter("idFact");
+                try {
+                    con.conectar();
+                    String ClaCli="", StsFact="", ClaPro="", ClaLot="", FecCad="", CantSur="", FecEnt="", Ubicacion="";
+                    int cantidadDevuelta=0;
+                    ResultSet rset = con.consulta("select f.F_ClaCli, f.F_StsFact, f.F_ClaPro, l.F_ClaLot, l.F_FecCad, f.F_CantSur, f.F_FecEnt, f.F_Ubicacion from tb_factura f, tb_lote l where f.F_Lote = l.F_FolLot");
+                    while(rset.next()){
+                        ClaCli=rset.getString("F_ClaCli");
+                        StsFact=rset.getString("F_StsFact");
+                        ClaPro=rset.getString("F_ClaPro");
+                        ClaLot=rset.getString("F_ClaLot");
+                        FecCad=rset.getString("F_FecCad");
+                        CantSur=rset.getString("F_FecCad");
+                        FecEnt=rset.getString("F_CantSur");
+                        Ubicacion=rset.getString("F_FecEnt");
+                    }
+                    con.insertar("update tb_facura set F_StsFact = 'C' where F_IdFact = '"+idFact+"'");
+                    
+                    con.cierraConexion();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
             if (request.getParameter("accion").equals("CancelarFactura")) {
                 try {
@@ -309,6 +324,15 @@ public class FacturacionManual extends HttpServlet {
                     response.sendRedirect("facturacionManual.jsp");
                 } catch (Exception e) {
                 }
+            }
+            String[] quitar=request.getParameter("accion").split(",");
+            if (quitar[0].equals("quitarInsumo")) {
+                System.out.println(request.getParameter("Nombre") + "*****");
+                sesion.setAttribute("Nombre", request.getParameter("Nombre"));
+                con.conectar();
+                con.insertar("update tb_facttemp set F_StsFact = '1' where F_Id = '" + quitar[1] + "' ");
+                con.cierraConexion();
+                out.println("<script>window.location='remisionarCamion.jsp'</script>");
             }
         } catch (Exception e) {
         }

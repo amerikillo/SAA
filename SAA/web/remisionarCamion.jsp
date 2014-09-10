@@ -254,7 +254,7 @@
                                     <td>
                                         <input name="Nombre" value="<%=Clave%>" class="hidden" />
                                         <input name="IdQuitar" value="<%=rset.getString("F_Id")%>" class="hidden" />
-                                        <button name="accion" value="quitarInsumo" class="btn btn-block btn-danger" onclick="return confirm('Seguro de desea eliminarel insumo?')"><span class="glyphicon glyphicon-remove"></span></button>
+                                        <button name="accion" value="quitarInsumo,<%=rset.getString("F_Id")%>" class="btn btn-block btn-danger" onclick="return confirm('Seguro de desea eliminarel insumo?')"><span class="glyphicon glyphicon-remove"></span></button>
                                     </td>
                                 </tr>
                                 <%
