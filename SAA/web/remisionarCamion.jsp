@@ -52,7 +52,7 @@
     }
     try {
         con.conectar();
-        con.insertar("update tb_facttemp set F_StsFact='4', F_User ='" + (String) sesion.getAttribute("nombre") + "' where F_Id = '" + request.getParameter("CB") + "  ' and F_StsFact != '5'");
+        con.insertar("update tb_facttemp set F_StsFact='4', F_User ='" + (String) sesion.getAttribute("nombre") + "' where F_Id = '" + request.getParameter("CB") + "  ' and F_StsFact = '2'");
 
         ResultSet rset = con.consulta("select F_FecEnt from tb_facttemp where F_Id = '" + request.getParameter("CB") + "'");
         while (rset.next()) {

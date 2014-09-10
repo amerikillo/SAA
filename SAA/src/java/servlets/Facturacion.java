@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import conn.*;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -73,6 +71,18 @@ public class Facturacion extends HttpServlet {
                 out.println("<script>alert('Reimprima el Marbete Correcto')</script>");
                 out.println("<script>window.location='validacionSurtido.jsp'</script>");
             }
+            if (request.getParameter("accion").equals("validaAuditor")) {
+                try {
+                    con.conectar();
+                    con.insertar("update tb_facttemp set F_StsFact='2' WHERE F_Id= '" + request.getParameter("folio") + "'");
+                    con.cierraConexion();
+                } catch (Exception e) {
+
+                }
+                sesion.setAttribute("Nombre", request.getParameter("Nombre"));
+                out.println("<script>alert('Clave Validada Correctamente')</script>");
+                out.println("<script>window.location='validacionSurtido.jsp'</script>");
+            }
             if (request.getParameter("accion").equals("validaRegistro")) {
                 try {
                     con.conectar();
@@ -82,7 +92,7 @@ public class Facturacion extends HttpServlet {
 
                 }
                 sesion.setAttribute("Nombre", request.getParameter("Nombre"));
-                out.println("<script>alert('Clave Validada Correctamente, ingrese el siguiente CB del proveedor correspondiente.')</script>");
+                out.println("<script>alert('Clave Validada Correctamente')</script>");
                 out.println("<script>window.location='validacionSurtido.jsp'</script>");
             }
             if (request.getParameter("accion").equals("EliminaConcentrado")) {
