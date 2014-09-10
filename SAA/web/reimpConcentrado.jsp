@@ -95,7 +95,13 @@
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
                                     <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                        <%
+                                            if (tipo.equals("7")) {
+                                        %>
                                     <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
+                                        <%
+                                            }
+                                        %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
@@ -175,8 +181,14 @@
                                     </td>
                                     <td>
                                         <form action="Facturacion" method="post">
+                                            <%
+                                                //if (tipo.equals("7")) {
+                                            %>
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_IdFact")%>">
                                             <button class="btn btn-block btn-danger" name="accion" value="EliminaConcentrado" onclick="return confirm('Seguro de eliminar este concentrado?')"><span class="glyphicon glyphicon-remove"></span></button>
+                                                <%
+                                                    //}
+                                                %>
                                         </form>
                                     </td>
                                 </tr>
@@ -218,9 +230,9 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                        $(document).ready(function() {
-                                            $('#datosCompras').dataTable();
-                                        });
+                                                $(document).ready(function() {
+                                                    $('#datosCompras').dataTable();
+                                                });
 </script>
 <script>
     $(function() {

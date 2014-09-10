@@ -52,7 +52,7 @@
     }
     try {
         con.conectar();
-        con.insertar("update tb_facttemp set F_StsFact='4', F_User ='" +(String)sesion.getAttribute("nombre") + "' where F_Id = '" + request.getParameter("CB") + "  ' and F_StsFact != '5'");
+        con.insertar("update tb_facttemp set F_StsFact='4', F_User ='" + (String) sesion.getAttribute("nombre") + "' where F_Id = '" + request.getParameter("CB") + "  ' and F_StsFact != '5'");
 
         ResultSet rset = con.consulta("select F_FecEnt from tb_facttemp where F_Id = '" + request.getParameter("CB") + "'");
         while (rset.next()) {
@@ -115,7 +115,13 @@
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
                                     <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                        <%
+                                            if (tipo.equals("7")) {
+                                        %>
                                     <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
+                                        <%
+                                            }
+                                        %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
@@ -201,10 +207,7 @@
                         </div>
                     </form>
                 </div>
-                <div style="display: none;" class="text-center" id="Loader">
-                    <img src="imagenes/ajax-loader-1.gif" height="150" />
-                </div>
-                <form action="FacturacionManual" methos="post">
+                <form action="FacturacionManual" methos="post" name="FormFactura" id="FormFactura">
                     <input name="Nombre" value="<%=Clave%>" class="hidden" />
                     <input name="Fecha" value="<%=Fecha%>" class="hidden" />
 
@@ -230,7 +233,7 @@
                                     try {
                                         con.conectar();
                                         ResultSet rset = null;
-                                        rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as feccad,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, f.F_IdLot, m.F_DesPro FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE l.F_ClaPro = m.F_ClaPro and	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND f.F_ClaCli = '" + Clave + "' and f.F_StsFact=4 and f.F_User = '"+(String) sesion.getAttribute("nombre")+"';");
+                                        rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as feccad,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, f.F_IdLot, m.F_DesPro FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE l.F_ClaPro = m.F_ClaPro and	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND f.F_ClaCli = '" + Clave + "' and f.F_StsFact=4 and f.F_User = '" + (String) sesion.getAttribute("nombre") + "';");
                                         while (rset.next()) {
                                 %>
                                 <tr>
@@ -265,10 +268,14 @@
                         </table>
                         <div class="row">
                             <div class="col-sm-2 col-sm-offset-4">
-                                <button type="submit" class="btn btn-primary btn-block" name="accion" value="remisionCamion" onclick="return validaRemision();">Remisionar</button>
+                                <button type="submit" class="hidden" name="accion" id="Facturar" value="remisionCamion" onclick="">Remisionar</button>
+                                <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#Observaciones" name="accion" value="remisionCamion" onclick="">Remisionar</button>
                             </div>
                         </div>
-
+                        <div class="hidden">
+                            <textarea id="Obs" name="Obs"></textarea>
+                            <input id="F_Req" name="F_Req" />
+                        </div>
                     </div>
                 </form>
             </div>
@@ -282,7 +289,45 @@
         </div>
 
 
+        <!--
+                Modal
+        -->
+        <div class="modal fade" id="Observaciones" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-sm-5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="modal-title" id="myModalLabel">Requerimiento</h4>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input name="Requerimiento" id="Requerimiento" class="form-control" />
+                            </div>
+                        </div>
 
+                        <h4 class="modal-title" id="myModalLabel">Observaciones</h4>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <textarea name="Obser" id="Obser" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div style="display: none;" class="text-center" id="Loader">
+                            <img src="imagenes/ajax-loader-1.gif" height="150" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" onclick="return validaRemision();" name="accion" value="actualizarCB">Remisionar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--
+            /Modal
+            -->
     </body>
     <!-- 
     ================================================== -->
@@ -294,17 +339,25 @@
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
-                                    function validaRemision() {
-                                        var seg = confirm('Desea Remisionar este Insumo?');
-                                        if (seg == false) {
-                                            return false;
-                                        } else {
-                                            document.getElementById('Loader').style.display = 'block';
-                                        }
+                                function validaRemision() {
+                                    var seg = confirm('Desea Remisionar este Insumo?');
+                                    if (seg == false) {
+                                        return false;
+                                    } else {
+                                        document.getElementById('Loader').style.display = 'block';
+                                        var observaciones = document.getElementById('Obser').value;
+                                        document.getElementById('Obs').value = observaciones;
+                                        var req = document.getElementById('Requerimiento').value;
+                                        document.getElementById('F_Req').value = req;
+                                        
+                                        document.getElementById('Facturar').click();
                                     }
-                                    /*$(document).ready(function() {
-                                     $('#datosProv').dataTable();
-                                     });*/
+
+                                }
+                                /*$(document).ready(function() {
+                                 $('#datosProv').dataTable();
+                                 });*/
+
     </script>
 </html>
 

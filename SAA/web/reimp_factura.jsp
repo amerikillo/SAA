@@ -95,7 +95,13 @@
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
                                     <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                        <%
+                                            if (tipo.equals("7")) {
+                                        %>
                                     <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
+                                        <%
+                                            }
+                                        %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
@@ -142,6 +148,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -167,6 +174,12 @@
                                         <form action="verFactura.jsp" method="post">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
                                             <button class="btn btn-block btn-primary">Ver Factura</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="devolucionesFacturas.jsp" method="post">
+                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
+                                            <button class="btn btn-block btn-danger">Devolución</button>
                                         </form>
                                     </td>
                                     <td>

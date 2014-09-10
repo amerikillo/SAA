@@ -10,9 +10,9 @@
 <%
     ConectionDB con = new ConectionDB();
     String cli = "", fec = "";
-    
-    response.setContentType ("application/vnd.ms-excel"); 
-    response.setHeader ("Content-Disposition", "attachment;filename=\"ConcentradoGlobal.xls\"");
+
+    response.setContentType("application/vnd.ms-excel");
+    response.setHeader("Content-Disposition", "attachment;filename=\"ConcentradoGlobal.xls\"");
 %>
 <table border="1">
     <tr>
@@ -20,6 +20,7 @@
         <td>Fecha de Entrega</td>
         <td>CB</td>
         <td>Clave</td>
+        <td>Descripción</td>
         <td>Lote</td>
         <td>Caducidad</td>
         <td>Cajas</td>
@@ -31,7 +32,7 @@
         try {
             con.conectar();
             try {
-                ResultSet rset = con.consulta("SELECT u.F_NomCli, DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as FecEnt, l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as FecCad,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as Cajas,	(f.F_Cant MOD p.F_Pzs) as Resto, f.F_FecEnt, l.F_Cb FROM	tb_facttemp f,	tb_lotetemp l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro and  f.F_IdFact='" + request.getParameter("fol_gnkl") + "' ");
+                ResultSet rset = con.consulta("SELECT u.F_NomCli, DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as FecEnt, l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as FecCad,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as Cajas,	(f.F_Cant MOD p.F_Pzs) as Resto, f.F_FecEnt, l.F_Cb, m.F_DesPro FROM	tb_facttemp f,	tb_lotetemp l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE m.F_ClaPro = l.F_ClaPro and f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro and  f.F_IdFact='" + request.getParameter("fol_gnkl") + "' ");
                 while (rset.next()) {
                     cli = rset.getString("F_NomCli");
                     fec = rset.getString("F_FecEnt");
@@ -41,6 +42,7 @@
         <td><%=rset.getString("FecEnt")%></td>
         <td><%=rset.getString("F_Cb")%></td>
         <td><%=rset.getString("F_ClaPro")%></td>
+        <td><%=rset.getString("F_DesPro")%></td>
         <td><%=rset.getString("F_ClaLot")%></td>
         <td><%=rset.getString("FecCad")%></td>
         <td><%=rset.getString("Cajas")%></td>
@@ -51,16 +53,16 @@
     <%
                 }
             } catch (Exception e) {
-
+                System.out.println(e.getMessage());
             }
             con.cierraConexion();
         } catch (Exception e) {
 
+            System.out.println(e.getMessage());
         }
 
     %>
 </table>
-<%
-        response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "attachment;filename=\"ConcentradoGlobal_"+cli+"_"+fec+".xls\"");
+<%    response.setContentType("application/vnd.ms-excel");
+    response.setHeader("Content-Disposition", "attachment;filename=\"ConcentradoGlobal_" + cli + "_" + fec + ".xls\"");
 %>

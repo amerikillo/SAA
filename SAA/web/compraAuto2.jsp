@@ -223,10 +223,17 @@
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
                                     <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                        <%
+                                            if (tipo.equals("7")) {
+                                        %>
                                     <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
+                                        <%
+                                            }
+                                        %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
+                                    <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -479,7 +486,7 @@
                                         }
                                         if (contadorLotes > 1) {
                                             //Mas de 1 lote
-                                    %>
+%>
                                     <td>
                                         <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                         <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
@@ -664,8 +671,8 @@
                                         <h5><strong>Tarimas Incompletas</strong></h5>
                                         <div class="row">
 
-                                            <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
-                                            <div class="col-sm-1">
+                                            <label for="Cajas" class="hidden">Tarimas</label>
+                                            <div class="hidden">
                                                 <input type="Cajas" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
                                                         return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
                                             </div>
@@ -1204,9 +1211,14 @@
                                         var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
                                         document.getElementById('TCajas').value = formatNumber.new(totalCajas + 1);
                                         document.getElementById('CajasIn').value = formatNumber.new(1);
-                                        TarimasI = parseInt(TarimasI) + parseInt(1);
+                                        if (parseInt(CajasxTI) !== parseInt(0)) {
+                                            TarimasI = parseInt(TarimasI) + parseInt(1);
+                                        }
                                     }
                                     var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
+                                    if(totalTarimas===0 && Resto!==0){
+                                        totalTarimas=totalTarimas+1;
+                                    }
                                     document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
                                     var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
                                     document.getElementById('Cajas').value = formatNumber.new(totalCajas);
@@ -1280,7 +1292,7 @@
                                         return false;
                                     } else {
                                         var dtFechaActual = new Date();
-                                        var sumarDias = parseInt(365);
+                                        var sumarDias = parseInt(270);
                                         dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
                                         var fechaSpl = cad.split("/");
                                         var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];

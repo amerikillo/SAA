@@ -139,12 +139,12 @@ public class Facturacion extends HttpServlet {
                      while (Fechaa.next()) {
                      FechaE = Fechaa.getString("STR_TO_DATE(" + FechaE + ", '%d/%m/%Y')");
                      }*/
-                    ResultSet FolioFact = con.consulta("SELECT F_IndFact FROM tb_indice");
+                    ResultSet FolioFact = con.consulta("SELECT F_IndGlobal FROM tb_indice");
                     while (FolioFact.next()) {
-                        FolioFactura = Integer.parseInt(FolioFact.getString("F_IndFact"));
+                        FolioFactura = Integer.parseInt(FolioFact.getString("F_IndGlobal"));
                     }
                     FolFact = FolioFactura + 1;
-                    con.actualizar("update tb_indice set F_IndFact='" + FolFact + "'");
+                    con.actualizar("update tb_indice set F_IndGlobal='" + FolFact + "'");
 
                     ResultSet rset_cantidad = con.consulta("SELECT F_ClaPro,SUM(F_CajasReq) as cajas, SUM(F_PiezasReq) as piezas, F_IdReq FROM tb_unireq WHERE F_ClaUni='" + ClaUni + "' and F_Status='0' and F_FecCarg = CURDATE() GROUP BY F_ClaPro");
                     while (rset_cantidad.next()) {
@@ -175,7 +175,7 @@ public class Facturacion extends HttpServlet {
                                         existencia = existencia - rset2.getInt(1);
                                     }
                                     Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
-                                    if (existencia != 0) {
+                                    if (existencia > 0) {
                                         if (piezas > existencia) {
                                             diferencia = piezas - existencia;
                                             con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
@@ -203,7 +203,7 @@ public class Facturacion extends HttpServlet {
                                         existencia = existencia - rset2.getInt(1);
                                     }
                                     Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
-                                    if (existencia != 0) {
+                                    if (existencia > 0) {
                                         if (piezas > existencia) {
                                             diferencia = piezas - existencia;
                                             con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
@@ -314,7 +314,7 @@ public class Facturacion extends HttpServlet {
                                         con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
 
                                         con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + existencia + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
-                                        con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezasOri + "','" + existencia + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "')");
+                                        con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezasOri + "','" + existencia + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
                                         consql.insertar("insert into TB_MovInv values (CONVERT(date,GETDATE()),'" + FolioFactura + "','','51', '" + Clave + "', '" + existencia + "', '" + Costo + "','" + IVAPro + "', '" + MontoIva + "' ,'-1', '" + FolioLote + "', '" + FolioMovi + "','A', '0', '','','','" + ClaProve + "','" + sesion.getAttribute("nombre") + "') ");
                                         consql.insertar("insert into TB_Factura values ('F','" + FolioFactura + "','" + dame5car(ClaUni) + "','A','',CONVERT(date,GETDATE()),'','" + Clave + "', '','1','" + piezasOri + "','" + existencia + "', '" + Monto + "','0', '" + Monto + "','" + Monto + "','" + Monto + "','" + IVAPro + "', '" + MontoIva + "','" + Costo + "' ,'" + FolioLote + "','R','" + df2.format(df3.parse(FechaE)) + "','" + sesion.getAttribute("nombre") + "','0','0','','A','" + existencia + "','" + Ubicacion + "') ");
                                         piezas = diferencia;
@@ -341,7 +341,7 @@ public class Facturacion extends HttpServlet {
                                             con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
 
                                             con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + piezas + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
-                                            con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezasOri + "','" + piezas + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "')");
+                                            con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezasOri + "','" + piezas + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
                                             con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                             consql.insertar("insert into TB_MovInv values (CONVERT(date,GETDATE()),'" + FolioFactura + "','','51', '" + Clave + "', '" + piezas + "', '" + Costo + "','" + IVAPro + "', '" + MontoIva + "' ,'-1', '" + FolioLote + "', '" + FolioMovi + "','A', '0', '','','','" + ClaProve + "','" + sesion.getAttribute("nombre") + "') ");
                                             consql.insertar("insert into TB_Factura values ('F','" + FolioFactura + "','" + dame5car(ClaUni) + "','A','',CONVERT(date,GETDATE()),'','" + Clave + "', '','1','" + piezasOri + "','" + piezas + "', '" + Monto + "','0', '" + Monto + "','" + Monto + "','" + Monto + "','" + IVAPro + "', '" + MontoIva + "','" + Costo + "' ,'" + FolioLote + "','R','" + df2.format(df3.parse(FechaE)) + "','" + sesion.getAttribute("nombre") + "','0','0','','A','" + piezas + "','" + Ubicacion + "') ");
@@ -392,7 +392,7 @@ public class Facturacion extends HttpServlet {
                                         con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
 
                                         con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + existencia + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
-                                        con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezasOri + "','" + existencia + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "')");
+                                        con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezasOri + "','" + existencia + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
                                         consql.insertar("insert into TB_MovInv values (CONVERT(date,GETDATE()),'" + FolioFactura + "','','51', '" + Clave + "', '" + existencia + "', '" + Costo + "','" + IVAPro + "', '" + MontoIva + "' ,'-1', '" + FolioLote + "', '" + FolioMovi + "','A', '0', '','','','" + ClaProve + "','" + sesion.getAttribute("nombre") + "') ");
                                         consql.insertar("insert into TB_Factura values ('F','" + FolioFactura + "','" + dame5car(ClaUni) + "','A','',CONVERT(date,GETDATE()),'','" + Clave + "', '','1','" + piezasOri + "','" + existencia + "', '" + Monto + "','0', '" + Monto + "','" + Monto + "','" + Monto + "','" + IVAPro + "', '" + MontoIva + "','" + Costo + "' ,'" + FolioLote + "','R','" + df2.format(df3.parse(FechaE)) + "','" + sesion.getAttribute("nombre") + "','0','0','','A','" + existencia + "','" + Ubicacion + "') ");
 
@@ -420,7 +420,7 @@ public class Facturacion extends HttpServlet {
                                             con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
 
                                             con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + piezas + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
-                                            con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezasOri + "','" + piezas + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "')");
+                                            con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + piezasOri + "','" + piezas + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
                                             con.actualizar("UPDATE tb_lote SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                             consql.insertar("insert into TB_MovInv values (CONVERT(date,GETDATE()),'" + FolioFactura + "','','51', '" + Clave + "', '" + piezas + "', '" + Costo + "','" + IVAPro + "', '" + MontoIva + "' ,'-1', '" + FolioLote + "', '" + FolioMovi + "','A', '0', '','','','" + ClaProve + "','" + sesion.getAttribute("nombre") + "') ");
                                             consql.insertar("insert into TB_Factura values ('F','" + FolioFactura + "','" + dame5car(ClaUni) + "','A','',CONVERT(date,GETDATE()),'','" + Clave + "', '','1','" + piezasOri + "','" + piezas + "', '" + Monto + "','0', '" + Monto + "','" + Monto + "','" + Monto + "','" + IVAPro + "', '" + MontoIva + "','" + Costo + "' ,'" + FolioLote + "','R','" + df2.format(df3.parse(FechaE)) + "','" + sesion.getAttribute("nombre") + "','0','0','','A','" + piezas + "','" + Ubicacion + "') ");

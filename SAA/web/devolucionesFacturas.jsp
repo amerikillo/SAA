@@ -154,7 +154,7 @@
                 <%
                     int req = 0, sur = 0;
                     Double imp = 0.0;
-                    ResultSet rset2 = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,(F.F_CantSur) as surtido,(F.F_CantReq) as requerido,F.F_Costo,(F.F_Monto) as importe, F.F_Ubicacion FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "'  GROUP BY F.F_IdFact");
+                    ResultSet rset2 = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,(F.F_CantSur) as surtido,(F.F_CantReq) as requerido,F.F_Costo,(F.F_Monto) as importe, F.F_Ubicacion FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY U.F_NomCli,F.F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,L.F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto");
                     while (rset2.next()) {
                         req = req + rset2.getInt("requerido");
                         sur = sur + rset2.getInt("surtido");
@@ -193,6 +193,7 @@
                                     <td>Ent.</td>
                                     <td>Costo U</td>
                                     <td>Importe</td>
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -200,7 +201,7 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY U.F_NomCli,F.F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,L.F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto");
+                                            ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_IdFact FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
                                             while (rset.next()) {
                                 %>
                                 <tr>
@@ -213,6 +214,7 @@
                                     <td><%=rset.getString(9)%></td>
                                     <td><%=rset.getString(10)%></td>
                                     <td><%=rset.getString(11)%></td>
+                                    <td><a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdFact")%>"><span class="glyphicon glyphicon-remove-circle"></span></a></td>
                                 </tr>
                                 <%
                                             }
@@ -237,6 +239,79 @@
                 Todos los Derechos Reservados
             </div>
         </div>
+
+
+
+        <!--
+                Modal
+        -->
+        <%
+            try {
+                con.conectar();
+                try {
+                    ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_IdFact FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
+                    while (rset.next()) {
+        %>
+        <div class="modal fade" id="Devolucion<%=rset.getString("F_IdFact")%>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="FacturacionManual">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    Devolución:
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <input id="IdFact" name="IdFact" value="<%=rset.getString("F_IdFact")%>" class="hidden">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-3">
+                                        Clave: <%=rset.getString("F_ClaPro")%>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        Descripción: <%=rset.getString("F_DesPro")%>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Cantidad a Devolver:<%=rset.getString("F_CantSur")%></h4>
+                                </div>
+                            </div>
+                            <h4 class="modal-title" id="myModalLabel">Observaciones</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea name="Obser" id="Obser<%=rset.getString("F_IdFact")%>" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div style="display: none;" class="text-center" id="Loader">
+                                <img src="imagenes/ajax-loader-1.gif" height="150" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="<%=rset.getString("F_IdFact")%>" onclick="return validaDevolucion(this.id);" name="accion" value="devolucion">Devolver</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <%
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                con.cierraConexion();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        %>
+        <!--
+        /Modal
+        -->
     </body>
 </html>
 
@@ -252,13 +327,21 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#datosCompras').dataTable();
-    });
+                                $(document).ready(function() {
+                                    $('#datosCompras').dataTable();
+                                });
 </script>
 <script>
     $(function() {
         $("#fecha").datepicker();
         $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
     });
+
+    function validaDevolucion(e) {
+        var id = e;
+        if (document.getElementById('Obser' + id).value === "") {
+            alert("Ingrese las observaciones de la devolución")
+            return false;
+        }
+    }
 </script>
