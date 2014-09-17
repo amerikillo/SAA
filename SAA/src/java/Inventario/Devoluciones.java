@@ -85,8 +85,8 @@ public class Devoluciones extends HttpServlet {
                     consql.insertar("update TB_Lote set F_ExiLot='" + ncant + "' where F_FolLot = '" + FolLotSql + "'");
                     consql.cierraConexion();
                     con.cierraConexion();
-                    out.println("<script>alert('Clave Eliminada Correctamente')</script>");
-                    out.println("<script>window.location='facturacionManual.jsp'</script>");
+                    out.println("<script>alert('Devolucion Correcta')</script>");
+                    out.println("<script>window.location='devolucionesInsumo.jsp'</script>");
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());

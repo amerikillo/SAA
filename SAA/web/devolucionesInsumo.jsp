@@ -69,7 +69,7 @@
                     <%
                     try{
                         con.conectar();
-                        ResultSet rset = con.consulta("select l.F_ClaPro, m.F_DesPro, l.F_ClaLot, l.F_FecCad, l.F_ExiLot, l.F_Ubica, l.F_IdLote from tb_lote l, tb_medica m where l.F_ClaPro = m.F_ClaPro and l.F_Ubica='REJA_DEVOL'");
+                        ResultSet rset = con.consulta("select l.F_ClaPro, m.F_DesPro, l.F_ClaLot, l.F_FecCad, l.F_ExiLot, l.F_Ubica, l.F_IdLote from tb_lote l, tb_medica m where l.F_ClaPro = m.F_ClaPro and l.F_Ubica='REJA_DEVOL' and l.F_ExiLot!=0");
                         while(rset.next()){
                             %>
                             <tr>
