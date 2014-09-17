@@ -78,7 +78,7 @@
                                 <td><%=rset.getString("F_FecCad")%></td>
                                 <td><%=rset.getString("F_ExiLot")%></td>
                                 <td><%=rset.getString("F_Ubica")%></td>
-                                <td><a class="btn btn-block btn-danger" onclick="return confirm('Seguro que desea hacer la devolución?')"><span class="glyphicon glyphicon-remove-circle"></span></a></td>
+                                <td><a class="btn btn-block btn-danger" onclick="return confirm('Seguro que desea hacer la devolución?')" href="Devoluciones?accion=devolver&IdLote=<%=rset.getString("F_IdLote")%>"><span class="glyphicon glyphicon-remove-circle"></span></a></td>
                             </tr>
                             <%
                         }
