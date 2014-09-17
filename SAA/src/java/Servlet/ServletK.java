@@ -75,11 +75,12 @@ public class ServletK extends HttpServlet {
             PrintWriter out = response.getWriter();
             HttpSession sesion = request.getSession(true);
             String Folio = "", Ubicacion = "", QueryDatos = "", QueryDatosSQL = "", Id = "", Fabricacion = "", CB = "", PiezasL = "",an1="", mes="", dia="", F_Usu = "", F_nombre = "", F_TipUsu = "";
-            String Origen="", Caduca="";
+            String Origen="", Caduca="", IdFact="",ClaCli="",FecEnt="",StsFact="",User2="";
             int ban, posi = 0, CajasM = 0, RestoM = 0, Piezas = 0, Existencia = 0, Cantidad = 0, CantidadM = 0, Resultado = 0, Diferencia = 0, ban2 = 0, CajasN = 0, x = 0;
             int posiid = 0, Org = 0, Marca = 0, TipoM = 0, FolioL = 0, FolioLote = 0, ContSql=0, Cont = 0, FCont=0, ann1 = 0, difeann1=0, FolMov=0, FolMovi=0,posi1=0,banusu=0,Existencias=0,Existencias2=0,TotalExi=0;
             double Costo = 0.0, Monto = 0.0, Iva = 0.0, IvaT = 0.0, MontoT = 0.0;
             double ExistenciaSql=0.0,ExistenciaSql2=0.0,TotalExiSql=0.0, RestoMSql=0.0, ResultadoSql=0.0;
+            int exifact=0,Difexifact=0,Difexifact1=0,exifactMov=0,UbicaFol=0,IdMov=0;
             ResultSet Consulta = null;
             ResultSet ConsultaSQL = null;
 
@@ -172,6 +173,13 @@ public class ServletK extends HttpServlet {
                     Id = (String) Session.getAttribute("id");
                     Usuario = (String) Session.getAttribute("Usuario");
                     //out.println(Folio+"/"+Ubicacion+"/"+Usuario);
+                    
+                    QueryDatos = "SELECT SUM(F_Cant) AS F_Cant from tb_facttemp where F_StsFact <= '4' AND F_IdLot='"+Id+"' group by F_IdLot";
+                    Consulta = ObjMySQL.consulta(QueryDatos);
+                    if (Consulta.next()) {
+                        exifact = Integer.parseInt(Consulta.getString("F_Cant"));
+                    }
+                    
                     QueryDatos = "SELECT L.F_ClaPro AS F_ClaPro,L.F_ClaLot AS F_ClaLot,L.F_FecCad AS F_FecCad,L.F_ClaOrg AS F_ClaOrg,L.F_FecFab AS F_FecFab,L.F_Cb AS F_Cb,L.F_ClaMar AS F_ClaMar,M.F_Costo AS F_Costo,M.F_TipMed AS F_TipMed,L.F_ExiLot as cant FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro where L.F_ExiLot>0 AND L.F_IdLote='" + Id + "' AND L.F_FolLot='" + Folio + "' AND L.F_Ubica='" + Ubicacion + "'";
                     Consulta = ObjMySQL.consulta(QueryDatos);
                     if (Consulta.next()) {
@@ -197,11 +205,12 @@ public class ServletK extends HttpServlet {
                         CantidadM = RestoM;
                     }
 
-                    QueryDatos = "select F_ExiLot as EXI from tb_lote where F_FolLot='" + Folio + "' AND F_Ubica='" + Ubinew + "'";
+                    QueryDatos = "select F_ExiLot as EXI,F_IdLote from tb_lote where F_FolLot='" + Folio + "' AND F_Ubica='" + Ubinew + "'";
                     Consulta = ObjMySQL.consulta(QueryDatos);
                     if (Consulta.next()) {
                         Cantidad = Integer.parseInt(Consulta.getString("EXI"));
                         PiezasL = Consulta.getString("EXI");
+                        UbicaFol = Integer.parseInt(Consulta.getString("F_IdLote"));
                     }
 
                     Diferencia = Existencia - CantidadM;
@@ -213,9 +222,152 @@ public class ServletK extends HttpServlet {
 
                         Resultado = CantidadM + Cantidad;
                         ObjMySQL.actualizar("update tb_lote set F_ExiLot='" + Resultado + "' WHERE F_FolLot='" + Folio + "' AND F_Ubica='" + Ubinew + "'");
+                        
+                        if (( CantidadM >= exifact)){
+                            
+                           /*QueryDatos = "SELECT F_IdFact,F_ClaCli,F_FecEnt,F_StsFact,F_User,F_Cant,F_IdLot from tb_facttemp where F_StsFact<='4' AND F_IdLot='"+UbicaFol+"'";
+                            Consulta = ObjMySQL.consulta(QueryDatos);
+                            while (Consulta.next()) {
+                            Cont ++;
+                             Difexifact = Integer.parseInt(Consulta.getString("F_Cant"));
+                             IdMov = Integer.parseInt(Consulta.getString("F_IdLot"));
+                             IdFact = Consulta.getString("F_IdFact");
+                             ClaCli = Consulta.getString("F_ClaCli");
+                             FecEnt = Consulta.getString("F_FecEnt");
+                             StsFact = Consulta.getString("F_StsFact");
+                             User2 = Consulta.getString("F_User");
+                             
+                             if (Cont > 0){
+                                 
+                                 for (int z=0; z<Cont; z++){
+                                     
+                                 Cantidad = CantidadM - Difexifact;    
+                                     
+                                     ObjMySQL.actualizar("UPDATE tb_facttemp SET F_IdLot='"+UbicaFol+"',F_Cant='"+Cantidad+"' where F_StsFact <= '4' AND F_IdLot='"+UbicaFol+"' AND F_IdFact='"+IdFact+"' AND F_ClaCli='"+ClaCli+"' AND F_FecEnt='"+FecEnt+"' ");
+                                     ObjMySQL.actualizar("DELETE FROM tb_facttemp where F_StsFact <= '4' AND F_IdLot='"+Id+"'");    
+                                 }
+                                
+                            }else{*/
+                                ObjMySQL.actualizar("UPDATE tb_facttemp SET F_IdLot='"+UbicaFol+"' where F_StsFact <= '4' AND F_IdLot='"+Id+"'");
+                           /* }
+                             
+                            }
+                            
+                            */
+                            
+                                                        
+                        }else if (!(Diferencia > exifact)){
+                            exifactMov = exifact - CantidadM;
+                            
+                            QueryDatos = "SELECT F_IdFact,F_Id,F_ClaCli,F_FecEnt,F_StsFact,F_User,F_Cant from tb_facttemp where F_StsFact<='4' AND F_IdLot='"+Id+"'";
+                            Consulta = ObjMySQL.consulta(QueryDatos);
+                            while (Consulta.next()) {
+                            Cont ++;
+                             Difexifact = Integer.parseInt(Consulta.getString("F_Cant"));
+                             IdMov = Integer.parseInt(Consulta.getString("F_Id"));
+                             IdFact = Consulta.getString("F_IdFact");
+                             ClaCli = Consulta.getString("F_ClaCli");
+                             FecEnt = Consulta.getString("F_FecEnt");
+                             StsFact = Consulta.getString("F_StsFact");
+                             User2 = Consulta.getString("F_User");
+                             
+                             if (CantidadM > Difexifact){
+                                 ObjMySQL.actualizar("UPDATE tb_facttemp SET F_IdLot='"+UbicaFol+"' where F_StsFact <= '4' AND F_Id='"+IdMov+"' ");
+                                 
+                             }else{
+                                 if (CantidadM > 0){
+                                 Difexifact1 = Difexifact - CantidadM;
+                                 
+                                 ObjMySQL.actualizar("UPDATE tb_facttemp SET F_cant='"+Difexifact1+"' where F_StsFact <= '4' AND F_Id='"+IdMov+"'");
+                                 
+                                 ObjMySQL.actualizar("insert into tb_facttemp  values ('"+IdFact+"','"+ClaCli+"','"+UbicaFol+"','"+CantidadM+"','"+FecEnt+"','"+StsFact+"',0,'"+User2+"')");                                 
+                                 }
+                             }
+                             CantidadM = CantidadM -Difexifact;
+                            }
+                            
+                        }
+                            
+                            
+                        
                     } else {
                         System.out.println(Diferencia + "/" + Folio + "/" + Ubinew + "/" + CantidadM);
                         ObjMySQL.actualizar("insert into tb_lote values(0,'" + Clave + "','" + Lote + "','" + Caducidad + "','" + CantidadM + "','" + Folio + "','" + Org + "','" + Ubinew + "','" + Fabricacion + "','" + CB + "','" + Marca + "')");
+                        
+                        
+                    QueryDatos = "select F_ExiLot as EXI,F_IdLote from tb_lote where F_FolLot='" + Folio + "' AND F_Ubica='" + Ubinew + "'";
+                    Consulta = ObjMySQL.consulta(QueryDatos);
+                    if (Consulta.next()) {
+                        Cantidad = Integer.parseInt(Consulta.getString("EXI"));
+                        PiezasL = Consulta.getString("EXI");
+                        UbicaFol = Integer.parseInt(Consulta.getString("F_IdLote"));
+                    }
+                    
+                         if (( CantidadM >= exifact)){
+                            
+                           /*QueryDatos = "SELECT F_IdFact,F_ClaCli,F_FecEnt,F_StsFact,F_User,F_Cant,F_IdLot from tb_facttemp where F_StsFact<='4' AND F_IdLot='"+UbicaFol+"'";
+                            Consulta = ObjMySQL.consulta(QueryDatos);
+                            while (Consulta.next()) {
+                            Cont ++;
+                             Difexifact = Integer.parseInt(Consulta.getString("F_Cant"));
+                             IdMov = Integer.parseInt(Consulta.getString("F_IdLot"));
+                             IdFact = Consulta.getString("F_IdFact");
+                             ClaCli = Consulta.getString("F_ClaCli");
+                             FecEnt = Consulta.getString("F_FecEnt");
+                             StsFact = Consulta.getString("F_StsFact");
+                             User2 = Consulta.getString("F_User");
+                             
+                             if (Cont > 0){
+                                 
+                                 for (int z=0; z<Cont; z++){
+                                     
+                                 Cantidad = CantidadM - Difexifact;    
+                                     
+                                     ObjMySQL.actualizar("UPDATE tb_facttemp SET F_IdLot='"+UbicaFol+"',F_Cant='"+Cantidad+"' where F_StsFact <= '4' AND F_IdLot='"+UbicaFol+"' AND F_IdFact='"+IdFact+"' AND F_ClaCli='"+ClaCli+"' AND F_FecEnt='"+FecEnt+"' ");
+                                     ObjMySQL.actualizar("DELETE FROM tb_facttemp where F_StsFact <= '4' AND F_IdLot='"+Id+"'");    
+                                 }
+                                
+                            }else{*/
+                                ObjMySQL.actualizar("UPDATE tb_facttemp SET F_IdLot='"+UbicaFol+"' where F_StsFact <= '4' AND F_IdLot='"+Id+"'");
+                           /* }
+                             
+                            }
+                            
+                            */
+                            
+                                                        
+                        }else if (!(Diferencia > exifact)){
+                            exifactMov = exifact - CantidadM;
+                            
+                            QueryDatos = "SELECT F_IdFact,F_Id,F_ClaCli,F_FecEnt,F_StsFact,F_User,F_Cant from tb_facttemp where F_StsFact<='4' AND F_IdLot='"+Id+"'";
+                            Consulta = ObjMySQL.consulta(QueryDatos);
+                            while (Consulta.next()) {
+                            Cont ++;
+                             Difexifact = Integer.parseInt(Consulta.getString("F_Cant"));
+                             IdMov = Integer.parseInt(Consulta.getString("F_Id"));
+                             IdFact = Consulta.getString("F_IdFact");
+                             ClaCli = Consulta.getString("F_ClaCli");
+                             FecEnt = Consulta.getString("F_FecEnt");
+                             StsFact = Consulta.getString("F_StsFact");
+                             User2 = Consulta.getString("F_User");
+                             
+                             if (CantidadM > Difexifact){
+                                 ObjMySQL.actualizar("UPDATE tb_facttemp SET F_IdLot='"+UbicaFol+"' where F_StsFact <= '4' AND F_Id='"+IdMov+"' ");
+                                 
+                             }else{
+                                 if (CantidadM > 0){
+                                 Difexifact1 = Difexifact - CantidadM;
+                                 
+                                 ObjMySQL.actualizar("UPDATE tb_facttemp SET F_cant='"+Difexifact1+"' where F_StsFact <= '4' AND F_Id='"+IdMov+"'");
+                                 
+                                 ObjMySQL.actualizar("insert into tb_facttemp  values ('"+IdFact+"','"+ClaCli+"','"+UbicaFol+"','"+CantidadM+"','"+FecEnt+"','"+StsFact+"',0,'"+User2+"')");                                 
+                                 }
+                             }
+                             CantidadM = CantidadM -Difexifact;
+                            }
+                            
+                        }
+                        
 
                     }
 
@@ -266,7 +418,7 @@ public class ServletK extends HttpServlet {
                     response.sendRedirect("jsp/IngresoM.jsp");
                     break;
                 case 7:
-                    Query = "SELECT * from tb_marbetes where F_Fecha=CURDATE() and F_NomUni='" + Unidad + "' and F_Folio='" + Cadena + "' and F_Paq='" + Cajas + "'";
+                    Query = "SELECT * from tb_marbetes_cajas where F_Fecha=CURDATE() and F_NomUni='" + Unidad + "' and F_Folio='" + Cadena + "' and F_Paq='" + Cajas + "'";
                     Consultas = ObjMySQL.consulta(Query);
                     if (Consultas.next()) {
                         posi++;
@@ -275,17 +427,17 @@ public class ServletK extends HttpServlet {
                         CajasN = Integer.parseInt(Cajas);
                         for (x = 1; x <= CajasN; x++) {
                             out.println(x);
-                            ObjMySQL.actualizar("Insert into tb_marbetes values('" + Unidad + "','" + Cadena + "','" + Cajas + "','" + x + "',curdate(),0)");
+                            ObjMySQL.actualizar("Insert into tb_marbetes_cajas values('" + Unidad + "','" + Cadena + "','" + Cajas + "','" + x + "',curdate(),0)");
                         }
                         Session.setAttribute("nombre", Unidad);
                         Session.setAttribute("cajas", Cajas);
                         Session.setAttribute("folio", Cadena);
-                        response.sendRedirect("Marbete.jsp");
+                        response.sendRedirect("Ubicaciones/Marbete.jsp");
                     } else {
                         Session.setAttribute("nombre", Unidad);
                         Session.setAttribute("cajas", Cajas);
                         Session.setAttribute("folio", Cadena);
-                        response.sendRedirect("Marbete.jsp");
+                        response.sendRedirect("Ubicaciones/Marbete.jsp");
                     }
                     break;
                 case 8:
@@ -636,6 +788,30 @@ public class ServletK extends HttpServlet {
 
                     response.sendRedirect("Ubicaciones/Consultas.jsp");
                     break;
+                    
+                    case 15:
+                        Query = "SELECT * FROM tb_marbetes_resto WHERE clave='"+ Clave +"' AND lote='"+ Lote +"' AND caducidad='"+ Caducidad +"' AND piezas='"+ Resto +"'";
+                    Consultas = ObjMySQL.consulta(Query);
+                    if (Consultas.next()) {
+                        posi++;
+                    }
+                    if (posi == 0) {
+                        
+                            ObjMySQL.actualizar("Insert into tb_marbetes_resto values('" + Clave + "','" + Lote + "','" + Caducidad + "','" + Resto + "',0)");
+                        
+                        Session.setAttribute("clave", Clave);
+                        Session.setAttribute("lote", Lote);
+                        Session.setAttribute("cadu", Caducidad);
+                        Session.setAttribute("piezas", Resto);
+                        response.sendRedirect("Ubicaciones/Marbete_resto.jsp");
+                    } else {
+                        Session.setAttribute("clave", Clave);
+                        Session.setAttribute("lote", Lote);
+                        Session.setAttribute("cadu", Caducidad);
+                        Session.setAttribute("piezas", Resto);
+                        response.sendRedirect("Ubicaciones/Marbete_resto.jsp");
+                    }
+                        break;
 
             }
             

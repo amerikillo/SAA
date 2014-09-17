@@ -227,7 +227,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">

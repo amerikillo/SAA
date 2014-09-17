@@ -50,6 +50,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
@@ -107,7 +108,7 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
@@ -233,6 +234,8 @@
                                 <td>Piezas</td>
                                 <td>Picking</td>
                                 <td>Val Sur</td>
+                                <td>Aud</td>
+                                <td>Emb</td>
                                 <td>Remisionado</td>
                             </tr>
                         </thead>
@@ -263,6 +266,20 @@
                                 <td class="text-center">
                                     <%
                                         if (rset.getString("F_StsFact").equals("1")) {
+                                            out.println("X");
+                                        }
+                                    %>
+                                </td>
+                                <td class="text-center">
+                                    <%
+                                        if (rset.getString("F_StsFact").equals("2")) {
+                                            out.println("X");
+                                        }
+                                    %>
+                                </td>
+                                <td class="text-center">
+                                    <%
+                                        if (rset.getString("F_StsFact").equals("4")) {
                                             out.println("X");
                                         }
                                     %>

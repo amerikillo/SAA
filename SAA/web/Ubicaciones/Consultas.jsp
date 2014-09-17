@@ -25,6 +25,7 @@
 <html>
 
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CONSULTAS ISEM</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="ckeditor/ckeditor.js"></script>

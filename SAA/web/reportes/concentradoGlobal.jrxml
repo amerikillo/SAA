@@ -20,7 +20,8 @@
 	p.F_Pzs,
 	(f.F_Cant DIV p.F_Pzs),
 	(f.F_Cant MOD p.F_Pzs),
-	m.F_DesPro
+	m.F_DesPro,
+	f.F_Id
 FROM
 	tb_facttemp f,
 	tb_lote l,
@@ -63,6 +64,9 @@ AND F_IdFact = $P{idFact};]]>
 	<field name="(f.F_Cant DIV p.F_Pzs)" class="java.lang.Long"/>
 	<field name="(f.F_Cant MOD p.F_Pzs)" class="java.lang.Double"/>
 	<field name="F_DesPro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="(f.F_Cant DIV p.F_Pzs)_1" class="java.lang.Long" resetType="Column" calculation="Sum">
@@ -146,118 +150,125 @@ AND F_IdFact = $P{idFact};]]>
 				<reportElement uuid="dc16c450-737a-4085-aed5-02aba18a84eb" x="0" y="15" width="572" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="70830bc3-713e-4e25-8e3c-4fe43c5397b2" x="75" y="0" width="65" height="12"/>
+				<reportElement uuid="70830bc3-713e-4e25-8e3c-4fe43c5397b2" x="130" y="0" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Clave]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f9a753f6-1f96-49fe-a8f8-9f276115459f" x="150" y="1" width="65" height="12"/>
+				<reportElement uuid="f9a753f6-1f96-49fe-a8f8-9f276115459f" x="197" y="1" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Lote]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a8812132-4231-4ebf-8e02-d98e85a77888" x="227" y="1" width="65" height="12"/>
+				<reportElement uuid="a8812132-4231-4ebf-8e02-d98e85a77888" x="267" y="1" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Caducidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3b254235-73d1-4202-88b7-a8dff43e55d3" x="507" y="1" width="65" height="12"/>
+				<reportElement uuid="3b254235-73d1-4202-88b7-a8dff43e55d3" x="516" y="1" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Ubicacion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="22b58b54-b0a7-4855-a512-1275a1d38153" x="0" y="1" width="65" height="12"/>
+				<reportElement uuid="22b58b54-b0a7-4855-a512-1275a1d38153" x="62" y="1" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[C.B.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1623ad90-feda-44a7-be02-76a65c0dea40" x="302" y="1" width="65" height="12"/>
+				<reportElement uuid="1623ad90-feda-44a7-be02-76a65c0dea40" x="330" y="1" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Cajas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b8867991-43e9-46db-ade1-a7a8b1a6ea4d" x="372" y="1" width="65" height="12"/>
+				<reportElement uuid="b8867991-43e9-46db-ade1-a7a8b1a6ea4d" x="391" y="1" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Resto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a588faab-b130-4378-9628-eb8bbb3eb6bb" x="442" y="1" width="65" height="12"/>
+				<reportElement uuid="a588faab-b130-4378-9628-eb8bbb3eb6bb" x="456" y="1" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Total de Piezas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fc0b5714-44ca-47b9-876c-85af72a9d7ce" x="0" y="1" width="50" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="37" splitType="Stretch">
 			<textField>
-				<reportElement uuid="01db694b-de64-467a-8a0f-8dd5ff6680b7" x="150" y="2" width="65" height="12"/>
+				<reportElement uuid="01db694b-de64-467a-8a0f-8dd5ff6680b7" x="197" y="2" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0e630cfc-2cba-4258-b38f-2adec11d542e" x="227" y="2" width="65" height="12"/>
+				<reportElement uuid="0e630cfc-2cba-4258-b38f-2adec11d542e" x="267" y="2" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DATE_FORMAT(l.F_FecCad, '%d/%m/%Y')}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="9b9145b9-3dbf-48e7-8d64-5cad7a574ed1" x="507" y="2" width="65" height="12"/>
+				<reportElement uuid="9b9145b9-3dbf-48e7-8d64-5cad7a574ed1" x="516" y="2" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Ubica}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="64abfbc0-523b-454d-b9ff-72248bdae34f" x="75" y="2" width="65" height="12"/>
+				<reportElement uuid="64abfbc0-523b-454d-b9ff-72248bdae34f" x="130" y="2" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8a51cdc2-c388-4478-a58f-2ac1ad119888" x="0" y="2" width="65" height="12"/>
+				<reportElement uuid="8a51cdc2-c388-4478-a58f-2ac1ad119888" x="62" y="2" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Cb}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,###,##0" isBlankWhenNull="true">
-				<reportElement uuid="1804130b-ce46-4987-8553-af8cc51f057f" x="372" y="2" width="65" height="12"/>
+				<reportElement uuid="1804130b-ce46-4987-8553-af8cc51f057f" x="391" y="2" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{(f.F_Cant MOD p.F_Pzs)}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,###,##0" isBlankWhenNull="true">
-				<reportElement uuid="c0f3c9df-b4e1-42ac-a1d6-311c2f09718d" x="302" y="2" width="65" height="12"/>
+				<reportElement uuid="c0f3c9df-b4e1-42ac-a1d6-311c2f09718d" x="330" y="2" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{(f.F_Cant DIV p.F_Pzs)}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,###,##0" isBlankWhenNull="true">
-				<reportElement uuid="0b6a3f5b-26fe-4397-a4c3-d938cc35cf46" x="442" y="2" width="65" height="12"/>
+				<reportElement uuid="0b6a3f5b-26fe-4397-a4c3-d938cc35cf46" x="456" y="2" width="50" height="8"/>
 				<textElement>
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Cant}]]></textFieldExpression>
 			</textField>
@@ -270,6 +281,13 @@ AND F_IdFact = $P{idFact};]]>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_DesPro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1ebdbb6c-adec-4e2c-9dc8-8db5f6d4cf08" x="0" y="2" width="50" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Id}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

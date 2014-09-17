@@ -23,8 +23,10 @@
     formatterDecimal.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "";
+    String tipo = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("index.jsp");
     }
@@ -51,6 +53,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
@@ -79,15 +82,19 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
-                                    <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
-                                    <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
-                                    <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
-                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                    <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
-                                    <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
+                                    <li><a href="captura.jsp">Entrada Manual</a></li>
+                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                        <%
+                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                        %>
+                                    <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
+                                        <%
+                                            }
+                                        %>
+                                    <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
+                                    <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
+                                    <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
+                                    <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -95,38 +102,36 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                    <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
+                                    <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                        <%
+                                            if (tipo.equals("7")) {
+                                        %>
+                                    <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
+                                        <%
+                                            }
+                                        %>
+                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
+                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
+                                    <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
+                                    <li><a href="#" onclick="window.open('medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
+                                    <li><a href="#" onclick="window.open('catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
+                                    <li><a href="#" onclick="window.open('marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="../captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="../catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="../reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
+                                    <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
+                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
                                 </ul>
                             </li>
-                            <%                                }
-                            %>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -201,7 +206,7 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_IdFact FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
+                                            ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_IdFact, F.F_StsFact, F.F_Obs FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
                                             while (rset.next()) {
                                 %>
                                 <tr>
@@ -214,7 +219,19 @@
                                     <td><%=rset.getString(9)%></td>
                                     <td><%=rset.getString(10)%></td>
                                     <td><%=rset.getString(11)%></td>
-                                    <td><a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdFact")%>"><span class="glyphicon glyphicon-remove-circle"></span></a></td>
+                                    <td>
+                                        <%
+                                            if (rset.getString("F_StsFact").equals("A")) {
+                                        %>
+                                        <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdFact")%>"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                            <%
+                                                } else {
+                                            %>
+                                        Cancelado: <%=rset.getString("F_Obs")%>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
                                 </tr>
                                 <%
                                             }
@@ -327,9 +344,9 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                $(document).ready(function() {
-                                    $('#datosCompras').dataTable();
-                                });
+                                    $(document).ready(function() {
+                                        $('#datosCompras').dataTable();
+                                    });
 </script>
 <script>
     $(function() {

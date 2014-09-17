@@ -211,7 +211,7 @@ AND F_IdFact = $P{idFact}
 				<reportElement uuid="65e4288d-6f78-4ff3-98a8-d22e7e23e5a7" x="0" y="273" width="372" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="84d79c3e-5876-4dc9-a490-402d73fcbe77" x="19" y="246" width="141" height="21"/>
+				<reportElement uuid="84d79c3e-5876-4dc9-a490-402d73fcbe77" x="1" y="246" width="66" height="21"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
@@ -230,6 +230,13 @@ AND F_IdFact = $P{idFact}
 					<jr:codeExpression><![CDATA[$F{F_ClaPro}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
+			<textField>
+				<reportElement uuid="3ce489cd-fc8e-4dbc-9635-00ed47ff06b9" x="67" y="246" width="93" height="21"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Id}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

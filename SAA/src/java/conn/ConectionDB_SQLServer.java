@@ -109,13 +109,13 @@ public class ConectionDB_SQLServer {
 //METODOS PARA TRABAJAR CON LA BASE DE DATOS
     public ResultSet consulta(String consulta) throws SQLException {
         this.estancia = (Statement) conn.createStatement();
-        System.out.println(consulta);
+        //System.out.println(consulta);
         return this.estancia.executeQuery(consulta);
     }
 
     // -------------------
     public void actualizar(String actualiza) throws SQLException {
-        System.out.println(actualiza);
+        //System.out.println(actualiza);
         this.estancia = (Statement) conn.createStatement();
         estancia.executeUpdate(actualiza);
         //this.conn.commit();
@@ -132,7 +132,7 @@ public class ConectionDB_SQLServer {
     }
 
     public int insertar(String inserta) throws SQLException {
-        System.out.println(inserta);
+        //System.out.println(inserta);
         Statement st = (Statement) this.conn.createStatement();
         return st.executeUpdate(inserta);
     }

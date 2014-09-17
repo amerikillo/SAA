@@ -97,7 +97,7 @@
 				<textFieldExpression><![CDATA[$F{F_FecCad}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5377696e-b599-4494-bc88-f8f4757b9a81" mode="Opaque" x="86" y="168" width="139" height="29" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="5377696e-b599-4494-bc88-f8f4757b9a81" mode="Opaque" x="86" y="158" width="186" height="39" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="25" isBold="true"/>
 				</textElement>
@@ -111,7 +111,7 @@
 				<text><![CDATA[DESCRIPCIÓN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="17645458-6049-4a01-adbe-bdd4f6608c0b" mode="Opaque" x="407" y="170" width="235" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="17645458-6049-4a01-adbe-bdd4f6608c0b" mode="Opaque" x="407" y="168" width="235" height="32" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="25" isBold="true"/>
 				</textElement>

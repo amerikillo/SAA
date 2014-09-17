@@ -77,6 +77,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
@@ -135,7 +136,7 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
@@ -642,7 +643,7 @@
             </div>
         </form>
     </div>
-    <div class="panel-body panel-default">
+    <div class="panel-body panel-default table-responsive">
         <table class="table table-bordered table-striped">
             <tr>
                 <td><a name="ancla"></a>Código de Barras</td>

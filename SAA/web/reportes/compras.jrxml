@@ -41,7 +41,7 @@ AND C.F_OrdCom = I.F_NoCompra
 AND C.F_ClaPro = I.F_Clave
 AND C.F_ClaDoc = $P{folcom}
 GROUP BY
-	L.F_ClaPro, L.F_ClaLot
+	C.F_IdCom
 ORDER BY
 	C.F_IdCom;]]>
 	</queryString>

@@ -15,7 +15,7 @@
     HttpSession sesion = request.getSession();
     ConectionDB con = new ConectionDB();
     String usua = "";
-    int Tarimas = 0, TTarimas = 0, TarimasI = 0, Piezas = 0, TPiezas = 0, Cajas = 0, TCajas = 0, CajasI = 0, Resto = 0, Restop = 0, PiezasT = 0, PiezasC = 0, PiezasTI = 0, TotalP = 0;
+    int Tarimas = 0, TTarimas = 0, TarimasI = 0, Piezas = 0, TPiezas = 0, Cajas = 0, TCajas = 0, CajasI = 0, Resto = 0, PiezasT = 0, PiezasC = 0, PiezasTI = 0, TotalP = 0;
     String Clave = "", Cb = "", Lote = "", Cadu = "", Descrip = "", Orden = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
@@ -27,7 +27,7 @@
     try {
         con.conectar();
         con.insertar("delete from tb_marbetes where F_ClaDoc='" + folio_gnk + "'");
-        ResultSet rset = con.consulta("SELECT C.F_ClaPro,M.F_DesPro,L.F_ClaLot,L.F_FecCad,L.F_Cb,C.F_ClaDoc,C.F_OrdCom,C.F_CanCom,COM.F_Pz,COM.F_Tarimas,COM.F_TarimasI,COM.F_Cajas,COM.F_CajasI,COM.F_Resto FROM tb_compra C INNER JOIN tb_compraregistro COM ON C.F_OrdCom=COM.F_OrdCom AND C.F_ClaPro=COM.F_ClaPro AND C.F_CanCom=COM.F_Pz INNER JOIN tb_lote L ON C.F_Lote=L.F_FolLot INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE C.F_ClaDoc='" + folio_gnk + "' GROUP BY C.F_ClaPro,L.F_ClaLot,L.F_FecCad,L.F_Cb");
+        ResultSet rset = con.consulta("SELECT C.F_ClaPro,M.F_DesPro,L.F_ClaLot,L.F_FecCad,L.F_Cb,C.F_ClaDoc,C.F_OrdCom,C.F_CanCom,COM.F_Pz,COM.F_Tarimas,COM.F_TarimasI,COM.F_Cajas,COM.F_CajasI,COM.F_Resto FROM tb_compra C INNER JOIN tb_compraregistro COM ON C.F_OrdCom=COM.F_OrdCom AND C.F_ClaPro=COM.F_ClaPro AND C.F_CanCom=COM.F_Pz INNER JOIN tb_lote L ON C.F_Lote=L.F_FolLot INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE C.F_ClaDoc='" + folio_gnk + "' GROUP BY C.F_IdCom");
         while (rset.next()) {
             TTarimas = Integer.parseInt(rset.getString("COM.F_Tarimas"));
             TarimasI = Integer.parseInt(rset.getString("COM.F_TarimasI"));
@@ -42,20 +42,13 @@
             Descrip = rset.getString("M.F_DesPro");
             Orden = rset.getString("C.F_OrdCom");
 
-            if (CajasI > 0){
-            Tarimas = TTarimas - 1;
-            }else{
-                Tarimas = TTarimas;
-            }
+            Tarimas = TTarimas - TarimasI;
                 Piezas = TPiezas - Resto;
                 if(Resto > 0){
                     if (TCajas > 1){
                     PiezasC = Piezas / (TCajas - 1);
-                    
-                    Cajas = TCajas - ( CajasI + 1 );  
-                    }else{
-                    Cajas = TCajas;
                     }
+                    Cajas = TCajas - ( CajasI + 1 );  
                 }else{
                 PiezasC = Piezas / TCajas;    
                 Cajas = TCajas - CajasI;  
@@ -65,27 +58,15 @@
                 PiezasT = Cajas * PiezasC;
                 
                 if (Cajas > 0 && Tarimas != 0){
-                    
-                    TotalP = PiezasT  / Tarimas;
-                    
+                    TotalP = PiezasT / Tarimas;
                 for (int i = 0; i < Tarimas; i++) {
-                    if (CajasI == 0){
-                        Restop = Resto;
-                        if(Restop > 0){
-                        TotalP = TotalP + Resto;
-                        Resto = Resto - Resto;
-                        }
-                        con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ TotalP +"','0')");
-                    }else{
-                        con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ TotalP +"','0')");
-                    }
-                    
+                    con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ TotalP +"','0')");
             }
                 }
-                if (CajasI > 0 ){
+                
                 PiezasTI = (CajasI * PiezasC) + Resto;                
                 con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ PiezasTI +"','0')");
-                }
+                
         }
         con.cierraConexion();
     } catch (Exception e) {

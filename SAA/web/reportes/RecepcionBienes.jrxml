@@ -43,7 +43,7 @@ AND C.F_OrdCom = I.F_NoCompra
 AND C.F_ClaPro = I.F_Clave
 AND C.F_ClaDoc = $P{folcom}
 GROUP BY
-	L.F_ClaPro, L.F_ClaLot
+	C.F_IdCom
 ORDER BY
 	C.F_IdCom;]]>
 	</queryString>
@@ -119,21 +119,21 @@ ORDER BY
 				<reportElement uuid="893a7ca5-e112-4fd6-b82f-75b6c9eb2b3c" x="595" y="35" width="140" height="16"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="52d2fa2a-5055-426e-b397-31ef21a9e30e" x="237" y="10" width="264" height="20"/>
+				<reportElement uuid="52d2fa2a-5055-426e-b397-31ef21a9e30e" x="214" y="10" width="307" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FORMATO DE ENTREGA - RECEPCIÓN DE BIENES]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="3539ccb5-f06a-4c79-9366-394d08b46fe8" x="161" y="99" width="340" height="14"/>
+				<reportElement uuid="3539ccb5-f06a-4c79-9366-394d08b46fe8" x="143" y="99" width="323" height="25"/>
 				<textElement>
-					<font fontName="SansSerif" size="12"/>
+					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_NomPro}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="e843ba86-9914-4320-a19d-ece658b92f27" x="0" y="99" width="154" height="14"/>
+				<reportElement uuid="e843ba86-9914-4320-a19d-ece658b92f27" x="0" y="99" width="143" height="14"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
@@ -147,7 +147,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{F_FolRemi}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="2329c1b1-b538-4f7c-bdb6-59f1dc5de85a" x="0" y="124" width="177" height="15"/>
+				<reportElement uuid="2329c1b1-b538-4f7c-bdb6-59f1dc5de85a" x="0" y="124" width="187" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
@@ -192,6 +192,21 @@ ORDER BY
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaDoc}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="cf10921c-02ee-43ea-b75c-03c198ee1a87" x="478" y="99" width="117" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[FECHA DE RECEPCIÓN:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="cef76b30-2ed0-4fea-9677-409916bbd1d1" x="595" y="98" width="140" height="16"/>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="363df80a-2d50-4a23-ba9a-5c7d1e4805af" x="613" y="99" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{F_FecApl}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -210,7 +225,7 @@ ORDER BY
 				<text><![CDATA[LOTE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7ca9cf6b-9fc4-43a4-ac1f-30a8c81d2617" mode="Opaque" x="395" y="0" width="64" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="7ca9cf6b-9fc4-43a4-ac1f-30a8c81d2617" mode="Opaque" x="395" y="0" width="71" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="10" isBold="true"/>
 				</textElement>
@@ -287,7 +302,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement uuid="fff0ba61-ccec-4d5f-9024-de79d5d7c71a" x="0" y="149" width="100" height="13"/>
+				<reportElement uuid="fff0ba61-ccec-4d5f-9024-de79d5d7c71a" x="0" y="149" width="459" height="13"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
@@ -322,7 +337,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<text><![CDATA[GNK S.A. de C.V.]]></text>
+				<text><![CDATA[GNKL S.A. de C.V.]]></text>
 			</staticText>
 			<line>
 				<reportElement uuid="c34fc353-7550-4f02-b3cc-ee87c6ac56ca" x="29" y="75" width="125" height="1"/>
@@ -345,7 +360,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[SUBDIRECCION DE RECURSOS MATERIALES]]></text>
+				<text><![CDATA[SUBDIRECCIÓN DE RECURSOS MATERIALES]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="d1bbec5b-3398-467b-a091-4caeef18a92c" x="584" y="75" width="145" height="11"/>
@@ -362,7 +377,7 @@ ORDER BY
 				<text><![CDATA[NOTA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="36fbf92f-2470-48d8-a56e-3483c85ed32a" x="214" y="92" width="521" height="44"/>
+				<reportElement uuid="36fbf92f-2470-48d8-a56e-3483c85ed32a" x="190" y="92" width="545" height="50"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>

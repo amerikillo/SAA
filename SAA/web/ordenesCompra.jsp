@@ -53,6 +53,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
@@ -93,7 +94,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">

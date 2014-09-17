@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import servlets.Facturacion;
+import ISEM.*;
 
 /**
  *
@@ -37,6 +38,7 @@ public class FacturacionManual extends HttpServlet {
         ConectionDB con = new ConectionDB();
         ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
         Facturacion fact = new Facturacion();
+        NuevoISEM objSql = new NuevoISEM();
         java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy");
         java.text.DateFormat df3 = new java.text.SimpleDateFormat("yyyy-MM-dd");
         java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -51,33 +53,113 @@ public class FacturacionManual extends HttpServlet {
                 out.println("<script>alert('Clave Eliminada Correctamente')</script>");
                 out.println("<script>window.location='facturacionManual.jsp'</script>");
             }
-
         } catch (Exception e) {
         }
         try {
             if (request.getParameter("accion").equals("devolucion")) {
-                String idFact=request.getParameter("idFact");
+                String idFact = request.getParameter("IdFact");
                 try {
                     con.conectar();
-                    String ClaCli="", StsFact="", ClaPro="", ClaLot="", FecCad="", CantSur="", FecEnt="", Ubicacion="";
-                    int cantidadDevuelta=0;
-                    ResultSet rset = con.consulta("select f.F_ClaCli, f.F_StsFact, f.F_ClaPro, l.F_ClaLot, l.F_FecCad, f.F_CantSur, f.F_FecEnt, f.F_Ubicacion from tb_factura f, tb_lote l where f.F_Lote = l.F_FolLot");
-                    while(rset.next()){
-                        ClaCli=rset.getString("F_ClaCli");
-                        StsFact=rset.getString("F_StsFact");
-                        ClaPro=rset.getString("F_ClaPro");
-                        ClaLot=rset.getString("F_ClaLot");
-                        FecCad=rset.getString("F_FecCad");
-                        CantSur=rset.getString("F_FecCad");
-                        FecEnt=rset.getString("F_CantSur");
-                        Ubicacion=rset.getString("F_FecEnt");
+                    consql.conectar();
+                    String ClaCli = "", StsFact = "", ClaPro = "", ClaLot = "", FecCad = "", CantSur = "", FecEnt = "", Ubicacion = "", ClaDoc = "", Proveedor = "", FecFab = "", CB = "", Marca = "", Monto = "", FecCadSQL = "", FecFabSQL = "", Costo = "", FolLote = "", IVA = "";
+                    String FolioLoteSQL = "";
+                    int FolioMovi = 0, FolMov, FolioMoviSQL = 0, FolMovSQL;
+                    ResultSet rset = con.consulta("select f.F_ClaCli, f.F_StsFact, f.F_ClaPro, l.F_ClaLot, l.F_FecCad, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS FECAD, f.F_CantSur, f.F_FecEnt, f.F_Ubicacion, f.F_ClaDoc, l.F_ClaOrg, l.F_FecFab, DATE_FORMAT(l.F_FecFab,'%d/%m/%Y') AS FEFAB, l.F_Cb, l.F_ClaMar, f.F_Monto, f.F_Costo, f.F_Lote, f.F_Iva from tb_factura f, tb_lote l where f.F_Lote = l.F_FolLot and f.F_IdFact='"+idFact+"'");
+                    while (rset.next()) {
+                        ClaCli = rset.getString("F_ClaCli");
+                        StsFact = rset.getString("F_StsFact");
+                        ClaPro = rset.getString("F_ClaPro");
+                        ClaLot = rset.getString("F_ClaLot");
+                        FecCad = rset.getString("F_FecCad");
+                        CantSur = rset.getString("F_CantSur");
+                        FecEnt = rset.getString("F_CantSur");
+                        Ubicacion = rset.getString("F_Ubicacion");
+                        ClaDoc = rset.getString("F_ClaDoc");
+                        Proveedor = rset.getString("F_ClaOrg");
+                        FecFab = rset.getString("F_FecFab");
+                        CB = rset.getString("F_Cb");
+                        Marca = rset.getString("F_ClaMar");
+                        Monto = rset.getString("F_Monto");
+                        FecCadSQL = rset.getString("FECAD");
+                        FecFabSQL = rset.getString("FEFAB");
+                        Costo = rset.getString("F_Costo");
+                        FolLote = rset.getString("F_Lote");
+                        IVA = rset.getString("F_Iva");
                     }
-                    con.insertar("update tb_facura set F_StsFact = 'C' where F_IdFact = '"+idFact+"'");
-                    
+                    /*
+                     * Actualizacion a TB_Factura MySQL SQL Server
+                     */
+                    String idObser = objSql.insertaObservacionesCompra(request.getParameter("Obser"));
+                    consql.actualizar("update TB_Factura set F_StsFac ='C', F_ObsFac='" + idObser + "' where F_Cliente = '" + objSql.dame5car(ClaCli) + "' and F_ClaDoc= '" + ClaDoc + "' and F_Produc = '" + ClaPro + "' and F_Unidad = '" + CantSur + "' and F_Ubica = '" + Ubicacion + "' ");
+                    con.insertar("update tb_factura set F_StsFact = 'C', F_Obs='" + request.getParameter("Obser") + "' where F_IdFact = '" + idFact + "'");
+
+                    //CONSULTA INDICE MOVIMIENTO MYSQL
+                    ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
+                    while (FolioMov.next()) {
+                        FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
+                    }
+                    FolMov = FolioMovi + 1;
+                    con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
+                         //FIN CONSULTA MYSQL
+
+                    // CONSULTA INDICE MOVIMIENTO SQL
+                    Double cantidadTSQL = Double.parseDouble(CantSur);
+                    ResultSet FolioMovSQL = consql.consulta("select F_IM from TB_Indice");
+                    while (FolioMovSQL.next()) {
+                        FolioMoviSQL = Integer.parseInt(FolioMovSQL.getString("F_IM"));
+                    }
+                    FolMovSQL = FolioMoviSQL + 1;
+                    consql.actualizar("update TB_Indice set F_IM='" + FolMovSQL + "'");
+
+                    /*
+                     * Insercion a lotes
+                     */
+                    String idLote = "";
+                    int CantLote = 0;
+                    ResultSet rsetLote = con.consulta("select F_IdLote, SUM(F_ExiLot) from tb_lote where F_FolLot ='"+FolLote+"' and F_Ubica = 'NUEVA' group by F_IdLote");
+                    while (rsetLote.next()) {
+                        idLote = rsetLote.getString("F_IdLote");
+                        CantLote = rsetLote.getInt(2);
+                    }
+
+                    con.insertar("update tb_lote set F_ExiLot ='" + (Integer.parseInt(CantSur) + CantLote) + "' where F_IdLote = '" + idLote + "'");
+
+                    con.insertar("insert into tb_movinv values (0,curdate(),'" + ClaDoc + "','3', '" + ClaPro + "', '" + CantSur + "', '" + Costo + "', '" + Monto + "' ,'1', '" + FolLote + "', 'NUEVA', '" + Proveedor + "',curtime(),'" + (String) sesion.getAttribute("nombre") + "') ");
+
+                    ResultSet rsetLoteSQL = consql.consulta("SELECT F_FolLot FROM tb_lote WHERE F_ClaPro='" + ClaPro + "' and F_ClaLot='" + ClaLot + "' and F_FecCad='" + df2.format(df3.parse(FecCad)) + "'");
+
+                    while (rsetLoteSQL.next()) {
+                        FolioLoteSQL = rsetLoteSQL.getString("F_FolLot");
+                    }
+                    if (!(FolioLoteSQL.equals(""))) {//Lote existente
+                        String ExiLoteSQL = "";
+                        ResultSet rset_folSQL = consql.consulta("SELECT F_ExiLot FROM tb_lote WHERE F_FolLot='" + FolioLoteSQL + "'");
+                        while (rset_folSQL.next()) {
+                            ExiLoteSQL = rset_folSQL.getString("F_ExiLot");
+                        }
+                        int ExiLotSQL = (int) Double.parseDouble(ExiLoteSQL);
+                        int cantidadSQL = Integer.parseInt(CantSur);
+                        int sumaloteSQL = ExiLotSQL + cantidadSQL;
+                        consql.actualizar("update tb_lote set F_ExiLot='" + (Integer.parseInt(CantSur) + CantLote) +"' where F_FolLot='" + FolioLoteSQL + "'");
+                    } else { // Lote inexistente
+                        ResultSet rset_IndSQL = consql.consulta("SELECT F_IL FROM tb_indice");
+                        while (rset_IndSQL.next()) {
+                            FolioLoteSQL = rset_IndSQL.getString("F_IL");
+                            int FolLotSQL = Integer.parseInt(rset_IndSQL.getString("F_IL"));
+                            consql.actualizar("insert into tb_lote values ('" + ClaLot + "','" + ClaPro + "','" + FecCadSQL + "','" + CantSur + "','" + Monto + "','" + FolioLoteSQL + "','    1','','1','" + FecFabSQL + "','0','" + Proveedor + "','0','" + Marca + "')");
+                            int FolioLotSQL = FolLotSQL + 1;
+                            consql.actualizar("update tb_indice set F_IL='" + FolioLotSQL + "'");
+                        }
+                    }
+
+                    consql.insertar("insert into TB_MovInv values (CONVERT(date,GETDATE()),'" + ClaDoc + "','','2', '" + ClaPro + "', '" + CantSur + "', '" + Costo + "','" + IVA + "', '" + Monto + "' ,'1', '" + FolioLoteSQL + "', '" + FolioMovi + "','M', '0', '','','','" + Proveedor + "','" + (String) sesion.getAttribute("nombre") + "') ");
+
+                    consql.cierraConexion();
                     con.cierraConexion();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                response.sendRedirect("reimp_factura.jsp");
             }
             if (request.getParameter("accion").equals("CancelarFactura")) {
                 try {
@@ -116,11 +198,11 @@ public class FacturacionManual extends HttpServlet {
                     con.actualizar("update tb_indice set F_IndFact='" + FolFact + "'");
                     byte[] a = request.getParameter("Obs").getBytes("ISO-8859-1");
                     String Observaciones = (new String(a, "UTF-8")).toUpperCase();
-                    String req=request.getParameter("F_Req").toUpperCase();
-                    if(req.equals("")){
-                        req="00000";
+                    String req = request.getParameter("F_Req").toUpperCase();
+                    if (req.equals("")) {
+                        req = "00000";
                     }
-                    con.insertar("insert into tb_obserfact values ('" + FolioFactura + "','" + Observaciones + "',0,'"+request.getParameter("F_Req").toUpperCase()+"')");
+                    con.insertar("insert into tb_obserfact values ('" + FolioFactura + "','" + Observaciones + "',0,'" + request.getParameter("F_Req").toUpperCase() + "')");
                     String qryFact = "select f.F_ClaCli, l.F_FolLot, l.F_IdLote, l.F_ClaPro, l.F_ClaLot, l.F_FecCad, m.F_TipMed, m.F_Costo, p.F_ClaProve, f.F_Cant, l.F_ExiLot, l.F_Ubica, f.F_IdFact, f.F_Id, f.F_FecEnt  from tb_facttemp f, tb_lote l, tb_medica m, tb_proveedor p where f.F_IdLot = l.F_IdLote AND l.F_ClaPro = m.F_ClaPro AND l.F_ClaOrg = p.F_ClaProve and f.F_ClaCLi = '" + request.getParameter("Nombre") + "' and f.F_StsFact=4 AND (f.F_Id IN (" + claves + ")) ";
                     ResultSet rset = con.consulta(qryFact);
                     while (rset.next()) {
@@ -325,12 +407,12 @@ public class FacturacionManual extends HttpServlet {
                 } catch (Exception e) {
                 }
             }
-            String[] quitar=request.getParameter("accion").split(",");
+            String[] quitar = request.getParameter("accion").split(",");
             if (quitar[0].equals("quitarInsumo")) {
                 System.out.println(request.getParameter("Nombre") + "*****");
                 sesion.setAttribute("Nombre", request.getParameter("Nombre"));
                 con.conectar();
-                con.insertar("update tb_facttemp set F_StsFact = '1' where F_Id = '" + quitar[1] + "' ");
+                con.insertar("update tb_facttemp set F_StsFact = '2' where F_Id = '" + quitar[1] + "' ");
                 con.cierraConexion();
                 out.println("<script>window.location='remisionarCamion.jsp'</script>");
             }

@@ -52,7 +52,7 @@
     }
     try {
         con.conectar();
-        con.insertar("update tb_facttemp set F_StsFact='4', F_User ='" + (String) sesion.getAttribute("nombre") + "' where F_Id = '" + request.getParameter("CB") + "  ' and F_StsFact = '2'");
+        con.insertar("update tb_facttemp set F_StsFact='4', F_User ='" + (String) sesion.getAttribute("nombre") + "' where F_Id = '" + request.getParameter("CB") + "' and F_StsFact != '5'");
 
         ResultSet rset = con.consulta("select F_FecEnt from tb_facttemp where F_Id = '" + request.getParameter("CB") + "'");
         while (rset.next()) {
@@ -66,6 +66,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
@@ -123,7 +124,7 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
@@ -211,7 +212,7 @@
                     <input name="Nombre" value="<%=Clave%>" class="hidden" />
                     <input name="Fecha" value="<%=Fecha%>" class="hidden" />
 
-                    <div class="panel-footer">
+                    <div class="panel-footer table-responsive">
                         <table class="table table-bordered table-condensed table-responsive table-striped" id="datosProv">
                             <thead>
                                 <tr>
@@ -230,9 +231,14 @@
                             </thead>
                             <tbody>
                                 <%
+                                    int i = 1;
                                     try {
                                         con.conectar();
                                         ResultSet rset = null;
+                                        rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as feccad,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, f.F_IdLot, m.F_DesPro FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE l.F_ClaPro = m.F_ClaPro and	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND f.F_ClaCli = '" + Clave + "' and f.F_StsFact=4 and f.F_User = '" + (String) sesion.getAttribute("nombre") + "';");
+                                        rset.last();
+                                        int ren = rset.getRow();
+                                        rset.first();
                                         rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as feccad,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, f.F_IdLot, m.F_DesPro FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE l.F_ClaPro = m.F_ClaPro and	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND f.F_ClaCli = '" + Clave + "' and f.F_StsFact=4 and f.F_User = '" + (String) sesion.getAttribute("nombre") + "';");
                                         while (rset.next()) {
                                 %>
@@ -242,7 +248,7 @@
                                             <input type="checkbox" checked="" name="chkSeleccciona" value="<%=rset.getString("F_Id")%>">
                                         </div>
                                     </td>
-                                    <td><%=rset.getString("F_Id")%></td>
+                                    <td><%=ren%></td>
                                     <td><%=rset.getString("F_Cb")%></td>
                                     <td><a href="#" title="<%=rset.getString("F_DesPro")%>"><%=rset.getString("F_ClaPro")%></a></td>
                                     <td><%=rset.getString("F_ClaLot")%></td>
@@ -258,6 +264,7 @@
                                     </td>
                                 </tr>
                                 <%
+                                            ren--;
                                         }
                                         con.cierraConexion();
                                     } catch (Exception e) {
@@ -349,7 +356,7 @@
                                         document.getElementById('Obs').value = observaciones;
                                         var req = document.getElementById('Requerimiento').value;
                                         document.getElementById('F_Req').value = req;
-                                        
+
                                         document.getElementById('Facturar').click();
                                     }
 

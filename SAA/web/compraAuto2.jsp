@@ -173,6 +173,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
@@ -231,7 +232,7 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
@@ -442,286 +443,288 @@
 
                             %>
                             <h4 class="bg-primary" style="padding: 5px">CLAVE | <%=rset2.getString(1)%> <%=rset2.getString(2)%></h4>
-                            <table class="table table-bordered table-condensed table-striped">
-                                <tr>
-                                    <td><strong>Clave</strong></td>
-                                    <td><strong>Descripción</strong></td>
-                                    <td><strong>Cod Bar</strong></td>
-                                    <td><strong>Lote</strong></td>
-                                    <td><strong>Caducidad</strong></td>
-                                    <td>
-                                        <strong>Cantidad a Recibir</strong>
-                                        <input type="text" value="<%=formatter.format(rset2.getInt(5))%>" class="form-control" name="cantRecibir" id="cantRecibir" onclick="" readonly=""  onkeypress="return tabular(event, this)"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" value="<%=rset2.getString(1)%>" class="form-control" name="ClaPro" id="ClaPro" onclick="" readonly=""  onkeypress="return tabular(event, this)"/></td>
-                                    <td><%=rset2.getString(2)%></td>
-                                    <td>
-                                        <input type="text" value="<%=CodBar%>" class="form-control" name="codbar" id="codbar" onclick="" onkeypress="return checkKey(event, this);" />
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <button class="btn btn-primary btn-block btn-sm" type="submit" name="accion" id="CodigoBarras" value="CodigoBarras" onclick="">CB</button>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-condensed table-striped">
+                                    <tr>
+                                        <td><strong>Clave</strong></td>
+                                        <td><strong>Descripción</strong></td>
+                                        <td><strong>Cod Bar</strong></td>
+                                        <td><strong>Lote</strong></td>
+                                        <td><strong>Caducidad</strong></td>
+                                        <td>
+                                            <strong>Cantidad a Recibir</strong>
+                                            <input type="text" value="<%=formatter.format(rset2.getInt(5))%>" class="form-control" name="cantRecibir" id="cantRecibir" onclick="" readonly=""  onkeypress="return tabular(event, this)"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" value="<%=rset2.getString(1)%>" class="form-control" name="ClaPro" id="ClaPro" onclick="" readonly=""  onkeypress="return tabular(event, this)"/></td>
+                                        <td><%=rset2.getString(2)%></td>
+                                        <td>
+                                            <input type="text" value="<%=CodBar%>" class="form-control" name="codbar" id="codbar" onclick="" onkeypress="return checkKey(event, this);" />
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <button class="btn btn-primary btn-block btn-sm" type="submit" name="accion" id="CodigoBarras" value="CodigoBarras" onclick="">CB</button>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <button class="btn btn-primary btn-block btn-sm" type="submit" name="accion" id="GeneraCodigo" value="GeneraCodigo" onclick=""><span class="glyphicon glyphicon-barcode"></span></button>
+                                                </div>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <button class="btn btn-primary btn-block btn-sm" type="submit" name="accion" id="GeneraCodigo" value="GeneraCodigo" onclick=""><span class="glyphicon glyphicon-barcode"></span></button>
-                                            </div>
-                                        </div>
 
-                                    </td>
-                                    <%
-                                        int contadorLotes = 0;
-                                        String idMarca = "";
-                                        if (!CodBar.equals("")) {
-                                            try {
-                                                con.conectar();
-                                                ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaPro, F_ClaLot, F_FecCad");
-                                                while (rset3.next()) {
-                                                    contadorLotes++;
-                                                }
-                                                con.cierraConexion();
-                                            } catch (Exception e) {
-
-                                            }
-                                        }
-                                        if (contadorLotes > 1) {
-                                            //Mas de 1 lote
-%>
-                                    <td>
-                                        <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
-                                        <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
-                                            <option>--Lote--</option>
-                                            <%
-                                                if (!CodBar.equals("")) {
-                                                    try {
-                                                        con.conectar();
-                                                        ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaLot, F_FecCad");
-                                                        while (rset3.next()) {
-                                                            idMarca = rset3.getString(6);
-                                            %>
-                                            <option><%=rset3.getString(3)%></option>
-                                            <%
-                                                        }
-                                                        con.cierraConexion();
-                                                    } catch (Exception e) {
-
-                                                    }
-                                                }
-                                            %>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="text" value="<%=Cadu%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="
-                                                return LP_data(event, this);
-                                                anade(this, event);
-                                                return tabular(event, this);
-                                               " maxlength="10" onblur="validaCadu();"/>
-                                        <select class="form-control" name="list_cadu" id="list_cadu">
-                                            <option>--Caducidad--</option>
-                                            <%
-                                                if (!CodBar.equals("")) {
-                                                    try {
-                                                        con.conectar();
-                                                        ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad,'%d/%m/%Y'), F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaLot, F_FecCad");
-                                                        while (rset3.next()) {
-                                            %>
-                                            <option><%=rset3.getString(4)%></option>
-                                            <%
-                                                        }
-                                                        con.cierraConexion();
-                                                    } catch (Exception e) {
-
-                                                    }
-                                                }
-                                            %>
-                                        </select>
-                                    </td>
-                                    <%
-                                    } else {
-                                        //1 Lote o menos
-                                    %>
-                                    <td><%
-                                        if (!CodBar.equals("")) {
-                                            try {
-                                                con.conectar();
-                                                ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaLot, F_FecCad");
-                                                while (rset3.next()) {
-                                                    idMarca = rset3.getString(6);
-                                                    Lote = rset3.getString(3);
-                                                }
-                                                con.cierraConexion();
-                                            } catch (Exception e) {
-
-                                            }
-                                        }
-                                        %>
-                                        <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
-                                    </td>
-                                    <td>
+                                        </td>
                                         <%
+                                            int contadorLotes = 0;
+                                            String idMarca = "";
                                             if (!CodBar.equals("")) {
                                                 try {
                                                     con.conectar();
-                                                    ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad,'%d/%m/%Y'), F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaLot, F_FecCad");
+                                                    ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaPro, F_ClaLot, F_FecCad");
                                                     while (rset3.next()) {
-                                                        Cadu = rset3.getString(4);
+                                                        contadorLotes++;
                                                     }
                                                     con.cierraConexion();
                                                 } catch (Exception e) {
 
                                                 }
                                             }
+                                            if (contadorLotes > 1) {
+                                                //Mas de 1 lote
                                         %>
-                                        <input type="text" value="<%=Cadu%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="
-                                                return LP_data(event, this);
-                                                anade(this, event);
-                                                return tabular(event, this);
-                                               " maxlength="10" onblur="validaCadu();"/>
-                                    </td>
-                                    <%
-                                        }
-                                    %>
-
-                                    <td>
-                                        <strong>Cantidad Recibida</strong>
-                                        <%
-                                            int cantRecibida = 0;
-                                            try {
-                                                con.conectar();
-                                                ResultSet rset3 = con.consulta("select sum(F_CanCom) from tb_compra where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
-                                                while (rset3.next()) {
-                                                    cantRecibida = cantRecibida + rset3.getInt(1);
-                                                }
-                                                rset3 = con.consulta("select sum(F_Pz) from tb_compratemp where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
-                                                while (rset3.next()) {
-                                                    cantRecibida = cantRecibida + rset3.getInt(1);
-                                                }
-                                                con.cierraConexion();
-                                            } catch (Exception e) {
-
-                                            }
-                                        %>
-                                        <input type="text" value="<%=formatter.format(cantRecibida)%>" class="form-control" name="cantRecibida" id="cantRecibida" onkeypress="return tabular(event, this)" onclick="" readonly=""/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <strong>Marca</strong>
-                                                <select class="form-control" name="list_marca" onKeyPress="return tabular(event, this)" id="list_marca">
-                                                    <option value="">Marca</option>
-                                                    <%
+                                        <td>
+                                            <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
+                                            <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
+                                                <option>--Lote--</option>
+                                                <%
+                                                    if (!CodBar.equals("")) {
                                                         try {
                                                             con.conectar();
-                                                            ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM tb_marca");
+                                                            ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaLot, F_FecCad");
                                                             while (rset3.next()) {
-                                                    %>
-                                                    <option value="<%=rset3.getString("F_ClaMar")%>"
-                                                            <%
-                                                                if (rset3.getString("F_ClaMar").equals(idMarca)) {
-                                                                    out.println("selected");
-                                                                }
-                                                            %>
-                                                            ><%=rset3.getString("F_DesMar")%></option>
-                                                    <%
-
+                                                                idMarca = rset3.getString(6);
+                                                %>
+                                                <option><%=rset3.getString(3)%></option>
+                                                <%
                                                             }
                                                             con.cierraConexion();
                                                         } catch (Exception e) {
+
                                                         }
-                                                    %>
-                                                </select>
-                                            </div>
-                                        </div>
+                                                    }
+                                                %>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" value="<%=Cadu%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="
+                                                    return LP_data(event, this);
+                                                    anade(this, event);
+                                                    return tabular(event, this);
+                                                   " maxlength="10" onblur="validaCadu();"/>
+                                            <select class="form-control" name="list_cadu" id="list_cadu">
+                                                <option>--Caducidad--</option>
+                                                <%
+                                                    if (!CodBar.equals("")) {
+                                                        try {
+                                                            con.conectar();
+                                                            ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad,'%d/%m/%Y'), F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaLot, F_FecCad");
+                                                            while (rset3.next()) {
+                                                %>
+                                                <option><%=rset3.getString(4)%></option>
+                                                <%
+                                                            }
+                                                            con.cierraConexion();
+                                                        } catch (Exception e) {
 
-                                        <div class="col-sm-6">
-                                            <button class="btn btn-block btn-primary glyphicon glyphicon-refresh" type = "submit" value = "refresh" name = "accion" ></button>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <a href="marcas.jsp" target="_blank"><h4>Alta</h4></a>
-                                        </div>
-                                        <input value="<%=rset.getString("p.F_ClaProve")%>" name="claPro" id="claPro" class="hidden" onkeypress="return tabular(event, this)" />
-                                    </td>
-                                    <td colspan="5">
-                                        <strong>Observaciones</strong>
-                                        <textarea class="form-control" readonly><%=rset2.getString(7)%></textarea>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6">
-                                        <h5><strong>Tarimas Completas</strong></h5>
-                                        <div class="row">
+                                                        }
+                                                    }
+                                                %>
+                                            </select>
+                                        </td>
+                                        <%
+                                        } else {
+                                            //1 Lote o menos
+                                        %>
+                                        <td><%
+                                            if (!CodBar.equals("")) {
+                                                try {
+                                                    con.conectar();
+                                                    ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, F_FecCad, F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaLot, F_FecCad");
+                                                    while (rset3.next()) {
+                                                        idMarca = rset3.getString(6);
+                                                        Lote = rset3.getString(3);
+                                                    }
+                                                    con.cierraConexion();
+                                                } catch (Exception e) {
 
-                                            <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
-                                            <div class="col-sm-1">
-                                                <input type="Cajas" class="form-control" id="TarimasC" name="TarimasC" placeholder="0" onKeyPress="return justNumbers(event);
-                                                        return handleEnter(even);" onkeyup="totalPiezas()" onclick="" />
-                                            </div>
-                                            <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" class="form-control" id="CajasxTC" name="CajasxTC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
-                                            </div>
-                                            <label for="Resto" class="col-sm-2 control-label">Piezas x Caja</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" class="form-control" id="PzsxCC" name="PzsxCC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
-                                            </div>
-                                        </div>
-                                        <br/>
-                                        <h5><strong>Tarimas Incompletas</strong></h5>
-                                        <div class="row">
+                                                }
+                                            }
+                                            %>
+                                            <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
+                                        </td>
+                                        <td>
+                                            <%
+                                                if (!CodBar.equals("")) {
+                                                    try {
+                                                        con.conectar();
+                                                        ResultSet rset3 = con.consulta("select F_Cb, F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad,'%d/%m/%Y'), F_FecFab, F_ClaMar from tb_cb where F_Cb='" + CodBar + "' group by F_ClaLot, F_FecCad");
+                                                        while (rset3.next()) {
+                                                            Cadu = rset3.getString(4);
+                                                        }
+                                                        con.cierraConexion();
+                                                    } catch (Exception e) {
 
-                                            <label for="Cajas" class="hidden">Tarimas</label>
-                                            <div class="hidden">
-                                                <input type="Cajas" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
-                                                        return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
-                                            </div>
-                                            <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
-                                            <div class="col-sm-1">
-                                                <input type="pzsxcaja" class="form-control" id="CajasxTI" name="CajasxTI" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
-                                            </div>
-                                            <label for="pzsxcaja" class="col-sm-2 control-label">Resto</label>
-                                            <div class="col-sm-1">
-                                                <input type="pzsxcaja" class="form-control" id="Resto" name="Resto" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6">
-                                        <h5><strong>Totales</strong></h5>
-                                        <div class="row">
+                                                    }
+                                                }
+                                            %>
+                                            <input type="text" value="<%=Cadu%>" data-date-format="dd/mm/yyyy" class="form-control" name="cad" id="cad" onclick="" onKeyPress="
+                                                    return LP_data(event, this);
+                                                    anade(this, event);
+                                                    return tabular(event, this);
+                                                   " maxlength="10" onblur="validaCadu();"/>
+                                        </td>
+                                        <%
+                                            }
+                                        %>
 
-                                            <label for="Cajas" class="col-sm-1 control-label">Tarimas</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
-                                                        return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
+                                        <td>
+                                            <strong>Cantidad Recibida</strong>
+                                            <%
+                                                int cantRecibida = 0;
+                                                try {
+                                                    con.conectar();
+                                                    ResultSet rset3 = con.consulta("select sum(F_CanCom) from tb_compra where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
+                                                    while (rset3.next()) {
+                                                        cantRecibida = cantRecibida + rset3.getInt(1);
+                                                    }
+                                                    rset3 = con.consulta("select sum(F_Pz) from tb_compratemp where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
+                                                    while (rset3.next()) {
+                                                        cantRecibida = cantRecibida + rset3.getInt(1);
+                                                    }
+                                                    con.cierraConexion();
+                                                } catch (Exception e) {
+
+                                                }
+                                            %>
+                                            <input type="text" value="<%=formatter.format(cantRecibida)%>" class="form-control" name="cantRecibida" id="cantRecibida" onkeypress="return tabular(event, this)" onclick="" readonly=""/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <strong>Marca</strong>
+                                                    <select class="form-control" name="list_marca" onKeyPress="return tabular(event, this)" id="list_marca">
+                                                        <option value="">Marca</option>
+                                                        <%
+                                                            try {
+                                                                con.conectar();
+                                                                ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM tb_marca");
+                                                                while (rset3.next()) {
+                                                        %>
+                                                        <option value="<%=rset3.getString("F_ClaMar")%>"
+                                                                <%
+                                                                    if (rset3.getString("F_ClaMar").equals(idMarca)) {
+                                                                        out.println("selected");
+                                                                    }
+                                                                %>
+                                                                ><%=rset3.getString("F_DesMar")%></option>
+                                                        <%
+
+                                                                }
+                                                                con.cierraConexion();
+                                                            } catch (Exception e) {
+                                                            }
+                                                        %>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <label for="pzsxcaja" class="col-sm-1 control-label">Cajas Completas</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+
+                                            <div class="col-sm-6">
+                                                <button class="btn btn-block btn-primary glyphicon glyphicon-refresh" type = "submit" value = "refresh" name = "accion" ></button>
                                             </div>
-                                            <label for="CajasIn" class="col-sm-1 control-label">Cajas Incompletas</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" class="form-control" id="CajasIn" name="CajasIn" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                                            <div class="col-sm-6">
+                                                <a href="marcas.jsp" target="_blank"><h4>Alta</h4></a>
                                             </div>
-                                            <label for="TCajas" class="col-sm-1 control-label">Total Cajas</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                                            <input value="<%=rset.getString("p.F_ClaProve")%>" name="claPro" id="claPro" class="hidden" onkeypress="return tabular(event, this)" />
+                                        </td>
+                                        <td colspan="5">
+                                            <strong>Observaciones</strong>
+                                            <textarea class="form-control" readonly><%=rset2.getString(7)%></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <h5><strong>Tarimas Completas</strong></h5>
+                                            <div class="row">
+
+                                                <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
+                                                <div class="col-sm-1">
+                                                    <input type="Cajas" class="form-control" id="TarimasC" name="TarimasC" placeholder="0" onKeyPress="return justNumbers(event);
+                                                            return handleEnter(even);" onkeyup="totalPiezas()" onclick="" />
+                                                </div>
+                                                <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
+                                                <div class="col-sm-1">
+                                                    <input type="text" class="form-control" id="CajasxTC" name="CajasxTC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
+                                                </div>
+                                                <label for="Resto" class="col-sm-2 control-label">Piezas x Caja</label>
+                                                <div class="col-sm-1">
+                                                    <input type="text" class="form-control" id="PzsxCC" name="PzsxCC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
+                                                </div>
                                             </div>
-                                            <label for="Resto" class="col-sm-1 control-label">Piezas</label>
-                                            <div class="col-sm-2">
-                                                <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" />
+                                            <br/>
+                                            <h5><strong>Tarimas Incompletas</strong></h5>
+                                            <div class="row">
+
+                                                <label for="Cajas" class="hidden">Tarimas</label>
+                                                <div class="hidden">
+                                                    <input type="Cajas" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
+                                                            return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
+                                                </div>
+                                                <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
+                                                <div class="col-sm-1">
+                                                    <input type="pzsxcaja" class="form-control" id="CajasxTI" name="CajasxTI" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                                                </div>
+                                                <label for="pzsxcaja" class="col-sm-2 control-label">Resto</label>
+                                                <div class="col-sm-1">
+                                                    <input type="pzsxcaja" class="form-control" id="Resto" name="Resto" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6">
-                                        <textarea class="form-control" id="Obser" name="Obser"></textarea>
-                                    </td>
-                                </tr>
-                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <h5><strong>Totales</strong></h5>
+                                            <div class="row">
+
+                                                <label for="Cajas" class="col-sm-1 control-label">Tarimas</label>
+                                                <div class="col-sm-1">
+                                                    <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
+                                                            return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
+                                                </div>
+                                                <label for="pzsxcaja" class="col-sm-1 control-label">Cajas Completas</label>
+                                                <div class="col-sm-1">
+                                                    <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                                                </div>
+                                                <label for="CajasIn" class="col-sm-1 control-label">Cajas Incompletas</label>
+                                                <div class="col-sm-1">
+                                                    <input type="text" class="form-control" id="CajasIn" name="CajasIn" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                                                </div>
+                                                <label for="TCajas" class="col-sm-1 control-label">Total Cajas</label>
+                                                <div class="col-sm-1">
+                                                    <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                                                </div>
+                                                <label for="Resto" class="col-sm-1 control-label">Piezas</label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <textarea class="form-control" id="Obser" name="Obser"></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-4">
                                     <%if (!posClave.equals("0")) {%>
@@ -769,7 +772,7 @@
                 %>
             </form>
 
-            <div>
+            <div class="table-responsive">
                 <table class="table table-bordered table-striped" style="width: 100%">
                     <tr>
                         <td>Remisión</td>
@@ -1013,7 +1016,6 @@
                                                 </div>
                                             </td>
                                             <%
-                                                System.out.println(columna % 5);
                                                 if (columna % 5 == 0) {
                                             %>
                                         </tr>
@@ -1216,8 +1218,8 @@
                                         }
                                     }
                                     var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
-                                    if(totalTarimas===0 && Resto!==0){
-                                        totalTarimas=totalTarimas+1;
+                                    if (totalTarimas === 0 && Resto !== 0) {
+                                        totalTarimas = totalTarimas + 1;
                                     }
                                     document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
                                     var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);

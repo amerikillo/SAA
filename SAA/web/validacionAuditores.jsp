@@ -37,6 +37,7 @@
 
     }
 
+  
     if (F_Clave == null) {
         F_Clave = "";
     }
@@ -44,12 +45,16 @@
         F_Cb = "";
     }
     if (Clave == null) {
-        Clave = "";
+        Clave = (String) sesion.getAttribute("Nombre");
+        if (Clave == null) {
+            Clave="";
+        }
     }
 %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
@@ -106,7 +111,7 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
+                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
@@ -235,8 +240,8 @@
                         }
                     %>
                 </div>
-                <div class="panel-footer">
-                    <table class="table table-bordered table-condensed table-responsive table-striped">
+                <div class="panel-footer table-responsive">
+                    <table class="table table-bordered table-condensed table-striped">
                         <tr>
                             <td>CB</td>
                             <td>Clave</td>
@@ -253,11 +258,11 @@
                                 con.conectar();
                                 ResultSet rset = null;
                                 if (F_Cb != "") {
-                                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND F_Cb='" + F_Cb + "' and f.F_ClaCli = '" + Clave + "' and f.F_StsFact=1 group by f.F_Id;");
+                                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as cadu,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id,m.F_DesPro  FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE m.F_ClaPro = l.F_ClaPro and 	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND F_Cb='" + F_Cb + "' and f.F_ClaCli = '" + Clave + "' and f.F_StsFact=1 group by f.F_Id;");
                                 }
 
                                 if (F_Clave != "") {
-                                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND l.F_ClaPro='" + F_Clave + "' and f.F_ClaCli = '" + Clave + "' and f.F_StsFact=1 group by f.F_Id;");
+                                    rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as cadu,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id,m.F_DesPro  FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE m.F_ClaPro = l.F_ClaPro and f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND l.F_ClaPro='" + F_Clave + "' and f.F_ClaCli = '" + Clave + "' and f.F_StsFact=1 group by f.F_Id;");
                                 }
                                 while (rset.next()) {
                         %>
@@ -265,7 +270,7 @@
                             <td><%=rset.getString("F_Cb")%></td>
                             <td><%=rset.getString("F_ClaPro")%></td>
                             <td><%=rset.getString("F_ClaLot")%></td>
-                            <td><%=rset.getString("fecha")%></td>
+                            <td><%=rset.getString("cadu")%></td>
                             <td><%=rset.getString("F_Ubica")%></td>
                             <td><%=rset.getString("cajas")%></td>
                             <td><%=rset.getString("resto")%></td>
@@ -279,6 +284,11 @@
                                         <a class="btn btn-block btn-success" onclick="return confirm('Desea Validar Esta Clave?')" href="Facturacion?accion=validaAuditor&folio=<%=rset.getString("F_Id")%>&Nombre=<%=Clave%>"><span class="glyphicon glyphicon-ok"></span></a>
                                     </div>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="10">
+                                <%=rset.getString("F_DesPro")%>
                             </td>
                         </tr>
                         <%
