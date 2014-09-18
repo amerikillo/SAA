@@ -87,6 +87,9 @@
                                     <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
                                     <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
+                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -133,9 +136,14 @@
                 </div>
             </div>
 
+            <div class="row">
+                <h3 class="col-sm-3">Administrar Remisiones</h3>
+                <div class="col-sm-2 col-sm-offset-7">
+                    <br/>
+                    <a class="btn btn-success" href="gnrFacturaConcentrado.jsp" target="_blank">Exportar Global</a>
+                </div>
+            </div>
             <div>
-                <h3>Administrar Remisiones</h3>
-
                 <br />
                 <div class="panel panel-primary">
                     <div class="panel-body table-responsive">
@@ -177,10 +185,17 @@
                                         </form>
                                     </td>
                                     <td>
+                                        <%
+                                            if (tipo.equals("7")) {
+                                        %>
                                         <form action="devolucionesFacturas.jsp" method="post">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
                                             <button class="btn btn-block btn-danger">Devolución</button>
                                         </form>
+
+                                        <%
+                                            }
+                                        %>
                                     </td>
                                     <td>
                                         <a class="btn btn-block btn-success" href="gnrFacturaExcel.jsp?fol_gnkl=<%=rset.getString(1)%>">Excel</a>

@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
 public class Altas extends HttpServlet {
 
     ConectionDB con = new ConectionDB();
-    ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+    //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
     java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy");
     java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 

@@ -7,7 +7,6 @@ package Inventario;
 
 import ISEM.NuevoISEM;
 import conn.ConectionDB;
-import conn.ConectionDB_SQLServer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -38,7 +37,7 @@ public class Devoluciones extends HttpServlet {
             throws ServletException, IOException {
 
         ConectionDB con = new ConectionDB();
-        ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+        //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
         Facturacion fact = new Facturacion();
         NuevoISEM objSql = new NuevoISEM();
         java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy");
@@ -49,9 +48,9 @@ public class Devoluciones extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         try {
             try {
-                if (request.getParameter("accion").equals("devolver")) {
+                if (request.getParameter("accion").equals("devolucion")) {
                     con.conectar();
-                    consql.conectar();
+                    //consql.conectar();
                     String ClaPro = "", Total = "", Ubicacion = "", Provee = "", FolLote = "", ClaLot = "", FecCad = "";
                     String FolLotSql = "";
                     int cantSQL = 0, cant = 0;
@@ -66,12 +65,12 @@ public class Devoluciones extends HttpServlet {
                         FolLote = rset.getString("F_FolLot");
 
                     }
-                    ResultSet rsetsql = consql.consulta("select F_FolLot, F_ExiLot from tb_lote where F_ClaLot = '" + ClaLot + "' and F_ClaPro= '" + ClaPro + "' and F_FecCad = '" + df2.format(df3.parse(FecCad)) + "' and F_ClaPrv = '" + Provee + "'");
-                    while (rsetsql.next()) {
-                        FolLotSql = rsetsql.getString("F_FolLot");
-                        cantSQL = rsetsql.getInt("F_ExiLot");
-                    }
-
+                    /*ResultSet rsetsql = consql.consulta("select F_FolLot, F_ExiLot from tb_lote where F_ClaLot = '" + ClaLot + "' and F_ClaPro= '" + ClaPro + "' and F_FecCad = '" + df2.format(df3.parse(FecCad)) + "' and F_ClaPrv = '" + Provee + "'");
+                     while (rsetsql.next()) {
+                     FolLotSql = rsetsql.getString("F_FolLot");
+                     cantSQL = rsetsql.getInt("F_ExiLot");
+                     }
+                     */
                     double importe = devuelveImporte(ClaPro, cant);
                     double iva = devuelveIVA(ClaPro, cant);
                     double costo = devuelveCosto(ClaPro);
@@ -79,11 +78,16 @@ public class Devoluciones extends HttpServlet {
 
                     String indMov = objSql.dameidMov();
 
+                    byte[] a = request.getParameter("Obser").getBytes("ISO-8859-1");
+                    String Observaciones = (new String(a, "UTF-8")).toUpperCase();
+
+                    con.insertar("insert into tb_devolcompra values ('" + request.getParameter("IdLote") + "','"+Observaciones+"','0','"+cant+"')");
                     con.insertar("insert into tb_movinv values('0',CURDATE(),'0','52','" + ClaPro + "','" + cant + "','" + costo + "','" + importe + "','-1','" + FolLote + "','" + Ubicacion + "','" + Provee + "',CURTIME(),'" + (String) sesion.getAttribute("nombre") + "')");
-                    consql.insertar("insert into TB_MovInv values(CONVERT(date,GETDATE()),'1','','52','" + ClaPro + "','" + cant + "','"+costo+"','" + iva + "','" + importe + "','-1','" + FolLotSql + "','" + indMov + "','A','0','','','','" + Provee + "','" + (String) sesion.getAttribute("nombre") + "')");
+
+                    //consql.insertar("insert into TB_MovInv values(CONVERT(date,GETDATE()),'1','','52','" + ClaPro + "','" + cant + "','" + costo + "','" + iva + "','" + importe + "','-1','" + FolLotSql + "','" + indMov + "','A','0','','','','" + Provee + "','" + (String) sesion.getAttribute("nombre") + "')");
                     con.insertar("update tb_lote set F_ExiLot = '0' where F_IdLote = '" + request.getParameter("IdLote") + "' ");
-                    consql.insertar("update TB_Lote set F_ExiLot='" + ncant + "' where F_FolLot = '" + FolLotSql + "'");
-                    consql.cierraConexion();
+                    //consql.insertar("update TB_Lote set F_ExiLot='" + ncant + "' where F_FolLot = '" + FolLotSql + "'");
+                    //consql.cierraConexion();
                     con.cierraConexion();
                     out.println("<script>alert('Devolucion Correcta')</script>");
                     out.println("<script>window.location='devolucionesInsumo.jsp'</script>");

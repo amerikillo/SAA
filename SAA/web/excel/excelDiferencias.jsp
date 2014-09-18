@@ -22,7 +22,7 @@
         response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
-    ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+    //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
     String ceros = "";
     try {
         ceros = request.getParameter("ceros");
@@ -42,23 +42,23 @@
             }
             try {
                 con.conectar();
-                consql.conectar();
-                try {
-                    ResultSet rsetsql = consql.consulta("select F_ClaPro, F_ClaLot, sum(F_ExiLot) from tb_lote group by F_ClaPro, F_Clalot");
-                    while (rsetsql.next()) {
-                        String clave = "";
-                        clave = rsetsql.getString("F_ClaPro");
-                        con.insertar("insert into comparativa values('" + clave + "', '" + rsetsql.getString(2) + "', '" + rsetsql.getString(3) + "', 'SGW', '0')");
-                    }
+                /*consql.conectar();
+                 try {
+                 ResultSet rsetsql = consql.consulta("select F_ClaPro, F_ClaLot, sum(F_ExiLot) from tb_lote group by F_ClaPro, F_Clalot");
+                 while (rsetsql.next()) {
+                 String clave = "";
+                 clave = rsetsql.getString("F_ClaPro");
+                 con.insertar("insert into comparativa values('" + clave + "', '" + rsetsql.getString(2) + "', '" + rsetsql.getString(3) + "', 'SGW', '0')");
+                 }
 
-                    ResultSet rset = con.consulta("select clave, lote, sum(cant) from datos_inv_cod group by clave, lote");
-                    while (rset.next()) {
-                        con.insertar("insert into comparativa values('" + rset.getString(1) + "', '" + rset.getString(2) + "', '" + rset.getString(3) + "', 'UBICACIONES', '0')");
-                    }
-                } catch (Exception e) {
+                 ResultSet rset = con.consulta("select clave, lote, sum(cant) from datos_inv_cod group by clave, lote");
+                 while (rset.next()) {
+                 con.insertar("insert into comparativa values('" + rset.getString(1) + "', '" + rset.getString(2) + "', '" + rset.getString(3) + "', 'UBICACIONES', '0')");
+                 }
+                 } catch (Exception e) {
 
-                }
-                consql.cierraConexion();
+                 }
+                 consql.cierraConexion();*/
                 con.cierraConexion();
             } catch (Exception e) {
             }
@@ -74,15 +74,15 @@
             }
             try {
                 con.conectar();
-                consql.conectar();
+                //consql.conectar();
                 try {
-                    ResultSet rsetsql = consql.consulta("select F_ClaPro, sum(F_ExiLot) from tb_lote group by F_ClaPro");
-                    while (rsetsql.next()) {
-                        String clave = "";
-                        clave = rsetsql.getString("F_ClaPro");
-                        con.insertar("insert into comparativa values('" + clave + "', '-', '" + rsetsql.getString(2) + "', 'SGW', '0')");
-                    }
-
+                    /*ResultSet rsetsql = consql.consulta("select F_ClaPro, sum(F_ExiLot) from tb_lote group by F_ClaPro");
+                     while (rsetsql.next()) {
+                     String clave = "";
+                     clave = rsetsql.getString("F_ClaPro");
+                     con.insertar("insert into comparativa values('" + clave + "', '-', '" + rsetsql.getString(2) + "', 'SGW', '0')");
+                     }
+                     */
                     ResultSet rset = con.consulta("select clave, sum(cant) from datos_inv_cod group by clave");
                     while (rset.next()) {
                         con.insertar("insert into comparativa values('" + rset.getString(1) + "', '-', '" + rset.getString(2) + "', 'UBICACIONES', '0')");
@@ -90,7 +90,7 @@
                 } catch (Exception e) {
                     out.println(e.getMessage());
                 }
-                consql.cierraConexion();
+                //consql.cierraConexion();
                 con.cierraConexion();
             } catch (Exception e) {
                 out.println(e.getMessage());

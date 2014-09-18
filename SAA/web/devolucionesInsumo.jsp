@@ -20,9 +20,10 @@
     custom.setGroupingSeparator(',');
     formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
-    String usua = "";
+    String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("index.jsp");
     }
@@ -65,29 +66,37 @@
                             <td>Ubicación</td>
                             <td>Devolver</td>
                         </tr>
-                        
-                    <%
-                    try{
-                        con.conectar();
-                        ResultSet rset = con.consulta("select l.F_ClaPro, m.F_DesPro, l.F_ClaLot, l.F_FecCad, l.F_ExiLot, l.F_Ubica, l.F_IdLote from tb_lote l, tb_medica m where l.F_ClaPro = m.F_ClaPro and l.F_Ubica='REJA_DEVOL' and l.F_ExiLot!=0");
-                        while(rset.next()){
-                            %>
-                            <tr>
-                                <td><%=rset.getString("F_ClaPro")%></td>
-                                <td><%=rset.getString("F_ClaLot")%></td>
-                                <td><%=rset.getString("F_FecCad")%></td>
-                                <td><%=rset.getString("F_ExiLot")%></td>
-                                <td><%=rset.getString("F_Ubica")%></td>
-                                <td><a class="btn btn-block btn-danger" onclick="return confirm('Seguro que desea hacer la devolución?')" href="Devoluciones?accion=devolver&IdLote=<%=rset.getString("F_IdLote")%>"><span class="glyphicon glyphicon-remove-circle"></span></a></td>
-                            </tr>
-                            <%
-                        }
-                        con.cierraConexion();
-                    }catch(Exception e){
-                        
-                    }
-                    %>
-                    
+
+                        <%                        try {
+                                con.conectar();
+                                ResultSet rset = con.consulta("select l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS F_FecCad, l.F_ExiLot, l.F_Ubica, l.F_IdLote from tb_lote l, tb_medica m where l.F_ClaPro = m.F_ClaPro and l.F_Ubica='REJA_DEVOL' and l.F_ExiLot!=0");
+                                while (rset.next()) {
+                        %>
+                        <tr>
+                            <td><%=rset.getString("F_ClaPro")%></td>
+                            <td><%=rset.getString("F_ClaLot")%></td>
+                            <td><%=rset.getString("F_FecCad")%></td>
+                            <td><%=rset.getString("F_ExiLot")%></td>
+                            <td><%=rset.getString("F_Ubica")%></td>
+                            <td>
+                                <%
+                                    if (tipo.equals("5")) {
+                                %>
+
+                                <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdLote")%>"><span class="glyphicon glyphicon-remove-circle"></span></a></a>
+                                    <%
+                                        }
+                                    %>
+                            </td>
+                        </tr>
+                        <%
+                                }
+                                con.cierraConexion();
+                            } catch (Exception e) {
+
+                            }
+                        %>
+
                     </table>
                 </div>
             </div>
@@ -99,6 +108,80 @@
                 Todos los Derechos Reservados
             </div>
         </div>
+
+
+
+
+        <!--
+                Modal
+        -->
+        <%
+            try {
+                con.conectar();
+                try {
+                    ResultSet rset = con.consulta("select l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS F_FecCad, l.F_ExiLot, l.F_Ubica, l.F_IdLote from tb_lote l, tb_medica m where l.F_ClaPro = m.F_ClaPro and l.F_Ubica='REJA_DEVOL' and l.F_ExiLot!=0");
+                    while (rset.next()) {
+        %>
+        <div class="modal fade" id="Devolucion<%=rset.getString("F_IdLote")%>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="Devoluciones">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    Devolución:
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <input id="IdLote" name="IdLote" value="<%=rset.getString("F_IdLote")%>" class="hidden">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-3">
+                                        Clave: <%=rset.getString("F_ClaPro")%>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        Descripción: <%=rset.getString("F_DesPro")%>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Cantidad a Devolver:<%=rset.getString("F_ExiLot")%></h4>
+                                </div>
+                            </div>
+                            <h4 class="modal-title" id="myModalLabel">Observaciones</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea name="Obser" id="Obser<%=rset.getString("F_IdLote")%>" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div style="display: none;" class="text-center" id="Loader">
+                                <img src="imagenes/ajax-loader-1.gif" height="150" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="<%=rset.getString("F_IdLote")%>" onclick="return validaDevolucion(this.id);" name="accion" value="devolucion">Devolver</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <%
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                con.cierraConexion();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        %>
+        <!--
+        /Modal
+        -->
     </body>
     <!-- 
     ================================================== -->
@@ -110,6 +193,13 @@
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
+                                    function validaDevolucion(e) {
+                                        var id = e;
+                                        if (document.getElementById('Obser' + id).value === "") {
+                                            alert("Ingrese las observaciones de la devolución")
+                                            return false;
+                                        }
+                                    }
     </script>
 </html>
 

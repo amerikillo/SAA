@@ -173,6 +173,8 @@
                     <h5 class="col-sm-3">Total Solicitado: <%=formatter.format(req)%></h5>
                     <h5 class="col-sm-3">Total Surtido: <%=formatter.format(sur)%></h5>
                     <h5 class="col-sm-3">Total Importe: $ <%=formatterDecimal.format(imp)%></h5>
+                    <a href="reimp_factura.jsp" class="btn btn-default">Regresar</a>
+                    <a href="reimpDevolucionFactura.jsp?fol_gnkl=<%=request.getParameter("fol_gnkl")%>" target="_blank" class="btn btn-danger">Impr Devolución</a>
                 </div>
                 <%
                             }

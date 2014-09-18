@@ -26,12 +26,12 @@
 %>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>CONSULTAS ISEM</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="ckeditor/ckeditor.js"></script>
-        <link href=bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+        <!--link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
         
         <link rel="stylesheet" href="js_auto/jquery-ui.css">
         <script src="js_auto/jquery-1.9.1.js"></script>
@@ -112,11 +112,7 @@
                 </div>
             </div-->
             <hr/>
-            <div class="container2">
-                <div class="progress progress-striped active">
-                    <div class="bar" style="width: 0%;"></div>
-                </div>
-            </div>  
+            
             <div class="container">
                 <form id="form" name="form" method="post" action="../ServletK">
                     <table class="table table-bordered">
@@ -153,6 +149,7 @@
                            <td><input type="text" name="ubin" id="ubin" placeholder="" onKeyUp="Ubicacionc()" class="form-control" /><datalist id="Ubicaciones"></datalist></td>
                             <td colspan="2"><input type="text" id="actual" value="<%=ubicac1%>" placeholder="" readonly="" class="form-control" onKeyPress="return justNumbers(event);" /></td>
                         </tr>
+                        <div id="loading" class="text-center"></div>
                         <tr>
                             <td colspan="6">
                                 <div class="col-lg-6">
@@ -285,23 +282,21 @@
         
                 
         $(document).ready(function() {
+        
+        $("#form").keypress(function(e) {//Para deshabilitar el uso de la tecla "Enter"
+            if (e.which == 13) {
+                return false;
+            }
+        });
+            
+        
             var fol = <%=Folio%>;
             var id = <%=id%>;
             var ubica = $("#actual").val();
             
             var dir = 'jsp/consultas.jsp?ban=25&folio=' + fol + '&ubicacion=' + ubica + '&id=' + id + ''
             
-            var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+200);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
+                
             $.ajax({
                 url: dir,
                 type: 'json',
@@ -342,8 +337,12 @@
                 $("#lote").text(json.lote);
                 $("#caducidad").text(json.caducidad);
                 $("#exist").text(numero);
+                
+                
 
             }
+            
+            
         });
         $(document).ready(function() {   
         var dir = 'jsp/consultas.jsp?ban=26'
@@ -468,7 +467,21 @@
                 self.location='Consultas.jsp';
             });
          
-         
+            $('#btn-distribuir').click(function () {
+                // add loading image to div
+                $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "../ServletK",
+                success: function (d) {
+                    setTimeout(function () {
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
+                });
     
            
         });

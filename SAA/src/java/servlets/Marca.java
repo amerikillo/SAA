@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 public class Marca extends HttpServlet {
 
     ConectionDB con = new ConectionDB();
-    ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+    //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,7 +44,7 @@ public class Marca extends HttpServlet {
              *Para actualizar Registros
              */
             if (request.getParameter("accion").equals("actualizar")) {
-                consql.conectar();
+                //consql.conectar();
                 con.conectar();
                 try {
                     String clave = request.getParameter("Clave");
@@ -56,7 +56,7 @@ public class Marca extends HttpServlet {
                         }
                     } catch (Exception e) {
                     }
-                    consql.actualizar("update TB_Provee set F_ClaPrv='" + clave + "', F_NomPrv='" + request.getParameter("Nombre").toUpperCase() + "', F_Dir='" + request.getParameter("Direccion").toUpperCase() + "', F_Col='" + request.getParameter("Colonia").toUpperCase() + "', F_Pob='" + request.getParameter("Poblacion").toUpperCase() + "', F_CP='" + request.getParameter("CP").toUpperCase() + "', F_RFC='" + request.getParameter("RFC").toUpperCase() + "', F_Con='" + request.getParameter("CON").toUpperCase() + "', F_Cls='" + request.getParameter("CLS").toUpperCase() + "', F_Tel='" + request.getParameter("Telefono").toUpperCase() + "', F_Fax='" + request.getParameter("FAX").toUpperCase() + "', F_Mail='" + request.getParameter("Mail").toUpperCase() + "', F_Obs='" + request.getParameter("Observaciones").toUpperCase() + "' where F_ClaPrv='" + request.getParameter("id").toUpperCase() + "';");
+                    //consql.actualizar("update TB_Provee set F_ClaPrv='" + clave + "', F_NomPrv='" + request.getParameter("Nombre").toUpperCase() + "', F_Dir='" + request.getParameter("Direccion").toUpperCase() + "', F_Col='" + request.getParameter("Colonia").toUpperCase() + "', F_Pob='" + request.getParameter("Poblacion").toUpperCase() + "', F_CP='" + request.getParameter("CP").toUpperCase() + "', F_RFC='" + request.getParameter("RFC").toUpperCase() + "', F_Con='" + request.getParameter("CON").toUpperCase() + "', F_Cls='" + request.getParameter("CLS").toUpperCase() + "', F_Tel='" + request.getParameter("Telefono").toUpperCase() + "', F_Fax='" + request.getParameter("FAX").toUpperCase() + "', F_Mail='" + request.getParameter("Mail").toUpperCase() + "', F_Obs='" + request.getParameter("Observaciones").toUpperCase() + "' where F_ClaPrv='" + request.getParameter("id").toUpperCase() + "';");
 
                     con.actualizar("update provee_all set F_ClaPrv='" + clave + "', F_nomprov='" + request.getParameter("Nombre").toUpperCase() + "', F_Dir='" + request.getParameter("Direccion").toUpperCase() + "', F_Col='" + request.getParameter("Colonia").toUpperCase() + "', F_Pob='" + request.getParameter("Poblacion").toUpperCase() + "', F_CP='" + request.getParameter("CP").toUpperCase() + "', F_RFC='" + request.getParameter("RFC").toUpperCase() + "', F_Con='" + request.getParameter("CON").toUpperCase() + "', F_Cls='" + request.getParameter("CLS").toUpperCase() + "', F_Tel='" + request.getParameter("Telefono").toUpperCase() + "', F_Fax='" + request.getParameter("FAX").toUpperCase() + "', F_Mail='" + request.getParameter("Mail").toUpperCase() + "', F_Obs='" + request.getParameter("Observaciones").toUpperCase() + "' where F_ClaPrv='" + request.getParameter("id").toUpperCase() + "';");
 
@@ -67,7 +67,7 @@ public class Marca extends HttpServlet {
                     out.println("<script>window.location='editar_proveedor.jsp'</script>");
                 }
                 con.cierraConexion();
-                consql.cierraConexion();
+                //consql.cierraConexion();
 
                 out.println("<script>alert('Proveedor actualizado correctamente.')</script>");
                 out.println("<script>window.location='catalogo.jsp'</script>");
@@ -83,10 +83,10 @@ public class Marca extends HttpServlet {
              *Para eliminar registro
              */
             if (request.getParameter("accion").equals("eliminar")) {
-                consql.conectar();
+                //consql.conectar();
                 con.conectar();
                 try {
-                    consql.insertar("delete from TB_Provee where F_ClaPrv = '" + request.getParameter("id") + "' ");
+                    //consql.insertar("delete from TB_Provee where F_ClaPrv = '" + request.getParameter("id") + "' ");
                     con.insertar("delete from provee_all where F_ClaPrv = '" + request.getParameter("id") + "' ");
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
@@ -95,7 +95,7 @@ public class Marca extends HttpServlet {
                     out.println("<script>window.location='catalogo.jsp'</script>");
                 }
                 con.cierraConexion();
-                consql.cierraConexion();
+                //consql.cierraConexion();
 
                 out.println("<script>alert('Se elimino el proveedor correctamente')</script>");
                 out.println("<script>window.location='catalogo.jsp'</script>");
@@ -105,27 +105,27 @@ public class Marca extends HttpServlet {
              */
             if (request.getParameter("accion").equals("guardar")) {
                 try {
-                    String Nombre="";
+                    String Nombre = "";
                     con.conectar();
-                    consql.conectar();
+                    //consql.conectar();
                     try {
-                        ResultSet rst_prov = con.consulta("SELECT F_DesMar FROM tb_marca WHERE F_DesMar='"+request.getParameter("Nombre").toUpperCase()+"'");
-                        while (rst_prov.next()){
+                        ResultSet rst_prov = con.consulta("SELECT F_DesMar FROM tb_marca WHERE F_DesMar='" + request.getParameter("Nombre").toUpperCase() + "'");
+                        while (rst_prov.next()) {
                             Nombre = rst_prov.getString("F_DesMar");
                         }
-                        if (!(Nombre.equals(""))){
+                        if (!(Nombre.equals(""))) {
                             out.println("<script>alert('Ya esta registrado ésta Marca')</script>");
                             out.println("<script>window.location='marcas.jsp'</script>");
-                            
-                        }else{
-                             con.insertar("insert into tb_marca values (0,'" + request.getParameter("Nombre").toUpperCase() + "');");
-                             consql.insertar("insert into TB_Marcas values ('" + request.getParameter("Nombre").toUpperCase() + "');");
+
+                        } else {
+                            con.insertar("insert into tb_marca values (0,'" + request.getParameter("Nombre").toUpperCase() + "');");
+                            //consql.insertar("insert into TB_Marcas values ('" + request.getParameter("Nombre").toUpperCase() + "');");
                         }
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }
                     con.cierraConexion();
-                    consql.cierraConexion();
+                    //consql.cierraConexion();
                     out.println("<script>alert('Marca capturado correctamente.')</script>");
                     out.println("<script>window.location='marcas.jsp'</script>");
                 } catch (Exception e) {
@@ -141,7 +141,7 @@ public class Marca extends HttpServlet {
                 } catch (Exception e) {
                     out.println("<script>alert('Error al obtener proveedores')</script>");
                 }
-                 out.println("<script>window.location='catalogo.jsp'</script>");
+                out.println("<script>window.location='catalogo.jsp'</script>");
             }
         } catch (SQLException e) {
 
@@ -189,18 +189,18 @@ public class Marca extends HttpServlet {
 
     public void proveedores() {
         try {
-            consql.conectar();
+            //consql.conectar();
             con.conectar();
             try {
-                con.insertar("truncate table provee_all");
-                ResultSet rset = consql.consulta("select * from TB_Provee;");
-                while (rset.next()) {
-                    con.insertar("insert into provee_all values ('" + rset.getString(1) + "', '" + rset.getString(2) + "', '" + rset.getString(3) + "', '" + rset.getString(4) + "', '" + rset.getString(5) + "', '" + rset.getString(6) + "', '" + rset.getString(7) + "', '" + rset.getString(8) + "' ,'" + rset.getString(9) + "', '" + rset.getString(10) + "', '" + rset.getString(11) + "', '" + rset.getString(12) + "', '" + rset.getString(13) + "')");
-                }
+                /*con.insertar("truncate table provee_all");
+                 ResultSet rset = consql.consulta("select * from TB_Provee;");
+                 while (rset.next()) {
+                 con.insertar("insert into provee_all values ('" + rset.getString(1) + "', '" + rset.getString(2) + "', '" + rset.getString(3) + "', '" + rset.getString(4) + "', '" + rset.getString(5) + "', '" + rset.getString(6) + "', '" + rset.getString(7) + "', '" + rset.getString(8) + "' ,'" + rset.getString(9) + "', '" + rset.getString(10) + "', '" + rset.getString(11) + "', '" + rset.getString(12) + "', '" + rset.getString(13) + "')");
+                 }*/
             } catch (Exception e) {
             }
             con.cierraConexion();
-            consql.cierraConexion();
+            //consql.cierraConexion();
         } catch (Exception e) {
         }
     }

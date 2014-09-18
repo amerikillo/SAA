@@ -95,7 +95,7 @@
 
     </head>
 
-    <body>
+    <body onload="totalPiezas();">
         <div class="container">
             <h1>SIE</h1>
             <div class="navbar navbar-default">
@@ -126,7 +126,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -292,8 +292,8 @@
                         <h5><strong>Tarimas Incompletas</strong></h5>
                         <div class="row">
 
-                            <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
-                            <div class="col-sm-1">
+                            <label for="Cajas" class="hidden">Tarimas</label>
+                            <div class="hidden">
                                 <input type="Cajas" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
                                         return handleEnter(even);" onkeyup="totalPiezas();" value="<%=tarimasI%>" />
                             </div>
@@ -310,18 +310,26 @@
                         <h5><strong>Totales</strong></h5>
                         <div class="row">
 
-                            <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
+                            <label for="Cajas" class="col-sm-1 control-label">Tarimas</label>
                             <div class="col-sm-1">
                                 <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
-                                        return handleEnter(even);" onkeyup="totalPiezas();"  value="<%=tarimas%>" />
+                                                            return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
                             </div>
-                            <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
+                            <label for="pzsxcaja" class="col-sm-1 control-label">Cajas Completas</label>
                             <div class="col-sm-1">
-                                <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=cajas%>"  />
+                                <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                             </div>
-                            <label for="Resto" class="col-sm-2 control-label">Piezas x Caja</label>
+                            <label for="CajasIn" class="col-sm-1 control-label">Cajas Incompletas</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="CajasIn" name="CajasIn" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                            </div>
+                            <label for="TCajas" class="col-sm-1 control-label">Total Cajas</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                            </div>
+                            <label for="Resto" class="col-sm-1 control-label">Piezas</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();"  value="<%=piezas%>" />
+                                <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" />
                             </div>
                         </div>
                         <br/>
@@ -634,15 +642,23 @@
                                 }
                                 if (Resto === "") {
                                     Resto = 0;
+                                    var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                                    document.getElementById('TCajas').value = formatNumber.new(totalCajas);
+                                } else {
+                                    var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                                    document.getElementById('TCajas').value = formatNumber.new(totalCajas + 1);
+                                    document.getElementById('CajasIn').value = formatNumber.new(1);
+                                    if (parseInt(CajasxTI) !== parseInt(0)) {
+                                        TarimasI = parseInt(TarimasI) + parseInt(1);
+                                    }
                                 }
                                 var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
+                                if (totalTarimas === 0 && Resto !== 0) {
+                                    totalTarimas = totalTarimas + 1;
+                                }
                                 document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
                                 var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
                                 document.getElementById('Cajas').value = formatNumber.new(totalCajas);
-                                var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
-                                document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
-
-
                                 var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
                                 document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
                             }

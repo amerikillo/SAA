@@ -25,7 +25,7 @@ import java.text.*;
 public class Modificaciones extends HttpServlet {
 
     ConectionDB con = new ConectionDB();
-    ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+    //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

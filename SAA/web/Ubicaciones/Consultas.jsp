@@ -30,7 +30,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="ckeditor/ckeditor.js"></script>
         <link href=bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
+        <!--link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
         <!--link href="css/flat-ui.css" rel="stylesheet"-->
         <!--link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet"-->
         <!--link href="css/gnkl_style_default.css" rel="stylesheet"-->

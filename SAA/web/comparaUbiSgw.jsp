@@ -21,7 +21,7 @@
         response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
-    ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+    //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
     String ceros = "";
     try {
         ceros = request.getParameter("ceros");
@@ -42,15 +42,15 @@
             }
             try {
                 con.conectar();
-                consql.conectar();
+                //consql.conectar();
                 try {
-                    ResultSet rsetsql = consql.consulta("select F_ClaPro, F_ClaLot, sum(F_ExiLot) from tb_lote group by F_ClaPro, F_Clalot");
-                    while (rsetsql.next()) {
-                        String clave = "";
-                        clave = rsetsql.getString("F_ClaPro");
-                        con.insertar("insert into comparativa values('" + clave + "', '" + rsetsql.getString(2) + "', '" + rsetsql.getString(3) + "', 'SGW', '0')");
-                    }
-
+                    /*ResultSet rsetsql = consql.consulta("select F_ClaPro, F_ClaLot, sum(F_ExiLot) from tb_lote group by F_ClaPro, F_Clalot");
+                     while (rsetsql.next()) {
+                     String clave = "";
+                     clave = rsetsql.getString("F_ClaPro");
+                     con.insertar("insert into comparativa values('" + clave + "', '" + rsetsql.getString(2) + "', '" + rsetsql.getString(3) + "', 'SGW', '0')");
+                     }
+                     */
                     ResultSet rset = con.consulta("select clave, lote, sum(cant) from datos_inv_cod group by clave, lote");
                     while (rset.next()) {
                         con.insertar("insert into comparativa values('" + rset.getString(1) + "', '" + rset.getString(2) + "', '" + rset.getString(3) + "', 'UBICACIONES', '0')");
@@ -58,7 +58,7 @@
                 } catch (Exception e) {
 
                 }
-                consql.cierraConexion();
+                //consql.cierraConexion();
                 con.cierraConexion();
             } catch (Exception e) {
             }
@@ -74,14 +74,14 @@
             }
             try {
                 con.conectar();
-                consql.conectar();
+                //consql.conectar();
                 try {
-                    ResultSet rsetsql = consql.consulta("select F_ClaPro, sum(F_ExiLot) from tb_lote group by F_ClaPro");
-                    while (rsetsql.next()) {
-                        String clave = "";
-                        clave = rsetsql.getString("F_ClaPro");
-                        con.insertar("insert into comparativa values('" + clave + "', '-', '" + rsetsql.getString(2) + "', 'SGW', '0')");
-                    }
+                    /*ResultSet rsetsql = consql.consulta("select F_ClaPro, sum(F_ExiLot) from tb_lote group by F_ClaPro");
+                     while (rsetsql.next()) {
+                     String clave = "";
+                     clave = rsetsql.getString("F_ClaPro");
+                     con.insertar("insert into comparativa values('" + clave + "', '-', '" + rsetsql.getString(2) + "', 'SGW', '0')");
+                     }*/
 
                     ResultSet rset = con.consulta("select clave, sum(cant) from datos_inv_cod group by clave");
                     while (rset.next()) {
@@ -90,7 +90,7 @@
                 } catch (Exception e) {
                     out.println(e.getMessage());
                 }
-                consql.cierraConexion();
+                //consql.cierraConexion();
                 con.cierraConexion();
             } catch (Exception e) {
                 out.println(e.getMessage());
@@ -146,7 +146,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -173,8 +173,7 @@
                                     <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
                                 </ul>
                             </li-->
-                            <%
-                                if (usua.equals("root")) {
+                            <%                                if (usua.equals("root")) {
                             %>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
@@ -228,7 +227,7 @@
                                         ResultSet rset = con.consulta("select c.cla_pro, cm.descrip, c.lot_pro from comparativa c, clave_med cm where c.cla_pro = cm.clave order by c.cla_pro+0 asc ");
                                         while (rset.next()) {
                                             int c1 = 0, c2 = 0, c3 = 0;
-                                            
+
                                             ResultSet rset2 = con.consulta("select can_pro from comparativa where cla_pro = '" + rset.getString(1) + "' and lot_pro = '" + rset.getString(3) + "' and base = 'SGW' ");
                                             while (rset2.next()) {
                                                 c1 = (int) Double.parseDouble(rset2.getString(1));
