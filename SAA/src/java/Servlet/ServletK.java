@@ -26,7 +26,7 @@ public class ServletK extends HttpServlet {
 
     
     conection ObjMySQL = new conection();
-    ConectionDB_SQLServer ObjSql = new ConectionDB_SQLServer();
+    
     String Query;
     ResultSet Consultas = null;
 
@@ -117,7 +117,7 @@ public class ServletK extends HttpServlet {
             HttpSession Session = request.getSession(true);
             
             ObjMySQL.conectar();
-            ObjSql.conectar();
+            
             
              out.println(ban);
              
@@ -528,43 +528,7 @@ public class ServletK extends HttpServlet {
                     }
                     //////**************************fin consulta mysql********//////////////
                     
-                    //////************************** consulta sql********//////////////
                     
-                    QueryDatosSQL = "SELECT F_FolLot, F_ExiLot FROM tb_lote WHERE F_ClaPro='"+Clave+"' AND F_ClaLot='"+Lote+"' AND F_FecCad='"+Caducidad2+"' AND F_ClaPrv='"+Provee+"' AND F_ClaMar='"+MarcaM+"'";
-                    ConsultaSQL = ObjSql.consulta(QueryDatosSQL);
-                    if (ConsultaSQL.next()) {  
-                        Cont ++;
-                        FolioL = Integer.parseInt(ConsultaSQL.getString("F_FolLot"));                        
-                        ExistenciaSql = Double.parseDouble(ConsultaSQL.getString("F_ExiLot"));                        
-                    }
-                    QueryDatosSQL = "select F_IM from TB_Indice";
-                    ConsultaSQL = ObjSql.consulta(QueryDatosSQL);
-                    if (ConsultaSQL.next()) {                              
-                        FolMov = Integer.parseInt(ConsultaSQL.getString("F_IM"));                                                    
-                    }
-                    FolMovi = FolMov + 1;
-                    ObjSql.actualizar("UPDATE TB_Indice SET F_IM='"+FolMovi+"'");
-                        
-                    if (Cont > 0 ){                        
-                        ResultadoSql = ExistenciaSql + RestoMSql;
-                        ObjSql.actualizar("UPDATE tb_lote SET F_ExiLot='"+ResultadoSql+"' where F_FolLot='"+FolioL+"'");
-                        ObjSql.actualizar("INSERT INTO tb_movinv values(CONVERT (date, GETDATE()),'0','','11','"+Clave+"','"+RestoMSql+"','"+Costo+"','"+IvaT+"','"+MontoT+"','1','"+FolioL+"','"+FolMov+"','A','0','','','','"+Provee+"','" + sesion.getAttribute("nombre") + "')");
-                        
-                        out.println(Resultado);
-                    }else{                        
-                        QueryDatosSQL = "SELECT F_IL FROM tb_indice";
-                        ConsultaSQL = ObjSql.consulta(QueryDatosSQL);
-                        if (ConsultaSQL.next()) {                              
-                            FolioL = Integer.parseInt(ConsultaSQL.getString("F_IL"));                                                    
-                        }
-                        FolioLote = FolioL + 1;
-                        ObjSql.actualizar("update tb_indice set F_IL='"+FolioLote+"'");
-                        ObjSql.actualizar("INSERT INTO tb_lote VALUES ('"+Lote+"','"+Clave+"','"+Caducidad2+"','"+RestoMSql+"','"+Costo+"','"+FolioL+"','1','','1','"+Fabricacion+"','0','"+Provee+"','','"+MarcaM+"')");
-                        ObjSql.actualizar("INSERT INTO tb_movinv values(CONVERT (date, GETDATE()),'0','','11','"+Clave+"','"+RestoMSql+"','"+Costo+"','"+IvaT+"','"+MontoT+"','1','"+FolioL+"','"+FolMov+"','A','0','','','','"+Provee+"','" + sesion.getAttribute("nombre") + "')");
-                        
-                    }
-                    
-                    //////**************************fin consulta mysql********//////////////
                     response.sendRedirect("Ubicaciones/Agregar.jsp");
                     break;
                 case 10:
@@ -626,10 +590,14 @@ public class ServletK extends HttpServlet {
                             TotalExi = Existencias + Existencias2;
                             ObjMySQL.actualizar("update tb_lote set F_ExiLot='"+TotalExi+"' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + LoteNew + "' AND F_FecCad='" + CaduNew + "' and F_ClaOrg='"+Origen+"' AND F_Ubica='" + Ubicacion + "'");
                             ObjMySQL.actualizar("INSERT INTO tb_lotemov values(0,'" + Folio + "','"+Clave+"','"+Lote+"','','"+LoteNew+"','','" + sesion.getAttribute("nombre") + "','" + sesion.getAttribute("modificau") + "',curdate(),curtime())");
+                            response.sendRedirect("Ubicaciones/Consultas.jsp");
                         }else{
                             ObjMySQL.actualizar("update tb_lote set F_ClaLot='" + LoteNew + "', F_FecCad='" + CaduNew + "' WHERE F_IdLote='" + Id + "' AND F_FolLot='" + Folio + "' AND F_Ubica='" + Ubicacion + "'");
                             ObjMySQL.actualizar("INSERT INTO tb_lotemov values(0,'" + Folio + "','"+Clave+"','"+Lote+"','"+Caducidad+"','"+LoteNew+"','"+CaduNew+"','" + sesion.getAttribute("nombre") + "','" + sesion.getAttribute("modificau") + "',curdate(),curtime())");                                                   
-                            
+                            Session.setAttribute("folio", Folio);
+                            Session.setAttribute("ubicacion", Ubicacion);
+                            Session.setAttribute("id", Id);
+                            response.sendRedirect("Ubicaciones/Modificacion.jsp");
                         }
                     }else if (CaduNew !=""){
                         QueryDatos = "SELECT L.F_ExiLot as F_ExiLot FROM tb_lote L where L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_FecCad='" + CaduNew + "' and L.F_ClaOrg='"+Origen+"' AND L.F_Ubica='" + Ubicacion + "'";
@@ -643,11 +611,14 @@ public class ServletK extends HttpServlet {
                             TotalExi = Existencias + Existencias2;
                             ObjMySQL.actualizar("update tb_lote set F_ExiLot='"+TotalExi+"' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + Lote + "' AND F_FecCad='" + CaduNew + "' and F_ClaOrg='"+Origen+"' AND F_Ubica='" + Ubicacion + "'");
                             ObjMySQL.actualizar("INSERT INTO tb_lotemov values(0,'" + Folio + "','"+Clave+"','"+Lote+"','','"+LoteNew+"','','" + sesion.getAttribute("nombre") + "','" + sesion.getAttribute("modificau") + "',curdate(),curtime())");
-                            
+                            response.sendRedirect("Ubicaciones/Consultas.jsp");
                         }else{
                             ObjMySQL.actualizar("update tb_lote set F_FecCad='" + CaduNew + "' WHERE F_IdLote='" + Id + "' AND F_FolLot='" + Folio + "' AND F_Ubica='" + Ubicacion + "'");
                             ObjMySQL.actualizar("INSERT INTO tb_lotemov values(0,'" + Folio + "','"+Clave+"','','"+Caducidad+"','','"+CaduNew+"','" + sesion.getAttribute("nombre") + "','" + sesion.getAttribute("modificau") + "',curdate(),curtime())");                       
-                            
+                            Session.setAttribute("folio", Folio);
+                            Session.setAttribute("ubicacion", Ubicacion);
+                            Session.setAttribute("id", Id);
+                            response.sendRedirect("Ubicaciones/Modificacion.jsp");
                             
                         }
                     }else if (LoteNew!=""){
@@ -662,82 +633,17 @@ public class ServletK extends HttpServlet {
                             TotalExi = Existencias + Existencias2;
                             ObjMySQL.actualizar("update tb_lote set F_ExiLot='"+TotalExi+"' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + LoteNew + "' AND F_FecCad='" + Caducidad + "' and F_ClaOrg='"+Origen+"' AND F_Ubica='" + Ubicacion + "'");
                             ObjMySQL.actualizar("INSERT INTO tb_lotemov values(0,'" + Folio + "','"+Clave+"','"+Lote+"','','"+LoteNew+"','','" + sesion.getAttribute("nombre") + "','" + sesion.getAttribute("modificau") + "',curdate(),curtime())");
-                            
+                            response.sendRedirect("Ubicaciones/Consultas.jsp");
                         }else{
                             ObjMySQL.actualizar("update tb_lote set F_ClaLot='" + LoteNew + "' WHERE F_IdLote='" + Id + "' AND F_FolLot='" + Folio + "' AND F_Ubica='" + Ubicacion + "'");
                             ObjMySQL.actualizar("INSERT INTO tb_lotemov values(0,'" + Folio + "','"+Clave+"','"+Lote+"','','"+LoteNew+"','','" + sesion.getAttribute("nombre") + "','" + sesion.getAttribute("modificau") + "',curdate(),curtime())");                                                   
-
+                          Session.setAttribute("folio", Folio);
+                            Session.setAttribute("ubicacion", Ubicacion);
+                            Session.setAttribute("id", Id);
+                            response.sendRedirect("Ubicaciones/Modificacion.jsp");
                         }
                     }
                     //****************************************FIN MYSQL*************************************************///////////////////////
-                    //**************************************** CONSULTA SQL*********************************************///////////////////////
-                    QueryDatosSQL = "SELECT L.F_ExiLot as F_ExiLot FROM tb_lote L where L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_FecCad='" + Caducidad2 + "'";
-                    ConsultaSQL = ObjSql.consulta(QueryDatosSQL);
-                    
-                    if (ConsultaSQL.next()) {                                                 
-                        ExistenciaSql = Double.parseDouble(ConsultaSQL.getString("F_ExiLot"));                        
-                    }
-                    
-                    if (CaduNew !="" && LoteNew!=""){
-                        QueryDatos = "SELECT L.F_ExiLot as F_ExiLot FROM tb_lote L where L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + LoteNew + "' AND L.F_FecCad='" + Caduca + "'";
-                        Consulta = ObjSql.consulta(QueryDatos);
-                        if (Consulta.next()) {
-                            ContSql ++;
-                            ExistenciaSql2 = Double.parseDouble(Consulta.getString("F_ExiLot"));
-                        }
-                        if(ContSql > 0){
-                            ObjSql.actualizar("update tb_lote set F_ExiLot='0' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + Lote + "' AND F_FecCad='" + Caducidad2 + "'");
-                            TotalExiSql = ExistenciaSql + ExistenciaSql2;
-                            ObjSql.actualizar("update tb_lote set F_ExiLot='"+TotalExi+"' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + LoteNew + "' AND F_FecCad='" + Caduca + "'");
-                            response.sendRedirect("Ubicaciones/Consultas.jsp");
-                        }else{
-                            ObjSql.actualizar("update tb_lote set F_ClaLot='" + LoteNew + "', F_FecCad='" + Caduca + "' WHERE F_ClaPro='" + Clave + "' AND F_ClaLot='" + Lote + "' AND F_FecCad='" + Caducidad2 + "'");                            
-                            Session.setAttribute("folio", Folio);
-                            Session.setAttribute("ubicacion", Ubicacion);
-                            Session.setAttribute("id", Id);
-                            response.sendRedirect("Ubicaciones/Modificacion.jsp");
-                        }
-                    }else if (CaduNew !=""){
-                        QueryDatos = "SELECT L.F_ExiLot as F_ExiLot FROM tb_lote L where L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + Lote + "' AND L.F_FecCad='" + Caduca + "'";
-                        Consulta = ObjSql.consulta(QueryDatos);
-                        if (Consulta.next()) {
-                            ContSql ++;                       
-                            ExistenciaSql2 = Double.parseDouble(Consulta.getString("F_ExiLot"));
-                        }
-                        if(ContSql > 0){
-                            ObjSql.actualizar("update tb_lote set F_ExiLot='0' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + Lote + "' AND F_FecCad='" + Caducidad2 + "'");
-                            TotalExiSql = ExistenciaSql + ExistenciaSql2;
-                            ObjSql.actualizar("update tb_lote set F_ExiLot='"+TotalExi+"' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + Lote + "' AND F_FecCad='" + Caduca + "'");
-                            response.sendRedirect("Ubicaciones/Consultas.jsp");
-                        }else{
-                            ObjSql.actualizar("update tb_lote set F_FecCad='" + Caduca + "' WHERE F_ClaPro='" + Clave + "' AND F_ClaLot='" + Lote + "' AND F_FecCad='" + Caducidad2 + "'");
-                            Session.setAttribute("folio", Folio);
-                            Session.setAttribute("ubicacion", Ubicacion);
-                            Session.setAttribute("id", Id);
-                            response.sendRedirect("Ubicaciones/Modificacion.jsp");
-                        }
-                    }else if (LoteNew!=""){
-                        QueryDatos = "SELECT L.F_ExiLot as F_ExiLot FROM tb_lote L where L.F_ClaPro='" + Clave + "' AND L.F_ClaLot='" + LoteNew + "' AND L.F_FecCad='" + Caducidad2 + "'";
-                        Consulta = ObjSql.consulta(QueryDatos);
-                        if (Consulta.next()) {
-                            ContSql ++;
-                            ExistenciaSql2 = Double.parseDouble(Consulta.getString("F_ExiLot"));
-                        }
-                        if(ContSql > 0){
-                            ObjSql.actualizar("update tb_lote set F_ExiLot='0' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + Lote + "' AND F_FecCad='" + Caducidad2 + "'");
-                            TotalExiSql = ExistenciaSql + ExistenciaSql2;
-                            ObjSql.actualizar("update tb_lote set F_ExiLot='"+TotalExi+"' where F_ClaPro='" + Clave + "' AND F_ClaLot='" + LoteNew + "' AND F_FecCad='" + Caducidad2 + "'");
-                            response.sendRedirect("Ubicaciones/Consultas.jsp");
-                        }else{
-                            ObjSql.actualizar("update tb_lote set F_ClaLot='" + LoteNew + "' WHERE F_ClaPro='" + Clave + "' AND F_ClaLot='" + Lote + "' AND F_FecCad='" + Caducidad2 + "'");
-                            Session.setAttribute("folio", Folio);
-                            Session.setAttribute("ubicacion", Ubicacion);
-                            Session.setAttribute("id", Id);
-                            response.sendRedirect("Ubicaciones/Modificacion.jsp");
-                        }
-                    }
-                    
-                    //****************************************FIN SQL *************************************************///////////////////////
                     
                     break;
                 case 12:
@@ -817,7 +723,7 @@ public class ServletK extends HttpServlet {
             
             
             ObjMySQL.CierreConn();
-            ObjSql.cierraConexion();
+            
             out.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

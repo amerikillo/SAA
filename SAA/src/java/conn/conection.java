@@ -95,8 +95,8 @@ public class conection {
     //METODOS PARA TRABAJAR CON LA BASE DE DATOS
  
     public ResultSet consulta(String consulta) throws SQLException {
+        System.out.println(consulta);
         this.estancia = (Statement) Conn.createStatement();
-        
         return this.estancia.executeQuery(consulta);
     }
     
@@ -105,6 +105,7 @@ public class conection {
     
     public void actualizar(String actualiza) throws SQLException {
         this.estancia = (Statement) Conn.createStatement();
+        System.out.println(actualiza);
         estancia.executeUpdate(actualiza);
         //this.conn.commit();
      }
@@ -120,6 +121,7 @@ public class conection {
  
     public int insertar(String inserta) throws SQLException {
         Statement st = (Statement) this.Conn.createStatement();
+        System.out.println(inserta);
         return st.executeUpdate(inserta);
     }   
 }

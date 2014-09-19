@@ -80,7 +80,7 @@
                             <td><%=rset.getString("F_Ubica")%></td>
                             <td>
                                 <%
-                                    if (tipo.equals("5")) {
+                                    if (tipo.equals("3")) {
                                 %>
 
                                 <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdLote")%>"><span class="glyphicon glyphicon-remove-circle"></span></a></a>

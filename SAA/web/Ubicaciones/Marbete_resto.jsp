@@ -13,10 +13,11 @@
 
 <%
 HttpSession Session = request.getSession();
-String Unidad="",Cajas="",Folio="";
-Unidad = (String)Session.getAttribute("nombre");
-Folio = (String)Session.getAttribute("folio");
-Cajas = (String)Session.getAttribute("cajas");
+String clave="",lote="",cadu="",piezas="";
+clave = (String)Session.getAttribute("clave");
+lote = (String)Session.getAttribute("lote");
+cadu = (String)Session.getAttribute("cadu");
+piezas = (String)Session.getAttribute("piezas");
 %>
 
 <!DOCTYPE html>
@@ -28,13 +29,14 @@ Cajas = (String)Session.getAttribute("cajas");
     conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/gnklmex_consolidada2","root","eve9397");
     
     /*Establecemos la ruta del reporte*/ 
-    File reportfile = new File(application.getRealPath("Ubicaciones/consult.jasper")); 
+    File reportfile = new File(application.getRealPath("Ubicaciones/consult_resto.jasper")); 
     /* No enviamos parámetros porque nuestro reporte no los necesita */ 
     Map parameter= new HashMap(); 
     //parameter.put("unidad", "1");
-    parameter.put("unidad", Unidad);
-    parameter.put("folio", Folio);
-    parameter.put("cajas", Cajas);
+    parameter.put("clave", clave);
+    parameter.put("lote", lote);
+    parameter.put("cadu", cadu);
+    parameter.put("piezas", piezas);
     //System.out.println("Uni:"+Unidad+" Fol:"+Folio+" Caj:"+Cajas);
     /*Enviamos la ruta del reporte, los parámetros y la conexión*/ 
     byte[] bytes = JasperRunManager.runReportToPdf(reportfile.getPath(), parameter,conn);

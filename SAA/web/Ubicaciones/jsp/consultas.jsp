@@ -12,7 +12,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java" %>
 <%
     String QueryDatos = "", QueryMov = "";
-    String Clave = "", Lote = "", Fecha1 = "", Fecha2 = "", ConMI = "";
+    String Clave = "", Lote = "", Fecha1 = "", Fecha2 = "", ConMI = "", Provee="";
     String cb = "", Folio = "", Folios = "", Ubicacion = "", Ubinew = "", CantM = "", diferenc = "", text = "", Id = "";
     int ban = 0, Cantidad = 0, CantMov = 0, Resultados = 0, diferencia = 0, Folio2 = 0;
     double Resultado = 0.0;
@@ -34,6 +34,7 @@
         ban = Integer.parseInt(request.getParameter("ban"));
         cb = request.getParameter("cb");
         text = request.getParameter("text");
+        Provee = request.getParameter("provee");        
         diferenc = request.getParameter("diferencia");
         Id = request.getParameter("id");
         Obj.conectar();
@@ -505,7 +506,7 @@
             out.println(json);
         }
     } else if (ban == 28) {
-        QueryDatos = "select top 10  f_nomcli from tb_uniant where F_NomCli like '%" + text + "%' order by f_clacli asc";
+        QueryDatos = "select f_nomcli from tb_uniatn where F_NomCli like '%" + text + "%' order by f_clacli asc LIMIT 0,10";
         Consulta = Obj.consulta(QueryDatos);
         while (Consulta.next()) {
             json.put("unidad", Consulta.getString("F_NomCli"));
@@ -821,6 +822,57 @@
             json.put("user", Consulta.getString("c.F_User"));
             json.put("costo", Consulta.getString("m.F_Costo"));
             json.put("monto", Consulta.getString("monto"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 50) {
+        QueryDatos = "select u.F_ClaCli, u.F_NomCli from tb_uniatn u, tb_facttemp f where u.F_StsCli = 'A' and f.F_ClaCli = u.F_ClaCli group by u.F_ClaCli";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clavepro", Consulta.getString("u.F_ClaCli"));
+            json.put("nombrepro", Consulta.getString("u.F_NomCli"));
+            
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 51) {
+        QueryDatos = "SELECT l.F_ClaPro FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND f.F_ClaCli = '" + text + "' GROUP BY l.F_ClaPro";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("clave", Consulta.getString("l.F_ClaPro"));            
+            
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 52) {
+        QueryDatos = "SELECT	l.F_ClaLot FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND f.F_ClaCli = '"+text+"' GROUP BY	l.F_ClaLot";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("lote", Consulta.getString("l.F_ClaLot"));            
+            
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 53) {
+        QueryDatos = "SELECT DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as fecha FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND f.F_ClaCli = '"+text+"' GROUP BY l.F_FecCad";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("fecha", Consulta.getString("fecha"));            
+            
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 54) {
+        QueryDatos = "SELECT	l.F_ClaLot FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro AND f.F_ClaCli = '"+Provee+"' and  l.F_ClaPro = '"+text+"' GROUP BY	l.F_ClaLot";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("fecha", Consulta.getString("fecha"));            
+            
             jsona.add(json);
             json = new JSONObject();
         }

@@ -3,6 +3,8 @@ package LeeExcel;
 import conn.ConectionDB;
 import java.io.FileInputStream;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Vector;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -80,13 +82,16 @@ public class LeeExcel {
                     System.out.println("algo");
                     try {
                         String ClaPro = ((vectorCellEachRowData.get(j).toString()) + "");
-                        System.out.println(ClaPro);
+                        NumberFormat formatter = new DecimalFormat("0000.00");
+                        ClaPro = formatter.format(Double.parseDouble(ClaPro));
                         String[] punto = ClaPro.split("\\.");
                         System.out.println(punto.length);
                         if (punto.length > 1) {
                             System.out.println(ClaPro + "***" + punto[0] + "////" + punto[1]);
                             if (punto[1].equals("01")) {
                                 ClaPro = agrega(punto[0]) + ".01";
+                            } else if (punto[1].equals("02")) {
+                                ClaPro = agrega(punto[0]) + ".02";
                             } else if (punto[1].equals("00")) {
                                 ClaPro = agrega(punto[0]);
                             } else {

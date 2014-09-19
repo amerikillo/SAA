@@ -110,7 +110,9 @@
                             <hr/>
             <div class="container">
                 <div class="row">
-                    <div><h5>Ingresa Clave:<input type="text" id="txtf_clave" placeholder="Ingrese Clave" size="15" class="text-center">&nbsp;&nbsp;Ingresa CB Med:<input type="text" id="txtf_cb" placeholder="Ingrese CB" size="20" class="text-center">&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;<button class="btn btn-sm btn-success" id="btn-regresar">REGRESAR&nbsp;<label class="glyphicon glyphicon-hand-left"></label></button></h5></div>
+                    <div><h5>Seleccione Proveedor:<select id="selectProvee">
+                                        <option id="op">--Proveedor--</option>
+                                    </select>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button></h5></div>
                 </div>
             </div>                
             <div class="container">
@@ -118,13 +120,16 @@
                     <table class="table">
                         <tbody>
                             <tr>
-                                <th>Clave:</th><td><input type="text" id="clave" name="clave" placeholder="" readonly="" class="text-center" /></td>
+                                <th>Proveedor:</th><td><input type="text" id="provee" name="provee" placeholder="" readonly="" class="text-center" /></td>
                             </tr>
                             <tr>
-                                <th>Descripción:</th><td id="descripcion"></td>
+                                <th>Clave:</th><td><input type="text" id="clave" name="clave" placeholder="" readonly="" class="text-center" /><select id="selectClave">
+                                        <option id="op">--Clave--</option>
+                                    </select></td>
                             </tr>
+                            
                             <tr>
-                                <th>Lote</th><td><input type="text" id="lote" name="lote" placeholder="" class="text-center"/>&nbsp;&nbsp;      
+                                <th>Lote</th><td><input type="text" id="lote" name="lote" placeholder="" readonly="" class="text-center"/>&nbsp;&nbsp;      
 
                                     <select id="selectl">
                                         <option id="op">--Lote--</option>
@@ -134,32 +139,13 @@
                                 <th>Caducidad</th><td><input type="text" id="caducidad" name="caducidad" readonly="" placeholder="" class="text-center"/>&nbsp;<label class="icon-calendar icon-2x"></label>&nbsp;&nbsp;<select id="selectCadu">
                                         <option id="op">--Caducidad--</option>
                                     </select></td>
-                            </tr>
-                            <tr>
-                                <th>Proveedor</th><td><input type="text" id="proveedor" name="proveedor" placeholder="" readonly="" class="text-center"/>&nbsp;&nbsp;<select id="selectProv">
-                                        <option id="op">--Proveedor--</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <th>CB</th><td><input type="text" id="cb" name="cb" placeholder="" class="text-center"/>&nbsp;&nbsp;<select id="selectCb">
-                                        <option id="op">--CB--</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <th>Marca</th><td><input type="text" id="marca" name="marca" placeholder="" readonly="" class="text-center"/>&nbsp;&nbsp;<select id="selectMarca">
-                                        <option id="op">--Marca--</option>
-                                    </select></td>
-                            </tr>
-                            <tr>
-                                <th>Ubicación</th><td><input type="text" id="actual" name="ubin" value="" placeholder="" readonly="" class="text-center"/>&nbsp;&nbsp;<select id="select">
-                                        <option id="op">--Ubicación--</option>
-                                    </select></td>
-                            </tr>                                        
+                            </tr>                            
+                                                          
                             <tr>
                                 <th>Cantidad</th><td><input type="text" id="restom" name="restom" placeholder="" class="text-center" /></td>
                             </tr>                            
                         </tbody>
-                        <tr><td colspan="3"><button id="btn-agregar" class="btn btn-primary btn-block" name="ban" value="9">Agregar&nbsp;<label class="icon-refresh"></label></button></td></tr>
+                        <tr><td colspan="3"><button id="btn-agregar" class="btn btn-primary btn-block" name="ban" value="15">Marbete&nbsp;<label class="icon-refresh"></label></button></td></tr>
                     </table>
                 </form>
             </div>
@@ -179,8 +165,9 @@
     <script src="js/bootstrap-switch.js"></script>
     <script src="js/flatui-checkbox.js"></script>
     <script src="js/flatui-radio.js"></script>
-    <script>
-        // cargar header y footer
+    
+     <script>
+          // cargar header y footer
         $("footer").load("footer.html");
         function justNumbers(e)
         {
@@ -191,17 +178,36 @@
             return /\d/.test(String.fromCharCode(keynum));
         }
         $(document).ready(function() {
-            $("#btn-buscar").click(function() {
-                var clave = $("#txtf_clave").val();
-                var cbm = $("#txtf_cb").val();
-                if (clave != "" && cbm != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=30&clave=' + clave + '&cb=' + cbm + ''
-                } else if (clave != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=11&clave=' + clave + ''
-                } else {
-                    var dir = 'jsp/consultasM.jsp?ban=31&cb=' + cbm + ''
+            
+            var dir = 'jsp/consultas.jsp?ban=50'
+            $.ajax({
+                url: dir,
+                type: 'json',
+                async: false,
+                success: function(data) {
+                    MostrarUbi(data);
+                },
+                error: function() {
+                    alert("Ha ocurrido un error");
+
                 }
 
+            });
+            function MostrarUbi(data) {
+
+                var json = JSON.parse(data);
+                for (var x = 0; x < json.length; x++) {
+                    var clavepro = json[x].clavepro;
+                    var nombrepro = json[x].nombrepro;
+                    $("#selectProvee").append($("<option></option>").text(nombrepro).val(clavepro));
+
+                }
+
+            }
+            
+            $("#btn-buscar").click(function() {
+                var clave = $("#selectProvee").val();
+                var dir = 'jsp/consultas.jsp?ban=51&text=' + clave + ''
                 $.ajax({
                     url: dir,
                     type: 'json',
@@ -214,28 +220,22 @@
                     }
                 });
                 function MostrarDatos(data) {
-                    json = JSON.parse(data);
-                    $("#clave").val(json.clave);
-                    $("#descripcion").text(json.descripcion);
+                    var json = JSON.parse(data);
+                    for (var x = 0; x < json.length; x++) {
+                        $("#selectClave").append($("<option></option>").text(json[x].clave).val(json[x].clave));
+                        $("#clave").val(json[x].clave);
+                    }
 
                 }
-
+                $("#provee").val(clave);
             });
-
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $("#btn-buscar").click(function() {
-                var clave = $("#txtf_clave").val();
-                var cbm = $("#txtf_cb").val();
-                if (clave != "" && cbm != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=32&clave=' + clave + '&cb=' + cbm + ''
-                } else if (clave != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=14&clave=' + clave + ''
-                } else {
-                    var dir = 'jsp/consultasM.jsp?ban=33&cb=' + cbm + ''
-                }
+            
+            
+            var clave = $("#clave").val();
+            var provee = $("#provee").val();
+            
+            var dir = 'jsp/consultas.jsp?ban=54&text=' + clave + '&provee='+ provee +''
+                
 
                 $.ajax({
                     url: dir,
@@ -254,49 +254,19 @@
                         $("#selectl").append($("<option></option>").text(json[x].lote).val(json[x].lote));
                         $("#lote").val(json[x].lote);
                     }
-
+                $("#selectl").val("");
                 }
-            });
-
+            
+            
+            
         });
     </script>
-    <script>
+    <!--script>
         $(document).ready(function() {
-            $("#btn-buscar").click(function() {
-                var clave = $("#txtf_clave").val();
-                var dir = 'jsp/consultasM.jsp?ban=29&clave=' + clave + ''
-                $.ajax({
-                    url: dir,
-                    type: 'json',
-                    async: false,
-                    success: function(data) {
-                        MostrarDatos(data);
-                    },
-                    error: function() {
-                        alert("Ha ocurrido un error");
-                    }
-                });
-
-                function MostrarDatos(data) {
-                    json = JSON.parse(data);
-                    $("#contador").val(json.contador);
-                }
-            });
-
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $("#btn-buscar").click(function() {
-                var clave = $("#txtf_clave").val();
-                var cbm = $("#txtf_cb").val();
-                if (clave != "" && cbm != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=34&clave=' + clave + '&cb=' + cbm + ''
-                } else if (clave != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=15&clave=' + clave + ''
-                } else {
-                    var dir = 'jsp/consultasM.jsp?ban=35&cb=' + cbm + ''
-                }
+            $("#btn-buscar").click(function() {               
+                var clave = $("#selectProvee").val();
+                 var dir = 'jsp/consultas.jsp?ban=52&text=' + clave + ''
+                
 
                 $.ajax({
                     url: dir,
@@ -312,28 +282,26 @@
                 function MostrarDatos(data) {
                     var json = JSON.parse(data);
                     for (var x = 0; x < json.length; x++) {
-                        $("#selectCadu").append($("<option></option>").text(json[x].cadu).val(json[x].cadu));
-                        $("#caducidad").val(json[x].cadu);
+                        $("#selectl").append($("<option></option>").text(json[x].lote).val(json[x].lote));
+                        $("#lote").val(json[x].lote);
                     }
-
+$("#selectl").val("");
                 }
+                
             });
 
         });
-    </script>
+    </script-->
+    
+    
+    
     <script>
         $(document).ready(function() {
             $("#btn-buscar").click(function() {
-                var clave = $("#txtf_clave").val();
-                var cbm = $("#txtf_cb").val();
-                if (clave != "" && cbm != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=36&clave=' + clave + '&cb=' + cbm + ''
-                } else if (clave != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=17&clave=' + clave + ''
-                } else {
-                    var dir = 'jsp/consultasM.jsp?ban=37&cb=' + cbm + ''
-                }
-
+                var clave = $("#selectProvee").val();
+               
+                    var dir = 'jsp/consultas.jsp?ban=53&text=' + clave + ''
+                
 
                 $.ajax({
                     url: dir,
@@ -349,8 +317,8 @@
                 function MostrarDatos(data) {
                     var json = JSON.parse(data);
                     for (var x = 0; x < json.length; x++) {
-                        $("#selectMarca").append($("<option></option>").text(json[x].marca).val(json[x].clamarca));
-                        $("#marca").val(json[x].clamarca);
+                        $("#selectCadu").append($("<option></option>").text(json[x].fecha).val(json[x].fecha));
+                        $("#caducidad").val(json[x].fecha);
                     }
 
                 }
@@ -358,111 +326,15 @@
 
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $("#btn-buscar").click(function() {
-                var clave = $("#txtf_clave").val();
-                var cbm = $("#txtf_cb").val();
-                if (clave != "" && cbm != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=38&clave=' + clave + '&cb=' + cbm + ''
-                } else if (clave != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=27&clave=' + clave + ''
-                } else {
-                    var dir = 'jsp/consultasM.jsp?ban=39&cb=' + cbm + ''
-                }
-
-
-                $.ajax({
-                    url: dir,
-                    type: 'json',
-                    async: false,
-                    success: function(data) {
-                        MostrarDatos(data);
-                    },
-                    error: function() {
-                        alert("Ha ocurrido un error");
-                    }
-                });
-                function MostrarDatos(data) {
-                    var json = JSON.parse(data);
-                    for (var x = 0; x < json.length; x++) {
-                        $("#selectProv").append($("<option></option>").text(json[x].nompro).val(json[x].claprov));
-                        $("#proveedor").val(json[x].claprov);
-                    }
-
-                }
-            });
-
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $("#btn-buscar").click(function() {
-                var clave = $("#txtf_clave").val();
-                var cbm = $("#txtf_cb").val();
-                if (clave != "" && cbm != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=40&clave=' + clave + '&cb=' + cbm + ''
-                } else if (clave != "") {
-                    var dir = 'jsp/consultasM.jsp?ban=28&clave=' + clave + ''
-                } else {
-                    var dir = 'jsp/consultasM.jsp?ban=41&cb=' + cbm + ''
-                }
-
-                $.ajax({
-                    url: dir,
-                    type: 'json',
-                    async: false,
-                    success: function(data) {
-                        MostrarDatos(data);
-                    },
-                    error: function() {
-                        alert("Ha ocurrido un error");
-                    }
-                });
-                function MostrarDatos(data) {
-                    var json = JSON.parse(data);
-                    for (var x = 0; x < json.length; x++) {
-                        $("#selectCb").append($("<option></option>").text(json[x].cb).val(json[x].cb));
-                        $("#cb").val(json[x].cb);
-                    }
-
-                }
-            });
-
-        });
-    </script>
+    
+   
+    
     <script>
         $(document).ready(function() {
 
-            var dir = 'jsp/consultasM.jsp?ban=10'
-            $.ajax({
-                url: dir,
-                type: 'json',
-                async: false,
-                success: function(data) {
-                    MostrarUbi(data);
-                },
-                error: function() {
-                    alert("Ha ocurrido un error");
-
-                }
-
-            });
-            function MostrarUbi(data) {
-
-                var json = JSON.parse(data);
-                for (var x = 0; x < json.length; x++) {
-                    var claubi = json[x].claubi;
-                    var desubi = json[x].desubi;
-                    $("#select").append($("<option></option>").text(desubi).val(claubi));
-
-                }
-
-            }
-
-            $('#select').change(function() {
-                var valor = $('#select').val();
-                $('#actual').val(valor);
+           $('#selectClave').change(function() {
+                var valor = $('#selectClave').val();
+                $('#clave').val(valor);
             });
             $('#selectl').change(function() {
                 var valor = $('#selectl').val();
@@ -472,22 +344,10 @@
                 var valor = $('#selectCadu').val();
                 $('#caducidad').val(valor);
             });
-            $('#selectProv').change(function() {
-                var valor = $('#selectProv').val();
-                $('#proveedor').val(valor);
-            });
-            $('#selectCb').change(function() {
-                var valor = $('#selectCb').val();
-                $('#cb').val(valor);
-            });
-            $('#selectMarca').change(function() {
-                var valor = $('#selectMarca').val();
-                $('#marca').val(valor);
-            });
-            $('#selectPiezas').change(function() {
-                var valor = $('#selectPiezas').val();
-                $('#piezas').val(valor);
-            });
+            
+            
+            
+            
 
             $("#form").submit(function() {
 
@@ -552,7 +412,5 @@
     <script src="ui/i18n/jquery.ui.datepicker-es.js"></script>
     <script src="ui/jquery.ui.datepicker.js"></script>
 
-    <script>
-        $("#caducidad").datepicker();
-    </script>
+    
 </html>

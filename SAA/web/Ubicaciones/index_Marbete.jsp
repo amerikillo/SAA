@@ -38,13 +38,13 @@
         	<header class="span12"> 
             	<img src="img/Logo GNK claro2.jpg" class="pull-left" id="logo-savi" height="70" width="130" />
                 
-                <h3 class=" span6 offset1 text-center">PROYECTO ISEM</h3>	       	
-                <h3 class=" span6 offset1 text-center">SISTEMA DE MARBETES UNIDADES</h3>	       	
+                <h3 class=" span6 offset1 text-center">PROYECTO COMPRA CONSOLIDADA</h3>	       	
+                <h3 class=" span6 offset1 text-center">SISTEMA DE MARBETES PUNTO DE ENTREGA</h3>	       	
             	<div class="row-fluid">
                     <nav class="span12">
                         <ul class="breadcrumb">
                             <li>Usted est&aacute; aqu&iacute;:</li>
-                            <li><a href="/Proyectos/index.html">inicio</a><span class="divider">--></span></li>
+                           
                             <li>inicio gENERACIÓN DE MARBETES<span class="divider">--></span></li>
                             
                         </ul>
@@ -66,7 +66,7 @@
             <div class="text-center">
                 <h3>Introduzca los siguientes datos</h3>
             </div>
-            <form id="form" name="form" method="post" action="/UbicacionesConsolidado/Ubicaciones">
+            <form id="form" name="form" method="post" action="../ServletK">
             <table class="table table-bordered">
                 <tbody>
                     <tr>

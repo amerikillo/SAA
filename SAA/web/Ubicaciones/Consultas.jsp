@@ -148,27 +148,24 @@
                     <div class="text-center">
                         <%if (Tipo == 3 || Tipo == 5) {
                             if ((usua.equals("Ana")) || (usua.equals("salvador"))){%>
-                        <button class="btn btn-sm btn-primary" id="btn-buscarq">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrarq">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->      
+                        <button class="btn btn-sm btn-primary" id="btn-buscarq">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrarq">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->      
                         <%}else{%>
-                        <button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
+                        <button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%}
                         } else {%>
-                        <button class="btn btn-sm btn-primary" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi2">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar2">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
+                        <button class="btn btn-sm btn-primary" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi2">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar2">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%}%>
                         <a class="btn btn-primary" href="Consultas.jsp">Actualizar</a>
                     </div>
-                       
+                     
                  </div>
                        
             </div>
-            <div class="container2">
-                <div class="progress progress-striped active">
-                    <div class="bar" style="width: 0%;"></div>
-                </div>
-            </div>      
- 
+               
+                        <div id="loading" class="text-center"></div>
             <div id="container">
                 <form name="form" id="form" method="post" action="../ServletK">
+                    
                     <div id="demo"></div>
                     <div id="dynamic"></div>
                 </form>
@@ -224,16 +221,18 @@
                     var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
                 }
                 
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
+           $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {                        
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
 
     
                 $.ajax({
@@ -331,10 +330,16 @@
                     $("#txtf_exis").val(numero1);
 
                 }
+                
+                
+                
+                
     }
         }
         $(document).ready(function() {
             $("#btn-buscar").click(function() {
+                
+                              
                 var clave = $("#txtf_clave").val();
                 var lote = $("#txtf_lote").val();
                 var cb = $("#txtf_cb").val();
@@ -357,16 +362,19 @@
                     var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
                 }
                 
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
+              $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {
+                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
 
     
                 $.ajax({
@@ -464,17 +472,19 @@
             $("#btn-ubi").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=24'
 
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
+              $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {
+                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
 
                 $.ajax({
                     url: dir,
@@ -574,17 +584,19 @@
             $("#btn-mostrar").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=29'
                 
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-                  
+               $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {
+                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
                   
                 $.ajax({
                     url: dir,
@@ -699,16 +711,19 @@
                     var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
                 }
 
-                      var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
+                       $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {
+                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
 
                  $.ajax({
                     url: dir,
@@ -801,16 +816,19 @@
             $("#btn-ubi2").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=24'
 
-                      var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
+                       $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {
+                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
 
 
                 $.ajax({
@@ -906,17 +924,19 @@
             $("#btn-mostrar2").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=29'
 
-                      var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
-
+                     $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {
+                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
                 
                 $.ajax({
                     url: dir,
@@ -1087,16 +1107,19 @@
                     var dir = 'jsp/consultas.jsp?ban=41&cb=' + cbm + ''
                 }
 
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
+               $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {
+                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
 
     
                 $.ajax({
@@ -1192,16 +1215,20 @@
 
             $("#btn-mostrarq").click(function() {
                 var dir = 'jsp/consultas.jsp?ban=42'
-              var progress = setInterval(function() {
-                  var $bar = $('.bar');
-                  if ($bar.width()==400) {
-                      clearInterval(progress);
-                      $('.progress').removeClass('active');
-                  } else {
-                      $bar.width($bar.width()+40);
-                  }
-                  $bar.text($bar.width()/4 + "%");
-                  }, 800);
+              
+               $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+                // run ajax request
+            $.ajax({
+                url: dir,
+                    type: 'json',
+                    async: false,
+                success: function (d) {
+                    setTimeout(function () {
+                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                        $('#loading').html('');
+                    }, 2000);
+                }
+                });
                 
                 
                 $.ajax({
@@ -1301,6 +1328,9 @@
 
         $("#btn-clave").click(function(){
           self.location='Agregar.jsp';
+        });
+        $("#btn-inv").click(function(){
+          self.location='Inventario.jsp';
         });
     </script>
     
