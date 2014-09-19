@@ -136,6 +136,12 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                         F_OrdCom = rsetDatos.getString("F_OrdCom");
                         F_Origen = Integer.parseInt(rsetDatos.getString("F_ClaOrg"));
                         F_User = rsetDatos.getString("F_User");
+                        String Ubicacion="NUEVA";
+                        
+                        ResultSet rset = con.consulta("select F_Tipo from tb_tipomed where F_ClaPro = '"+F_ClaPro+"'");
+                        while(rset.next()){
+                            Ubicacion=rset.getString(1);
+                        }
                         try {
                             byte[] a = rsetDatos.getString("F_Obser").getBytes("ISO-8859-1");
                             F_Obser = (new String(a, "UTF-8")).toUpperCase();
@@ -164,14 +170,14 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                                 sumalote = ExiLot + cantidad;
                                 con.actualizar("update tb_lote set F_ExiLot='" + sumalote + "' where F_FolLot='" + FolioLote + "' and F_Ubica='NUEVA'");
                             } else { //Lote sin ubicacion
-                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','NUEVA','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
+                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','"+Ubicacion+"','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
                             }
                         } else { //Lote Inexistente
                             ResultSet rset_Ind = con.consulta("SELECT F_IndLote FROM tb_indice");
                             while (rset_Ind.next()) {
                                 FolioLote = rset_Ind.getString("F_IndLote");
                                 FolLot = Integer.parseInt(rset_Ind.getString("F_IndLote"));
-                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','NUEVA','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
+                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','"+Ubicacion+"','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
                                 FolioLot = FolLot + 1;
                                 con.actualizar("update tb_indice set F_IndLote='" + FolioLot + "'");
                             }
@@ -344,6 +350,12 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                         F_OrdCom = rsetDatos.getString("F_OrdCom");
                         F_Origen = Integer.parseInt(rsetDatos.getString("F_ClaOrg"));
                         F_User = rsetDatos.getString("F_User");
+                        String Ubicacion="NUEVA";
+                        
+                        ResultSet rset = con.consulta("select F_Tipo from tb_tipomed where F_ClaPro = '"+F_ClaPro+"'");
+                        while(rset.next()){
+                            Ubicacion=rset.getString(1);
+                        }
                         try {
                             byte[] a = rsetDatos.getString("F_Obser").getBytes("ISO-8859-1");
                             F_Obser = (new String(a, "UTF-8")).toUpperCase();
@@ -372,14 +384,14 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                                 sumalote = ExiLot + cantidad;
                                 con.actualizar("update tb_lote set F_ExiLot='" + sumalote + "' where F_FolLot='" + FolioLote + "' and F_Ubica='NUEVA'");
                             } else { //Lote sin ubicacion
-                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','NUEVA','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
+                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','"+Ubicacion+"','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
                             }
                         } else { //Lote Inexistente
                             ResultSet rset_Ind = con.consulta("SELECT F_IndLote FROM tb_indice");
                             while (rset_Ind.next()) {
                                 FolioLote = rset_Ind.getString("F_IndLote");
                                 FolLot = Integer.parseInt(rset_Ind.getString("F_IndLote"));
-                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','NUEVA','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
+                                con.insertar("insert into tb_lote values (0,'" + F_ClaPro + "','" + F_Lote + "','" + F_FecCad + "','" + F_Piezas + "','" + FolioLote + "','" + F_Origen + "','"+Ubicacion+"','" + F_FecFab + "','" + F_Cb + "','" + F_Marca + "')");
                                 FolioLot = FolLot + 1;
                                 con.actualizar("update tb_indice set F_IndLote='" + FolioLot + "'");
                             }
