@@ -39,31 +39,6 @@
             sesion.setAttribute("posClave", "0");
             sesion.setAttribute("folioRemi", "");
             sesion.setAttribute("CodBar", "");
-            /*try {
-             con.conectar();
-             conNube.conectar();
-             ResultSet rsetOrdenes = conNube.consulta("select * from tb_pedidoisem where F_StsPed !=0 ");
-             try {
-             while (rsetOrdenes.next()) {
-             try {
-             con.insertar("insert into tb_pedidoisem values('" + rsetOrdenes.getString(1) + "','" + rsetOrdenes.getString(2) + "','" + rsetOrdenes.getString(3) + "','" + rsetOrdenes.getString(4) + "','" + rsetOrdenes.getString(5) + "','" + rsetOrdenes.getString(6) + "','" + rsetOrdenes.getString(7) + "','" + rsetOrdenes.getString(8) + "','" + rsetOrdenes.getString(9) + "','" + rsetOrdenes.getString(10) + "','" + rsetOrdenes.getString(11) + "','" + rsetOrdenes.getString(12) + "','" + rsetOrdenes.getString(13) + "','" + rsetOrdenes.getString(14) + "','" + rsetOrdenes.getString(15) + "','" + rsetOrdenes.getString(16) + "')");
-             } catch (Exception e) {
-             try {
-             con.insertar("update tb_pedidoisem set F_StsPed = '" + rsetOrdenes.getString(15) + "' where F_IdIsem='" + rsetOrdenes.getString(1) + "'");
-             } catch (Exception ex) {
-
-             }
-             }
-
-             }
-             } catch (Exception e) {
-
-             }
-             con.cierraConexion();
-             con.cierraConexion();
-             } catch (Exception e) {
-             System.out.println(e.getMessage());
-             }*/
         }
     } catch (Exception er) {
 
@@ -71,6 +46,7 @@
 
     int totalClaves = 0, clavesCapturadas = 0;
     String fecha = "", noCompra = "", Proveedor = "", Fecha = "";
+                        String nomProvee="";
     try {
         fecha = request.getParameter("Fecha");
     } catch (Exception e) {
@@ -255,27 +231,6 @@
                                     <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
                                 </ul>
                             </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
-                                </ul>
-                            </li>
-                            <%                                }
-                            %>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -361,6 +316,7 @@
                         con.conectar();
                         ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0' group by F_NoCompra");
                         while (rset.next()) {
+                            nomProvee=rset.getString("p.F_NomPro");
                 %>
                 <div class="row">
                     <div class="panel panel-default">
@@ -491,7 +447,7 @@
                                             }
                                             if (contadorLotes > 1) {
                                                 //Mas de 1 lote
-%>
+                                        %>
                                         <td>
                                             <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                             <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
@@ -616,6 +572,28 @@
                                                     <strong>Marca</strong>
                                                     <select class="form-control" name="list_marca" onKeyPress="return tabular(event, this)" id="list_marca">
                                                         <option value="">Marca</option>
+                                                        <%
+                                                            try {
+                                                                con.conectar();
+                                                                ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM v_marcaprovee where F_NomPro = '" + nomProvee + "'");
+                                                                while (rset3.next()) {
+                                                        %>
+                                                        <option value="<%=rset3.getString("F_ClaMar")%>"
+                                                                <%
+                                                                    if (rset3.getString("F_ClaMar").equals(idMarca)) {
+                                                                        out.println("selected");
+                                                                    }
+                                                                %>
+                                                                ><%=rset3.getString("F_DesMar")%></option>
+                                                        <%
+
+                                                                }
+                                                                con.cierraConexion();
+                                                            } catch (Exception e) {
+                                                            }
+                                                        %>
+                                                        <option disabled="">---------------</option>
+                                                        
                                                         <%
                                                             try {
                                                                 con.conectar();
