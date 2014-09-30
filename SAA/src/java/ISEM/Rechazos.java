@@ -75,7 +75,7 @@ public class Rechazos extends HttpServlet {
                         con1.insertar("insert into tb_rechazos values (0,'" + request.getParameter("NoCompraRechazo") + "','" + Observaciones + "', NOW())");
                         con1.insertar("update tb_pedidoisem set F_FecSur = '" + request.getParameter("FechaOrden") + "' , F_HorSur = '" + request.getParameter("HoraOrden") + "' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
                         con1.insertar("update tb_pedidoisem set F_Recibido = '2' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
-                        correo.enviaCorreo(request.getParameter("NoCompraRechazo"), horaA, fechaA, request.getParameter("correoProvee"), claves);
+                        //correo.enviaCorreo(request.getParameter("NoCompraRechazo"), horaA, fechaA, request.getParameter("correoProvee"), claves);
                         con1.cierraConexion();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -131,7 +131,6 @@ public class Rechazos extends HttpServlet {
                         con.conectar();
                         try {
                             con.insertar(query);
-                            System.out.println("insert into tb_regcambiofechas values (0,'" + sesion.getAttribute("nombre") + "',NOW(),'" + folio + "','" + fecha1 + "','" + hora1 + "','" + fecha2 + "','" + hora2 + "','" + obser + "')");
                             con.insertar("insert into tb_regcambiofechas values (0,'" + sesion.getAttribute("nombre") + "',NOW(),'" + folio + "','" + fecha1 + "','" + hora1 + "','" + fecha2 + "','" + hora2 + "','" + obser + "')");
                             correo.enviaCorreo(folio, (String) sesion.getAttribute("nombre"), email, fechaA1, fechaA2, horaA1, horaA2);
                         } catch (Exception e) {

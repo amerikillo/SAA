@@ -87,9 +87,10 @@
                                     <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
                                     <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
+                                    <li><a href="#"  onclick="window.open('creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
-                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li>
+                                    <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
+                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li-->
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -110,6 +111,13 @@
                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#"  onclick="window.open('Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
+                                    <li><a href="#"  onclick="window.open('movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -153,10 +161,15 @@
                                     <td>No. Folio</td>
                                     <td>Punto de Entrega</td>
                                     <td>Fecha de Entrega</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>Imprimir</td>
+                                    <td>Ver Factura</td>
+                                    <td>Devolución</td>
+                                    <%
+                                        if (usua.equals("oscar")) {
+                                            out.println("<td>Reintegrar Insumo</td>");
+                                        }
+                                    %>
+                                    <td>Excel</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -166,6 +179,7 @@
                                         try {
                                             ResultSet rset = con.consulta("SELECT F.F_ClaDoc,F.F_ClaCli,U.F_NomCli,DATE_FORMAT(F.F_FecApl,'%d/%m/%Y') AS F_FecApl,SUM(F.F_Monto) AS F_Costo,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt FROM tb_factura F INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli GROUP BY F.F_ClaDoc ORDER BY F.F_ClaDoc+0;");
                                             while (rset.next()) {
+
                                 %>
                                 <tr>
 
@@ -175,13 +189,13 @@
                                     <td>
                                         <form action="reimpFactura.jsp" target="_blank">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <button class="btn btn-block btn-primary">Imprimir</button>
+                                            <button class="btn btn-block btn-primary"><span class="glyphicon glyphicon-print"></span></button>
                                         </form>
                                     </td>
                                     <td>
                                         <form action="verFactura.jsp" method="post">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <button class="btn btn-block btn-primary">Ver Factura</button>
+                                            <button class="btn btn-block btn-primary"><span class="glyphicon glyphicon-search"></span></button>
                                         </form>
                                     </td>
                                     <td>
@@ -190,15 +204,33 @@
                                         %>
                                         <form action="devolucionesFacturas.jsp" method="post">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <button class="btn btn-block btn-danger">Devolución</button>
+                                            <button class="btn btn-block btn-danger"><span class="glyphicon glyphicon-arrow-left"></span></button>
                                         </form>
-
                                         <%
                                             }
                                         %>
                                     </td>
+                                    <%
+                                        if (usua.equals("oscar")) {
+                                    %>
                                     <td>
-                                        <a class="btn btn-block btn-success" href="gnrFacturaExcel.jsp?fol_gnkl=<%=rset.getString(1)%>">Excel</a>
+                                        <%
+                                            ResultSet rset2 = con.consulta("select * from tb_factdevol where F_ClaDoc = '" + rset.getString(1) + "' group by F_ClaDoc");
+                                            while (rset2.next()) {
+                                        %>
+                                        <form action="reintegrarDevolFact.jsp" method="post">
+                                            <input class="hidden" name="fol_gnkl" value="<%=rset2.getString(2)%>">
+                                            <button class="btn btn-block btn-info"><span class="glyphicon glyphicon-log-in"></span></button>  
+                                        </form>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
+                                    <%
+                                        }
+                                    %>
+                                    <td>
+                                        <a class="btn btn-block btn-success" href="gnrFacturaExcel.jsp?fol_gnkl=<%=rset.getString(1)%>"><span class="glyphicon glyphicon-save"></span></a>
                                     </td>
                                 </tr>
                                 <%

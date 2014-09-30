@@ -295,7 +295,7 @@ public class CapturaPedidos extends HttpServlet {
                 con.conectar();
                 try {
                     con.insertar("update tb_pedidoisem set F_Recibido='0' where F_NoCompra = '"+request.getParameter("NoCompra")+"'  ");
-                    con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"'  ");
+                    //con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"'  ");
                 } catch (Exception e) {
                 }
                 con.cierraConexion();

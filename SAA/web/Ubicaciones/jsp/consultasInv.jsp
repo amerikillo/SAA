@@ -40,115 +40,57 @@ JSONObject json = new JSONObject();
 JSONArray jsona = new JSONArray();
 
 if (ban == 1){
-QueryDatos = "SELECT LT.F_ClaPro,LT.F_Lote,LT.F_Cadu,LT.F_Fabri,MARC.F_DesMar,MED.F_UM,UBIE.F_FolLot,UBI.F_DesUbi,UBI.F_ClaUbi,UBIE.F_CanUbi,LT.F_PzCj FROM tb_lote LT INNER JOIN tb_marca MARC ON LT.F_ClaMar=MARC.F_ClaMar INNER JOIN tb_medica MED ON LT.F_ClaPro=MED.F_ClaPro INNER JOIN tb_ubiexi UBIE ON LT.F_FolLot=UBIE.F_FolLot INNER JOIN tb_ubica UBI ON UBIE.F_ClaUbi=UBI.F_ClaUbi WHERE LT.F_ClaPro='"+Clave+"' AND LT.F_Lote='"+Lote+"' AND UBI.F_Cb='"+Cb+"'";
+QueryDatos = "SELECT F_ClaLot FROM tb_lote WHERE F_ClaPro='"+Clave+"' GROUP BY F_ClaLot";
 Consulta = Obj.consulta(QueryDatos);
 while(Consulta.next()){
-    Resultado = Double.parseDouble(Consulta.getString("UBIE.F_CanUbi"));
-    Cantidad = (int) Resultado;
-    json.put("clave",Consulta.getString("LT.F_ClaPro"));
-    json.put("lote",Consulta.getString("LT.F_Lote"));
-    json.put("caducidad",Consulta.getString("LT.F_Cadu"));
-    json.put("fabricacion",Consulta.getString("LT.F_Fabri"));
-    json.put("marca",Consulta.getString("MARC.F_DesMar"));
-    json.put("um",Consulta.getString("MED.F_UM"));
-    json.put("folio",Consulta.getString("UBIE.F_FolLot"));
-    json.put("ubicacion",Consulta.getString("UBI.F_DesUbi"));
-    json.put("claubi",Consulta.getString("UBI.F_ClaUbi"));
-    json.put("cantidad", Cantidad);    
-    json.put("piezas",Consulta.getString("LT.F_PzCj"));
+    json.put("lote",Consulta.getString("F_ClaLot"));
     
     jsona.add(json);
     json = new JSONObject();
 }
-out.println(jsona);
+out.println(jsona); 
 }else if (ban == 2){
-QueryDatos = "SELECT LT.F_ClaPro,LT.F_Lote,LT.F_Cadu,LT.F_Fabri,MARC.F_DesMar,MED.F_UM,UBIE.F_FolLot,UBI.F_DesUbi,UBI.F_ClaUbi,UBIE.F_CanUbi,LT.F_PzCj FROM tb_lote LT INNER JOIN tb_marca MARC ON LT.F_ClaMar=MARC.F_ClaMar INNER JOIN tb_medica MED ON LT.F_ClaPro=MED.F_ClaPro INNER JOIN tb_ubiexi UBIE ON LT.F_FolLot=UBIE.F_FolLot INNER JOIN tb_ubica UBI ON UBIE.F_ClaUbi=UBI.F_ClaUbi WHERE LT.F_ClaPro='"+Clave+"' AND LT.F_Lote='"+Lote+"'";
+QueryDatos = "SELECT DATE_FORMAT(F_FecCad,'%d/%m/%Y') as fecha FROM tb_lote WHERE F_ClaPro='"+Clave+"' AND F_ClaLot='"+Lote+"' GROUP BY F_FecCad";
 Consulta = Obj.consulta(QueryDatos);
 while(Consulta.next()){
-    Resultado = Double.parseDouble(Consulta.getString("UBIE.F_CanUbi"));
-    Cantidad = (int) Resultado;
-    json.put("clave",Consulta.getString("LT.F_ClaPro"));
-    json.put("lote",Consulta.getString("LT.F_Lote"));
-    json.put("caducidad",Consulta.getString("LT.F_Cadu"));
-    json.put("fabricacion",Consulta.getString("LT.F_Fabri"));
-    json.put("marca",Consulta.getString("MARC.F_DesMar"));
-    json.put("um",Consulta.getString("MED.F_UM"));
-    json.put("folio",Consulta.getString("UBIE.F_FolLot"));
-    json.put("ubicacion",Consulta.getString("UBI.F_DesUbi"));
-    json.put("claubi",Consulta.getString("UBI.F_ClaUbi"));
-    json.put("cantidad", Cantidad);    
-    json.put("piezas",Consulta.getString("LT.F_PzCj"));
+    json.put("fecha",Consulta.getString("fecha"));
     
     jsona.add(json);
     json = new JSONObject();
 }
 out.println(jsona);
 }else if (ban == 3){
-QueryDatos = "SELECT LT.F_ClaPro,LT.F_Lote,LT.F_Cadu,LT.F_Fabri,MARC.F_DesMar,MED.F_UM,UBIE.F_FolLot,UBI.F_DesUbi,UBI.F_ClaUbi,UBIE.F_CanUbi,LT.F_PzCj FROM tb_lote LT INNER JOIN tb_marca MARC ON LT.F_ClaMar=MARC.F_ClaMar INNER JOIN tb_medica MED ON LT.F_ClaPro=MED.F_ClaPro INNER JOIN tb_ubiexi UBIE ON LT.F_FolLot=UBIE.F_FolLot INNER JOIN tb_ubica UBI ON UBIE.F_ClaUbi=UBI.F_ClaUbi WHERE LT.F_ClaPro='"+Clave+"' AND UBI.F_Cb='"+Cb+"'";
+
+
+QueryDatos = "SELECT F_ClaPro,F_ClaLot,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as fecha FROM tb_lote WHERE F_Cb='"+Cb+"' GROUP BY F_Cb";
 Consulta = Obj.consulta(QueryDatos);
 while(Consulta.next()){
-    Resultado = Double.parseDouble(Consulta.getString("UBIE.F_CanUbi"));
-    Cantidad = (int) Resultado;
-    json.put("clave",Consulta.getString("LT.F_ClaPro"));
-    json.put("lote",Consulta.getString("LT.F_Lote"));
-    json.put("caducidad",Consulta.getString("LT.F_Cadu"));
-    json.put("fabricacion",Consulta.getString("LT.F_Fabri"));
-    json.put("marca",Consulta.getString("MARC.F_DesMar"));
-    json.put("um",Consulta.getString("MED.F_UM"));
-    json.put("folio",Consulta.getString("UBIE.F_FolLot"));
-    json.put("ubicacion",Consulta.getString("UBI.F_DesUbi"));
-    json.put("claubi",Consulta.getString("UBI.F_ClaUbi"));
-    json.put("cantidad", Cantidad);    
-    json.put("piezas",Consulta.getString("LT.F_PzCj"));
+    json.put("clave",Consulta.getString("F_ClaPro"));
+    json.put("lote",Consulta.getString("F_ClaLot"));
+    json.put("fecha",Consulta.getString("fecha"));
     
     jsona.add(json);
     json = new JSONObject();
 }
 out.println(jsona);
 }else if (ban == 4){
-QueryDatos = "SELECT LT.F_ClaPro,LT.F_Lote,LT.F_Cadu,LT.F_Fabri,MARC.F_DesMar,MED.F_UM,UBIE.F_FolLot,UBI.F_DesUbi,UBI.F_ClaUbi,UBIE.F_CanUbi,LT.F_PzCj FROM tb_lote LT INNER JOIN tb_marca MARC ON LT.F_ClaMar=MARC.F_ClaMar INNER JOIN tb_medica MED ON LT.F_ClaPro=MED.F_ClaPro INNER JOIN tb_ubiexi UBIE ON LT.F_FolLot=UBIE.F_FolLot INNER JOIN tb_ubica UBI ON UBIE.F_ClaUbi=UBI.F_ClaUbi WHERE LT.F_Lote='"+Lote+"' AND UBI.F_Cb='"+Cb+"'";
+QueryDatos = "SELECT F_DesPro FROM tb_medica WHERE F_ClaPro='"+Clave+"'";
 Consulta = Obj.consulta(QueryDatos);
-while(Consulta.next()){
-    Resultado = Double.parseDouble(Consulta.getString("UBIE.F_CanUbi"));
-    Cantidad = (int) Resultado;
-    json.put("clave",Consulta.getString("LT.F_ClaPro"));
-    json.put("lote",Consulta.getString("LT.F_Lote"));
-    json.put("caducidad",Consulta.getString("LT.F_Cadu"));
-    json.put("fabricacion",Consulta.getString("LT.F_Fabri"));
-    json.put("marca",Consulta.getString("MARC.F_DesMar"));
-    json.put("um",Consulta.getString("MED.F_UM"));
-    json.put("folio",Consulta.getString("UBIE.F_FolLot"));
-    json.put("ubicacion",Consulta.getString("UBI.F_DesUbi"));
-    json.put("claubi",Consulta.getString("UBI.F_ClaUbi"));
-    json.put("cantidad", Cantidad);    
-    json.put("piezas",Consulta.getString("LT.F_PzCj"));
+if(Consulta.next()){    
+    json.put("descripc",Consulta.getString("F_DesPro"));   
     
-    jsona.add(json);
-    json = new JSONObject();
+   
 }
-out.println(jsona);
+out.println(json);
 }else if (ban == 5){
-QueryDatos = "SELECT LT.F_ClaPro,LT.F_Lote,LT.F_Cadu,LT.F_Fabri,MARC.F_DesMar,MED.F_UM,UBIE.F_FolLot,UBI.F_DesUbi,UBI.F_ClaUbi,UBIE.F_CanUbi,LT.F_PzCj FROM tb_lote LT INNER JOIN tb_marca MARC ON LT.F_ClaMar=MARC.F_ClaMar INNER JOIN tb_medica MED ON LT.F_ClaPro=MED.F_ClaPro INNER JOIN tb_ubiexi UBIE ON LT.F_FolLot=UBIE.F_FolLot INNER JOIN tb_ubica UBI ON UBIE.F_ClaUbi=UBI.F_ClaUbi WHERE LT.F_ClaPro='"+Clave+"'";
+QueryDatos = "SELECT M.F_DesPro FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro WHERE L.F_Cb='"+Clave+"' GROUP BY M.F_DesPro";
 Consulta = Obj.consulta(QueryDatos);
-while(Consulta.next()){
-    Resultado = Double.parseDouble(Consulta.getString("UBIE.F_CanUbi"));
-    Cantidad = (int) Resultado;
-    json.put("clave",Consulta.getString("LT.F_ClaPro"));
-    json.put("lote",Consulta.getString("LT.F_Lote"));
-    json.put("caducidad",Consulta.getString("LT.F_Cadu"));
-    json.put("fabricacion",Consulta.getString("LT.F_Fabri"));
-    json.put("marca",Consulta.getString("MARC.F_DesMar"));
-    json.put("um",Consulta.getString("MED.F_UM"));
-    json.put("folio",Consulta.getString("UBIE.F_FolLot"));
-    json.put("ubicacion",Consulta.getString("UBI.F_DesUbi"));
-    json.put("claubi",Consulta.getString("UBI.F_ClaUbi"));
-    json.put("cantidad", Cantidad);    
-    json.put("piezas",Consulta.getString("LT.F_PzCj"));
+if(Consulta.next()){    
+    json.put("descripc",Consulta.getString("M.F_DesPro"));   
     
-    jsona.add(json);
-    json = new JSONObject();
+   
 }
-out.println(jsona);
+out.println(json);
 }else if (ban == 6){
 QueryDatos = "SELECT LT.F_ClaPro,LT.F_Lote,LT.F_Cadu,LT.F_Fabri,MARC.F_DesMar,MED.F_UM,UBIE.F_FolLot,UBI.F_DesUbi,UBI.F_ClaUbi,UBIE.F_CanUbi,LT.F_PzCj FROM tb_lote LT INNER JOIN tb_marca MARC ON LT.F_ClaMar=MARC.F_ClaMar INNER JOIN tb_medica MED ON LT.F_ClaPro=MED.F_ClaPro INNER JOIN tb_ubiexi UBIE ON LT.F_FolLot=UBIE.F_FolLot INNER JOIN tb_ubica UBI ON UBIE.F_ClaUbi=UBI.F_ClaUbi WHERE LT.F_Lote='"+Lote+"'";
 Consulta = Obj.consulta(QueryDatos);

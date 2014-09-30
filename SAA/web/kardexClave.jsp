@@ -222,7 +222,7 @@
                     </form>
                     <hr/>
                     <div style="width:100%; margin: auto">
-                        <table class="table table-bordered table-striped table-responsive" id="kardexTab">
+                        <table class="table table-bordered table-striped" width="100%" id="kardexTab">
                             <thead> 
                                 <tr>
                                     <td>No. Mov</td>
@@ -246,7 +246,7 @@
                                 <%
                                     try {
                                         con.conectar();
-                                        ResultSet rset = con.consulta("select m.F_User, m.F_ConMov, c.F_DesCon, m.F_ProMov, l.F_ClaLot,  DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), (m.F_CantMov*m.F_SigMov), m.F_CostMov, u.F_DesUbi, DATE_FORMAT(m.F_FecMov, '%d/%m/%Y'), m.F_hora, m.F_DocMov, com.F_FolRemi, m.F_IdMov FROM tb_movinv m, tb_coninv c, tb_ubica u, tb_lote l, tb_compra com WHERE l.F_FolLot = com.F_Lote and m.F_ConMov = c.F_IdCon AND m.F_UbiMov = u.F_ClaUbi AND m.F_LotMov = l.F_FolLot and m.F_ProMov = '" + Clave + "' and l.F_ClaLot ='" + request.getParameter("Lote") + "' and l.F_FecCad=STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y') GROUP BY m.F_IdMov ORDER BY m.F_IdMov");
+                                        ResultSet rset = con.consulta("select m.F_User, m.F_ConMov, c.F_DesCon, m.F_ProMov, l.F_ClaLot,  DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), (m.F_CantMov*m.F_SigMov), m.F_CostMov, u.F_DesUbi, DATE_FORMAT(m.F_FecMov, '%d/%m/%Y'), m.F_hora, m.F_DocMov, com.F_FolRemi, m.F_IdMov FROM tb_movinv m, tb_coninv c, tb_ubica u, tb_lote l, tb_compra com WHERE l.F_FolLot = com.F_Lote and m.F_ConMov = c.F_IdCon AND m.F_UbiMov = u.F_ClaUbi AND m.F_LotMov = l.F_FolLot and m.F_ProMov = '" + Clave + "' and l.F_ClaLot ='" + request.getParameter("Lote") + "' and l.F_FecCad=STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y') and m.F_ConMov!=1000 GROUP BY m.F_IdMov ORDER BY m.F_IdMov");
                                         while (rset.next()) {
                                             String Documento = "", Cliente = "", Provoeedor = "", FactRemi = "";
                                             if (rset.getString(2).equals("1")) {

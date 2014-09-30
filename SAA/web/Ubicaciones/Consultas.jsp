@@ -11,7 +11,7 @@
     String usua = "";
     String Usuario = "", Valida = "", Nombre = "";
     int Tipo = 0;
-    
+
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("Usuario");
         Nombre = (String) sesion.getAttribute("nombre");
@@ -25,12 +25,11 @@
 <html>
 
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CONSULTAS ISEM</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="ckeditor/ckeditor.js"></script>
         <link href=bootstrap/css/bootstrap.css" rel="stylesheet">
-        <!--link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
         <!--link href="css/flat-ui.css" rel="stylesheet"-->
         <!--link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet"-->
         <!--link href="css/gnkl_style_default.css" rel="stylesheet"-->
@@ -43,7 +42,7 @@
             .container2 {
                 margin-top: 30px;
                 width: 400px;
-                
+
             }
         </style>
         <script type="text/javascript" language="javascript" src="table_js/jquery.js"></script>
@@ -51,8 +50,8 @@
         <script type="text/javascript" charset="utf-8" src="table_js/ZeroClipboard.js"></script>
         <script type="text/javascript" charset="utf-8" src="table_js/TableTools.js"></script>
         <script type="text/javascript" src="table_js/TableTools.min.js"></script>
-        
-        
+
+
     </head>
     <body>
         <div class="container">
@@ -115,9 +114,9 @@
             <hr/>
             <div class="container">
                 <div class="row">
-                    
+
                     <div class="row">
-                        
+
                         <div class="col-lg-1">
                             Por Clave:
                         </div>
@@ -147,1191 +146,1127 @@
                     <br/>
                     <div class="text-center">
                         <%if (Tipo == 3 || Tipo == 5) {
-                            if ((usua.equals("Ana")) || (usua.equals("salvador"))){%>
-                        <button class="btn btn-sm btn-primary" id="btn-buscarq">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrarq">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->      
-                        <%}else{%>
-                        <button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
+                                if ((usua.equals("Ana")) || (usua.equals("salvador"))) {%>
+                        <button class="btn btn-sm btn-primary" id="btn-buscarq">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrarq">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button--><button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-compara">COMPARACIÓN&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->      
+                            <%} else {%>
+                        <button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button--><button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-compara">COMPARACIÓN&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%}
-                        } else {%>
-                        <button class="btn btn-sm btn-primary" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi2">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar2">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
+                            } else {%>
+                        <button class="btn btn-sm btn-primary" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi2">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrar2">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-compara">COMPARACIÓN&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->  
                             <%}%>
                         <a class="btn btn-primary" href="Consultas.jsp">Actualizar</a>
                     </div>
-                     
-                 </div>
-                       
+
+                </div>
+
             </div>
-               
-                        <div id="loading" class="text-center"></div>
+
+            <div id="loading" class="text-center"></div>
             <div id="container">
                 <form name="form" id="form" method="post" action="../ServletK">
-                    
+
                     <div id="demo"></div>
                     <div id="dynamic"></div>
                 </form>
-                    
-                </div>
-            </div>
-                    <br />
-                    <h3>Total Piezas:<input type="text" id="txtf_exis" readonly="true" size="10"></h3>
-            <div class="row-fluid">
-                <footer class="span12">
-                </footer>
-            </div>
 
+            </div>
         </div>
-    </body>
-    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="js/jquery.ui.touch-punch.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.placeholder.js"></script>
-    <script src="js/bootstrap-select.js"></script>
-    <script src="js/bootstrap-switch.js"></script>
-    <script src="js/flatui-checkbox.js"></script>
-    <script src="js/flatui-radio.js"></script>
-    <script src="js/jquery-1.9.1"></script>
+        <br />
+        <h3>Total Piezas:<input type="text" id="txtf_exis" readonly="true" size="10"></h3>
+        <div class="row-fluid">
+            <footer class="span12">
+            </footer>
+        </div>
 
-    <script>
-        $("footer").load("footer.html");
-    </script>
-    <script type="text/javascript" charset="utf-8">
-        
-        function enter(e) {
+    </div>
+</body>
+<script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="js/jquery.ui.touch-punch.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.placeholder.js"></script>
+<script src="js/bootstrap-select.js"></script>
+<script src="js/bootstrap-switch.js"></script>
+<script src="js/flatui-checkbox.js"></script>
+<script src="js/flatui-radio.js"></script>
+<script src="js/jquery-1.9.1"></script>
+
+<script>
+                            $("footer").load("footer.html");
+</script>
+<script type="text/javascript" charset="utf-8">
+
+    function enter(e) {
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla == 13){
-        var clave = $("#txtf_clave").val();
-                var lote = $("#txtf_lote").val();
-                var cb = $("#txtf_cb").val();
-                var cbm = $("#txtf_cbm").val();
-                if ((clave != "") && (lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=17&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=18&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=19&clave=' + clave + '&cb=' + cb + ''
-                } else if ((lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=20&lote=' + lote + '&cb=' + cb + ''
-                } else if ((clave != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=21&clave=' + clave + ''
-                } else if ((lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=22&lote=' + lote + ''
-                } else if ((cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
-                }else if ((cbm != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
-                }
-                
-           $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                
-            $.ajax({
-                url: dir,
-                    type: 'json',
-                    async: false,
-                success: function (d) {
-                    setTimeout(function () {                        
-                        $('#loading').html('');
-                    }, 2000);
-                }
-                });
-
-    
-                $.ajax({
-                    url: dir,
-                    type: 'json',
-                    async: false,
-                    success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
-                    },
-                    error: function() {
-                        alert("Ha ocurrido un error");
-                    }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        <%if (Tipo == 3 || Tipo == 5) {%>
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                        <%}else{%>
-                         aDataSet.push([descripc, lote, caducidad, numero, ubicacion]);   
-                         
-                            <%}%>
-                    }
-                    
-                    
-                        
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet, "button": 'aceptar',
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                <%if (Tipo == 3 || Tipo == 5) {%>
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                                <%}%>
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-                
-                
-                
-                
+            if (tecla == 13){
+    var clave = $("#txtf_clave").val();
+            var lote = $("#txtf_lote").val();
+            var cb = $("#txtf_cb").val();
+            var cbm = $("#txtf_cbm").val();
+            if ((clave != "") && (lote != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=17&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
+    } else if ((clave != "") && (lote != "")) {
+    var dir = 'jsp/consultas.jsp?ban=18&clave=' + clave + '&lote=' + lote + ''
+    } else if ((clave != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=19&clave=' + clave + '&cb=' + cb + ''
+    } else if ((lote != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=20&lote=' + lote + '&cb=' + cb + ''
+    } else if ((clave != "")) {
+    var dir = 'jsp/consultas.jsp?ban=21&clave=' + clave + ''
+    } else if ((lote != "")) {
+    var dir = 'jsp/consultas.jsp?ban=22&lote=' + lote + ''
+    } else if ((cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
+    } else if ((cbm != "")) {
+    var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
     }
-        }
-        $(document).ready(function() {
-            $("#btn-buscar").click(function() {
-                
-                              
-                var clave = $("#txtf_clave").val();
-                var lote = $("#txtf_lote").val();
-                var cb = $("#txtf_cb").val();
-                var cbm = $("#txtf_cbm").val();
-                if ((clave != "") && (lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=17&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=18&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=19&clave=' + clave + '&cb=' + cb + ''
-                } else if ((lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=20&lote=' + lote + '&cb=' + cb + ''
-                } else if ((clave != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=21&clave=' + clave + ''
-                } else if ((lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=22&lote=' + lote + ''
-                } else if ((cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
-                }else if ((cbm != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
-                }
-                
-              $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                // run ajax request
+
+    $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
             $.ajax({
-                url: dir,
+            url: dir,
                     type: 'json',
                     async: false,
-                success: function (d) {
+                    success: function (d) {
                     setTimeout(function () {
-                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
-                        $('#loading').html('');
+                    $('#loading').html('');
                     }, 2000);
-                }
-                });
-
-    
-                $.ajax({
-                    url: dir,
+                    }
+            });
+            $.ajax({
+            url: dir,
                     type: 'json',
                     async: false,
                     success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
+                    limpiarTabla();
+                            MostrarFecha(data);
                     },
                     error: function() {
-                        alert("Ha ocurrido un error");
+                    alert("Ha ocurrido un error");
                     }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    
-                    
-                        
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet, "button": 'aceptar',
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
             });
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            var id = json[i].id;
+            var claubi = json[i].claubi;
+            exist = parseInt(cantidad) + parseInt(exist);
+            var descrip = json[i].descrip;
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            //var cajas=parseInt(cantidad/piezas);
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/2" + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/3" + '>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+    <%if (Tipo == 3 || Tipo == 5) {%>
+    aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+    <%} else {%>
+    aDataSet.push([descripc, lote, caducidad, numero, ubicacion]);
+    <%}%>
+    }
 
+
+
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet, "button": 'aceptar',
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"},
+    <%if (Tipo == 3 || Tipo == 5) {%>
+            {"sTitle": "ReUbicar", "sClass": "center"}
+    <%}%>
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
+
+
+
+
+    }
+    }
+    $(document).ready(function() {
+    $("#btn-buscar").click(function() {
+
+
+    var clave = $("#txtf_clave").val();
+            var lote = $("#txtf_lote").val();
+            var cb = $("#txtf_cb").val();
+            var cbm = $("#txtf_cbm").val();
+            if ((clave != "") && (lote != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=17&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
+    } else if ((clave != "") && (lote != "")) {
+    var dir = 'jsp/consultas.jsp?ban=18&clave=' + clave + '&lote=' + lote + ''
+    } else if ((clave != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=19&clave=' + clave + '&cb=' + cb + ''
+    } else if ((lote != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=20&lote=' + lote + '&cb=' + cb + ''
+    } else if ((clave != "")) {
+    var dir = 'jsp/consultas.jsp?ban=21&clave=' + clave + ''
+    } else if ((lote != "")) {
+    var dir = 'jsp/consultas.jsp?ban=22&lote=' + lote + ''
+    } else if ((cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
+    } else if ((cbm != "")) {
+    var dir = 'jsp/consultas.jsp?ban=32&cb=' + cbm + ''
+    }
+
+    $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+            // run ajax request
+            $.ajax({
+            url: dir,
+                    type: 'json',
+                    async: false,
+                    success: function (d) {
+                    setTimeout(function () {
+                    //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                    $('#loading').html('');
+                    }, 2000);
+                    }
+            });
+            $.ajax({
+            url: dir,
+                    type: 'json',
+                    async: false,
+                    success: function(data) {
+                    limpiarTabla();
+                            MostrarFecha(data);
+                    },
+                    error: function() {
+                    alert("Ha ocurrido un error");
+                    }
+            });
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            var id = json[i].id;
+            var claubi = json[i].claubi;
+            exist = parseInt(cantidad) + parseInt(exist);
+            var descrip = json[i].descrip;
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            //var cajas=parseInt(cantidad/piezas);
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/2" + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/3" + '>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+            aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+    }
+
+
+
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet, "button": 'aceptar',
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"},
+            {"sTitle": "ReUbicar", "sClass": "center"}
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
+
+
+    });
             $("#btn-ubi").click(function() {
-                var dir = 'jsp/consultas.jsp?ban=24'
+    var dir = 'jsp/consultas.jsp?ban=24'
 
-              $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                // run ajax request
+            $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+            // run ajax request
             $.ajax({
-                url: dir,
+            url: dir,
                     type: 'json',
                     async: false,
-                success: function (d) {
+                    success: function (d) {
                     setTimeout(function () {
-                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
-                        $('#loading').html('');
+                    //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                    $('#loading').html('');
                     }, 2000);
-                }
-                });
-
-                $.ajax({
-                    url: dir,
+                    }
+            });
+            $.ajax({
+            url: dir,
                     type: 'json',
                     async: false,
                     success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
+                    limpiarTabla();
+                            MostrarFecha(data);
                     },
                     error: function() {
-                        alert("Ha ocurrido un error");
+                    alert("Ha ocurrido un error");
                     }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                
-                        
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet,
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
             });
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            var id = json[i].id;
+            var claubi = json[i].claubi;
+            exist = parseInt(cantidad) + parseInt(exist);
+            var descrip = json[i].descrip;
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            //var cajas=parseInt(cantidad/piezas);
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/2" + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/3" + '>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+            aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+    }
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet,
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"},
+            {"sTitle": "ReUbicar", "sClass": "center"}
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
+
+
+    });
             $("#btn-kardex").click(function() {
-                self.location = 'kardex.jsp';
-            });
-
+    self.location = 'kardex.jsp';
+    });
             $("#btn-mostrar").click(function() {
-                var dir = 'jsp/consultas.jsp?ban=29'
-                
-               $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                // run ajax request
+    var dir = 'jsp/consultas.jsp?ban=29'
+
+            $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+            // run ajax request
             $.ajax({
-                url: dir,
+            url: dir,
                     type: 'json',
                     async: false,
-                success: function (d) {
+                    success: function (d) {
                     setTimeout(function () {
-                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
-                        $('#loading').html('');
+                    //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                    $('#loading').html('');
                     }, 2000);
-                }
-                });
-                  
-                $.ajax({
-                    url: dir,
+                    }
+            });
+            $.ajax({
+            url: dir,
                     type: 'json',
                     async: false,
                     success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
+                    limpiarTabla();
+                            MostrarFecha(data);
                     },
                     error: function() {
-                        alert("Ha ocurrido un error");
+                    alert("Ha ocurrido un error");
                     }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet,
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
             });
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            var id = json[i].id;
+            var claubi = json[i].claubi;
+            exist = parseInt(cantidad) + parseInt(exist);
+            //var cajas=parseInt(cantidad/piezas);
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/2" + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/3" + '>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
+            var descrip = json[i].descrip;
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+            aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+    }
 
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet,
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"},
+            {"sTitle": "ReUbicar", "sClass": "center"}
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
+
+
+    });
             /////BOTONES PARA LOS USUARIOS DE CONSULTAS (2)///////
             $("#btn-buscar2").click(function() {
-                var clave = $("#txtf_clave").val();
-                var lote = $("#txtf_lote").val();
-                var cb = $("#txtf_cb").val();
-                if ((clave != "") && (lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=17&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=18&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=19&clave=' + clave + '&cb=' + cb + ''
-                } else if ((lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=20&lote=' + lote + '&cb=' + cb + ''
-                } else if ((clave != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=21&clave=' + clave + ''
-                } else if ((lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=22&lote=' + lote + ''
-                } else if ((cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
-                }
+    var clave = $("#txtf_clave").val();
+            var lote = $("#txtf_lote").val();
+            var cb = $("#txtf_cb").val();
+            if ((clave != "") && (lote != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=17&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
+    } else if ((clave != "") && (lote != "")) {
+    var dir = 'jsp/consultas.jsp?ban=18&clave=' + clave + '&lote=' + lote + ''
+    } else if ((clave != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=19&clave=' + clave + '&cb=' + cb + ''
+    } else if ((lote != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=20&lote=' + lote + '&cb=' + cb + ''
+    } else if ((clave != "")) {
+    var dir = 'jsp/consultas.jsp?ban=21&clave=' + clave + ''
+    } else if ((lote != "")) {
+    var dir = 'jsp/consultas.jsp?ban=22&lote=' + lote + ''
+    } else if ((cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=23&cb=' + cb + ''
+    }
 
-                       $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                // run ajax request
+    $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+            // run ajax request
             $.ajax({
-                url: dir,
+            url: dir,
                     type: 'json',
                     async: false,
-                success: function (d) {
+                    success: function (d) {
                     setTimeout(function () {
-                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
-                        $('#loading').html('');
+                    //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                    $('#loading').html('');
                     }, 2000);
-                }
-                });
-
-                 $.ajax({
-                    url: dir,
+                    }
+            });
+            $.ajax({
+            url: dir,
                     type: 'json',
                     async: false,
                     success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
+                    limpiarTabla();
+                            MostrarFecha(data);
                     },
                     error: function() {
-                        alert("Ha ocurrido un error");
+                    alert("Ha ocurrido un error");
                     }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        // var piezas = json[i].piezas;
-                        var claubi = json[i].claubi;
-                        //var cajas=parseInt(cantidad/piezas);
-                        var descrip = json[i].descrip;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion]);
-                    }
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet, "button": 'aceptar',
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"}
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
             });
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            // var piezas = json[i].piezas;
+            var claubi = json[i].claubi;
+            //var cajas=parseInt(cantidad/piezas);
+            var descrip = json[i].descrip;
+            exist = parseInt(cantidad) + parseInt(exist);
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+            aDataSet.push([descripc, lote, caducidad, numero, ubicacion]);
+    }
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet, "button": 'aceptar',
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"}
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
 
+
+    });
             $("#btn-ubi2").click(function() {
-                var dir = 'jsp/consultas.jsp?ban=24'
+    var dir = 'jsp/consultas.jsp?ban=24'
 
-                       $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                // run ajax request
+            $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+            // run ajax request
             $.ajax({
-                url: dir,
+            url: dir,
                     type: 'json',
                     async: false,
-                success: function (d) {
+                    success: function (d) {
                     setTimeout(function () {
-                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
-                        $('#loading').html('');
+                    //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                    $('#loading').html('');
                     }, 2000);
-                }
-                });
-
-
-                $.ajax({
-                    url: dir,
+                    }
+            });
+            $.ajax({
+            url: dir,
                     type: 'json',
                     async: false,
                     success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
+                    limpiarTabla();
+                            MostrarFecha(data);
                     },
                     error: function() {
-                        alert("Ha ocurrido un error");
+                    alert("Ha ocurrido un error");
                     }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        //var piezas = json[i].piezas;
-                        var claubi = json[i].claubi;
-                        //var cajas=parseInt(cantidad/piezas);
-                        var descrip = json[i].descrip;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet,
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"}
-
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-                    
-
-                }
-
             });
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            //var piezas = json[i].piezas;
+            var claubi = json[i].claubi;
+            //var cajas=parseInt(cantidad/piezas);
+            var descrip = json[i].descrip;
+            exist = parseInt(cantidad) + parseInt(exist);
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+            aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+    }
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet,
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"}
 
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
+
+    });
             $("#btn-mostrar2").click(function() {
-                var dir = 'jsp/consultas.jsp?ban=29'
+    var dir = 'jsp/consultas.jsp?ban=29'
 
-                     $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                // run ajax request
+            $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+            // run ajax request
             $.ajax({
-                url: dir,
+            url: dir,
                     type: 'json',
                     async: false,
-                success: function (d) {
+                    success: function (d) {
                     setTimeout(function () {
-                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
-                        $('#loading').html('');
+                    //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                    $('#loading').html('');
                     }, 2000);
-                }
-                });
-                
-                $.ajax({
-                    url: dir,
+                    }
+            });
+            $.ajax({
+            url: dir,
                     type: 'json',
                     async: false,
                     success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
+                    limpiarTabla();
+                            MostrarFecha(data);
                     },
                     error: function() {
-                        alert("Ha ocurrido un error");
+                    alert("Ha ocurrido un error");
                     }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        //var piezas = json[i].piezas;
-                        var claubi = json[i].claubi;
-                        //var cajas=parseInt(cantidad/piezas);
-                        var descrip = json[i].descrip;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet,
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"}
-
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
             });
-            
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            //var piezas = json[i].piezas;
+            var claubi = json[i].claubi;
+            //var cajas=parseInt(cantidad/piezas);
+            var descrip = json[i].descrip;
+            exist = parseInt(cantidad) + parseInt(exist);
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>';
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+            aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+    }
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet,
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"}
+
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
+
+
+    });
             var dir = 'jsp/consultas.jsp?ban=33'
-            
-            
+
+
             $.ajax({
-                    url: dir,
+            url: dir,
                     type: 'json',
                     async: false,
                     success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
+                    limpiarTabla();
+                            MostrarFecha(data);
                     },
                     error: function() {
-                        alert("Ha ocurrido un error");
+                    alert("Ha ocurrido un error");
                     }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-
-                    var aDataSet = [];
-                    for (var i = 0; i < json.length; i++) {
-                        var existencia = json[i].existencia;
-                        
-                        
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numeroexi = formatNumber.new(existencia);
-                        $("#txtf_exis").val(numeroexi);
-                    }
-                }
-
-            ////FIN BOTONES USUARIOS CONSULTAS/////
-            
-            
-            
-            ////*****CONSULTA QUIMICA******//////
-            
-            $("#btn-buscarq").click(function() {
-                var clave = $("#txtf_clave").val();
-                var lote = $("#txtf_lote").val();
-                var cb = $("#txtf_cb").val();
-                var cbm = $("#txtf_cbm").val();
-                if ((clave != "") && (lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=34&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=35&clave=' + clave + '&lote=' + lote + ''
-                } else if ((clave != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=36&clave=' + clave + '&cb=' + cb + ''
-                } else if ((lote != "") && (cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=37&lote=' + lote + '&cb=' + cb + ''
-                } else if ((clave != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=38&clave=' + clave + ''
-                } else if ((lote != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=39&lote=' + lote + ''
-                } else if ((cb != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=40&cb=' + cb + ''
-                }else if ((cbm != "")) {
-                    var dir = 'jsp/consultas.jsp?ban=41&cb=' + cbm + ''
-                }
-
-               $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                // run ajax request
-            $.ajax({
-                url: dir,
-                    type: 'json',
-                    async: false,
-                success: function (d) {
-                    setTimeout(function () {
-                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
-                        $('#loading').html('');
-                    }, 2000);
-                }
-                });
-
-    
-                $.ajax({
-                    url: dir,
-                    type: 'json',
-                    async: false,
-                    success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
-                    },
-                    error: function() {
-                        alert("Ha ocurrido un error");
-                    }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        //var cajas=parseInt(cantidad/piezas);
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    
-                        
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet, "button": 'aceptar',
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
             });
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            for (var i = 0; i < json.length; i++) {
+    var existencia = json[i].existencia;
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numeroexi = formatNumber.new(existencia);
+            $("#txtf_exis").val(numeroexi);
+    }
+    }
 
+    ////FIN BOTONES USUARIOS CONSULTAS/////
+
+
+
+    ////*****CONSULTA QUIMICA******//////
+
+    $("#btn-buscarq").click(function() {
+    var clave = $("#txtf_clave").val();
+            var lote = $("#txtf_lote").val();
+            var cb = $("#txtf_cb").val();
+            var cbm = $("#txtf_cbm").val();
+            if ((clave != "") && (lote != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=34&cb=' + cb + '&clave=' + clave + '&lote=' + lote + ''
+    } else if ((clave != "") && (lote != "")) {
+    var dir = 'jsp/consultas.jsp?ban=35&clave=' + clave + '&lote=' + lote + ''
+    } else if ((clave != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=36&clave=' + clave + '&cb=' + cb + ''
+    } else if ((lote != "") && (cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=37&lote=' + lote + '&cb=' + cb + ''
+    } else if ((clave != "")) {
+    var dir = 'jsp/consultas.jsp?ban=38&clave=' + clave + ''
+    } else if ((lote != "")) {
+    var dir = 'jsp/consultas.jsp?ban=39&lote=' + lote + ''
+    } else if ((cb != "")) {
+    var dir = 'jsp/consultas.jsp?ban=40&cb=' + cb + ''
+    } else if ((cbm != "")) {
+    var dir = 'jsp/consultas.jsp?ban=41&cb=' + cbm + ''
+    }
+
+    $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+            // run ajax request
+            $.ajax({
+            url: dir,
+                    type: 'json',
+                    async: false,
+                    success: function (d) {
+                    setTimeout(function () {
+                    //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                    $('#loading').html('');
+                    }, 2000);
+                    }
+            });
+            $.ajax({
+            url: dir,
+                    type: 'json',
+                    async: false,
+                    success: function(data) {
+                    limpiarTabla();
+                            MostrarFecha(data);
+                    },
+                    error: function() {
+                    alert("Ha ocurrido un error");
+                    }
+            });
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            var id = json[i].id;
+            var claubi = json[i].claubi;
+            exist = parseInt(cantidad) + parseInt(exist);
+            var descrip = json[i].descrip;
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            //var cajas=parseInt(cantidad/piezas);
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/2" + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/3" + '>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+            aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+    }
+
+
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet, "button": 'aceptar',
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"},
+            {"sTitle": "ReUbicar", "sClass": "center"}
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
+
+
+    });
             $("#btn-mostrarq").click(function() {
-                var dir = 'jsp/consultas.jsp?ban=42'
-              
-               $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                // run ajax request
+    var dir = 'jsp/consultas.jsp?ban=42'
+
+            $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
+            // run ajax request
             $.ajax({
-                url: dir,
+            url: dir,
                     type: 'json',
                     async: false,
-                success: function (d) {
+                    success: function (d) {
                     setTimeout(function () {
-                        //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
-                        $('#loading').html('');
+                    //$('#loading').html('<img src="' + d.avatar_url + '"><br>' + d.login);
+                    $('#loading').html('');
                     }, 2000);
-                }
-                });
-                
-                
-                $.ajax({
-                    url: dir,
+                    }
+            });
+            $.ajax({
+            url: dir,
                     type: 'json',
                     async: false,
                     success: function(data) {
-                        limpiarTabla();
-                        MostrarFecha(data);
+                    limpiarTabla();
+                            MostrarFecha(data);
                     },
                     error: function() {
-                        alert("Ha ocurrido un error");
+                    alert("Ha ocurrido un error");
                     }
-                });
-                function limpiarTabla() {
-                    $(".table tr:not(.cabecera)").remove();
-                }
-                function MostrarFecha(data) {
-                    var json = JSON.parse(data);
-
-                    var aDataSet = [];
-                    var exist = 0;
-                    for (var i = 0; i < json.length; i++) {
-                        var clave = json[i].clave;
-                        var lote = json[i].lote;
-                        var caducidad = json[i].caducidad;
-                        var cantidad = json[i].cantidad;
-                        var ubicacion = json[i].ubicacion;
-                        var folio = json[i].folio;
-                        var id = json[i].id;
-                        var claubi = json[i].claubi;
-                        exist =parseInt(cantidad)+parseInt(exist);
-                        //var cajas=parseInt(cantidad/piezas);
-                        var descrip = json[i].descrip;
-                        var descripc = '<a href="#" title="'+descrip+'">'+clave+' </a>'
-                        var cadena ='<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/2"+'>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value='+ folio + ":" + claubi + ";" + id +"/3"+'>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        }
-                        var numero = formatNumber.new(cantidad);
-                        var numero1 = formatNumber.new(exist);
-                        aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
-                    }
-                    $(document).ready(function() {
-                        $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
-                        $('#example').dataTable({
-                            "aaData": aDataSet,
-                            //"bScrollInfinite": true,
-                            "bScrollCollapse": true,
-                            "sScrollY": "400px",
-                            "bProcessing": true,
-                            "sPaginationType": "full_numbers",
-                            "sDom": 'T<"clear">lfrtip',
-                            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
-                            "aoColumns": [
-                                {"sTitle": "Clave", "sClass": "center"},
-                                {"sTitle": "Lote", "sClass": "center"},
-                                {"sTitle": "Caducidad", "sClass": "center"},
-                                {"sTitle": "Total Piezas", "sClass": "center"},
-                                {"sTitle": "Ubicación", "sClass": "center"},
-                                {"sTitle": "ReUbicar", "sClass": "center"}
-                            ]
-                        });
-                    });
-
-
-                    $("#txtf_clave").val(null);
-                    $("#txtf_lote").val(null);
-                    $("#txtf_cb").val(null);
-                    $("#txtf_exis").val(numero1);
-
-                }
-
-
             });
-          });
-       
+            function limpiarTabla() {
+            $(".table tr:not(.cabecera)").remove();
+            }
+    function MostrarFecha(data) {
+    var json = JSON.parse(data);
+            var aDataSet = [];
+            var exist = 0;
+            for (var i = 0; i < json.length; i++) {
+    var clave = json[i].clave;
+            var lote = json[i].lote;
+            var caducidad = json[i].caducidad;
+            var cantidad = json[i].cantidad;
+            var ubicacion = json[i].ubicacion;
+            var folio = json[i].folio;
+            var id = json[i].id;
+            var claubi = json[i].claubi;
+            exist = parseInt(cantidad) + parseInt(exist);
+            //var cajas=parseInt(cantidad/piezas);
+            var descrip = json[i].descrip;
+            var descripc = '<a href="#" title="' + descrip + '">' + clave + ' </a>'
+            var cadena = '<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/2" + '>ReDistribuir<input type=hidden value=2 id=ban name=ban /></button>&nbsp;&nbsp;&nbsp;<button id="folio" name="folio" value=' + folio + ":" + claubi + ";" + id + "/3" + '>Modificar<input type=hidden value=3 id=ban name=ban /></button>';
+            var formatNumber = {
+            separador: ",", // separador para los miles
+                    sepDecimal: '.', // separador para los decimales
+                    formatear: function(num) {
+                    num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                    }
+                    return this.simbol + splitLeft + splitRight;
+                    },
+                    new : function(num, simbol) {
+                    this.simbol = simbol || '';
+                            return this.formatear(num);
+                    }
+            }
+    var numero = formatNumber.new(cantidad);
+            var numero1 = formatNumber.new(exist);
+            aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
+    }
+    $(document).ready(function() {
+    $('#dynamic').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+            $('#example').dataTable({
+    "aaData": aDataSet,
+            //"bScrollInfinite": true,
+            "bScrollCollapse": true,
+            "sScrollY": "400px",
+            "bProcessing": true,
+            "sPaginationType": "full_numbers",
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {"sSwfPath": "table_js/swf/copy_csv_xls_pdf.swf"},
+            "aoColumns": [
+            {"sTitle": "Clave", "sClass": "center"},
+            {"sTitle": "Lote", "sClass": "center"},
+            {"sTitle": "Caducidad", "sClass": "center"},
+            {"sTitle": "Total Piezas", "sClass": "center"},
+            {"sTitle": "Ubicación", "sClass": "center"},
+            {"sTitle": "ReUbicar", "sClass": "center"}
+            ]
+    });
+    });
+            $("#txtf_clave").val(null);
+            $("#txtf_lote").val(null);
+            $("#txtf_cb").val(null);
+            $("#txtf_exis").val(numero1);
+    }
 
-    
 
+    });
+    });
+            $("#btn-clave").click(function(){
+    self.location = 'Agregar.jsp';
+    });
+            $("#btn-inv").click(function(){
+    self.location = 'Inventario.jsp';
+    });
+            $("#btn-compara").click(function(){
+    self.location = 'Comparacion.jsp';
+    });
+</script>
 
-        $("#btn-clave").click(function(){
-          self.location='Agregar.jsp';
-        });
-        $("#btn-inv").click(function(){
-          self.location='Inventario.jsp';
-        });
-    </script>
-    
 </html>

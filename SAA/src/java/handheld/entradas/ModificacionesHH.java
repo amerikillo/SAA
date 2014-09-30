@@ -3,29 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package handheld.entradas;
 
+import conn.ConectionDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import conn.ConectionDB;
-import conn.ConectionDB_SQLServer;
-import java.sql.SQLException;
-import java.text.*;
 
 /**
  *
  * @author Americo
  */
-public class Modificaciones extends HttpServlet {
-
-    ConectionDB con = new ConectionDB();
-    //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
+public class ModificacionesHH extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,6 +38,7 @@ public class Modificaciones extends HttpServlet {
         DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat df3 = new SimpleDateFormat("dd/MM/yyyy");
+        ConectionDB con = new ConectionDB();
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession sesion = request.getSession(true);
@@ -74,26 +72,7 @@ public class Modificaciones extends HttpServlet {
                     sesion.setAttribute("CodBar", "");
                     sesion.setAttribute("Lote", "");
                     sesion.setAttribute("Cadu", "");
-                    response.sendRedirect("compraAuto2.jsp");
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-            if (request.getParameter("accion").equals("verificarCompraManual")) {
-                try {
-                    con.conectar();
-                    try {
-                        con.insertar("update tb_compratemp set F_Estado = '2' where F_OrdCom = '" + request.getParameter("fol_gnkl") + "' ");
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    con.cierraConexion();
-
-                    sesion.setAttribute("folio", "");
-                    sesion.setAttribute("folio_remi", "");
-                    sesion.setAttribute("orden", "");
-                    sesion.setAttribute("provee", "");
-                    response.sendRedirect("captura.jsp");
+                    response.sendRedirect("hh/compraAuto3.jsp");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -111,12 +90,12 @@ public class Modificaciones extends HttpServlet {
                 sesion.setAttribute("CodBar", "");
                 sesion.setAttribute("Lote", "");
                 sesion.setAttribute("Cadu", "");
-                response.sendRedirect("compraAuto2.jsp");
+                response.sendRedirect("hh/compraAuto3.jsp");
             }
             if (request.getParameter("accion").equals("modificarCompraAuto")) {
                 System.out.println("modificar");
                 request.getSession().setAttribute("id", request.getParameter("id"));
-                response.sendRedirect("editaClaveCompraAuto.jsp");
+                response.sendRedirect("hh/editaClaveCompraAutoHH.jsp");
             }
             if (request.getParameter("accion").equals("eliminar")) {
                 System.out.println("eliminar");
@@ -159,9 +138,10 @@ public class Modificaciones extends HttpServlet {
                     String pres = new String(a, "UTF-8");
                     a = request.getParameter("Marca").getBytes("ISO-8859-1");
                     String marca = new String(a, "UTF-8");
+                    con.actualizar("update tb_compratemp set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_Cb = '" + request.getParameter("cb") + "' where F_IdCom = '" + request.getParameter("id") + "' ");
 
-                    con.actualizar("update tb_compratemp set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_Cb = '" + request.getParameter("cb") + "', F_FolRemi = '" + request.getParameter("folio_remi") + "'  where F_IdCom = '" + request.getParameter("id") + "' ");
-                    con.actualizar("update tb_compraregistro set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_User = '" + sesion.getAttribute("nombre") + "', F_Cb = '" + request.getParameter("cb") + "', F_FolRemi = '" + request.getParameter("folio_remi") + "'  where F_IdCom = '" + idTemp + "' ");
+                    con.actualizar("update tb_compraregistro set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_User = '" + sesion.getAttribute("nombre") + "', F_Cb = '" + request.getParameter("cb") + "'   where F_IdCom = '" + idTemp + "' ");
+                    con.cierraConexion();
                     con.cierraConexion();
                     out.println("<script>alert('Modificación Correcta')</script>");
                     out.println("<script>window.location='captura.jsp'</script>");
@@ -198,7 +178,7 @@ public class Modificaciones extends HttpServlet {
                     con.actualizar("update tb_compraregistro set F_Cb = '" + request.getParameter("cb").toUpperCase() + "', F_lote = '" + request.getParameter("Lote").toUpperCase() + "', F_FecCad = '" + df2.format(df3.parse(request.getParameter("Caducidad").toUpperCase())) + "', F_Cajas= '" + cajas + "', F_Pz = '" + piezas + "', F_Resto = '" + request.getParameter("Resto") + "', F_Tarimas='" + tarimas + "', F_TarimasI='" + request.getParameter("TarimasI") + "', F_CajasI = '" + request.getParameter("CajasxTI") + "', F_FecFab='" + df2.format(df3.parse(request.getParameter("FecFab").toUpperCase())) + "', F_User = '" + sesion.getAttribute("nombre") + "', F_Cb = '" + request.getParameter("cb") + "', F_FolRemi = '" + request.getParameter("folio_remi") + "'  where F_IdCom = '" + idTemp + "' ");
                     con.cierraConexion();
                     out.println("<script>alert('Modificación Correcta')</script>");
-                    out.println("<script>window.location='compraAuto2.jsp'</script>");
+                    out.println("<script>window.location='hh/compraAuto3.jsp'</script>");
                 } catch (Exception e) {
                     System.out.println("----" + e.getMessage());
                     out.println("<script>alert('Modificación incorrecta!!')</script>");

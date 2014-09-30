@@ -11,15 +11,22 @@
 <%@page import="java.sql.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" language="java" %>
 <%
-    String QueryDatos = "", QueryMov = "";
-    String Clave = "", Lote = "", Fecha1 = "", Fecha2 = "", ConMI = "", Provee="";
+    String QueryDatos = "", QueryMov = "", QueryUbi="",QueryComp="",QueryCompS="",QueryCompU="";
+    String Clave = "", Lote = "", Fecha1 = "", Fecha2 = "", ConMI = "", Provee="",usuario="";
     String cb = "", Folio = "", Folios = "", Ubicacion = "", Ubinew = "", CantM = "", diferenc = "", text = "", Id = "";
     int ban = 0, Cantidad = 0, CantMov = 0, Resultados = 0, diferencia = 0, Folio2 = 0;
-    double Resultado = 0.0;
-    ResultSet Consulta = null;
+    String ClaveU="",ClaveC="",CantidadS="",CantidadUB="",LoteU="",LoteC="",Cadu="",CaduC="",CaduU="",Fecha="";
+    int CantidadU=0,conts=0,CantidadSG=0,contu=0,CantidadUBI=0,Diferencia=0;
+    double Resultado = 0.0,ResultadoU=0.0;
+    ResultSet Consulta = null; 
+    ResultSet ConsultaUbi = null;
     ResultSet Movimiento = null;
-
+    ResultSet ConsultaComp = null; 
+    ResultSet ConsultaCompS = null;
+    ResultSet ConsultaCompU = null;
+    ConectionDB ObjMySQL = new ConectionDB();
     conection Obj = new conection();
+    ConectionDBInv ObjInv = new ConectionDBInv();
     try {
         Fecha1 = request.getParameter("fecha1");
         Fecha2 = request.getParameter("fecha2");
@@ -37,7 +44,10 @@
         Provee = request.getParameter("provee");        
         diferenc = request.getParameter("diferencia");
         Id = request.getParameter("id");
+        usuario = request.getParameter("usuario");
         Obj.conectar();
+        ObjInv.conectar();
+        ObjMySQL.conectar();
     } catch (Exception ex) {
     }
     JSONObject json = new JSONObject();
@@ -877,7 +887,142 @@
             json = new JSONObject();
         }
         out.println(jsona);
+    }else if (ban == 55) {
+        QueryDatos = "select F_DesPro FROM tb_medica WHERE F_DesPro like '%" + text + "%' order by F_DesPro ASC LIMIT 0,10";
+        Consulta = Obj.consulta(QueryDatos);
+        while (Consulta.next()) {
+            json.put("ubicac", Consulta.getString("F_DesPro"));
+            jsona.add(json);
+            json = new JSONObject();
+        }
+        out.println(jsona);
+    }else if (ban == 56) {
+            ObjMySQL.actualizar("DELETE FROM tb_comparacion WHERE F_Tipo='"+text+"' and F_Usuario='"+usuario+"'");
+
+        if (text.equals("CLAVE")){
+            QueryDatos = "SELECT F_ClaPro AS clave,SUM(F_ExiLot) AS cantidad FROM tb_lote  WHERE F_ExiLot>0 GROUP BY F_ClaPro ORDER BY F_ClaPro ASC";    
+            Consulta = ObjMySQL.consulta(QueryDatos);
+            while(Consulta.next()){
+                Resultado = Double.parseDouble(Consulta.getString("cantidad"));
+                Cantidad = (int) Resultado;
+                Clave = Consulta.getString("clave");                
+            ObjMySQL.actualizar("insert into tb_comparacion values('"+Clave+"','-',curdate(),'"+Cantidad+"','sistemas','CLAVE','"+usuario+"',0)");        
+            }
+            QueryUbi="SELECT F_ClaPro AS clave,SUM(F_ExiLot) AS cantidad FROM tb_lote  WHERE F_ExiLot>0 GROUP BY F_ClaPro ORDER BY F_ClaPro ASC";
+            ConsultaUbi = ObjInv.consulta(QueryUbi);
+            while(ConsultaUbi.next()){
+                ClaveU = ConsultaUbi.getString("clave");
+                ResultadoU = Double.parseDouble(ConsultaUbi.getString("cantidad"));
+                CantidadU = (int) ResultadoU;
+                ObjMySQL.actualizar("insert into tb_comparacion values('"+ClaveU+"','-',curdate(),'"+CantidadU+"','inventario','CLAVE','"+usuario+"',0)");
+            }
+            QueryComp="SELECT F_ClaPro from tb_comparacion where F_Tipo='CLAVE' and F_Usuario='"+usuario+"' GROUP BY F_ClaPro";
+            ConsultaComp = ObjMySQL.consulta(QueryComp);
+            while(ConsultaComp.next()){
+                ClaveC = ConsultaComp.getString("F_ClaPro");
+                QueryCompS="select F_ClaPro,SUM(F_Cantidad) as cantidad from tb_comparacion where F_ClaPro='"+ClaveC+"' AND F_Tipo='CLAVE' AND F_Sistemas='sistemas' and F_Usuario='"+usuario+"' group by F_ClaPro";
+                ConsultaCompS = ObjMySQL.consulta(QueryCompS);
+                while(ConsultaCompS.next()){
+                    CantidadS=ConsultaCompS.getString("cantidad");
+                    conts++;
+                }
+                if(conts>0){
+                    CantidadSG=Integer.parseInt(CantidadS);
+                }else{
+                    CantidadSG=0;
+                }
+                QueryCompU="select F_ClaPro,SUM(F_Cantidad) as cantidad from tb_comparacion where F_ClaPro='"+ClaveC+"' AND F_Tipo='CLAVE' AND F_Sistemas='inventario' and F_Usuario='"+usuario+"' group by F_ClaPro";
+                ConsultaCompU = ObjMySQL.consulta(QueryCompU);
+                while(ConsultaCompU.next()){
+                    CantidadUB=ConsultaCompU.getString("cantidad");
+                    contu++;
+                }
+                if (contu>0){
+                    CantidadUBI = Integer.parseInt(CantidadUB);
+                }else{
+                    CantidadUBI = 0;
+                }
+                Diferencia = CantidadUBI - CantidadSG;
+                conts = 0;
+                contu = 0;
+                json.put("clave",ClaveC);                
+                json.put("cantidads",CantidadUBI);
+                json.put("cantidadu",CantidadSG);
+                json.put("dife",Diferencia);
+                jsona.add(json);
+                json = new JSONObject();
+               
+            }
+            out.println(jsona);
+        }else{
+            QueryDatos = "SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM tb_lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";    
+            Consulta = ObjMySQL.consulta(QueryDatos);
+            while(Consulta.next()){
+                Resultado = Double.parseDouble(Consulta.getString("cantidad"));
+                Cantidad = (int) Resultado;
+                Clave = Consulta.getString("clave");
+                Lote= Consulta.getString("lote");
+                Cadu = Consulta.getString("F_FecCad");
+            ObjMySQL.actualizar("insert into tb_comparacion values('"+Clave+"','"+Lote+"','"+Cadu+"','"+Cantidad+"','sistemas','LOTE','"+usuario+"',0)");        
+            }
+            QueryUbi="SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM tb_lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";
+            ConsultaUbi = ObjInv.consulta(QueryUbi);
+            while(ConsultaUbi.next()){
+                ClaveU = ConsultaUbi.getString("clave");
+                LoteU = ConsultaUbi.getString("Lote");
+                CaduU = ConsultaUbi.getString("F_FecCad");
+                ResultadoU = Double.parseDouble(ConsultaUbi.getString("cantidad"));
+                CantidadU = (int) ResultadoU;
+                ObjMySQL.actualizar("insert into tb_comparacion values('"+ClaveU+"','"+LoteU+"','"+CaduU+"','"+CantidadU+"','inventario','LOTE','"+usuario+"',0)");
+            }
+            QueryComp="SELECT F_ClaPro,F_Lote,F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as fecha from tb_comparacion where F_Tipo='LOTE' and F_Usuario='"+usuario+"' GROUP BY F_ClaPro,F_Lote order by F_ClaPro,F_Lote,F_FecCad asc";
+            ConsultaComp = ObjMySQL.consulta(QueryComp);
+            while(ConsultaComp.next()){
+                ClaveC = ConsultaComp.getString("F_ClaPro");                
+                LoteC = ConsultaComp.getString("F_Lote");
+                CaduC = ConsultaComp.getString("F_FecCad");
+                Fecha = ConsultaComp.getString("fecha");
+                QueryCompS="select F_ClaPro,SUM(F_Cantidad) as cantidad from tb_comparacion where F_ClaPro='"+ClaveC+"' and F_Lote='"+LoteC+"' and F_FecCad='"+CaduC+"' AND F_Tipo='LOTE' AND F_Sistemas='sistemas' and F_Usuario='"+usuario+"' group by F_ClaPro";
+                ConsultaCompS = ObjMySQL.consulta(QueryCompS);
+                while(ConsultaCompS.next()){
+                    CantidadS=ConsultaCompS.getString("cantidad");
+                    conts++;
+                }
+                if(conts>0){
+                    CantidadSG=Integer.parseInt(CantidadS);
+                }else{
+                    CantidadSG=0;
+                }
+                QueryCompU="select F_ClaPro,SUM(F_Cantidad) as cantidad from tb_comparacion where F_ClaPro='"+ClaveC+"' and F_Lote='"+LoteC+"' and F_FecCad='"+CaduC+"' AND F_Tipo='LOTE' AND F_Sistemas='inventario' and F_Usuario='"+usuario+"' group by F_ClaPro";
+                ConsultaCompU = ObjMySQL.consulta(QueryCompU);
+                while(ConsultaCompU.next()){
+                    CantidadUB=ConsultaCompU.getString("cantidad");
+                    contu++;
+                }
+                if (contu>0){
+                    CantidadUBI = Integer.parseInt(CantidadUB);
+                }else{
+                    CantidadUBI = 0;
+                }
+                Diferencia = CantidadUBI - CantidadSG;
+                conts = 0;
+                contu = 0;
+                json.put("clave",ClaveC);
+                json.put("lote",LoteC);
+                json.put("fecha",Fecha);
+                json.put("cantidads",CantidadUBI);
+                json.put("cantidadu",CantidadSG);
+                json.put("dife",Diferencia);
+                jsona.add(json);
+                json = new JSONObject();
+               
+            }
+            out.println(jsona);
+        }
+    
     }
 
     Obj.CierreConn();
+    ObjInv.cierraConexion();
+    ObjMySQL.cierraConexion();
 %>

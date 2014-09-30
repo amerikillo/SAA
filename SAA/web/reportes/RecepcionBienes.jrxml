@@ -2,8 +2,16 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compras" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6336019d-9f1f-4558-a5b6-5fcef7ba5fdd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<parameter name="folcom" class="java.lang.String"/>
+	<property name="ireport.y" value="39"/>
+	<parameter name="folcom" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecRev" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecRecep" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
 	P.F_NomPro,
@@ -169,11 +177,11 @@ ORDER BY
 				<text><![CDATA[FOLIO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="31dba6c0-3567-4726-a05f-59fbb9c0bc42" x="552" y="57" width="43" height="15"/>
+				<reportElement uuid="31dba6c0-3567-4726-a05f-59fbb9c0bc42" x="442" y="57" width="153" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<text><![CDATA[FECHA:]]></text>
+				<text><![CDATA[FECHA DE SUPERVISIÓN:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="e58270c8-9674-413c-90b6-444e90f0ee20" x="501" y="79" width="94" height="15"/>
@@ -203,9 +211,14 @@ ORDER BY
 				<reportElement uuid="cef76b30-2ed0-4fea-9677-409916bbd1d1" x="595" y="98" width="140" height="16"/>
 			</rectangle>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="363df80a-2d50-4a23-ba9a-5c7d1e4805af" x="613" y="99" width="100" height="15"/>
+				<reportElement uuid="1aa8d14a-b614-41d5-8de5-945c7ddb0282" x="612" y="59" width="100" height="13"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{F_FecApl}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{fecRev}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="b29dbab1-bc0a-4a8e-a539-e0049e769bd2" x="612" y="98" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{fecRecep}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -286,27 +299,24 @@ ORDER BY
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band height="166">
+		<band height="228">
+			<image>
+				<reportElement uuid="fc4dc97d-1cde-4ba1-a0a9-fd5eb7c0e04a" mode="Transparent" x="0" y="129" width="161" height="99"/>
+				<imageExpression><![CDATA["logoeruviel.JPG"]]></imageExpression>
+			</image>
 			<textField>
-				<reportElement uuid="1c658009-a7f0-4fc1-8301-2d75dd0b9eb2" mode="Opaque" x="552" y="149" width="157" height="13" backcolor="#FFFFFF"/>
+				<reportElement uuid="1c658009-a7f0-4fc1-8301-2d75dd0b9eb2" mode="Opaque" x="552" y="212" width="157" height="13" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="c10718d7-795f-4fa9-af85-2f67ead803ef" mode="Opaque" x="711" y="149" width="40" height="13" backcolor="#FFFFFF"/>
+				<reportElement uuid="c10718d7-795f-4fa9-af85-2f67ead803ef" mode="Opaque" x="711" y="212" width="40" height="13" backcolor="#FFFFFF"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement uuid="fff0ba61-ccec-4d5f-9024-de79d5d7c71a" x="0" y="149" width="459" height="13"/>
-				<textElement>
-					<font fontName="SansSerif"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="c24b2c49-355c-4f18-875b-31a2c6b2b5e5" x="3" y="0" width="100" height="13"/>
@@ -318,27 +328,6 @@ ORDER BY
 			<rectangle>
 				<reportElement uuid="46f40887-8f14-4eaa-b67b-e033672f1146" x="103" y="0" width="567" height="28"/>
 			</rectangle>
-			<staticText>
-				<reportElement uuid="0a31a3f9-cd42-4774-a34f-06f289935a36" x="43" y="32" width="100" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif"/>
-				</textElement>
-				<text><![CDATA[Visto Bueno]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="0e37195e-d127-4324-ae8e-d15e91e136c6" x="342" y="32" width="100" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif"/>
-				</textElement>
-				<text><![CDATA[Sello]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="eb52032f-72eb-405d-bc33-1a230d50cd27" x="603" y="32" width="100" height="13"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif"/>
-				</textElement>
-				<text><![CDATA[GNKL S.A. de C.V.]]></text>
-			</staticText>
 			<line>
 				<reportElement uuid="c34fc353-7550-4f02-b3cc-ee87c6ac56ca" x="29" y="75" width="125" height="1"/>
 			</line>
@@ -349,44 +338,61 @@ ORDER BY
 				<reportElement uuid="86cc6fac-aa4c-4055-b560-7e8cb9932c6f" x="595" y="75" width="125" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="c36c5d51-75bc-4a91-b9af-4c5fbf044c05" x="19" y="76" width="145" height="11"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<text><![CDATA[REPRESENTANTE DE RECURSOS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="db00b009-f643-41d8-8850-cda6fe37b4fe" x="294" y="76" width="201" height="11"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<text><![CDATA[SUBDIRECCIÓN DE RECURSOS MATERIALES]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="d1bbec5b-3398-467b-a091-4caeef18a92c" x="584" y="75" width="145" height="11"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<text><![CDATA[EMPRESA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="4dfd889c-5e04-4c6a-bdb5-6cb1a9d543ce" x="164" y="92" width="26" height="11"/>
+				<reportElement uuid="4dfd889c-5e04-4c6a-bdb5-6cb1a9d543ce" x="161" y="155" width="26" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOTA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="36fbf92f-2470-48d8-a56e-3483c85ed32a" x="190" y="92" width="545" height="50"/>
+				<reportElement uuid="36fbf92f-2470-48d8-a56e-3483c85ed32a" x="190" y="155" width="545" height="50"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[En pleno complimiento y responsabilidad de acuerdo a las cláusulas del contrato establecido con el Instituto de Salud del Estado de México, en el que manifiesta responsabilidad de recepción, revisión resguardo y control de insumos quedan a cargo de la empresa GNK S.A. de C.V. La Subdirección de Recursos Materiales, solo acude para verificar la entrega-recepción de insumos por parte del proveedor.]]></text>
 			</staticText>
-			<image>
-				<reportElement uuid="fc4dc97d-1cde-4ba1-a0a9-fd5eb7c0e04a" x="3" y="92" width="61" height="50"/>
-				<imageExpression><![CDATA["logoeruviel.JPG"]]></imageExpression>
-			</image>
+			<staticText>
+				<reportElement uuid="8abaebf7-3dd8-48cb-911f-d19761cecdb8" x="19" y="76" width="168" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE Y FIRMA DEL RESP. DE ALMACEN GNKL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e6a4981f-626c-4e5b-9fb9-d56df32f7911" x="19" y="99" width="168" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[OSCAR ARELLANO GARCÍA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f8c3f2a6-f83c-4b3b-8050-1e247d2d587d" x="310" y="76" width="168" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE Y FIRMA DEL RESPONSABLE DEL PROYECTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1e364c83-ab29-4b69-befb-46e18295c510" x="310" y="96" width="168" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lic. Yolanda Orozco Paulín]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b10fa50d-64d0-44b6-b901-ad879233cda4" x="567" y="76" width="168" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE Y FIRMA DEL RESPONSABLE DEL PROYECTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2678829d-8764-48d7-b511-5f891d32b489" x="567" y="96" width="168" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Q.F.B. Esperanza Cárdenas]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

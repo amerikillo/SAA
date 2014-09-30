@@ -10,8 +10,6 @@
 <%@ page import="java.util.*" %> 
 <%@ page import="java.io.*" %> 
 <%@ page import="java.sql.*" %> 
-<%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
-<%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <% /*Parametros para realizar la conexión*/
 
     HttpSession sesion = request.getSession();
@@ -22,22 +20,16 @@
     } else {
         response.sendRedirect("index.jsp");
     }
-    String folio_gnk = request.getParameter("idCom");
-    String fecRecepcion = request.getParameter("fecRecepcion");
-    String fecRevision = request.getParameter("fecRevision");
+    String folio_gnk = request.getParameter("fol_gnkl");
     Connection conexion;
     Class.forName("com.mysql.jdbc.Driver").newInstance();
     conexion = con.getConn();
     /*Establecemos la ruta del reporte*/
-    File reportFile = new File(application.getRealPath("reportes/RecepcionBienes.jasper"));
+    File reportFile = new File(application.getRealPath("reportes/reintegraInventario.jasper"));
     /* No enviamos parámetros porque nuestro reporte no los necesita asi que escriba 
      cualquier cadena de texto ya que solo seguiremos el formato del método runReportToPdf*/
     Map parameters = new HashMap();
-    parameters.put("folcom", folio_gnk);
-    String fecRep = (df3.format(df2.parse(fecRecepcion)) + "").toString();
-    String fecRev = (df3.format(df2.parse(fecRevision)) + "").toString();
-    parameters.put("fecRecep",fecRep);
-    parameters.put("fecRev", fecRev);
+    parameters.put("Folfact", folio_gnk);
     /*Enviamos la ruta del reporte, los parámetros y la conexión(objeto Connection)*/
     byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters, conexion);
     /*Indicamos que la respuesta va a ser en formato PDF*/ response.setContentType("application/pdf");

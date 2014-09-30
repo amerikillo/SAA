@@ -111,7 +111,7 @@
                                     <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
                                     <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                 </ul>
                             </li>
@@ -171,46 +171,45 @@
         <div style="width: 90%; margin: auto;">
             <br/>
 
-            <div class="row">
-                <div class="panel panel-default">
+            <div class="panel panel-default">
+                <div class="panel-heading">
                     <form action="CompraAutomatica" method="get" name="formulario1">
-                        <div class="panel-heading">
-                            <%
-                                try {
-                                    con.conectar();
-                                    ResultSet rset = con.consulta("select i.F_NoCompra, DATE_FORMAT(i.F_FecSur, '%d/%m/%Y') as F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + vOrden + "'  and F_recibido='0' group by F_NoCompra");
-                                    while (rset.next()) {
-                            %>
-                            <div class="row">
-                                <h4 class="col-sm-2">Folio Orden de Compra:</h4>
-                                <div class="col-sm-2"><input class="form-control" value="<%=vOrden%>" readonly="" name="folio" id="folio" onkeypress="return tabular(event, this)" /></div>
-                                <h4 class="col-sm-1">Remisión:</h4>
-                                <div class="col-sm-2"><input class="form-control" value="<%=vRemi%>" readonly="" name="folio" id="folio" onkeypress="return tabular(event, this)" /></div>
-                            </div>
-                            <div class="row">
-                                <h4 class="col-sm-12">Proveedor: <%=rset.getString("p.F_NomPro")%></h4>
-                            </div>
-                            <div class="row">
-                                <h4 class="col-sm-9">Fecha y Hora de Entrega: <%=rset.getString("F_FecSur")%> <%=rset.getString("i.F_HorSur")%></h4>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-default" href="compraAuto2.jsp">Agregar Clave al Inventario</a>
-                                </div>
-                            </div>
-                            <%
-                                    }
-                                    con.cierraConexion();
-                                } catch (Exception e) {
-                                    e.getMessage();
-                                }
-                            %>
+                        <%
+                            try {
+                                con.conectar();
+                                ResultSet rset = con.consulta("select i.F_NoCompra, DATE_FORMAT(i.F_FecSur, '%d/%m/%Y') as F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + vOrden + "'  and F_recibido='0' group by F_NoCompra");
+                                while (rset.next()) {
+                        %>
+                        <div class="row">
+                            <h4 class="col-sm-2">Folio Orden de Compra:</h4>
+                            <div class="col-sm-2"><input class="form-control" value="<%=vOrden%>" readonly="" name="folio" id="folio" onkeypress="return tabular(event, this)" /></div>
+                            <h4 class="col-sm-1">Remisión:</h4>
+                            <div class="col-sm-2"><input class="form-control" value="<%=vRemi%>" readonly="" name="folio" id="folio" onkeypress="return tabular(event, this)" /></div>
                         </div>
+                        <div class="row">
+                            <h4 class="col-sm-12">Proveedor: <%=rset.getString("p.F_NomPro")%></h4>
+                        </div>
+                        <div class="row">
+                            <h4 class="col-sm-9">Fecha y Hora de Entrega: <%=rset.getString("F_FecSur")%> <%=rset.getString("i.F_HorSur")%></h4>
+                            <div class="col-sm-2">
+                                <a class="btn btn-default" href="compraAuto2.jsp">Agregar Clave al Inventario</a>
+                            </div>
+                        </div>
+                        <%
+                                }
+                                con.cierraConexion();
+                            } catch (Exception e) {
+                                e.getMessage();
+                            }
+                        %>
                     </form>
-                    <div class="panel-body">
-
-                        <table class="table table-bordered table-striped table-responsive" style="width: 100%">
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
                             <tr>
                                 <td>Remisión</td>
-                                <td><a name="ancla"></a>Código de Barras</td>
+                                <td>Código de Barras</td>
                                 <td>Clave</td>
                                 <td>Descripción</td>                       
                                 <td>Lote</td>
@@ -256,40 +255,47 @@
                                 } catch (Exception e) {
 
                                 }
-                                if (banBtn == 1) {
+
                             %>
                             <tr>
-
                                 <td colspan="12">
-                                    <form action="nuevoAutomaticaLotes" method="post">
-                                        <input name="vOrden" type="text" style="" class="hidden" value='<%=vOrden%>' />
-                                        <input name="vRemi" type="text" style="" class="hidden" value='<%=vRemi%>' />
-                                        <div class="col-lg-3 col-lg-offset-3">
-                                            <button  value="EliminarVerifica" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Remisión</button>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <button  value="GuardarAbiertaVerifica" name="accion" class="btn btn-warning  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
-                                                    return validaCompra();">Remisión Abierta</button>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <button  value="GuardarVerifica" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
-                                                    return validaCompra();">Confirmar Remisión</button>
-                                        </div>
-                                    </form>
+
                                 </td>
                             </tr>
-                            <%
-                                }
-                            %>
 
                         </table>
-
-                        <hr/>
                     </div>
-                    <!--div class="panel-footer">
-                        <button class="btn btn-block btn-success btn-lg" name="accion" id="accion" value="confirmar" onclick="return validaCompra();">Confirmar Compra</button>
-                    </div-->
+                    <hr/>
                 </div>
+                <%                                if (banBtn == 1) {
+                %>
+
+                <div class="panel-body table-responsive">
+                    <div class="row">
+                        <form action="nuevoAutomaticaLotes" method="post">
+                            <input name="vOrden" type="text" style="" class="hidden" value='<%=vOrden%>' />
+                            <input name="vRemi" type="text" style="" class="hidden" value='<%=vRemi%>' />
+                            <div class="col-lg-3 col-lg-offset-3">
+                                <button  value="EliminarVerifica" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Remisión</button>
+                            </div>
+                            <div class="col-lg-3">
+                                <button  value="GuardarAbiertaVerifica" name="accion" class="btn btn-warning  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
+                                        return validaCompra();">Remisión Abierta</button>
+                            </div>
+                            <div class="col-lg-3">
+                                <button  value="GuardarVerifica" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
+                                        return validaCompra();">Confirmar Remisión</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <%
+                    }
+                %>
+
+                <!--div class="panel-footer">
+                    <button class="btn btn-block btn-success btn-lg" name="accion" id="accion" value="confirmar" onclick="return validaCompra();">Confirmar Compra</button>
+                </div-->
             </div>
         </div>
 

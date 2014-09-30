@@ -30,7 +30,7 @@
         usua = (String) sesion.getAttribute("nombre");
         tipo = (String) sesion.getAttribute("Tipo");
     } else {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("../index.jsp");
     }
     ConectionDB con = new ConectionDB();
     ConectionDB_Nube conNube = new ConectionDB_Nube();
@@ -39,31 +39,6 @@
             sesion.setAttribute("posClave", "0");
             sesion.setAttribute("folioRemi", "");
             sesion.setAttribute("CodBar", "");
-            /*try {
-             con.conectar();
-             conNube.conectar();
-             ResultSet rsetOrdenes = conNube.consulta("select * from tb_pedidoisem where F_StsPed !=0 ");
-             try {
-             while (rsetOrdenes.next()) {
-             try {
-             con.insertar("insert into tb_pedidoisem values('" + rsetOrdenes.getString(1) + "','" + rsetOrdenes.getString(2) + "','" + rsetOrdenes.getString(3) + "','" + rsetOrdenes.getString(4) + "','" + rsetOrdenes.getString(5) + "','" + rsetOrdenes.getString(6) + "','" + rsetOrdenes.getString(7) + "','" + rsetOrdenes.getString(8) + "','" + rsetOrdenes.getString(9) + "','" + rsetOrdenes.getString(10) + "','" + rsetOrdenes.getString(11) + "','" + rsetOrdenes.getString(12) + "','" + rsetOrdenes.getString(13) + "','" + rsetOrdenes.getString(14) + "','" + rsetOrdenes.getString(15) + "','" + rsetOrdenes.getString(16) + "')");
-             } catch (Exception e) {
-             try {
-             con.insertar("update tb_pedidoisem set F_StsPed = '" + rsetOrdenes.getString(15) + "' where F_IdIsem='" + rsetOrdenes.getString(1) + "'");
-             } catch (Exception ex) {
-
-             }
-             }
-
-             }
-             } catch (Exception e) {
-
-             }
-             con.cierraConexion();
-             con.cierraConexion();
-             } catch (Exception e) {
-             System.out.println(e.getMessage());
-             }*/
         }
     } catch (Exception er) {
 
@@ -175,10 +150,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/datepicker3.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <link href="../css/bootstrap.css" rel="stylesheet">
+        <link href="../css/datepicker3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
+        <link href="../css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
         <!---->
         <title>SIALSS</title>
@@ -202,28 +177,28 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Entrada Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                    <li><a href="../captura.jsp">Entrada Manual</a></li>
+                                    <li><a href="../compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
                                         <%
                                             if (tipo.equals("2") || tipo.equals("3")) {
                                         %>
-                                    <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
+                                    <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
                                         <%
                                             }
                                         %>
-                                    <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
-                                    <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
-                                    <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
-                                    <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
+                                    <li><a href="#" onclick="window.open('../reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
+                                    <li><a href="#"  onclick="window.open('../ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
+                                    <li><a href="#"  onclick="window.open('../kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
+                                    <li><a href="#"  onclick="window.open('../Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
-                                    <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
-                                    <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
+                                    <li><a href="../requerimiento.jsp">Carga de Requerimiento</a></li>
+                                    <li><a href="../factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="../validacionSurtido.jsp">Validación Surtido</a></li>
+                                    <li><a href="../validacionAuditores.jsp">Validación Auditores</a></li>
                                         <%
                                             if (tipo.equals("7")) {
                                         %>
@@ -231,25 +206,25 @@
                                         <%
                                             }
                                         %>
-                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
-                                    <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
-                                    <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
+                                    <li><a href="../facturacionManual.jsp">Facturación Manual</a></li>
+                                    <li><a href="../reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="../reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
+                                    <li><a href="../comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="window.open('medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
-                                    <li><a href="#" onclick="window.open('catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
-                                    <li><a href="#" onclick="window.open('marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
+                                    <li><a href="#" onclick="window.open('../medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
+                                    <li><a href="#" onclick="window.open('../catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
+                                    <li><a href="#" onclick="window.open('../marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
+                                    <li><a href="#" onclick="window.open('../Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
+                                    <li><a href="#" onclick="window.open('../historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('../ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -276,12 +251,12 @@
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-                            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
+                            <li class="active"><a href="../index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
-            <form action="compraAuto2.jsp" method="post">
+            <form action="compraAuto3.jsp" method="post">
                 <div class="row">
                     <label class="col-sm-2 text-right">
                         <h4>Proveedor</h4>
@@ -351,7 +326,7 @@
                 </div>
                 <br/>
             </form>
-            <form action="CompraAutomatica" method="get" name="formulario1">
+            <form action="../CompraAutomaticaHH" method="get" name="formulario1">
                 <br/>
                 <%
                     try {
@@ -438,11 +413,31 @@
                             <strong>Cantidad a Recibir</strong>
                             <input type="text" value="<%=formatter.format(rset2.getInt(5))%>" class="form-control" name="cantRecibir" id="cantRecibir" onclick="" readonly=""  onkeypress="return tabular(event, this)"/>
 
+                            <strong>Cantidad Recibida</strong>
+                            <%
+                                int cantRecibida = 0;
+                                try {
+                                    con.conectar();
+                                    ResultSet rset3 = con.consulta("select sum(F_CanCom) from tb_compra where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
+                                    while (rset3.next()) {
+                                        cantRecibida = cantRecibida + rset3.getInt(1);
+                                    }
+                                    rset3 = con.consulta("select sum(F_Pz) from tb_compratemp where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
+                                    while (rset3.next()) {
+                                        cantRecibida = cantRecibida + rset3.getInt(1);
+                                    }
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+
+                                }
+                            %>
+                            <input type="text" value="<%=formatter.format(cantRecibida)%>" class="form-control" name="cantRecibida" id="cantRecibida" onkeypress="return tabular(event, this)" onclick="" readonly=""/>
+
+
 
 
                             <input type="text" value="<%=rset2.getString(1)%>" class="hidden" name="ClaPro" id="ClaPro" onclick="" readonly=""  onkeypress="return tabular(event, this)"/>
-                            <%=rset2.getString(2)%>
-
+                            <strong>Código de Barras:</strong>
                             <input type="text" value="<%=CodBar%>" class="form-control" name="codbar" id="codbar" onclick="" onkeypress="return checkKey(event, this);" />
                             <div class="row">
                                 <div class="col-sm-6">
@@ -570,27 +565,6 @@
                             %>
 
 
-                            <strong>Cantidad Recibida</strong>
-                            <%
-                                int cantRecibida = 0;
-                                try {
-                                    con.conectar();
-                                    ResultSet rset3 = con.consulta("select sum(F_CanCom) from tb_compra where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
-                                    while (rset3.next()) {
-                                        cantRecibida = cantRecibida + rset3.getInt(1);
-                                    }
-                                    rset3 = con.consulta("select sum(F_Pz) from tb_compratemp where F_OrdCom = '" + rset.getString(1) + "' and F_ClaPro = '" + rset2.getString(1) + "'  ");
-                                    while (rset3.next()) {
-                                        cantRecibida = cantRecibida + rset3.getInt(1);
-                                    }
-                                    con.cierraConexion();
-                                } catch (Exception e) {
-
-                                }
-                            %>
-                            <input type="text" value="<%=formatter.format(cantRecibida)%>" class="form-control" name="cantRecibida" id="cantRecibida" onkeypress="return tabular(event, this)" onclick="" readonly=""/>
-
-
 
                             <div class="row">
                                 <div class="col-sm-12">
@@ -600,7 +574,7 @@
                                         <%
                                             try {
                                                 con.conectar();
-                                                ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM tb_marca");
+                                                ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM tb_marca order by F_DesMar");
                                                 while (rset3.next()) {
                                         %>
                                         <option value="<%=rset3.getString("F_ClaMar")%>"
@@ -699,7 +673,7 @@
                             </div>
 
 
-
+                            <h5><strong>Observaciones</strong></h5>
                             <textarea class="form-control" id="Obser" name="Obser"></textarea>
 
 
@@ -714,13 +688,6 @@
                                 <h4 class="col-sm-2 text-right">Folio de Remisión:</h4>
                                 <div class="col-sm-2"><input class="form-control" value="<%=folioRemi%>" name="folioRemi" id="folioRemi" onkeypress="return tabular(event, this)" /></div>
 
-                                <%
-                                    if (tipo.equals("2") || tipo.equals("3")) {
-                                %>
-                                <a class="btn btn-default" href="verificarCompraAuto.jsp">Verificar Remisión</a>
-                                <%
-                                    }
-                                %>
                                 <button class="btn btn-block btn-primary" name="accion" id="accion" value="guardarLote" onclick="return validaCompra();" >Guardar Lote</button>
                             </div>
                             <%
@@ -742,7 +709,7 @@
                         <button class="btn btn-block btn-success btn-lg" name="accion" id="accion" value="confirmar" onclick="return validaCompra();">Confirmar Compra</button>
                     </div-->
                 </div>
-
+            </form>
         </div>
         <%
                 }
@@ -750,283 +717,247 @@
                 System.out.println(e.getMessage());
             }
         %>
-    </form>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped" style="width: 100%">
-            <tr>
-                <td>Remisión</td>
-                <td><a name="ancla"></a>Código de Barras</td>
-                <td>Clave</td>
-                <td>Descripción</td>                       
-                <td>Lote</td>
-                <td>Caducidad</td>                        
-                <td>Cantidad</td>                      
-                <td>Costo U</td>                     
-                <td>IVA</td>                       
-                <td>Importe</td>
-                <td></td>
-            </tr>
-            <%
-                int banCompra = 0;
-                String obser = "";
-                try {
-                    con.conectar();
-                    ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "' and F_Estado = '1'");
-                    while (rset.next()) {
-                        banCompra = 1;
-            %>
-            <tr>
-                <td><%=rset.getString("C.F_FolRemi")%></td>
-                <td><%=rset.getString(1)%></td>
-                <td><%=rset.getString(2)%></td>
-                <td><%=rset.getString(3)%></td>
-                <td><%=rset.getString(4)%></td>
-                <td><%=df3.format(df2.parse(rset.getString(5)))%></td>
-                <td><%=formatter.format(rset.getDouble(6))%></td>           
-                <td><%=formatterDecimal.format(rset.getDouble("C.F_Costo"))%></td>
-                <td><%=formatterDecimal.format(rset.getDouble("C.F_ImpTo"))%></td>          
-                <td><%=formatterDecimal.format(rset.getDouble("C.F_ComTot"))%></td>              
-                <td>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" style="width: 100%">
+                <tr>
+                    <td>Remisión</td>
+                    <td><a name="ancla"></a>Código de Barras</td>
+                    <td>Clave</td>
+                    <td>Descripción</td>                       
+                    <td>Lote</td>
+                    <td>Caducidad</td>                        
+                    <td>Cantidad</td>                      
+                    <td>Costo U</td>                     
+                    <td>IVA</td>                       
+                    <td>Importe</td>
+                    <td></td>
+                </tr>
+                <%
+                    int banCompra = 0;
+                    String obser = "";
+                    try {
+                        con.conectar();
+                        ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "' and F_Estado = '1'");
+                        while (rset.next()) {
+                            banCompra = 1;
+                %>
+                <tr>
+                    <td><%=rset.getString("C.F_FolRemi")%></td>
+                    <td><%=rset.getString(1)%></td>
+                    <td><%=rset.getString(2)%></td>
+                    <td><%=rset.getString(3)%></td>
+                    <td><%=rset.getString(4)%></td>
+                    <td><%=df3.format(df2.parse(rset.getString(5)))%></td>
+                    <td><%=formatter.format(rset.getDouble(6))%></td>           
+                    <td><%=formatterDecimal.format(rset.getDouble("C.F_Costo"))%></td>
+                    <td><%=formatterDecimal.format(rset.getDouble("C.F_ImpTo"))%></td>          
+                    <td><%=formatterDecimal.format(rset.getDouble("C.F_ComTot"))%></td>              
+                    <td>
 
-                    <form method="get" action="Modificaciones">
-                        <input name="id" type="text" style="" class="hidden" value="<%=rset.getString(7)%>" />
-                        <button class="btn btn-warning" name="accion" value="modificarCompraAuto"><span class="glyphicon glyphicon-pencil" ></span></button>
-                        <button class="btn btn-danger" onclick="return confirm('¿Seguro de que desea eliminar?');" name="accion" value="eliminarCompraAuto"><span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        <!--button class="btn btn-success" onclick="return confirm('¿Seguro de Verificar?');" name="accion" value="verificarCompraAuto"><span class="glyphicon glyphicon-ok"></span>
-                        </button-->
-                    </form>
-                </td>
-            </tr>
-            <%
-                    }
-                    con.cierraConexion();
-                } catch (Exception e) {
-
-                }
-                if (banCompra == 1) {
-            %>
-            <tr>
-
-                <td colspan="11">
-                    <div class="col-lg-3 col-lg-offset-6">
-                        <form action="nuevoAutomaticaLotes" method="post">
-                            <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
-                            <button  value="Eliminar" name="accion" class="btn btn-danger btn-block" onclick="return confirm('¿Seguro que desea eliminar la compra?');">Cancelar Compra</button>
+                        <form method="get" action="../ModificacionesHH">
+                            <input name="id" type="text" style="" class="hidden" value="<%=rset.getString(7)%>" />
+                            <button class="btn btn-warning" name="accion" value="modificarCompraAuto"><span class="glyphicon glyphicon-pencil" ></span></button>
+                            <button class="btn btn-danger" onclick="return confirm('¿Seguro de que desea eliminar?');" name="accion" value="eliminarCompraAuto"><span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <!--button class="btn btn-success" onclick="return confirm('¿Seguro de Verificar?');" name="accion" value="verificarCompraAuto"><span class="glyphicon glyphicon-ok"></span>
+                            </button-->
                         </form>
-                    </div>
-                    <div class="col-lg-3">
-                        <form action="Modificaciones" method="post">
-                            <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
-                            <button  value="verificarCompraAuto" name="accion" class="btn btn-success btn-block" onclick="return confirm('¿Seguro que desea verificar la compra?');">Ingresar OC</button>
-                        </form>
-                    </div>
-                    <%
-                        if (tipo.equals("2") || tipo.equals("3")) {
-                    %>
-                    <!--div class="col-lg-3">
-                        <form action="nuevoAutomaticaLotes" method="post">
-                            <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
-                            <button  value="GuardarAbierta" name="accion" class="btn btn-warning  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
-                                    return validaCompra();">Compra Abierta</button>
-                        </form>
-                    </div>
-                    <div class="col-lg-3">
-                        <form action="nuevoAutomaticaLotes" method="post">
-                            <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
-                            <button  value="Guardar" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
-                                    return validaCompra();">Confirmar Compra</button>
-                        </form>
-                    </div-->
-                    <%
+                    </td>
+                </tr>
+                <%
                         }
-                    %>
+                        con.cierraConexion();
+                    } catch (Exception e) {
 
-                    <!--div class="col-lg-3">
-                        <form action="reimpReporte.jsp" target="_blank">
-                            <input class="hidden" name="fol_gnkl" value="<%=noCompra%>">
-                            <button class="btn btn-success btn-block">Imprimir Compra</button>
-                        </form>
-                    </div>
-                    <div class="col-lg-3">
-                        <form action="reimp_marbete.jsp" target="_blank">
-                            <input class="hidden" name="fol_gnkl" value="<%=noCompra%>">
-                            <button class="btn btn-primary btn-block">Imprimir Marbete</button>
-                        </form>
-                    </div-->
-                </td>
-                <!--td colspan="2"><a href="Reporte.jsp" target="_blank" class="btn btn-success btn-block">Imprimir</a></td-->
-            </tr>
-            <%
-                }
-            %>
+                    }
 
-        </table>
+                %>
+            </table>
+        </div>
+        <%                    if (banCompra == 1) {
+        %>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <form action="nuevoAutomaticaLotes" method="post">
+                    <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
+                    <button  value="Eliminar" name="accion" class="btn btn-danger btn-block" onclick="return confirm('¿Seguro que desea eliminar la compra?');">Cancelar Compra</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <form action="../ModificacionesHH" method="post">
+                    <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=noCompra%>" />
+                    <button  value="verificarCompraAuto" name="accion" class="btn btn-success btn-block" onclick="return confirm('¿Seguro que desea verificar la compra?');">Ingresar OC</button>
+                </form>
+            </div>
+        </div> 
+        <%
+            }
+        %>
+
     </div>
 
 
-</div>
-
-
-<br><br><br>
-<div class="navbar navbar-inverse">
-    <div class="text-center text-muted">
-        GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
-        Todos los Derechos Reservados
+    <br><br><br>
+    <div class="navbar navbar-inverse">
+        <div class="text-center text-muted">
+            GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
+            Todos los Derechos Reservados
+        </div>
     </div>
-</div>
 
 
-<!--
-Modal
--->
-<div class="modal fade" id="Rechazar" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="Rechazos" method="get">
-                <div class="modal-header">
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <h4 class="modal-title" id="myModalLabel">Rechazar Orden de Compra</h4>
-                        </div>
-                        <div class="col-sm-2">
-                            <input name="NoCompraRechazo" id="NoCompraRechazo" value="<%=noCompra%>" class="form-control" readonly="" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <%
-                            try {
-                                con.conectar();
-                                ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0' group by F_NoCompra");
-                                while (rset.next()) {
-                        %>
-                        <div class="col-sm-12">
-                            Proveedor:<%=rset.getString("p.F_NomPro")%>
-                        </div>
-                        <div class="col-sm-12">
-                            Fecha y Hora <%=rset.getString("i.F_FecSur")%> - <%=rset.getString("i.F_HorSur")%>
-                        </div>
-                        <%
-                                }
-                                con.cierraConexion();
-                            } catch (Exception e) {
-
-                            }
-                        %>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h4>Observaciones de Rechazo</h4>
-                        </div>
-                        <div class="col-sm-12">
-                            <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser" rows="5"></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h4>Fecha de nueva recepción</h4>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="date" min="<%=df2.format(new Date())%>" class="form-control" id="FechaOrden" name="FechaOrden" />
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-control" id="HoraOrden" name="HoraOrden">
-                                <%
-                                    for (int i = 0; i < 24; i++) {
-                                        if (i != 24) {
-                                %>
-                                <option value="<%=i%>:00"><%=i%>:00</option>
-                                <option value="<%=i%>:30"><%=i%>:30</option>
-                                <%
-                                } else {
-                                %>
-                                <option value="<%=i%>:00"><%=i%>:00</option>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h4>Correo del proveedor</h4>
-                            <input type="email" class="form-control" id="correoProvee" name="correoProvee" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h4>Claves a Cancelar</h4>
-                            <h6>*Deseleccione las claves que no va a cancelar</h6>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="checkbox">
-                                <label>
-                                    <h4><input type="checkbox" checked name="todosChk" id="todosChk" onclick="checkea(this)">Seleccionar todas</h4>
-                                </label>
+    <!--
+    Modal
+    -->
+    <div class="modal fade" id="Rechazar" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="Rechazos" method="get">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <h4 class="modal-title" id="myModalLabel">Rechazar Orden de Compra</h4>
+                            </div>
+                            <div class="col-sm-2">
+                                <input name="NoCompraRechazo" id="NoCompraRechazo" value="<%=noCompra%>" class="form-control" readonly="" />
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
+                        <div class="row">
                             <%
                                 try {
                                     con.conectar();
-                                    ResultSet rset = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' ");
-                                    int columna = 1;
+                                    ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0' group by F_NoCompra");
                                     while (rset.next()) {
-
-                                        if (columna == 1) {
                             %>
-
-                            <%
-                                }
-                            %>
-
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" checked="" name="chkCancela" value="<%=rset.getString(1)%>"><%=rset.getString(1)%>
-                                </label>
+                            <div class="col-sm-12">
+                                Proveedor:<%=rset.getString("p.F_NomPro")%>
                             </div>
-
+                            <div class="col-sm-12">
+                                Fecha y Hora <%=rset.getString("i.F_FecSur")%> - <%=rset.getString("i.F_HorSur")%>
+                            </div>
                             <%
-                                if (columna % 5 == 0) {
-                            %>
-
-                            <%
-                                            columna = 0;
-                                        }
-                                        columna++;
-
                                     }
                                     con.cierraConexion();
                                 } catch (Exception e) {
-                                    System.out.println(e.getMessage());
+
                                 }
                             %>
-
                         </div>
                     </div>
-                    <div class="text-center" id="imagenCarga" style="display: none;" > 
-                        <img src="imagenes/ajax-loader-1.gif">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>Observaciones de Rechazo</h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <textarea class="form-control" placeholder="Observaciones" name="rechazoObser" id="rechazoObser" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>Fecha de nueva recepción</h4>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="date" min="<%=df2.format(new Date())%>" class="form-control" id="FechaOrden" name="FechaOrden" />
+                            </div>
+                            <div class="col-sm-6">
+                                <select class="form-control" id="HoraOrden" name="HoraOrden">
+                                    <%
+                                        for (int i = 0; i < 24; i++) {
+                                            if (i != 24) {
+                                    %>
+                                    <option value="<%=i%>:00"><%=i%>:00</option>
+                                    <option value="<%=i%>:30"><%=i%>:30</option>
+                                    <%
+                                    } else {
+                                    %>
+                                    <option value="<%=i%>:00"><%=i%>:00</option>
+                                    <%
+                                            }
+                                        }
+                                    %>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>Correo del proveedor</h4>
+                                <input type="email" class="form-control" id="correoProvee" name="correoProvee" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4>Claves a Cancelar</h4>
+                                <h6>*Deseleccione las claves que no va a cancelar</h6>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="checkbox">
+                                    <label>
+                                        <h4><input type="checkbox" checked name="todosChk" id="todosChk" onclick="checkea(this)">Seleccionar todas</h4>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <%
+                                    try {
+                                        con.conectar();
+                                        ResultSet rset = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' ");
+                                        int columna = 1;
+                                        while (rset.next()) {
+
+                                            if (columna == 1) {
+                                %>
+
+                                <%
+                                    }
+                                %>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" checked="" name="chkCancela" value="<%=rset.getString(1)%>"><%=rset.getString(1)%>
+                                    </label>
+                                </div>
+
+                                <%
+                                    if (columna % 5 == 0) {
+                                %>
+
+                                <%
+                                                columna = 0;
+                                            }
+                                            columna++;
+
+                                        }
+                                        con.cierraConexion();
+                                    } catch (Exception e) {
+                                        System.out.println(e.getMessage());
+                                    }
+                                %>
+
+                            </div>
+                        </div>
+                        <div class="text-center" id="imagenCarga" style="display: none;" > 
+                            <img src="../imagenes/ajax-loader-1.gif">
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" onclick="return validaRechazo();
-                            " name="accion" value="Rechazar">Rechazar OC</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" onclick="return validaRechazo();" name="accion" value="Rechazar">Rechazar OC</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<!--
-/Modal
--->
+    <!--
+    /Modal
+    -->
 </body>
 
 
@@ -1034,193 +965,245 @@ Modal
 ================================================== -->
 <!-- Se coloca al final del documento para que cargue mas rapido -->
 <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+<script src="../js/jquery-1.9.1.js"></script>
+<script src="../js/bootstrap.js"></script>
+<script src="../js/jquery-ui-1.10.3.custom.js"></script>
+<script src="../js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-                        /*$('#todosChk').click(function(event) {
-                         alert('hola');
-                         if (this.checked) {
-                         $(':chkCancela').each(function() {
-                         this.checked = true;
-                         });
-                         } else {
-                         $(':chkCancela').each(function() {
-                         this.checked = false;
-                         });
-                         }
-                         });*/
-                        function checkea(obj) {
-                            var cbs = document.getElementsByName('chkCancela');
-                            if (obj.checked) {
-                                for (var i = 0; i < cbs.length; i++)
-                                {
-                                    cbs[i].checked = true;
+                            /*$('#todosChk').click(function(event) {
+                             alert('hola');
+                             if (this.checked) {
+                             $(':chkCancela').each(function() {
+                             this.checked = true;
+                             });
+                             } else {
+                             $(':chkCancela').each(function() {
+                             this.checked = false;
+                             });
+                             }
+                             });*/
+                            function checkea(obj) {
+                                var cbs = document.getElementsByName('chkCancela');
+                                if (obj.checked) {
+                                    for (var i = 0; i < cbs.length; i++)
+                                    {
+                                        cbs[i].checked = true;
+                                    }
+                                } else {
+                                    for (var i = 0; i < cbs.length; i++)
+                                    {
+                                        cbs[i].checked = false;
+                                    }
                                 }
-                            } else {
-                                for (var i = 0; i < cbs.length; i++)
-                                {
-                                    cbs[i].checked = false;
+                            }
+                            function validaRechazo() {
+                                var obser = document.getElementById('rechazoObser').value;
+                                var fechaN = document.getElementById('FechaOrden').value;
+                                var horaN = document.getElementById('HoraOrden').value;
+                                var correoProvee = document.getElementById('correoProvee').value;
+                                if (obser === "") {
+                                    alert('Ingrese las observaciones del rechazo.');
+                                    return false;
                                 }
+                                if (fechaN === "") {
+                                    alert('Ingrese nueva fecha de recepción.');
+                                    return false;
+                                }
+                                if (horaN === "0:00") {
+                                    alert('Ingrese nueva hora de recepción.');
+                                    return false;
+                                }
+                                if (correoProvee === "0:00") {
+                                    alert('Ingrese correo de proveedor.');
+                                    return false;
+                                }
+                                var con = confirm('¿Seguro que desea rechazar la OC?');
+                                if (con === false) {
+                                    return false;
+                                }
+                                document.getElementById('imagenCarga').style.display = 'block';
+                                //return false;
                             }
-                        }
-                        function validaRechazo() {
-                            var obser = document.getElementById('rechazoObser').value;
-                            var fechaN = document.getElementById('FechaOrden').value;
-                            var horaN = document.getElementById('HoraOrden').value;
-                            var correoProvee = document.getElementById('correoProvee').value;
-                            if (obser === "") {
-                                alert('Ingrese las observaciones del rechazo.');
-                                return false;
-                            }
-                            if (fechaN === "") {
-                                alert('Ingrese nueva fecha de recepción.');
-                                return false;
-                            }
-                            if (horaN === "0:00") {
-                                alert('Ingrese nueva hora de recepción.');
-                                return false;
-                            }
-                            if (correoProvee === "0:00") {
-                                alert('Ingrese correo de proveedor.');
-                                return false;
-                            }
-                            var con = confirm('¿Seguro que desea rechazar la OC?');
-                            if (con === false) {
-                                return false;
-                            }
-                            document.getElementById('imagenCarga').style.display = 'block';
-                            //return false;
-                        }
 
-                        $(function() {
-                            $("#Fecha").datepicker();
-                            $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                        });
-                        function justNumbers(e)
-                        {
-                            var keynum = window.event ? window.event.keyCode : e.which;
-                            if ((keynum === 8) || (keynum === 46))
-                                return true;
-                            return /\d/.test(String.fromCharCode(keynum));
-                        }
+                            $(function() {
+                                $("#Fecha").datepicker();
+                                $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                            });
+                            function justNumbers(e)
+                            {
+                                var keynum = window.event ? window.event.keyCode : e.which;
+                                if ((keynum === 8) || (keynum === 46))
+                                    return true;
+                                return /\d/.test(String.fromCharCode(keynum));
+                            }
 
-                        otro = 0;
-                        function LP_data(e, esto) {
-                            var key = (document.all) ? e.keyCode : e.which; //codigo de tecla. 
-                            if (key < 48 || key > 57)//si no es numero 
-                                return false; //anula la entrada de texto.
-                            else
-                                anade(esto);
-                        }
-                        function anade(esto) {
+                            otro = 0;
+                            function LP_data(e, esto) {
+                                var key = (document.all) ? e.keyCode : e.which; //codigo de tecla. 
+                                if (key < 48 || key > 57)//si no es numero 
+                                    return false; //anula la entrada de texto.
+                                else
+                                    anade(esto);
+                            }
+                            function anade(esto) {
 
-                            if (esto.value.length > otro) {
-                                if (esto.value.length === 2) {
-                                    esto.value += "/";
+                                if (esto.value.length > otro) {
+                                    if (esto.value.length === 2) {
+                                        esto.value += "/";
+                                    }
                                 }
-                            }
-                            if (esto.value.length > otro) {
-                                if (esto.value.length === 5) {
-                                    esto.value += "/";
+                                if (esto.value.length > otro) {
+                                    if (esto.value.length === 5) {
+                                        esto.value += "/";
+                                    }
                                 }
-                            }
-                            if (esto.value.length < otro) {
-                                if (esto.value.length === 2 || esto.value.length === 5) {
-                                    esto.value = esto.value.substring(0, esto.value.length - 1);
+                                if (esto.value.length < otro) {
+                                    if (esto.value.length === 2 || esto.value.length === 5) {
+                                        esto.value = esto.value.substring(0, esto.value.length - 1);
+                                    }
                                 }
+                                otro = esto.value.length;
                             }
-                            otro = esto.value.length;
-                        }
 
 
-                        function AvisaID(id) {
-                            //alert(id);
-                        }
-                        var formatNumber = {
-                            separador: ",", // separador para los miles
-                            sepDecimal: '.', // separador para los decimales
-                            formatear: function(num) {
-                                num += '';
-                                var splitStr = num.split('.');
-                                var splitLeft = splitStr[0];
-                                var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                var regx = /(\d+)(\d{3})/;
-                                while (regx.test(splitLeft)) {
-                                    splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                            function AvisaID(id) {
+                                //alert(id);
+                            }
+                            var formatNumber = {
+                                separador: ",", // separador para los miles
+                                sepDecimal: '.', // separador para los decimales
+                                formatear: function(num) {
+                                    num += '';
+                                    var splitStr = num.split('.');
+                                    var splitLeft = splitStr[0];
+                                    var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                                    var regx = /(\d+)(\d{3})/;
+                                    while (regx.test(splitLeft)) {
+                                        splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                                    }
+                                    return this.simbol + splitLeft + splitRight;
+                                },
+                                new : function(num, simbol) {
+                                    this.simbol = simbol || '';
+                                    return this.formatear(num);
                                 }
-                                return this.simbol + splitLeft + splitRight;
-                            },
-                            new : function(num, simbol) {
-                                this.simbol = simbol || '';
-                                return this.formatear(num);
-                            }
-                        };
-                        /*$(function() {
-                         $("#cad").datepicker();
-                         $("#cad").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                         });*/
-                        function totalPiezas() {
-                            var TarimasC = document.getElementById('TarimasC').value;
-                            var CajasxTC = document.getElementById('CajasxTC').value;
-                            var PzsxCC = document.getElementById('PzsxCC').value;
-                            var TarimasI = document.getElementById('TarimasI').value;
-                            var CajasxTI = document.getElementById('CajasxTI').value;
-                            var Resto = document.getElementById('Resto').value;
-                            if (TarimasC === "") {
-                                TarimasC = 0;
-                            }
-                            if (CajasxTC === "") {
-                                CajasxTC = 0;
-                            }
-                            if (PzsxCC === "") {
-                                PzsxCC = 0;
-                            }
-                            if (TarimasI === "") {
-                                TarimasI = 0;
-                            }
-                            if (CajasxTI === "") {
-                                CajasxTI = 0;
-                            }
-                            if (Resto === "") {
-                                Resto = 0;
+                            };
+                            /*$(function() {
+                             $("#cad").datepicker();
+                             $("#cad").datepicker('option', {dateFormat: 'dd/mm/yy'});
+                             });*/
+                            function totalPiezas() {
+                                var TarimasC = document.getElementById('TarimasC').value;
+                                var CajasxTC = document.getElementById('CajasxTC').value;
+                                var PzsxCC = document.getElementById('PzsxCC').value;
+                                var TarimasI = document.getElementById('TarimasI').value;
+                                var CajasxTI = document.getElementById('CajasxTI').value;
+                                var Resto = document.getElementById('Resto').value;
+                                if (TarimasC === "") {
+                                    TarimasC = 0;
+                                }
+                                if (CajasxTC === "") {
+                                    CajasxTC = 0;
+                                }
+                                if (PzsxCC === "") {
+                                    PzsxCC = 0;
+                                }
+                                if (TarimasI === "") {
+                                    TarimasI = 0;
+                                }
+                                if (CajasxTI === "") {
+                                    CajasxTI = 0;
+                                }
+                                if (Resto === "") {
+                                    Resto = 0;
+                                    var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                                    document.getElementById('TCajas').value = formatNumber.new(totalCajas);
+                                } else {
+                                    var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                                    document.getElementById('TCajas').value = formatNumber.new(totalCajas + 1);
+                                    document.getElementById('CajasIn').value = formatNumber.new(1);
+                                    if (parseInt(CajasxTI) !== parseInt(0)) {
+                                        TarimasI = parseInt(TarimasI) + parseInt(1);
+                                    }
+                                }
+                                var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
+                                if (totalTarimas === 0 && Resto !== 0) {
+                                    totalTarimas = totalTarimas + 1;
+                                }
+                                document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
                                 var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
-                                document.getElementById('TCajas').value = formatNumber.new(totalCajas);
-                            } else {
-                                var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
-                                document.getElementById('TCajas').value = formatNumber.new(totalCajas + 1);
-                                document.getElementById('CajasIn').value = formatNumber.new(1);
-                                if (parseInt(CajasxTI) !== parseInt(0)) {
-                                    TarimasI = parseInt(TarimasI) + parseInt(1);
+                                document.getElementById('Cajas').value = formatNumber.new(totalCajas);
+                                var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
+                                document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
+
+                            }
+
+                            function validaCadu() {
+                                var cad = document.getElementById('cad').value;
+                                if (cad === "") {
+                                    alert("Falta Caducidad");
+                                    document.getElementById('cad').focus();
+                                    return false;
+                                } else {
+                                    if (cad.length < 10) {
+                                        alert("Caducidad Incorrecta");
+                                        document.getElementById('cad').focus();
+                                        return false;
+                                    } else {
+                                        var dtFechaActual = new Date();
+                                        var sumarDias = parseInt(276);
+                                        dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
+                                        var fechaSpl = cad.split("/");
+                                        var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
+                                        /*alert(Caducidad);*/
+
+                                        if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
+                                            alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
+                                            document.getElementById('cad').focus();
+                                            return false;
+                                        }
+                                    }
                                 }
                             }
-                            var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
-                            if (totalTarimas === 0 && Resto !== 0) {
-                                totalTarimas = totalTarimas + 1;
-                            }
-                            document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
-                            var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
-                            document.getElementById('Cajas').value = formatNumber.new(totalCajas);
-                            var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
-                            document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
 
-                        }
+                            function validaCompra() {
 
-                        function validaCadu() {
-                            var cad = document.getElementById('cad').value;
-                            if (cad === "") {
-                                alert("Falta Caducidad");
-                                document.getElementById('cad').focus();
-                                return false;
-                            } else {
-                                if (cad.length < 10) {
-                                    alert("Caducidad Incorrecta");
+                                var folioRemi = document.getElementById('folioRemi').value;
+                                if (folioRemi === "") {
+                                    alert("Falta Folio de Remisión");
+                                    document.getElementById('folioRemi').focus();
+                                    return false;
+                                }
+
+                                var codBar = document.getElementById('codbar').value;
+                                if (codBar === "") {
+                                    alert("Falta Código de Barras");
+                                    document.getElementById('codbar').focus();
+                                    return false;
+                                }
+
+                                var lot = document.getElementById('lot').value;
+                                if (lot === "" || lot === "-") {
+                                    alert("Falta Lote");
+                                    document.getElementById('lot').focus();
+                                    return false;
+                                }
+
+                                var marca = document.getElementById('list_marca').value;
+                                if (marca === "" || marca === "-") {
+                                    alert("Falta Marca");
+                                    document.getElementById('list_marca').focus();
+                                    return false;
+                                }
+
+                                var cad = document.getElementById('cad').value;
+                                if (cad === "") {
+                                    alert("Falta Caducidad");
                                     document.getElementById('cad').focus();
                                     return false;
                                 } else {
                                     var dtFechaActual = new Date();
-                                    var sumarDias = parseInt(276);
+                                    var sumarDias = parseInt(270);
                                     dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
                                     var fechaSpl = cad.split("/");
                                     var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
@@ -1231,131 +1214,79 @@ Modal
                                         document.getElementById('cad').focus();
                                         return false;
                                     }
+
                                 }
-                            }
-                        }
 
-                        function validaCompra() {
+                                var Piezas = document.getElementById('Piezas').value;
+                                if (Piezas === "" || Piezas === "0") {
+                                    document.getElementById('Piezas').focus();
+                                    alert("Favor de llenar todos los datos");
+                                    return false;
+                                }
 
-                            var folioRemi = document.getElementById('folioRemi').value;
-                            if (folioRemi === "") {
-                                alert("Falta Folio de Remisión");
-                                document.getElementById('folioRemi').focus();
-                                return false;
-                            }
-
-                            var codBar = document.getElementById('codbar').value;
-                            if (codBar === "") {
-                                alert("Falta Código de Barras");
-                                document.getElementById('codbar').focus();
-                                return false;
-                            }
-
-                            var lot = document.getElementById('lot').value;
-                            if (lot === "" || lot === "-") {
-                                alert("Falta Lote");
-                                document.getElementById('lot').focus();
-                                return false;
-                            }
-
-                            var marca = document.getElementById('list_marca').value;
-                            if (marca === "" || marca === "-") {
-                                alert("Falta Marca");
-                                document.getElementById('list_marca').focus();
-                                return false;
-                            }
-
-                            var cad = document.getElementById('cad').value;
-                            if (cad === "") {
-                                alert("Falta Caducidad");
-                                document.getElementById('cad').focus();
-                                return false;
-                            } else {
-                                var dtFechaActual = new Date();
-                                var sumarDias = parseInt(270);
-                                dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
-                                var fechaSpl = cad.split("/");
-                                var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
-                                /*alert(Caducidad);*/
-
-                                if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
-                                    alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
-                                    document.getElementById('cad').focus();
+                                var cantRecibida = document.getElementById('cantRecibida').value;
+                                var cantTotal = document.getElementById('cantRecibir').value;
+                                cantRecibida = cantRecibida.replace(/,/gi, "");
+                                cantTotal = cantTotal.replace(/,/gi, "");
+                                Piezas = Piezas.replace(/,/gi, "");
+                                var nCantidad = parseInt(Piezas) + parseInt(cantRecibida);
+                                if (nCantidad > parseInt(cantTotal)) {
+                                    alert("Excede la cantidad a recibir, favor de verificar");
                                     return false;
                                 }
 
                             }
 
-                            var Piezas = document.getElementById('Piezas').value;
-                            if (Piezas === "" || Piezas === "0") {
-                                document.getElementById('Piezas').focus();
-                                alert("Favor de llenar todos los datos");
+
+                            function tabular(e, obj)
+                            {
+                                tecla = (document.all) ? e.keyCode : e.which;
+                                if (tecla != 13)
+                                    return;
+                                frm = obj.form;
+                                for (i = 0; i < frm.elements.length; i++)
+                                    if (frm.elements[i] == obj)
+                                    {
+                                        if (i == frm.elements.length - 1)
+                                            i = -1;
+                                        break
+                                    }
+                                /*ACA ESTA EL CAMBIO*/
+                                if (frm.elements[i + 1].disabled == true)
+                                    tabular(e, frm.elements[i + 1]);
+                                else
+                                    frm.elements[i + 1].focus();
                                 return false;
                             }
 
-                            var cantRecibida = document.getElementById('cantRecibida').value;
-                            var cantTotal = document.getElementById('cantRecibir').value;
-                            cantRecibida = cantRecibida.replace(/,/gi, "");
-                            cantTotal = cantTotal.replace(/,/gi, "");
-                            Piezas = Piezas.replace(/,/gi, "");
-                            var nCantidad = parseInt(Piezas) + parseInt(cantRecibida);
-                            if (nCantidad > parseInt(cantTotal)) {
-                                alert("Excede la cantidad a recibir, favor de verificar");
-                                return false;
+                            function cambiaLoteCadu(elemento) {
+                                var indice = elemento.selectedIndex;
+                                document.getElementById('list_cadu').selectedIndex = indice;
+                                document.getElementById('lot').value = document.getElementById('list_lote').value;
+                                document.getElementById('cad').value = document.getElementById('list_cadu').value;
                             }
 
-                        }
 
-
-                        function tabular(e, obj)
-                        {
-                            tecla = (document.all) ? e.keyCode : e.which;
-                            if (tecla != 13)
-                                return;
-                            frm = obj.form;
-                            for (i = 0; i < frm.elements.length; i++)
-                                if (frm.elements[i] == obj)
-                                {
-                                    if (i == frm.elements.length - 1)
-                                        i = -1;
-                                    break
-                                }
-                            /*ACA ESTA EL CAMBIO*/
-                            if (frm.elements[i + 1].disabled == true)
-                                tabular(e, frm.elements[i + 1]);
-                            else
-                                frm.elements[i + 1].focus();
-                            return false;
-                        }
-
-                        function cambiaLoteCadu(elemento) {
-                            var indice = elemento.selectedIndex;
-                            document.getElementById('list_cadu').selectedIndex = indice;
-                            document.getElementById('lot').value = document.getElementById('list_lote').value;
-                            document.getElementById('cad').value = document.getElementById('list_cadu').value;
-                        }
-
-
-                        function checkKey(e, obj) {
-                            tecla = (document.all) ? e.keyCode : e.which;
-                            if (tecla != 13)
-                                return;
-                            frm = obj.form;
-                            for (i = 0; i < frm.elements.length; i++)
-                                if (frm.elements[i] == obj)
-                                {
-                                    if (i == frm.elements.length - 1)
-                                        i = -1;
-                                    break
-                                }
-                            /*ACA ESTA EL CAMBIO*/
-                            if (frm.elements[i + 1].disabled == true)
-                                tabular(e, frm.elements[i + 1]);
-                            else
-                                frm.elements[i + 1].focus();
-                            document.getElementById('CodigoBarras').click();
-                            return false;
-                        }
+                            function checkKey(e, obj) {
+                                tecla = (document.all) ? e.keyCode : e.which;
+                                if (tecla != 13)
+                                    return;
+                                frm = obj.form;
+                                for (i = 0; i < frm.elements.length; i++)
+                                    if (frm.elements[i] == obj)
+                                    {
+                                        if (i == frm.elements.length - 1)
+                                            i = -1;
+                                        break
+                                    }
+                                /*ACA ESTA EL CAMBIO*/
+                                if (frm.elements[i + 1].disabled == true)
+                                    tabular(e, frm.elements[i + 1]);
+                                else
+                                    frm.elements[i + 1].focus();
+                                document.getElementById('CodigoBarras').click();
+                                return false;
+                            }
 
 </script>
 

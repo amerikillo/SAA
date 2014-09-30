@@ -81,7 +81,7 @@ public class Facturacion extends HttpServlet {
                 }
                 sesion.setAttribute("Nombre", request.getParameter("Nombre"));
                 out.println("<script>alert('Clave Validada Correctamente')</script>");
-                out.println("<script>window.location='validacionSurtido.jsp'</script>");
+                out.println("<script>window.location='validacionAuditores.jsp'</script>");
             }
             if (request.getParameter("accion").equals("validaRegistro")) {
                 try {

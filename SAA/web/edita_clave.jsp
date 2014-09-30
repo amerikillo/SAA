@@ -22,7 +22,7 @@
     }
     ConectionDB con = new ConectionDB();
     String folio_gnk = "", fecha = "", folio_remi = "", orden = "", provee = "", recib = "", entrega = "", origen = "", coincide = "", observaciones = "", clave = "", descrip = "", cod_bar = "", um = "", lote = "", cadu = "", cajas = "", piezas = "", tarimas = "", marca = "", fec_fab = "", proveedor = "", tarimasInc = "";
-    int PzxCaja = 0, tarimasC = 0, tarimasI = 0, cajasPorTarimaC = 0, cajasPorTarimaI = 0, resto=0, cajasI=0;
+    int PzxCaja = 0, tarimasC = 0, tarimasI = 0, cajasPorTarimaC = 0, cajasPorTarimaI = 0, resto = 0, cajasI = 0;
     try {
         folio_gnk = (String) session.getAttribute("folio");
         fecha = (String) session.getAttribute("fecha");
@@ -45,8 +45,17 @@
     }
     try {
         con.conectar();
-        ResultSet rset = con.consulta("select F_ClaPro, F_Lote, F_FecCad, F_FecFab, F_Marca, F_Cb, F_Cajas, F_Pz, F_Tarimas, F_Resto, F_TarimasI, F_CajasI from tb_compratemp where F_IdCom = '" + ((String) sesion.getAttribute("id")) + "' ");
+        ResultSet rset = con.consulta("select F_ClaPro, F_Lote, F_FecCad, F_FecFab, F_Marca, F_Cb, F_Cajas, F_Pz, F_Tarimas, F_Resto, F_TarimasI, F_CajasI, F_FolRemi, F_Provee from tb_compratemp where F_IdCom = '" + ((String) sesion.getAttribute("id")) + "' ");
         while (rset.next()) {
+            folio_gnk = rset.getString("F_FolRemi");
+            fecha = (String) session.getAttribute("fecha");
+            folio_remi = rset.getString("F_FolRemi");
+            orden = rset.getString("F_FolRemi");
+            provee = rset.getString("F_Provee");
+            recib = (String) session.getAttribute("recib");
+            entrega = (String) session.getAttribute("entrega");
+            clave = (String) session.getAttribute("clave");
+            descrip = (String) session.getAttribute("descrip");
             clave = rset.getString("F_ClaPro");
             lote = rset.getString("F_Lote");
             cadu = df3.format(df2.parse(rset.getString("F_FecCad")));
@@ -57,7 +66,7 @@
             tarimas = rset.getString("F_Tarimas");
             tarimasInc = rset.getString("F_TarimasI");
             cajasI = rset.getInt("F_CajasI");
-            resto =  rset.getInt("F_Resto");
+            resto = rset.getInt("F_Resto");
             ResultSet rset2 = con.consulta("select F_DesPro, F_PrePro from tb_medica where F_ClaPro = '" + clave + "' ");
             while (rset2.next()) {
                 descrip = rset2.getString(1);
@@ -68,10 +77,10 @@
             while (rset2.next()) {
                 marca = rset2.getString(1);
             }
-            PzxCaja = (Integer.parseInt(piezas)-resto) / Integer.parseInt(cajas);
+            PzxCaja = (Integer.parseInt(piezas) - resto) / Integer.parseInt(cajas);
             tarimasC = Integer.parseInt(tarimas) - Integer.parseInt(tarimasInc);
             tarimasI = Integer.parseInt(tarimasInc);
-            cajasPorTarimaC = (Integer.parseInt(cajas)-cajasI) / tarimasC;
+            cajasPorTarimaC = (Integer.parseInt(cajas) - cajasI) / tarimasC;
             cajasPorTarimaI = cajasI;
         }
         con.cierraConexion();
@@ -291,8 +300,8 @@
                         <h5><strong>Tarimas Incompletas</strong></h5>
                         <div class="row">
 
-                            <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
-                            <div class="col-sm-1">
+                            <label for="Cajas" class="hidden">Tarimas</label>
+                            <div class="hidden">
                                 <input type="Cajas" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
                                         return handleEnter(even);" onkeyup="totalPiezas();" value="<%=tarimasI%>" />
                             </div>
@@ -309,18 +318,26 @@
                         <h5><strong>Totales</strong></h5>
                         <div class="row">
 
-                            <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
+                            <label for="Cajas" class="col-sm-1 control-label">Tarimas</label>
                             <div class="col-sm-1">
                                 <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
-                                        return handleEnter(even);" onkeyup="totalPiezas();"  value="<%=tarimas%>" />
+                                                            return handleEnter(even);" onkeyup="totalPiezas();" value="<%=(tarimasC+tarimasI)%>" onclick="" />
                             </div>
-                            <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
+                            <label for="pzsxcaja" class="col-sm-1 control-label">Cajas Completas</label>
                             <div class="col-sm-1">
-                                <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=cajas%>"  />
+                                <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" value="<%=(cajasPorTarimaC)%>"/>
                             </div>
-                            <label for="Resto" class="col-sm-2 control-label">Piezas x Caja</label>
+                            <label for="CajasIn" class="col-sm-1 control-label">Cajas Incompletas</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="CajasIn" name="CajasIn" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" value="<%=(cajasPorTarimaI)%>"/>
+                            </div>
+                            <label for="TCajas" class="col-sm-1 control-label">Total Cajas</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" value="<%=(cajasPorTarimaC+cajasPorTarimaI)%>"/>
+                            </div>
+                            <label for="Resto" class="col-sm-1 control-label">Piezas</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();"  value="<%=piezas%>" />
+                                <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();"  value="<%=piezas%>" onclick="" />
                             </div>
                         </div>
                         <br/>
@@ -631,18 +648,26 @@
                                 if (CajasxTI === "") {
                                     CajasxTI = 0;
                                 }
-                                    if (Resto === "") {
-                                        Resto = 0;
+                                if (Resto === "") {
+                                    Resto = 0;
+                                    var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                                    document.getElementById('TCajas').value = formatNumber.new(totalCajas);
+                                } else {
+                                    var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                                    document.getElementById('TCajas').value = formatNumber.new(totalCajas + 1);
+                                    document.getElementById('CajasIn').value = formatNumber.new(1);
+                                    if (parseInt(CajasxTI) !== parseInt(0)) {
+                                        TarimasI = parseInt(TarimasI) + parseInt(1);
                                     }
+                                }
                                 var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
+                                if (totalTarimas === 0 && Resto !== 0) {
+                                    totalTarimas = totalTarimas + 1;
+                                }
                                 document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
                                 var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
                                 document.getElementById('Cajas').value = formatNumber.new(totalCajas);
-                                var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
-                                document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
-
-
                                 var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
-                                    document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
+                                document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
                             }
 </script> 

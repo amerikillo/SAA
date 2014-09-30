@@ -15,14 +15,12 @@
 
     HttpSession sesion = request.getSession();
     String usua = "";
-    String tipo = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
-        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("index.jsp");
     }
-    ConectionDB con = new ConectionDB();
+    ConectionDBInv con = new ConectionDBInv();
 %>
 <html>
     <head>
@@ -40,7 +38,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            <div class="navbar navbar-default">
+            <!--div class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -57,21 +55,10 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="captura.jsp">Entrada Manual</a></li>
                                     <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                        <%
-                                            if (tipo.equals("2") || tipo.equals("3")) {
-                                        %>
-                                    <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
-                                        <%
-                                            }
-                                        %>
-                                    <li><a href="#" onclick="window.open('reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
-                                    <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
-                                    <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
-                                    <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
-                                    <li><a href="#"  onclick="window.open('creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
-                                    <li class="divider"></li>
-                                    <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
-                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li-->
+                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
+                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
+                                    <li><a href="kardexClave.jsp">Kardex Claves</a></li>
+                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -79,83 +66,93 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
-                                    <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
-                                    <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
-                                        <%
-                                            if (tipo.equals("7")) {
-                                        %>
-                                    <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
-                                        <%
-                                            }
-                                        %>
-                                    <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                      <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
-                                    <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
-                                    <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#"  onclick="window.open('Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
-                                    <li><a href="#"  onclick="window.open('movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="window.open('medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
-                                    <li><a href="#" onclick="window.open('catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
-                                    <li><a href="#" onclick="window.open('marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
+                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
+                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
+                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
+                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>    
+                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                     
                                 </ul>
                             </li>
-
+                            
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
                             <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
                         </ul>
-                    </div><!--/.nav-collapse -->
+                    </div><!--/.nav-collapse>
                 </div>
-            </div>
+            </div-->
+            <hr/>
         </div>
         <div class="container">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Carga de Requerimientos</h3>
+                    <h3 class="panel-title">Movimientos por Usuario - Inventario</h3>
                 </div>
                 <div class="panel-body ">
-                    <form method="post" class="jumbotron"  action="FileUploadServlet" enctype="multipart/form-data" name="form1">
-                        <div class="form-group">
-                            <div class="form-group">
-                                <div class="col-lg-4 text-success">
-                                    <h4>Seleccione el Excel a Cargar</h4>
-                                </div>
-                                <!--label for="Clave" class="col-xs-2 control-label">Clave*</label>
-                                <div class="col-xs-2">
-                                    <input type="text" class="form-control" id="Clave" name="Clave" placeholder="Clave" onKeyPress="return tabular(event, this)" autofocus >
-                                </div-->
-                                <label for="Nombre" class="col-xs-2 control-label">Nombre Archivo*</label>
-                                <div class="col-sm-5">
-                                    <input class="form-control" type="file" name="file1" id="file1" accept=".xlsx"/>                                    
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-block btn-primary" type="submit" name="accion" value="guardar" onclick="return valida_alta();"> Cargar Archivo</button>
-                    </form>
-                    <div style="display: none;" class="text-center" id="Loader">
-                        <img src="imagenes/ajax-loader-1.gif" height="150" />
-                    </div>
                     <div>
                         <h6>Los campos marcados con * son obligatorios</h6>
                     </div>
+                </div>
+                <div class="panel-footer">
+                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="datosProv">
+                        <thead>
+                            <tr>
+                                <td>Usuario</td>
+                                <td>Movimiento</td>    
+                                <td>Clave</td>
+                                <td>Lote</td>
+                                <td>Caducidad</td>
+                                <td>Cantidad</td>
+                                <td>Ubicación</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                try {
+                                    con.conectar();
+                                    ResultSet rset = con.consulta("select m.F_User, m.F_CantMov, m.F_UbiMov, m.F_ProMov, m.F_LotMov, m.F_ConMov from tb_movinv m  GROUP BY m.F_IdMov order by m.F_IdMov asc;");
+                                    while (rset.next()) {
+                                        String movi="", cadu="";
+                                        ResultSet rset2 = con.consulta("select F_DesCon from tb_coninv where F_IdCon = '"+rset.getString("F_ConMov")+"'");
+                                        while(rset2.next()){
+                                            movi = rset2.getString(1);
+                                        }
+                                        rset2 = con.consulta("select F_FecCad from tb_lote where F_ClaPro = '"+rset.getString("F_ProMov")+"' and F_ClaLot = '"+rset.getString("F_LotMov")+"' ");
+                                        while(rset2.next()){
+                                            cadu = rset2.getString(1);
+                                        }
+                                        
+                            %>
+                            <tr class="odd gradeX">
+                                <td><small><%=rset.getString(1)%></small></td>
+                                <td><small><%=movi%></small></td> 
+                                <td><small><%=rset.getString("F_ProMov")%></small></td>
+                                <td><small><%=rset.getString("F_LotMov")%></small></td>
+                                <td><small><%=cadu%></small></td>
+                                <td><small><%=rset.getString("F_CantMov")%></small></td>                                                           
+                                <td><small><%=rset.getString("F_UbiMov")%></small></td> 
+                            </tr>
+                            <%
+                                    }
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            %>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -180,9 +177,9 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                            $(document).ready(function() {
-                                $('#datosProv').dataTable();
-                            });
+    $(document).ready(function() {
+        $('#datosProv').dataTable();
+    });
 </script>
 <script>
 
@@ -216,13 +213,12 @@
 
     function valida_alta() {
         /*var Clave = document.formulario1.Clave.value;*/
-        var Nombre = document.getElementById('file1').value;
+        var Nombre = document.formulario1.Nombre.value;
 
         if (Nombre === "") {
             alert("Tiene campos vacíos, verifique.");
             return false;
         }
-        document.getElementById('Loader').style.display='block';
     }
 </script>
 <script language="javascript">

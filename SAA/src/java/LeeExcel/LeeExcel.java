@@ -74,7 +74,7 @@ public class LeeExcel {
 
                 if (j == 0) {
                     try {
-                        String Clave = agrega((int) Double.parseDouble(vectorCellEachRowData.get(j).toString()) + "");
+                        String Clave = (vectorCellEachRowData.get(j).toString() + "");
                         qry = qry + "'" + Clave + "' , ";
                     } catch (Exception e) {
                     }

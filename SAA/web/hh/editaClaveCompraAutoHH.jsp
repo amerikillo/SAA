@@ -85,10 +85,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Estilos CSS -->
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/datepicker3.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <link href="../css/bootstrap.css" rel="stylesheet">
+        <link href="../css/datepicker3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
+        <link href="../css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
         <title>SIE Sistema de Ingreso de Entradas</title>
         <!-- -->
@@ -113,35 +113,35 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Entrada Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="reimpresion.jsp" target="blank_">Reimpresión de Compras</a></li>
-                                    <li><a href="ordenesCompra.jsp" target="blank_">Órdenes de Compras</a></li>
-                                    <li><a href="kardexClave.jsp" target="blank_">Kardex Claves</a></li>
-                                    <li><a href="Ubicaciones/Consultas.jsp" target="blank_">Ubicaciones</a></li>
+                                    <li><a href="../captura.jsp">Entrada Manual</a></li>
+                                    <li><a href="../compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                    <li><a href="../reimpresion.jsp" target="blank_">Reimpresión de Compras</a></li>
+                                    <li><a href="../ordenesCompra.jsp" target="blank_">Órdenes de Compras</a></li>
+                                    <li><a href="../kardexClave.jsp" target="blank_">Kardex Claves</a></li>
+                                    <li><a href="../Ubicaciones/Consultas.jsp" target="blank_">Ubicaciones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
-                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="../requerimiento.jsp">Carga de Requerimiento</a></li>
+                                    <li><a href="../factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="../reimp_factura.jsp">Administrar Remisiones</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="medicamento.jsp" target="blank_">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp" target="blank_">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp" target="blank_">Catálogo de Marcas</a></li>
+                                    <li><a href="../medicamento.jsp" target="blank_">Catálogo de Medicamento</a></li>
+                                    <li><a href="../catalogo.jsp" target="blank_">Catálogo de Proveedores</a></li>
+                                    <li><a href="../marcas.jsp" target="blank_">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp" target="blank_">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="historialOC.jsp" target="blank_">Historial OC</a></li>                                      
+                                    <li><a href="../Entrega.jsp" target="blank_">Fecha de Recibo en CEDIS</a></li> 
+                                    <li><a href="../historialOC.jsp" target="blank_">Historial OC</a></li>                                      
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -168,7 +168,7 @@
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-                            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
+                            <li class="active"><a href="../index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
@@ -178,47 +178,39 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Edición de Insumo</h3>
                 </div>
-                <form class="form-horizontal" role="form" name="formulario1" id="formulario1" method="post" action="Modificaciones">
+                <form class="form-horizontal" role="form" name="formulario1" id="formulario1" method="post" action="../ModificacionesHH">
                     <div class="panel-body">
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label for="folio" class="col-sm-2 control-label">Folio GNK</label>
-                                <div class="col-sm-2">
-                                    <input type="folio" class="form-control" id="folio" name="folio" placeholder="Folio" readonly value="<%=folio_gnk%>"/>
-                                </div>
-                                <label for="fecha" class="col-sm-1 control-label">ID</label>
-                                <div class="col-sm-2">
-                                    <input type="fecha" class="form-control" id="id" name="id" placeholder="Fecha" readonly value="<%=((String) sesion.getAttribute("id"))%>">
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-block btn-success"  href="compraAuto2.jsp" >Regresar</a>
-                                </div>
+                        <div class="row">
+                            <label for="folio" class="col-sm-2 control-label">Folio GNK</label>
+                            <div class="col-sm-2">
+                                <input type="folio" class="form-control" id="folio" name="folio" placeholder="Folio" readonly value="<%=folio_gnk%>"/>
+                            </div>
+                            <label for="fecha" class="col-sm-1 control-label">ID</label>
+                            <div class="col-sm-2">
+                                <input type="fecha" class="form-control" id="id" name="id" placeholder="Fecha" readonly value="<%=((String) sesion.getAttribute("id"))%>">
+                            </div>
+                            <div class="col-sm-2">
+                                <a class="btn btn-block btn-success"  href="compraAuto3.jsp" >Regresar</a>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label for="fol_rem" class="col-sm-2 control-label">Folio Remisión</label>
-                                <div class="col-sm-3">
-                                    <input type="fol_rem" class="form-control" id="folio_remi" name="folio_remi" placeholder="Folio Remisión" onKeyPress="return tabular(event, this)"  value="<%=folio_remi%>" readonly>
-                                </div>
-                                <label for="orden" class="col-sm-2 control-label">Orden de Compra</label>
-                                <div class="col-sm-3">
-                                    <input type="orden" class="form-control" id="orden" name="orden" placeholder="Orden de Compra" onKeyPress="return tabular(event, this)" value="<%=orden%>"/ readonly="readonly">
-                                </div>
+                        <div class="row">
+                            <label for="fol_rem" class="col-sm-2 control-label">Folio Remisión</label>
+                            <div class="col-sm-3">
+                                <input type="fol_rem" class="form-control" id="folio_remi" name="folio_remi" placeholder="Folio Remisión" onKeyPress="return tabular(event, this)"  value="<%=folio_remi%>" readonly>
+                            </div>
+                            <label for="orden" class="col-sm-2 control-label">Orden de Compra</label>
+                            <div class="col-sm-3">
+                                <input type="orden" class="form-control" id="orden" name="orden" placeholder="Orden de Compra" onKeyPress="return tabular(event, this)" value="<%=orden%>"/ readonly="readonly">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label for="prov" class="col-sm-2 control-label">Proveedor</label>
-                                <div class="col-sm-3">
-                                    <input type="prov" class="form-control" id="provee" name="provee" placeholder="Proveedor" onKeyPress="return tabular(event, this)" value="<%=proveedor%>" readonly />
-                                </div>
-
-                                <label for="recib" class="col-sm-2 control-label">Recibido por</label>
-                                <div class="col-sm-3">
-                                    <input type="recib" class="form-control" id="recib" name="recib" placeholder="Recibe" onKeyPress="return tabular(event, this)" value = "<%=usua%>" readonly>
-                                </div>
-
+                        <div class="row">
+                            <label for="prov" class="col-sm-2 control-label">Proveedor</label>
+                            <div class="col-sm-3">
+                                <input type="prov" class="form-control" id="provee" name="provee" placeholder="Proveedor" onKeyPress="return tabular(event, this)" value="<%=proveedor%>" readonly />
+                            </div>
+                            <label for="recib" class="col-sm-2 control-label">Recibido por</label>
+                            <div class="col-sm-3">
+                                <input type="recib" class="form-control" id="recib" name="recib" placeholder="Recibe" onKeyPress="return tabular(event, this)" value = "<%=usua%>" readonly>
                             </div>
                         </div>
 
@@ -313,23 +305,23 @@
                             <label for="Cajas" class="col-sm-1 control-label">Tarimas</label>
                             <div class="col-sm-1">
                                 <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
-                                                            return handleEnter(even);" onkeyup="totalPiezas();" value="<%=(tarimasC+tarimasI)%>" onclick="" />
+                                        return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
                             </div>
                             <label for="pzsxcaja" class="col-sm-1 control-label">Cajas Completas</label>
                             <div class="col-sm-1">
-                                <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" value="<%=(cajasPorTarimaC)%>"/>
+                                <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                             </div>
                             <label for="CajasIn" class="col-sm-1 control-label">Cajas Incompletas</label>
                             <div class="col-sm-1">
-                                <input type="text" class="form-control" id="CajasIn" name="CajasIn" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" value="<%=(cajasPorTarimaI)%>"/>
+                                <input type="text" class="form-control" id="CajasIn" name="CajasIn" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                             </div>
                             <label for="TCajas" class="col-sm-1 control-label">Total Cajas</label>
                             <div class="col-sm-1">
-                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" value="<%=(cajasPorTarimaC+cajasPorTarimaI)%>"/>
+                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                             </div>
                             <label for="Resto" class="col-sm-1 control-label">Piezas</label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();"  value="<%=piezas%>" onclick="" />
+                                <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" />
                             </div>
                         </div>
                         <br/>
@@ -341,7 +333,7 @@
             </div>
         </div>
         <br><br><br>
-        <div class="navbar navbar-fixed-bottom navbar-inverse">
+        <div class="navbar navbar-inverse">
             <div class="text-center text-muted">
                 GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
                 Todos los Derechos Reservados
@@ -356,10 +348,10 @@
 <!-- Se coloca al final del documento para que cargue mas rapido -->
 <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
+<script src="../js/jquery-1.9.1.js"></script>
+<script src="../js/bootstrap.js"></script>
+<script src="../js/jquery-ui-1.10.3.custom.js"></script>
+<script src="../js/bootstrap-datepicker.js"></script>
 <script>
                             $(function() {
                                 $("#Caducidad").datepicker();

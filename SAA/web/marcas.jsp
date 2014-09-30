@@ -98,7 +98,7 @@
         <div class="container">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Catalogo de Marcas</h3>
+                    <h3 class="panel-title">Catálogo de Marcas</h3>
                 </div>
                 <div class="panel-body ">
                     <form class="form-horizontal" role="form" name="formulario1" id="formulario1" method="post" action="Marca">

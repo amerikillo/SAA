@@ -95,9 +95,10 @@
                                     <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
                                     <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
+                                    <li><a href="#"  onclick="window.open('creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
-                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li>
+                                    <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
+                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li-->
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -115,9 +116,16 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#"  onclick="window.open('Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
+                                    <li><a href="#"  onclick="window.open('movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -145,7 +153,7 @@
             </div>
 
             <div>
-                <h3>Ver Facturas</h3>
+                <h3>Devoluciones</h3>
                 <h4>Folio de Factura: <%=request.getParameter("fol_gnkl")%></h4>
                 <%
                     try {
@@ -230,9 +238,9 @@
                                         %>
                                         <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdFact")%>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                             <%
-                                                } else {
+                                            } else {
                                             %>
-                                        Cancelado: <%=rset.getString("F_Obs")%>
+                                        <a href="#" title="<%=rset.getString("F_Obs")%>">Observaciones</a>
                                         <%
                                             }
                                         %>
@@ -309,11 +317,17 @@
                                     <textarea name="Obser" id="Obser<%=rset.getString("F_IdFact")%>" class="form-control"></textarea>
                                 </div>
                             </div>
+                            <h4 class="modal-title" id="myModalLabel">Contraseña</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input name="ContraDevo<%=rset.getString("F_IdFact")%>" id="ContraDevo<%=rset.getString("F_IdFact")%>" class="form-control" type="password" onkeyup="validaContra(this.id);" />
+                                </div>
+                            </div>
                             <div style="display: none;" class="text-center" id="Loader">
                                 <img src="imagenes/ajax-loader-1.gif" height="150" />
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" id="<%=rset.getString("F_IdFact")%>" onclick="return validaDevolucion(this.id);" name="accion" value="devolucion">Devolver</button>
+                                <button type="submit" class="btn btn-primary" id="<%=rset.getString("F_IdFact")%>" disabled onclick="return validaDevolucion(this.id);" name="accion" value="devolucion">Devolver</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
@@ -364,6 +378,20 @@
         if (document.getElementById('Obser' + id).value === "") {
             alert("Ingrese las observaciones de la devolución")
             return false;
+        }
+    }
+
+    function validaContra(elemento) {
+        //alert(elemento);
+        var pass = document.getElementById(elemento).value;
+        var id = elemento.split("ContraDevo");
+        if (pass === "rosalino") {
+            //alert(pass);
+            document.getElementById(id[1]).disabled = false;
+            //$(id[1]).prop("disabled", false);
+        } else {
+            document.getElementById(id[1]).disabled = true;
+            //$(id[1]).prop("disabled", true);
         }
     }
 </script>

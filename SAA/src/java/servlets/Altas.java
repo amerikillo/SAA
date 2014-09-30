@@ -127,6 +127,7 @@ public class Altas extends HttpServlet {
                     ban1 = 1;
                     descr = request.getParameter("descripci");
                     clave = request.getParameter("clave1");
+                    PresPro = request.getParameter("Presentaci");
                 } catch (Exception e) {
 
                 }

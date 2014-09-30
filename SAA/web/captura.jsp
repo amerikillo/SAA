@@ -4,6 +4,8 @@
     Author     : Americo
 --%>
 
+<%@page import="java.text.DecimalFormatSymbols"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="conn.*" %>
@@ -12,7 +14,13 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    DecimalFormat formatter = new DecimalFormat("#,###,###");
+    DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
+    DecimalFormatSymbols custom = new DecimalFormatSymbols();
+    custom.setDecimalSeparator('.');
+    custom.setGroupingSeparator(',');
+    formatter.setDecimalFormatSymbols(custom);
+    formatterDecimal.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -119,9 +127,10 @@
                                     <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
                                     <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
+                                    <li><a href="#"  onclick="window.open('creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
-                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li>
+                                    <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
+                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li-->
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -139,9 +148,16 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#"  onclick="window.open('Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
+                                    <li><a href="#"  onclick="window.open('movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -313,7 +329,7 @@
                             </div>
                             <label for="descr1" class="col-sm-1 control-label">Presentación</label>
                             <div class="col-sm-3">
-                                <textarea class="form-control" name="Presentación" id="Presentación" readonly onKeyPress="return tabular(event, this)"><%=PresPro%></textarea>
+                                <textarea class="form-control" name="Presentaci" id="Presentaci" readonly onKeyPress="return tabular(event, this)"><%=PresPro%></textarea>
                             </div>
 
                         </div>
@@ -578,33 +594,33 @@
                         <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
                         <div class="col-sm-1">
                             <input type="Cajas" class="form-control" id="TarimasC" name="TarimasC" placeholder="0" onKeyPress="return justNumbers(event);
-                                    return handleEnter(even);" onkeyup="totalPiezas();"  />
+                                    return handleEnter(even);" onkeyup="totalPiezas()" onclick="" />
                         </div>
                         <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
                         <div class="col-sm-1">
-                            <input type="pzsxcaja" class="form-control" id="CajasxTC" name="CajasxTC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" />
+                            <input type="text" class="form-control" id="CajasxTC" name="CajasxTC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
                         </div>
                         <label for="Resto" class="col-sm-2 control-label">Piezas x Caja</label>
                         <div class="col-sm-1">
-                            <input type="Resto" class="form-control" id="PzsxCC" name="PzsxCC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();"  />
+                            <input type="text" class="form-control" id="PzsxCC" name="PzsxCC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas()" onclick="" />
                         </div>
                     </div>
                     <br/>
                     <h5><strong>Tarimas Incompletas</strong></h5>
                     <div class="row">
 
-                        <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
-                        <div class="col-sm-1">
+                        <label for="Cajas" class="hidden">Tarimas</label>
+                        <div class="hidden">
                             <input type="Cajas" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
-                                    return handleEnter(even);" onkeyup="totalPiezas();"  />
+                                    return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
                         </div>
                         <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
                         <div class="col-sm-1">
-                            <input type="pzsxcaja" class="form-control" id="CajasxTI" name="CajasxTI" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" />
+                            <input type="pzsxcaja" class="form-control" id="CajasxTI" name="CajasxTI" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                         </div>
                         <label for="pzsxcaja" class="col-sm-2 control-label">Resto</label>
                         <div class="col-sm-1">
-                            <input type="pzsxcaja" class="form-control" id="Resto" name="Resto" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" />
+                            <input type="pzsxcaja" class="form-control" id="Resto" name="Resto" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
                         </div>
                     </div>
                     <br/>
@@ -614,134 +630,140 @@
                             <textarea class="form-control" name="Observaciones" id="Observaciones" rows="3"></textarea>
                         </div>
                     </div>
-            </div>
-            <div class="panel-body">
-                <h5><strong>Totales</strong></h5>
-                <div class="row">
+                    <div class="panel-body">
+                        <h5><strong>Totales</strong></h5>
+                        <div class="row">
 
-                    <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
-                    <div class="col-sm-1">
-                        <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
-                                return handleEnter(even);" onkeyup="totalPiezas();"  />
+                            <label for="Cajas" class="col-sm-1 control-label">Tarimas</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
+                                        return handleEnter(even);" onkeyup="totalPiezas();" onclick="" />
+                            </div>
+                            <label for="pzsxcaja" class="col-sm-1 control-label">Cajas Completas</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                            </div>
+                            <label for="CajasIn" class="col-sm-1 control-label">Cajas Incompletas</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="CajasIn" name="CajasIn" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                            </div>
+                            <label for="TCajas" class="col-sm-1 control-label">Total Cajas</label>
+                            <div class="col-sm-1">
+                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick=""/>
+                            </div>
+                            <label for="Resto" class="col-sm-1 control-label">Piezas</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" />
+                            </div>
+                        </div>
                     </div>
-                    <label for="pzsxcaja" class="col-sm-2 control-label">Cajas</label>
-                    <div class="col-sm-1">
-                        <input type="text" class="form-control" id="Cajas" name="Cajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" />
+                    <br/>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- En duda -->
+                            <%
+                                if (Cuenta == 0) {
+                            %>
+                            <button class="btn btn-block btn-primary" type="submit" name="accion" value="capturar" onclick="return (validaCapturaVacios());">Capturar</button>
+                            <%} else {%>
+                            <button class="btn btn-block btn-primary" type="submit" name="accion" value="capturarcb" onclick="return (validaCapturaVacioscb());">Capturar</button>
+                            <%}%>
+                            <!-- En duda -->
+                        </div>
                     </div>
-                    <label for="Resto" class="col-sm-2 control-label">Piezas</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" id="Piezas" name="Piezas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();"  />
-                    </div>
-                </div>
-                <br/>
-                <!-- En duda -->
+                </form>
+            </div>
+
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td>Remisión</td>
+                    <td><a name="ancla"></a>Código de Barras</td>
+                    <td>Clave</td>
+                    <td>Descripción</td>                       
+                    <td>Lote</td>
+                    <td>Caducidad</td>                        
+                    <td>Cantidad</td>                      
+                    <td>Costo U</td>                     
+                    <td>IVA</td>                       
+                    <td>Importe</td>
+                    <td></td>
+                </tr>
                 <%
-                    if (Cuenta == 0) {
+                    int banCompra = 0;
+                    String obser = "";
+                    try {
+                        con.conectar();
+                        ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + orden + "' and F_Estado = '1'");
+                        while (rset.next()) {
+                            banCompra = 1;
+
                 %>
-                <button class="btn btn-block btn-primary" type="submit" name="accion" value="capturar" onclick="return (validaCapturaVacios());">Capturar</button>
-                <%} else {%>
-                <button class="btn btn-block btn-primary" type="submit" name="accion" value="capturarcb" onclick="return (validaCapturaVacioscb());">Capturar</button>
-                <%}%>
-                <!-- En duda -->
-            </div>
-        </form>
-    </div>
-    <div class="panel-body panel-default table-responsive">
-        <table class="table table-bordered table-striped">
-            <tr>
-                <td><a name="ancla"></a>Código de Barras</td>
-                <td>Clave</td>
-                <td>Descripción</td>                       
-                <td>Lote</td>
-                <td>Caducidad</td>                        
-                <td>Existencia</td>
-                <td></td>
-            </tr>
-            <%
-                int banCompra = 0;
-                String obser = "";
-                try {
-                    con.conectar();
-                    ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_FecApl=CURDATE() AND F_User='" + usua + "'");
-                    while (rset.next()) {
-                        banCompra = 1;
+                <tr>
+                    <td><%=rset.getString("C.F_FolRemi")%></td>
+                    <td><%=rset.getString(1)%></td>
+                    <td><%=rset.getString(2)%></td>
+                    <td><%=rset.getString(3)%></td>
+                    <td><%=rset.getString(4)%></td>
+                    <td><%=df3.format(df2.parse(rset.getString(5)))%></td>
+                    <td><%=formatter.format(rset.getDouble(6))%></td>           
+                    <td><%=formatterDecimal.format(rset.getDouble("C.F_Costo"))%></td>
+                    <td><%=formatterDecimal.format(rset.getDouble("C.F_ImpTo"))%></td>          
+                    <td><%=formatterDecimal.format(rset.getDouble("C.F_ComTot"))%></td>              
+                    <td>
 
-            %>
-            <tr>
-                <td><%=rset.getString(1)%></td>
-                <td><%=rset.getString(2)%></td>
-                <td><%=rset.getString(3)%></td>
-                <td><%=rset.getString(4)%></td>
-                <td><%=df3.format(df2.parse(rset.getString(5)))%></td>
-                <td><%=rset.getString(6)%></td>                        
-                <td>
+                        <form method="get" action="Modificaciones">
+                            <input name="id" type="text" style="" class="hidden" value="<%=rset.getString(7)%>" />
+                            <button class="btn btn-warning" name="accion" value="modificar"><span class="glyphicon glyphicon-pencil" ></span></button>
+                            <button class="btn btn-danger" onclick="return confirm('¿Seguro de que desea eliminar?');" name="accion" value="eliminar"><span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <!--button class="btn btn-success" onclick="return confirm('¿Seguro de Verificar?');" name="accion" value="verificarCompraAuto"><span class="glyphicon glyphicon-ok"></span>
+                            </button-->
+                        </form>
+                    </td>
+                </tr>
+                <%
+                        }
+                        con.cierraConexion();
+                    } catch (Exception e) {
 
-                    <form method="get" action="Modificaciones">
-                        <input name="id" type="text" style="" class="hidden" value="<%=rset.getString(7)%>" />
-                        <button class="btn btn-warning" name="accion" value="modificar"><span class="glyphicon glyphicon-pencil" ></span></button>
-                        <button class="btn btn-danger" onclick="return confirm('¿Seguro de que desea eliminar?');" name="accion" value="eliminar"><span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            <%
                     }
-                    con.cierraConexion();
-                } catch (Exception e) {
+                %>
 
-                }
-            %>
-            <%
-                if (banCompra == 1) {
-            %>
-            <tr>
 
-                <td colspan="7">
-                    <div class="col-lg-3 col-lg-offset-6">
-                        <form action="Nuevo" method="post">
-                            <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=folio_gnk%>" />
-                            <button  value="Eliminar" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Compra</button>
-                        </form>
-                    </div>
-                    <div class="col-lg-3">
-                        <form action="Nuevo" method="post">
-                            <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=folio_gnk%>" />
-                            <button  value="Guardar" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
-                                    return validaCompra();">Confirmar Compra</button>
-                        </form>
-                    </div>
-                    <!--div class="col-lg-3">
-                        <form action="reimpReporte.jsp" target="_blank">
-                            <input class="hidden" name="fol_gnkl" value="<%=folio_gnk%>">
-                            <button class="btn btn-success btn-block">Imprimir Compra</button>
-                        </form>
-                    </div>
-                    <div class="col-lg-3">
-                        <form action="reimp_marbete.jsp" target="_blank">
-                            <input class="hidden" name="fol_gnkl" value="<%=folio_gnk%>">
-                            <button class="btn btn-primary btn-block">Imprimir Marbete</button>
-                        </form>
-                    </div-->
-                </td>
-                <!--td colspan="2"><a href="Reporte.jsp" target="_blank" class="btn btn-success btn-block">Imprimir</a></td-->
-            </tr>
-            <%
-                }
-            %>
+            </table>
 
-        </table>
 
-    </div>
-</div>
+        </div>
 
-<br><br><br>
-<div class="navbar navbar-inverse">
-    <div class="text-center text-muted">
-        GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
-        Todos los Derechos Reservados
-    </div>
-</div>
-</body>
+        <%
+            if (banCompra == 1) {
+        %>
+        <div class="col-lg-6">
+            <form action="Nuevo" method="post">
+                <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=orden%>" />
+                <button  value="Eliminar" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea cancelar la compra?');">Cancelar Compra</button>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <form action="Modificaciones" method="post">
+                <input name="fol_gnkl" type="text" style="" class="hidden" value="<%=orden%>" />
+                <button  value="verificarCompraManual" name="accion" class="btn btn-success btn-block" onclick="return confirm('¿Seguro que desea verificar la compra?');">Ingresar Compra</button>
+            </form>
+        </div>
+        <%
+            }
+        %>
+
+        <br><br><br>
+        <div class="navbar navbar-inverse">
+            <div class="text-center text-muted">
+                GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
+                Todos los Derechos Reservados
+            </div>
+        </div>
+    </body>
 </html>
 
 
@@ -758,72 +780,82 @@
 <script>
 
 
-                                var formatNumber = {
-                                    separador: ",", // separador para los miles
-                                    sepDecimal: '.', // separador para los decimales
-                                    formatear: function(num) {
-                                        num += '';
-                                        var splitStr = num.split('.');
-                                        var splitLeft = splitStr[0];
-                                        var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
-                                        var regx = /(\d+)(\d{3})/;
-                                        while (regx.test(splitLeft)) {
-                                            splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
-                                        }
-                                        return this.simbol + splitLeft + splitRight;
-                                    },
-                                    new : function(num, simbol) {
-                                        this.simbol = simbol || '';
-                                        return this.formatear(num);
-                                    }
-                                }
+                    var formatNumber = {
+                        separador: ",", // separador para los miles
+                        sepDecimal: '.', // separador para los decimales
+                        formatear: function(num) {
+                            num += '';
+                            var splitStr = num.split('.');
+                            var splitLeft = splitStr[0];
+                            var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '';
+                            var regx = /(\d+)(\d{3})/;
+                            while (regx.test(splitLeft)) {
+                                splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+                            }
+                            return this.simbol + splitLeft + splitRight;
+                        },
+                        new : function(num, simbol) {
+                            this.simbol = simbol || '';
+                            return this.formatear(num);
+                        }
+                    }
 
-                                function totalPiezas() {
-                                    var TarimasC = document.getElementById('TarimasC').value;
-                                    var CajasxTC = document.getElementById('CajasxTC').value;
-                                    var PzsxCC = document.getElementById('PzsxCC').value;
-                                    var TarimasI = document.getElementById('TarimasI').value;
-                                    var CajasxTI = document.getElementById('CajasxTI').value;
-                                    var Resto = document.getElementById('Resto').value;
-                                    if (TarimasC === "") {
-                                        TarimasC = 0;
-                                    }
-                                    if (CajasxTC === "") {
-                                        CajasxTC = 0;
-                                    }
-                                    if (PzsxCC === "") {
-                                        PzsxCC = 0;
-                                    }
-                                    if (TarimasI === "") {
-                                        TarimasI = 0;
-                                    }
-                                    if (CajasxTI === "") {
-                                        CajasxTI = 0;
-                                    }
-                                    if (Resto === "") {
-                                        Resto = 0;
-                                    }
-                                    var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
-                                    document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
-                                    var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
-                                    document.getElementById('Cajas').value = formatNumber.new(totalCajas);
+                    function totalPiezas() {
+                        var TarimasC = document.getElementById('TarimasC').value;
+                        var CajasxTC = document.getElementById('CajasxTC').value;
+                        var PzsxCC = document.getElementById('PzsxCC').value;
+                        var TarimasI = document.getElementById('TarimasI').value;
+                        var CajasxTI = document.getElementById('CajasxTI').value;
+                        var Resto = document.getElementById('Resto').value;
+                        if (TarimasC === "") {
+                            TarimasC = 0;
+                        }
+                        if (CajasxTC === "") {
+                            CajasxTC = 0;
+                        }
+                        if (PzsxCC === "") {
+                            PzsxCC = 0;
+                        }
+                        if (TarimasI === "") {
+                            TarimasI = 0;
+                        }
+                        if (CajasxTI === "") {
+                            CajasxTI = 0;
+                        }
+                        if (Resto === "") {
+                            Resto = 0;
+                            var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                            document.getElementById('TCajas').value = formatNumber.new(totalCajas);
+                        } else {
+                            var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                            document.getElementById('TCajas').value = formatNumber.new(totalCajas + 1);
+                            document.getElementById('CajasIn').value = formatNumber.new(1);
+                            if (parseInt(CajasxTI) !== parseInt(0)) {
+                                TarimasI = parseInt(TarimasI) + parseInt(1);
+                            }
+                        }
+                        var totalTarimas = parseInt(TarimasC) + parseInt(TarimasI);
+                        if (totalTarimas === 0 && Resto !== 0) {
+                            totalTarimas = totalTarimas + 1;
+                        }
+                        document.getElementById('Tarimas').value = formatNumber.new(totalTarimas);
+                        var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
+                        document.getElementById('Cajas').value = formatNumber.new(totalCajas);
+                        var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
+                        document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
+                    }
 
+                    function cambiaLoteCadu(elemento) {
+                        var indice = elemento.selectedIndex;
+                        document.getElementById('list_cadu').selectedIndex = indice;
+                        document.getElementById('list_fabri').selectedIndex = indice;
+                        document.getElementById('cdd').value = document.getElementById('list_cadu').value;
+                        document.getElementById('fdd').value = document.getElementById('list_fabri').value;
+                        document.getElementById('TarimasC').focus();
+                    }
 
-                                    var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
-                                    document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
-                                }
-
-                                function cambiaLoteCadu(elemento) {
-                                    var indice = elemento.selectedIndex;
-                                    document.getElementById('list_cadu').selectedIndex = indice;
-                                    document.getElementById('list_fabri').selectedIndex = indice;
-                                    document.getElementById('cdd').value = document.getElementById('list_cadu').value;
-                                    document.getElementById('fdd').value = document.getElementById('list_fabri').value;
-                                    document.getElementById('TarimasC').focus();
-                                }
-
-                                $(function() {
-                                    var availableTags = [
+                    $(function() {
+                        var availableTags = [
     <%
         try {
             con.conectar();
@@ -835,13 +867,13 @@
         } catch (Exception e) {
         }
     %>
-                                    ];
-                                    $("#descr").autocomplete({
-                                        source: availableTags
-                                    });
-                                });
-                                $(function() {
-                                    var availableTags = [
+                        ];
+                        $("#descr").autocomplete({
+                            source: availableTags
+                        });
+                    });
+                    $(function() {
+                        var availableTags = [
     <%
         try {
             con.conectar();
@@ -853,350 +885,350 @@
         } catch (Exception e) {
         }
     %>
-                                    ];
-                                    $("#provee").autocomplete({
-                                        source: availableTags
-                                    });
-                                });
-                                function ubi() {
-                                    var ubi = document.formulario1.ubica.value;
-                                    document.formulario1.ubicacion.value = ubi;
-                                }
-                                function proveedor() {
-                                    var proveedor = document.formulario1.list_provee.value;
-                                    document.formulario1.provee.value = proveedor;
-                                    document.formulario1.codigo.focus();
-                                }
-                                function marca() {
-                                    var marca = document.formulario1.list_marca.value;
-                                    document.formulario1.Marca.value = marca;
-                                    document.formulario1.Lote.focus();
-                                }
-                                function clave() {
-                                    var clave = document.formulario1.list_clave.value;
-                                    document.formulario1.clave1.value = clave;
-                                }
-                                function lotes() {
-                                    var lote = document.formulario1.list_lote.value;
-                                    document.formulario1.Lote.value = lote;
-                                }
-                                function cadu() {
-                                    var cadu = document.formulario1.list_cadu.value;
-                                    document.formulario1.cdd.value = cadu;
-                                }
-                                function fabri() {
-                                    var fabri = document.formulario1.list_fabri.value;
-                                    document.formulario1.fdd.value = fabri;
-                                }
-                                function orig() {
-                                    var origen = document.formulario1.ori.value;
-                                    document.formulario1.origen.value = origen;
-                                }
+                        ];
+                        $("#provee").autocomplete({
+                            source: availableTags
+                        });
+                    });
+                    function ubi() {
+                        var ubi = document.formulario1.ubica.value;
+                        document.formulario1.ubicacion.value = ubi;
+                    }
+                    function proveedor() {
+                        var proveedor = document.formulario1.list_provee.value;
+                        document.formulario1.provee.value = proveedor;
+                        document.formulario1.codigo.focus();
+                    }
+                    function marca() {
+                        var marca = document.formulario1.list_marca.value;
+                        document.formulario1.Marca.value = marca;
+                        document.formulario1.Lote.focus();
+                    }
+                    function clave() {
+                        var clave = document.formulario1.list_clave.value;
+                        document.formulario1.clave1.value = clave;
+                    }
+                    function lotes() {
+                        var lote = document.formulario1.list_lote.value;
+                        document.formulario1.Lote.value = lote;
+                    }
+                    function cadu() {
+                        var cadu = document.formulario1.list_cadu.value;
+                        document.formulario1.cdd.value = cadu;
+                    }
+                    function fabri() {
+                        var fabri = document.formulario1.list_fabri.value;
+                        document.formulario1.fdd.value = fabri;
+                    }
+                    function orig() {
+                        var origen = document.formulario1.ori.value;
+                        document.formulario1.origen.value = origen;
+                    }
 
 
-                                function tabular(e, obj)
-                                {
-                                    tecla = (document.all) ? e.keyCode : e.which;
-                                    if (tecla != 13)
-                                        return;
-                                    frm = obj.form;
-                                    for (i = 0; i < frm.elements.length; i++)
-                                        if (frm.elements[i] == obj)
-                                        {
-                                            if (i == frm.elements.length - 1)
-                                                i = -1;
-                                            break
-                                        }
-                                    /*ACA ESTA EL CAMBIO*/
-                                    if (frm.elements[i + 1].disabled == true)
-                                        tabular(e, frm.elements[i + 1]);
-                                    else
-                                        frm.elements[i + 1].focus();
-                                    return false;
-                                }
+                    function tabular(e, obj)
+                    {
+                        tecla = (document.all) ? e.keyCode : e.which;
+                        if (tecla != 13)
+                            return;
+                        frm = obj.form;
+                        for (i = 0; i < frm.elements.length; i++)
+                            if (frm.elements[i] == obj)
+                            {
+                                if (i == frm.elements.length - 1)
+                                    i = -1;
+                                break
+                            }
+                        /*ACA ESTA EL CAMBIO*/
+                        if (frm.elements[i + 1].disabled == true)
+                            tabular(e, frm.elements[i + 1]);
+                        else
+                            frm.elements[i + 1].focus();
+                        return false;
+                    }
 
-                                function foco() {
-                                    document.formulario1.folio_remi.focus();
-                                    var provee = document.formulario1.provee.value;
-                                    if (provee !== "") {
-                                        document.formulario1.codigo.focus();
-                                        window.scrollTo(0, 380);
-                                    }
-                                    if (document.getElementById('clave1').value !== "") {
-                                        document.getElementById('list_marca').focus();
-                                        window.scrollTo(0, 380);
-                                    }
+                    function foco() {
+                        document.formulario1.folio_remi.focus();
+                        var provee = document.formulario1.provee.value;
+                        if (provee !== "") {
+                            document.formulario1.codigo.focus();
+                            window.scrollTo(0, 380);
+                        }
+                        if (document.getElementById('clave1').value !== "") {
+                            document.getElementById('list_marca').focus();
+                            window.scrollTo(0, 380);
+                        }
     <%
         try {
             if (sesion.getAttribute("CBInex").equals("1") && Cuenta == 0) {
     %>
-                                    if (document.formulario1.cb.value === "") {
-                                        document.formulario1.cb.value = ('<%=(String) sesion.getAttribute("cb")%>');
-                                    }
-                                    if (provee !== "") {
+                        if (document.formulario1.cb.value === "") {
+                            document.formulario1.cb.value = ('<%=(String) sesion.getAttribute("cb")%>');
+                        }
+                        if (provee !== "") {
 
-                                        document.formulario1.clave.focus();
-                                        window.scrollTo(0, 380);
-                                    }
+                            document.formulario1.clave.focus();
+                            window.scrollTo(0, 380);
+                        }
 
-                                    if (document.getElementById('clave1').value !== "") {
-                                        document.getElementById('list_marca').focus();
-                                        window.scrollTo(0, 380);
-                                    }
+                        if (document.getElementById('clave1').value !== "") {
+                            document.getElementById('list_marca').focus();
+                            window.scrollTo(0, 380);
+                        }
     <%
             }
         } catch (Exception e) {
 
         }
     %>
-                                }
+                    }
 
 
 
 
 
-                                function validaCompra() {
-                                    var RegExPattern = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
-                                    var folio_remi = document.formulario1.folio_remi.value;
-                                    var orden = document.formulario1.orden.value;
-                                    var provee = document.formulario1.provee.value;
-                                    var recib = document.formulario1.recib.value;
+                    function validaCompra() {
+                        var RegExPattern = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
+                        var folio_remi = document.formulario1.folio_remi.value;
+                        var orden = document.formulario1.orden.value;
+                        var provee = document.formulario1.provee.value;
+                        var recib = document.formulario1.recib.value;
 
-                                    if (folio_remi === "" || orden === "" || provee === "" || recib === "") {
-                                        alert("Tiene campos vacíos, verifique.");
-                                        return false;
-                                    }
-                                    return true;
-                                }
-                                function justNumbers(e)
-                                {
-                                    var keynum = window.event ? window.event.keyCode : e.which;
-                                    if ((keynum == 8) || (keynum == 46))
-                                        return true;
+                        if (folio_remi === "" || orden === "" || provee === "" || recib === "") {
+                            alert("Tiene campos vacíos, verifique.");
+                            return false;
+                        }
+                        return true;
+                    }
+                    function justNumbers(e)
+                    {
+                        var keynum = window.event ? window.event.keyCode : e.which;
+                        if ((keynum == 8) || (keynum == 46))
+                            return true;
 
-                                    return /\d/.test(String.fromCharCode(keynum));
-                                }
-                                otro = 0;
-                                function LP_data() {
-                                    var key = window.event.keyCode;//codigo de tecla. 
-                                    if (key < 48 || key > 57) {//si no es numero 
-                                        window.event.keyCode = 0;//anula la entrada de texto. 
-                                    }
-                                }
-                                function anade(esto) {
-                                    if (esto.value.length > otro) {
-                                        if (esto.value.length == 2) {
-                                            esto.value += "/";
-                                        }
-                                    }
-                                    if (esto.value.length > otro) {
-                                        if (esto.value.length == 5) {
-                                            esto.value += "/";
-                                        }
-                                    }
-                                    if (esto.value.length < otro) {
-                                        if (esto.value.length == 2 || esto.value.length == 5) {
-                                            esto.value = esto.value.substring(0, esto.value.length - 1);
-                                        }
-                                    }
-                                    otro = esto.value.length
-                                }
-                                function putDays()
-                                {
-                                    var dayv = document.formulario1.cdd.value;
-                                    if (dayv >= 0 && dayv <= 31)
-                                    {
-                                        var day = document.formulario1.cdd.value.length + 1;
-                                        if (day <= 2)
-                                        {
-                                            document.formulario1.cdd.focus()
-                                        }
-                                        else
-                                        {
-                                            document.formulario1.cmm.focus()
-                                        }
-                                    } else
-                                    {
-                                        alert("DIA Fuera de Rango: " + dayv);
-                                        document.formulario1.cdd.value = "";
-                                        document.formulario1.cdd.focus();
-                                    }
-                                }
-                                function putMonthss() {
-                                    var month = document.formulario1.cmm.value.length + 1;
-                                    var monthv = document.formulario1.cmm.value;
-                                    if (monthv >= 0 && monthv <= 12)
-                                    {
-                                        if (month <= 2)
-                                        {
-                                            document.formulario1.cmm.focus()
-                                        } else {
-                                            document.formulario1.caa.focus()
-                                        }
-                                    } else {
-                                        alert("MES Fuera de Rango: " + monthv);
-                                        document.formulario1.cmm.value = "";
-                                        document.formulario1.cmm.focus();
-                                    }
-                                }
-                                function putYearss() {
-                                    var year = document.formulario1.caa.value.length + 1;
-                                    var yearv = document.formulario1.caa.value;
-                                    if (year <= 4) {
-                                        document.formulario1.caa.focus()
-                                    } else {
-                                        document.formulario1.TarimasC.focus()
-                                    }
-                                    if (year == 5) {
-                                        var dtFechaActual = new Date();
-                                        var sumarDias = parseInt(276);
-                                        dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
-                                        var d = new Date();
-                                        var day = document.formulario1.cdd.value;
-                                        var month = document.formulario1.cmm.value;
-                                        var years = document.formulario1.caa.value;
-                                        var cadu = years + "-" + month + "-" + day;
+                        return /\d/.test(String.fromCharCode(keynum));
+                    }
+                    otro = 0;
+                    function LP_data() {
+                        var key = window.event.keyCode;//codigo de tecla. 
+                        if (key < 48 || key > 57) {//si no es numero 
+                            window.event.keyCode = 0;//anula la entrada de texto. 
+                        }
+                    }
+                    function anade(esto) {
+                        if (esto.value.length > otro) {
+                            if (esto.value.length == 2) {
+                                esto.value += "/";
+                            }
+                        }
+                        if (esto.value.length > otro) {
+                            if (esto.value.length == 5) {
+                                esto.value += "/";
+                            }
+                        }
+                        if (esto.value.length < otro) {
+                            if (esto.value.length == 2 || esto.value.length == 5) {
+                                esto.value = esto.value.substring(0, esto.value.length - 1);
+                            }
+                        }
+                        otro = esto.value.length
+                    }
+                    function putDays()
+                    {
+                        var dayv = document.formulario1.cdd.value;
+                        if (dayv >= 0 && dayv <= 31)
+                        {
+                            var day = document.formulario1.cdd.value.length + 1;
+                            if (day <= 2)
+                            {
+                                document.formulario1.cdd.focus()
+                            }
+                            else
+                            {
+                                document.formulario1.cmm.focus()
+                            }
+                        } else
+                        {
+                            alert("DIA Fuera de Rango: " + dayv);
+                            document.formulario1.cdd.value = "";
+                            document.formulario1.cdd.focus();
+                        }
+                    }
+                    function putMonthss() {
+                        var month = document.formulario1.cmm.value.length + 1;
+                        var monthv = document.formulario1.cmm.value;
+                        if (monthv >= 0 && monthv <= 12)
+                        {
+                            if (month <= 2)
+                            {
+                                document.formulario1.cmm.focus()
+                            } else {
+                                document.formulario1.caa.focus()
+                            }
+                        } else {
+                            alert("MES Fuera de Rango: " + monthv);
+                            document.formulario1.cmm.value = "";
+                            document.formulario1.cmm.focus();
+                        }
+                    }
+                    function putYearss() {
+                        var year = document.formulario1.caa.value.length + 1;
+                        var yearv = document.formulario1.caa.value;
+                        if (year <= 4) {
+                            document.formulario1.caa.focus()
+                        } else {
+                            document.formulario1.TarimasC.focus()
+                        }
+                        if (year == 5) {
+                            var dtFechaActual = new Date();
+                            var sumarDias = parseInt(276);
+                            dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
+                            var d = new Date();
+                            var day = document.formulario1.cdd.value;
+                            var month = document.formulario1.cmm.value;
+                            var years = document.formulario1.caa.value;
+                            var cadu = years + "-" + month + "-" + day;
 
-                                        if (Date.parse(dtFechaActual) > Date.parse(cadu)) {
-                                            alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
-                                            document.formulario1.cdd.value = "";
-                                            document.formulario1.cmm.value = "";
-                                            document.formulario1.caa.value = "";
-                                            document.formulario1.cdd.focus();
-                                            return false;
-                                        }
-                                        /*
-                                         if ((yearv <= 2013 || yearv > 2030) || (day < d.getDate() && month <= (d.getMonth() + 1) && yearv <= 2014)) {
-                                         if ((yearv <= 2013 || yearv > 2030)) {
-                                         alert("Año Fuera de Rango: " + yearv);
-                                         document.formulario1.caa.value = "";
-                                         document.formulario1.caa.focus();
-                                         }
-                                         if ((day < d.getDate() && month <= (d.getMonth() + 9) && yearv <= 2014)) {
-                                         alert("Fecha Caduca, Fíjate Mano!: " + day + "/" + month + "/" + yearv);
-                                         document.formulario1.cdd.value = "";
-                                         document.formulario1.cmm.value = "";
-                                         document.formulario1.caa.value = "";
-                                         document.formulario1.cdd.focus();
-                                         }
-                                         }*/
-                                    }
-                                }
+                            if (Date.parse(dtFechaActual) > Date.parse(cadu)) {
+                                alert("La fecha de caducidad no puede ser menor a 9 meses próximos");
+                                document.formulario1.cdd.value = "";
+                                document.formulario1.cmm.value = "";
+                                document.formulario1.caa.value = "";
+                                document.formulario1.cdd.focus();
+                                return false;
+                            }
+                            /*
+                             if ((yearv <= 2013 || yearv > 2030) || (day < d.getDate() && month <= (d.getMonth() + 1) && yearv <= 2014)) {
+                             if ((yearv <= 2013 || yearv > 2030)) {
+                             alert("Año Fuera de Rango: " + yearv);
+                             document.formulario1.caa.value = "";
+                             document.formulario1.caa.focus();
+                             }
+                             if ((day < d.getDate() && month <= (d.getMonth() + 9) && yearv <= 2014)) {
+                             alert("Fecha Caduca, Fíjate Mano!: " + day + "/" + month + "/" + yearv);
+                             document.formulario1.cdd.value = "";
+                             document.formulario1.cmm.value = "";
+                             document.formulario1.caa.value = "";
+                             document.formulario1.cdd.focus();
+                             }
+                             }*/
+                        }
+                    }
 
-                                function validaCapturaVacios() {
-                                    var missinginfo = "";
-                                    if ($("#folio_remi").val() == "") {
-                                        missinginfo += "\n El campo Folio Remisión no debe de estar vacío";
-                                    }
-                                    if ($("#orden").val() == "") {
-                                        missinginfo += "\n El campo Número Compra no debe de estar vacío";
-                                    }
-                                    if ($("#provee").val() == "") {
-                                        missinginfo += "\n El campo Proveedor no debe de estar vacío";
-                                    }
-                                    if ($("#clave1").val() == "") {
-                                        missinginfo += "\n El campo Clave no debe de estar vacío";
-                                    }
-                                    if ($("#cb").val() == "") {
-                                        missinginfo += "\n El campo Código Barra no debe de estar vacío";
-                                    }
-                                    if ($("#Marca").val() == "") {
-                                        missinginfo += "\n El campo Marca no debe de estar vacío";
-                                    }
-                                    if ($("#Lote").val() == "") {
-                                        missinginfo += "\n El campo Lote no debe de estar vacío";
-                                    }
-                                    if ($("#cdd").val() == "") {
-                                        missinginfo += "\n El campo Caducidad no debe de estar vacío";
-                                    }
-                                    if ($("#fdd").val() == "") {
-                                        missinginfo += "\n El campo Fabricación no debe de estar vacío";
-                                    }
-                                    if ($("#Piezas").val() === "" || $("#Piezas").val() === "0") {
-                                        var caja = parseInt(0);
-                                    }
+                    function validaCapturaVacios() {
+                        var missinginfo = "";
+                        if ($("#folio_remi").val() == "") {
+                            missinginfo += "\n El campo Folio Remisión no debe de estar vacío";
+                        }
+                        if ($("#orden").val() == "") {
+                            missinginfo += "\n El campo Número Compra no debe de estar vacío";
+                        }
+                        if ($("#provee").val() == "") {
+                            missinginfo += "\n El campo Proveedor no debe de estar vacío";
+                        }
+                        if ($("#clave1").val() == "") {
+                            missinginfo += "\n El campo Clave no debe de estar vacío";
+                        }
+                        if ($("#cb").val() == "") {
+                            missinginfo += "\n El campo Código Barra no debe de estar vacío";
+                        }
+                        if ($("#Marca").val() == "") {
+                            missinginfo += "\n El campo Marca no debe de estar vacío";
+                        }
+                        if ($("#Lote").val() == "") {
+                            missinginfo += "\n El campo Lote no debe de estar vacío";
+                        }
+                        if ($("#cdd").val() == "") {
+                            missinginfo += "\n El campo Caducidad no debe de estar vacío";
+                        }
+                        if ($("#fdd").val() == "") {
+                            missinginfo += "\n El campo Fabricación no debe de estar vacío";
+                        }
+                        if ($("#Piezas").val() === "" || $("#Piezas").val() === "0") {
+                            var caja = parseInt(0);
+                        }
 
-                                    if (missinginfo != "") {
-                                        missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
-                                        alert(missinginfo);
+                        if (missinginfo != "") {
+                            missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
+                            alert(missinginfo);
 
-                                        return false;
-                                    } else {
-                                        if (parseInt(caja) === 0) {
-                                            missinginfo = "\n El total de piezas no puede ser \'0\'";
-                                            alert(missinginfo);
-                                            return false;
-                                        }
-                                        return true;
-                                    }
-
-
-                                }
-                                function validaCapturaVacioscb() {
-                                    var cv = $("#clave1").val();
-
-                                    var missinginfo = "";
-                                    if ($("#folio_remi").val() == "") {
-                                        missinginfo += "\n El campo Folio Remisión no debe de estar vacío";
-                                    }
-                                    if ($("#orden").val() == "") {
-                                        missinginfo += "\n El campo Número Compra no debe de estar vacío";
-                                    }
-                                    if ($("#provee").val() == "") {
-                                        missinginfo += "\n El campo Proveedor no debe de estar vacío";
-                                    }
-                                    if ($("#clave1").val() == "") {
-                                        missinginfo += "\n El campo Clave no debe de estar vacío";
-                                    }
-                                    if ($("#cb").val() == "") {
-                                        missinginfo += "\n El campo Código Barra no debe de estar vacío";
-                                    }
-                                    if ($("#Marca").val() == "") {
-                                        missinginfo += "\n El campo Marca no debe de estar vacío";
-                                    }
-                                    if ($("#Lote").val() == "") {
-                                        missinginfo += "\n El campo Lote no debe de estar vacío";
-                                    }
-                                    if ($("#cdd").val() == "") {
-                                        missinginfo += "\n El campo Caducidad no debe de estar vacío";
-                                    }
-                                    if ($("#fdd").val() == "") {
-                                        missinginfo += "\n El campo Fabricación no debe de estar vacío";
-                                    }
-                                    if ($("#Piezas").val() === "" || $("#Piezas").val() === "0") {
-                                        var caja = parseInt(0);
-                                    }
-
-                                    var total = (caja * piezas) + resto;
-
-                                    if (missinginfo != "") {
-                                        missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
-                                        alert(missinginfo);
-
-                                        return false;
-                                    } else {
-                                        if (parseInt(total) === 0) {
-                                            missinginfo = "\n El total de piezas no puede ser \'0\'";
-                                            alert(missinginfo);
-                                            return false;
-                                        }
-                                        return true;
-                                    }
+                            return false;
+                        } else {
+                            if (parseInt(caja) === 0) {
+                                missinginfo = "\n El total de piezas no puede ser \'0\'";
+                                alert(missinginfo);
+                                return false;
+                            }
+                            return true;
+                        }
 
 
-                                }
-                                function mueveReloj() {
-                                    momentoActual = new Date()
-                                    hora = ((momentoActual.getHours() < 10 ? '0' : '') + momentoActual.getHours())
-                                    minuto = ((momentoActual.getMinutes() < 10 ? '0' : '') + momentoActual.getMinutes())
-                                    segundo = ((momentoActual.getSeconds() < 10 ? '0' : '') + momentoActual.getSeconds())
+                    }
+                    function validaCapturaVacioscb() {
+                        var cv = $("#clave1").val();
 
-                                    horaImprimible = hora + " : " + minuto + " : " + segundo
+                        var missinginfo = "";
+                        if ($("#folio_remi").val() == "") {
+                            missinginfo += "\n El campo Folio Remisión no debe de estar vacío";
+                        }
+                        if ($("#orden").val() == "") {
+                            missinginfo += "\n El campo Número Compra no debe de estar vacío";
+                        }
+                        if ($("#provee").val() == "") {
+                            missinginfo += "\n El campo Proveedor no debe de estar vacío";
+                        }
+                        if ($("#clave1").val() == "") {
+                            missinginfo += "\n El campo Clave no debe de estar vacío";
+                        }
+                        if ($("#cb").val() == "") {
+                            missinginfo += "\n El campo Código Barra no debe de estar vacío";
+                        }
+                        if ($("#Marca").val() == "") {
+                            missinginfo += "\n El campo Marca no debe de estar vacío";
+                        }
+                        if ($("#Lote").val() == "") {
+                            missinginfo += "\n El campo Lote no debe de estar vacío";
+                        }
+                        if ($("#cdd").val() == "") {
+                            missinginfo += "\n El campo Caducidad no debe de estar vacío";
+                        }
+                        if ($("#fdd").val() == "") {
+                            missinginfo += "\n El campo Fabricación no debe de estar vacío";
+                        }
+                        if ($("#Piezas").val() === "" || $("#Piezas").val() === "0") {
+                            var caja = parseInt(0);
+                        }
 
-                                    document.formulario1.hora.value = horaImprimible
+                        var total = (caja * piezas) + resto;
 
-                                    setTimeout("mueveReloj()", 1000)
-                                }
+                        if (missinginfo != "") {
+                            missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
+                            alert(missinginfo);
+
+                            return false;
+                        } else {
+                            if (parseInt(total) === 0) {
+                                missinginfo = "\n El total de piezas no puede ser \'0\'";
+                                alert(missinginfo);
+                                return false;
+                            }
+                            return true;
+                        }
+
+
+                    }
+                    function mueveReloj() {
+                        momentoActual = new Date()
+                        hora = ((momentoActual.getHours() < 10 ? '0' : '') + momentoActual.getHours())
+                        minuto = ((momentoActual.getMinutes() < 10 ? '0' : '') + momentoActual.getMinutes())
+                        segundo = ((momentoActual.getSeconds() < 10 ? '0' : '') + momentoActual.getSeconds())
+
+                        horaImprimible = hora + " : " + minuto + " : " + segundo
+
+                        document.formulario1.hora.value = horaImprimible
+
+                        setTimeout("mueveReloj()", 1000)
+                    }
 
 
 
