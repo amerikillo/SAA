@@ -26,17 +26,16 @@
 %>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CONSULTAS ISEM</title>
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="ckeditor/ckeditor.js"></script>
         <link href=bootstrap/css/bootstrap.css" rel="stylesheet">
-        <!--link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet"-->
+        <link href="bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
         
         <link rel="stylesheet" href="js_auto/jquery-ui.css">
         <script src="js_auto/jquery-1.9.1.js"></script>
         <script src="js_auto/jquery-ui.js"></script>
-        <!--link rel="stylesheet" href="js_auto/style.css">
+        <link rel="stylesheet" href="js_auto/style.css">
         <!--link href="css/flat-ui.css" rel="stylesheet"-->
         <!--link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet"-->
         <!--link href="css/gnkl_style_default.css" rel="stylesheet"-->

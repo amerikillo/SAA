@@ -189,6 +189,8 @@
 
                         </select>
                     </div>
+
+                            <a href="Procesos/comparativaClavesOC.jsp" class="btn btn-success">Comparativa Pendiente x Recibir</a>
                 </div>
                 <br/>
                 <div class="row">

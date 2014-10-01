@@ -22,17 +22,17 @@
     }
     ConectionDB con = new ConectionDB();
 
-    String ClaCli = "", FechaEnt = "", ClaPro = "", DesPro = "";
+    String ClaCli = "", FechaEnt = "", ClaPro = "", DesPro = "", Cantidad = "";
 
     try {
         ClaCli = (String) sesion.getAttribute("ClaCliFM");
         FechaEnt = (String) sesion.getAttribute("FechaEntFM");
         ClaPro = (String) sesion.getAttribute("ClaProFM");
         DesPro = (String) sesion.getAttribute("DesProFM");
+        Cantidad = (String) request.getAttribute("Cantidad");
     } catch (Exception e) {
 
     }
-
     if (ClaCli == null) {
         ClaCli = "";
     }
@@ -44,6 +44,9 @@
     }
     if (DesPro == null) {
         DesPro = "";
+    }
+    if (Cantidad == null) {
+        Cantidad = "";
     }
 
 %>
@@ -89,10 +92,6 @@
                                     <li><a href="#"  onclick="window.open('ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
                                     <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
-                                    <li><a href="#"  onclick="window.open('creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
-                                    <li class="divider"></li>
-                                    <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
-                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li-->
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -102,25 +101,10 @@
                                     <li><a href="factura.jsp">Facturación Automática</a></li>
                                     <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
-                                        <%
-                                            if (tipo.equals("7")) {
-                                        %>
                                     <li><a href="remisionarCamion.jsp">Generar Remisiones</a></li>
-                                        <%
-                                            }
-                                        %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
                                      <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
-                                    <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#"  onclick="window.open('Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
-                                    <li><a href="#"  onclick="window.open('movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
-                                    <li><a href="#"  onclick="window.open('semaforo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Semaforización</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -132,12 +116,33 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="window.open('Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                                  <li><a href="#" onclick="window.open('ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>     
+                                    <li><a href="#" onclick="window.open('historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>                                      
                                 </ul>
                             </li>
+                            <!--li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
+                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
+                                </ul>
+                            </li-->
+                            <%
+                                if (usua.equals("root")) {
+                            %>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
+                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
+                                </ul>
+                            </li>
+                            <%                                }
+                            %>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -193,15 +198,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <h4>Ingrese la Clave:</h4>
-                            </div>
-                            <div class="col-sm-2">
-                                <input class="form-control" name="ClaPro" id="ClaPro"/>
-                            </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-primary btn-block" name="accion" value="btnClave" id="btnClave" onclick="return validaBuscar();">Buscar</button>
-                            </div>
+
                         </div>
                     </div>
                     <div class="panel-body">
@@ -210,13 +207,13 @@
                                 <h4>Clave:</h4>
                             </div>
                             <div class="col-sm-2">
-                                <input class="form-control" readonly="" value="<%=ClaPro%>" id="ClaveSel"/>
+                                <input class="form-control" readonly="" value="<%=ClaPro%>"/>
                             </div>
                             <div class="col-sm-2">
                                 <h4>Descripción:</h4>
                             </div>
                             <div class="col-sm-7">
-                                <textarea class="form-control" readonly="" id="DesSel"><%=DesPro%></textarea>
+                                <textarea class="form-control" readonly=""><%=DesPro%></textarea>
                             </div>
                         </div>
                         <br/>
@@ -228,67 +225,64 @@
                                 <h4>Cantidad a Facturar:</h4>
                             </div>
                             <div class="col-sm-2">
-                                <input class="form-control" name="Cantidad" id="Cantidad" onKeyPress="return justNumbers(event);"/>
+                                <input class="form-control" name="Cantidad" id="Cantidad" value="<%=Cantidad%>"/>
                             </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-block btn-success" name="accion" value="SeleccionaLote" onclick="return validaSeleccionar();">Seleccionar</button>
+                            <div class="col-sm-2 col-sm-offset-6">
+                                <a class="btn btn-block btn-default" href="modula/cargaInsumo.jsp">Regresar</a>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <table class="table table-condensed table-striped table-bordered table-responsive">
-                    <tr>
-                        <td>Clave</td>
-                        <td>Lote</td>
-                        <td>Caducidad</td>
-                        <td>Ubicación</td>
-                        <td>Cantidad</td>
-                        <td>Remover</td>
-                    </tr>
-                    <%
-                        int banBtn = 0;
-                        try {
-                            con.conectar();
-                            ResultSet rset = con.consulta("SELECT l.F_ClaPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), f.F_Cant, l.F_Ubica, f.F_IdFact FROM tb_facttemp f, tb_lote l WHERE f.F_IdLot = l.F_IdLote and F_ClaCli = '" + ClaCli + "' and F_StsFact=3;");
-                            while (rset.next()) {
-                                banBtn = 1;
-                    %>
-                    <tr>
-                        <td><%=rset.getString(1)%></td>
-                        <td><%=rset.getString(2)%></td>
-                        <td><%=rset.getString(3)%></td>
-                        <td><%=rset.getString(5)%></td>
-                        <td><%=rset.getString(4)%></td>
-                        <td>
-                            <button class="btn btn-block btn-danger" name="accionEliminar" value="<%=rset.getString("F_IdFact")%>" onclick="return confirm('Seguro que desea eliminar esta clave?')"><span class="glyphicon glyphicon-remove"></span></button>
-                        </td>
-                    </tr>
-                    <%
+            </form>
+            <table class="table table-condensed table-striped table-bordered table-responsive">
+                <tr>
+                    <td>Clave</td>
+                    <td>Lote</td>
+                    <td>Caducidad</td>
+                    <td>Ubicación</td>
+                    <td>Cantidad</td>
+                    <td>Seleccionar</td>
+                </tr>
+                <%
+                    try {
+                        con.conectar();
+                        ResultSet rset = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y'), F_Ubica, F_ExiLot, F_IdLote, F_FolLot from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ExiLot!=0 order by F_FecCad asc  ");
+                        while (rset.next()) {
+                            int cant = 0, cantTemp = 0;
+                            int cantLot = rset.getInt(5);
+                            ResultSet rset2 = con.consulta("select F_Cant from tb_abasmodtemp where F_IdLote = '" + rset.getString("F_IdLote") + "' and F_Sts='0' ");
+                            while (rset2.next()) {
+                                cantTemp = rset2.getInt(1);
                             }
-                            con.cierraConexion();
-                        } catch (Exception e) {
 
-                        }
-                    %>
-                </table>
-                <%
-                    if (banBtn == 1) {
+                            cant = cantLot - cantTemp;
                 %>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <button class="btn btn-block btn-primary" name="accion" value="ConfirmarFactura" onclick="return confirm('Seguro de confirmar la Factura?')">Confirmar Factura</button>
-                    </div>
-                    <div class="col-sm-6">
-                        <button class="btn btn-block btn-danger" name="accion" value="CancelarFactura" onclick="return confirm('Seguro de CANCELAR la Factura?')">Cancelar Factura</button>
-                    </div>
-                </div>
-
+                <tr>
+                    <td><%=rset.getString(1)%></td>
+                    <td><%=rset.getString(2)%></td>
+                    <td><%=rset.getString(3)%></td>
+                    <td><%=rset.getString(4)%></td>
+                    <td><%=cant%></td>
+                    <td>
+                        <form action="AbasteceModula" method="post">
+                            <input name="FolLot" value="<%=rset.getString(7)%>" class="hidden" readonly=""/>
+                            <input name="IdLot" value="<%=rset.getString(6)%>" class="hidden" readonly=""/>
+                            <input class="hidden" name="Cant" id="Cant<%=rset.getString(6)%>" value=""/>
+                            <input class="hidden" name="CantAlm_<%=rset.getString(6)%>" id="CantAlm_<%=rset.getString(6)%>" value="<%=cant%>"/>
+                            <button name="accion" value="AgregarClave" id="<%=rset.getString(6)%>" class="btn btn-block btn-success" onclick="return validaCantidad(this.id);"><span class="glyphicon glyphicon-ok"></span></button>
+                        </form>
+                    </td>
+                </tr>
                 <%
+                        }
+                        con.cierraConexion();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
                 %>
+            </table>
 
-            </form>
         </div>
         <br><br><br>
         <div class="navbar navbar-fixed-bottom navbar-inverse">
@@ -306,52 +300,25 @@
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
     <script>
-                            function justNumbers(e)
-                            {
-                                var keynum = window.event ? window.event.keyCode : e.which;
-                                if ((keynum === 8) || (keynum === 46))
-                                    return true;
-                                return /\d/.test(String.fromCharCode(keynum));
-                            }
-
-                            function cambiaLoteCadu(elemento) {
-                                var indice = elemento.selectedIndex;
-                                document.getElementById('SelectCadu').selectedIndex = indice;
-                            }
-
-                            function validaBuscar() {
-                                var Unidad = document.getElementById('ClaCli').value;
-                                if (Unidad === "") {
-                                    alert('Seleccione Unidad');
-                                    return false;
+                                function cambiaLoteCadu(elemento) {
+                                    var indice = elemento.selectedIndex;
+                                    document.getElementById('SelectCadu').selectedIndex = indice;
                                 }
 
-                                var FechaEnt = document.getElementById('FechaEnt').value;
-                                if (FechaEnt === "") {
-                                    alert('Seleccione Fecha de Entrega');
-                                    return false;
-                                }
-                                var clave = document.getElementById('ClaPro').value;
-                                if (clave === "") {
-                                    alert('Escriba una Clave');
-                                    return false;
-                                }
-                            }
+                                function validaCantidad(e) {
+                                    var cantidadSol = document.getElementById('Cantidad').value;
+                                    document.getElementById('Cant' + e).value = cantidadSol;
+                                    var cantidadAlm = document.getElementById('CantAlm_' + e).value;
+                                    if (parseInt(cantidadSol) > parseInt(cantidadAlm)) {
+                                        alert('La cantidad a facturar no puede ser mayor a la cantidad de esa ubicación');
+                                        return false;
+                                    }
 
-
-                            function validaSeleccionar() {
-                                var DesSel = document.getElementById('DesSel').value;
-                                if (DesSel === "") {
-                                    alert('Favor de Capturar Toda la información');
-                                    return false;
+                                    /*var confirma = confirm('Seguro de usar esta ubicación?');
+                                     if (confirma === false) {
+                                     return false;
+                                     }*/
                                 }
-                                var cantidad = document.getElementById('Cantidad').value;
-                                if (cantidad === "") {
-                                    alert('Escriba una cantidad');
-                                    return false;
-                                }
-
-                            }
     </script>
 </html>
 

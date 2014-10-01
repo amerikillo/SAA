@@ -76,7 +76,7 @@
                          <th>Folio</th><td><input type="text" name="folio" id="folio" placeholder="Ingrese Folio Documento"/></td>
                     </tr>
                      <tr>
-                         <th>Número de Marbetes</th><td><input type="text" name="cajasm" id="cajasm" placeholder="Ingrese Número de Marbetes"/></td>
+                         <th>Número de Tarimas</th><td><input type="text" name="cajasm" id="cajasm" placeholder="Ingrese Número de Marbetes"/></td>
                     </tr>
                 </tbody>                
                      <tr>

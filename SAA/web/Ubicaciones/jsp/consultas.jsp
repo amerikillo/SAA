@@ -906,7 +906,7 @@
                 Resultado = Double.parseDouble(Consulta.getString("cantidad"));
                 Cantidad = (int) Resultado;
                 Clave = Consulta.getString("clave");                
-            ObjMySQL.actualizar("insert into tb_comparacion values('"+Clave+"','-',curdate(),'"+Cantidad+"','sistemas','CLAVE','"+usuario+"',0)");        
+            ObjMySQL.actualizar("insert into TB_Comparacion values('"+Clave+"','-',curdate(),'"+Cantidad+"','sistemas','CLAVE','"+usuario+"',0)");        
             }
             QueryUbi="SELECT F_ClaPro AS clave,SUM(F_ExiLot) AS cantidad FROM tb_lote  WHERE F_ExiLot>0 GROUP BY F_ClaPro ORDER BY F_ClaPro ASC";
             ConsultaUbi = ObjInv.consulta(QueryUbi);
@@ -914,7 +914,7 @@
                 ClaveU = ConsultaUbi.getString("clave");
                 ResultadoU = Double.parseDouble(ConsultaUbi.getString("cantidad"));
                 CantidadU = (int) ResultadoU;
-                ObjMySQL.actualizar("insert into tb_comparacion values('"+ClaveU+"','-',curdate(),'"+CantidadU+"','inventario','CLAVE','"+usuario+"',0)");
+                ObjMySQL.actualizar("insert into TB_Comparacion values('"+ClaveU+"','-',curdate(),'"+CantidadU+"','inventario','CLAVE','"+usuario+"',0)");
             }
             QueryComp="SELECT F_ClaPro from tb_comparacion where F_Tipo='CLAVE' and F_Usuario='"+usuario+"' GROUP BY F_ClaPro";
             ConsultaComp = ObjMySQL.consulta(QueryComp);
@@ -955,7 +955,7 @@
             }
             out.println(jsona);
         }else{
-            QueryDatos = "SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM tb_lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";    
+            QueryDatos = "SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM TB_Lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";    
             Consulta = ObjMySQL.consulta(QueryDatos);
             while(Consulta.next()){
                 Resultado = Double.parseDouble(Consulta.getString("cantidad"));
@@ -963,9 +963,9 @@
                 Clave = Consulta.getString("clave");
                 Lote= Consulta.getString("lote");
                 Cadu = Consulta.getString("F_FecCad");
-            ObjMySQL.actualizar("insert into tb_comparacion values('"+Clave+"','"+Lote+"','"+Cadu+"','"+Cantidad+"','sistemas','LOTE','"+usuario+"',0)");        
+            ObjMySQL.actualizar("insert into TB_Comparacion values('"+Clave+"','"+Lote+"','"+Cadu+"','"+Cantidad+"','sistemas','LOTE','"+usuario+"',0)");        
             }
-            QueryUbi="SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM tb_lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";
+            QueryUbi="SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM TB_Lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";
             ConsultaUbi = ObjInv.consulta(QueryUbi);
             while(ConsultaUbi.next()){
                 ClaveU = ConsultaUbi.getString("clave");
@@ -973,7 +973,7 @@
                 CaduU = ConsultaUbi.getString("F_FecCad");
                 ResultadoU = Double.parseDouble(ConsultaUbi.getString("cantidad"));
                 CantidadU = (int) ResultadoU;
-                ObjMySQL.actualizar("insert into tb_comparacion values('"+ClaveU+"','"+LoteU+"','"+CaduU+"','"+CantidadU+"','inventario','LOTE','"+usuario+"',0)");
+                ObjMySQL.actualizar("insert into TB_Comparacion values('"+ClaveU+"','"+LoteU+"','"+CaduU+"','"+CantidadU+"','inventario','LOTE','"+usuario+"',0)");
             }
             QueryComp="SELECT F_ClaPro,F_Lote,F_FecCad,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as fecha from tb_comparacion where F_Tipo='LOTE' and F_Usuario='"+usuario+"' GROUP BY F_ClaPro,F_Lote order by F_ClaPro,F_Lote,F_FecCad asc";
             ConsultaComp = ObjMySQL.consulta(QueryComp);

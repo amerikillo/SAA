@@ -18,7 +18,7 @@
     ResultSet Rset_Consul;
     ResultSet Rset_fecha;
     String CB="",btn="",btne="",clave="",lote="",caducidad="",proveedor="",cbm="",marca="",ubica="",pzas="",cantidad="",exis="",Id="",Id2="";
-    String CBM ="",descrip="",claveL="",DescripM="";
+    String CBM ="",descrip="",claveL="";
     int cont=0,existencia=0,cantinv=0,total=0;
     
     HttpSession sesion = request.getSession();
@@ -59,9 +59,6 @@
         pzas= request.getParameter("pzc");
         cantidad= request.getParameter("restom");
         
-        if (descrip == null){
-         descrip="";   
-        }
         if (btne == null){
          btne="";   
         }
@@ -102,7 +99,7 @@
             cantidad="";
         }
         
-        //out.println(btn);
+        out.println(btn);
     } catch (Exception e) {
 System.out.println(e);
     }
@@ -201,7 +198,7 @@ System.out.println(e);
             <form action="Inventario.jsp" method="post">
             <div class="container">
                 <div class="row">
-                    <div><h5>Ingresa CB Ubica:<input type="text" id="txtf_cb" name="txtf_cb" placeholder="Ingrese CB" size="20" class="text-center" onchange="this.form.submit();" >&nbsp;&nbsp;Ingresa CB Med:<input type="text" id="txtf_cdm" name="txtf_cdm" placeholder="Ingrese CB" size="15" class="text-center" onchange="this.form.submit();" >&nbsp;&nbsp;<input type="text" name="descrip" id="descrip" onKeyUp="Descripcion()" placeholder="Ingrese Descripción" /><datalist id="Descripciones"></datalist>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;<button class="btn btn-sm btn-success" id="btn-regresar">REGRESAR&nbsp;<label class="glyphicon glyphicon-hand-left"></label></button></h5></div>
+                    <div><h5>Ingresa CB Ubica:<input type="text" id="txtf_cb" name="txtf_cb" placeholder="Ingrese CB" size="20" class="text-center" onchange="this.form.submit();">&nbsp;&nbsp;Ingresa CB Med:<input type="text" id="txtf_cdm" name="txtf_cdm" placeholder="Ingrese CB" size="15" class="text-center" onchange="this.form.submit();">&nbsp;&nbsp;<input type="text" name="descrip" id="descrip" onKeyUp="Ubicacionc()" placeholder="Ingrese Descripción" /><datalist id="Ubicaciones"></datalist>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-buscar">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;<button class="btn btn-sm btn-success" id="btn-regresar">REGRESAR&nbsp;<label class="glyphicon glyphicon-hand-left"></label></button></h5></div>
                 </div>
                 
             </div>                
@@ -211,20 +208,11 @@ System.out.println(e);
                             <tr>
                                 <%
                                     if (CBM !=""){
-                                        Rset_Cb = con.consulta("SELECT L.F_ClaPro,F_ClaLot,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as fecha,M.F_DesPro FROM tb_lote L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro WHERE F_Cb='"+CBM+"' GROUP BY F_Cb");    
+                                        Rset_Cb = con.consulta("SELECT F_ClaPro,F_ClaLot,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as fecha FROM tb_lote WHERE F_Cb='"+CBM+"' GROUP BY F_Cb");    
                                         while(Rset_Cb.next()){
-                                            clave = Rset_Cb.getString("L.F_ClaPro");
+                                            clave = Rset_Cb.getString("F_ClaPro");
                                             lote = Rset_Cb.getString("F_ClaLot");
                                             caducidad = Rset_Cb.getString("fecha");
-                                            DescripM = Rset_Cb.getString("M.F_DesPro");
-                                        }
-                                    }
-                                    
-                                    if(descrip !=""){
-                                        Rset_Cb = con.consulta("select M.F_DesPro,M.F_ClaPro FROM tb_medica M WHERE M.F_DesPro='"+descrip+"' GROUP BY M.F_DesPro");
-                                        while(Rset_Cb.next()){
-                                            DescripM = Rset_Cb.getString("M.F_DesPro");
-                                            clave = Rset_Cb.getString("M.F_ClaPro");
                                         }
                                     }
                                 
@@ -232,25 +220,15 @@ System.out.println(e);
                                         Rset_Clave = con.consulta("SELECT L.F_ClaPro FROM tb_lote L INNER JOIN tb_ubica U on L.F_Ubica=U.F_ClaUbi WHERE U.F_Cb='"+CB+"' GROUP BY L.F_ClaPro");
                                         }else if (CBM !=""){
                                         Rset_Clave = con.consulta("SELECT L.F_ClaPro FROM tb_lote L INNER JOIN tb_ubica U on L.F_Ubica=U.F_ClaUbi WHERE L.F_Cb='"+CBM+"' GROUP BY L.F_ClaPro");    
-                                        }else if (ubica !="" && descrip !=""){
+                                        }else{
                                         Rset_Clave = con.consulta("select M.F_ClaPro FROM tb_medica M WHERE M.F_DesPro='"+descrip+"' GROUP BY M.F_ClaPro");        
-                                        }else if(descrip !=""){
-                                        Rset_Clave = con.consulta("select M.F_ClaPro FROM tb_medica M WHERE M.F_DesPro='"+descrip+"' GROUP BY M.F_ClaPro");            
-                                        }else if(btne !=""){
-                                        Rset_Cb = con.consulta("SELECT F_Ubica FROM tb_lote WHERE F_IdLote='"+btne+"'");    
-                                        while(Rset_Cb.next()){
-                                            ubica = Rset_Cb.getString("F_Ubica");
-                                        }
-                                        Rset_Clave = con.consulta("SELECT L.F_ClaPro FROM tb_lote L INNER JOIN tb_ubica U on L.F_Ubica=U.F_ClaUbi WHERE U.F_ClaUbi='"+ubica+"' GROUP BY L.F_ClaPro");
-                                        }else{                                        
-                                        Rset_Clave = con.consulta("SELECT L.F_ClaPro FROM tb_lote L INNER JOIN tb_ubica U on L.F_Ubica=U.F_ClaUbi WHERE U.F_ClaUbi='"+ubica+"' GROUP BY L.F_ClaPro");
                                         }
                                 %>
                                 <th>Clave:</th><td>
-                                    <%if (CBM !="" || descrip !=""){%>
-                                    <input type="text" id="clave" name="clave" placeholder="Clave" readonly="" value="<%=clave%>" class="text-center" onkeypress="return tabular(event, this)" />
+                                    <%if (CBM !=""){%>
+                                    <input type="text" id="clave" name="clave" placeholder="Clave" readonly="" value="<%=clave%>" class="text-center" />
                                     <%}else{%>
-                                    <input type="text" id="clave" name="clave" placeholder="Clave" readonly="" value="<%//=clave%>" class="text-center" onkeypress="return tabular(event, this)" />
+                                    <input type="text" id="clave" name="clave" placeholder="Clave" readonly="" value="<%//=clave%>" class="text-center" />
                                     <%}%>
                                     &nbsp;&nbsp;
                                     
@@ -266,16 +244,13 @@ System.out.println(e);
                                 </td>
                                 
                             </tr>
-                            <tr>
-                                <th>Decripción:</th>
-                                <td id="obs"><%=DescripM%></td>
-                            </tr>
+                            
                             <tr>
                                 <th>Lote</th><td>
                                     <%if (CBM !=""){%>
-                                    <input type="text" id="lote" name="lote" placeholder="" class="text-center" value="<%=lote%>" onkeypress="return tabular(event, this)"/>
+                                    <input type="text" id="lote" name="lote" placeholder="" class="text-center" value="<%=lote%>"/>
                                     <%}else{%>
-                                    <input type="text" id="lote" name="lote" placeholder="" class="text-center" value="<%//=lote%>" onkeypress="return tabular(event, this)"/>
+                                    <input type="text" id="lote" name="lote" placeholder="" class="text-center" value="<%//=lote%>"/>
                                     <%}%>
                                     &nbsp;&nbsp;      
                                     
@@ -287,17 +262,9 @@ System.out.println(e);
                             <tr>
                                 <th>Caducidad</th><td>
                                     <%if (CBM !=""){%>
-                                    <input type="text" id="caducidad" name="caducidad" data-date-format="dd/mm/yyyy" placeholder="" class="text-center" value="<%=caducidad%>" onKeyPress="                                
-                                                return LP_data(event, this);
-                                                anade(this, event);
-                                                return tabular(event, this);
-                                               " maxlength="10" onblur="validaCadu();"/>&nbsp;<label class="icon-calendar icon-2x"></label>
+                                    <input type="text" id="caducidad" name="caducidad" readonly="" placeholder="" class="text-center" value="<%=caducidad%>"/>&nbsp;<label class="icon-calendar icon-2x"></label>
                                     <%}else{%>
-                                    <input type="text" id="caducidad" name="caducidad" data-date-format="dd/mm/yyyy" placeholder="" class="text-center" value="<%//=caducidad%>" onKeyPress="                                
-                                                return LP_data(event, this);
-                                                anade(this, event);
-                                                return tabular(event, this);
-                                               " maxlength="10" onblur="validaCadu();"/>&nbsp;<label class="icon-calendar icon-2x"></label>
+                                    <input type="text" id="caducidad" name="caducidad" readonly="" placeholder="" class="text-center" value="<%//=caducidad%>"/>&nbsp;<label class="icon-calendar icon-2x"></label>
                                     <%}%>
                                     &nbsp;&nbsp;
                                     
@@ -307,44 +274,34 @@ System.out.println(e);
                                     </select>
                                  
                                 </td>
-                            </tr>                         
+                            </tr>
+                          
                             
                             
                             <tr>
                                 <%
-                                        if (CB !="" || ubica !="" || btne !=""){
-                                           
-                                            if (btne !=""){
-                                                Rset_Clave = con.consulta("SELECT U.F_Cb FROM tb_lote L INNER JOIN tb_ubica U ON L.F_Ubica=U.F_ClaUbi WHERE F_IdLote='"+btne+"'");
-                                                while(Rset_Clave.next()){
-                                                    CB = Rset_Clave.getString("U.F_Cb");
-                                                }
-                                            }
-                                            Rset_Clave = con.consulta("SELECT U.F_ClaUbi FROM tb_lote L INNER JOIN tb_ubica U on L.F_Ubica=U.F_ClaUbi WHERE U.F_Cb='"+CB+"' GROUP BY U.F_ClaUbi"); 
+                                        if (CB !=""){
+                                           Rset_Clave = con.consulta("SELECT U.F_ClaUbi FROM tb_lote L INNER JOIN tb_ubica U on L.F_Ubica=U.F_ClaUbi WHERE U.F_Cb='"+CB+"' GROUP BY U.F_ClaUbi"); 
                                             while(Rset_Clave.next()){
                                                ubica = Rset_Clave.getString("U.F_ClaUbi");
                                             }
                                         
                                         %>
-                                        <th>Ubicación</th><td><input type="text" id="actual" name="ubin" value="<%=ubica%>" placeholder="" class="text-center" onKeyUp="Ubicacionc()" onkeypress="return tabular(event, this)"/> <datalist id="Ubicaciones"></datalist>&nbsp;&nbsp;<!--select id="select"-->
+                                <th>Ubicación</th><td><input type="text" id="actual" name="ubin" value="<%=ubica%>" placeholder="" readonly="" class="text-center"/>&nbsp;&nbsp;<select id="select">
                                         <%}else{%>
-                                        <th>Ubicación</th><td><input type="text" id="actual" name="ubin" value="<%//=ubica%>" placeholder="" class="text-center" onKeyUp="Ubicacionc()" onkeypress="return tabular(event, this)"/><datalist id="Ubicaciones"></datalist>&nbsp;&nbsp;<!--select id="select"-->
+                                        <th>Ubicación</th><td><input type="text" id="actual" name="ubin" value="<%//=ubica%>" placeholder="" readonly="" class="text-center"/>&nbsp;&nbsp;<select id="select">
                                         <%}%>
-                                        <!--option id="op">--Ubicación--</option>                                        
-                                    </select--></td>
+                                        <option id="op">--Ubicación--</option>                                        
+                                    </select></td>
                             </tr>  
                             <tr>
-                                <th>Presentación</th><td><input type="text" id="pzc" name="pzc" value="<%//=pzas%>" placeholder="" class="text-center" onkeypress="return justNumbers(event);"/>
-                                <select id="selectR">
-                                        <option id="op">--Resto--</option>                                        
-                                    </select>
-                                </td>
+                                <th>Presentación</th><td><input type="text" id="pzc" name="pzc" value="<%//=pzas%>" placeholder="" class="text-center"/></td>
                             </tr>  
                             <tr>
-                                <th>Total Existencias</th><td><input type="text" id="restom" name="restom" placeholder="" class="text-center" value="<%//=cantidad%>" onkeypress="return justNumbers(event);" /></td>
+                                <th>Total Existencias</th><td><input type="text" id="restom" name="restom" placeholder="" class="text-center" value="<%//=cantidad%>" /></td>
                             </tr>                            
                         </tbody>
-                        <div id="loading" class="text-center"></div>
+                        
                         <tr><td colspan="3"><button id="btn-agregar" class="btn btn-primary btn-block" name="btn-agregar" value="Agregar">Agregar&nbsp;<label class="icon-refresh"></label></button></td></tr>
                        
                     </table>
@@ -378,9 +335,6 @@ System.out.println(e);
                }else{
                    con.actualizar("INSERT INTO tb_lote VALUES(0,'"+clave+"','"+lote+"','"+caducidad+"','"+cantidad+"','"+pzas+"','1','"+ubica+"',CURDATE(),'1','1')");
                }
-               con.actualizar("insert into tb_movinv values(0,curdate(),'4','"+clave+"','"+cantidad+"','1','"+lote+"','"+caducidad+"','"+ubica+"',curtime(),'"+usua+"')");
-               
-              
            }
            %>
            <table class="table">
@@ -393,25 +347,8 @@ System.out.println(e);
                     <td></td>
                 </tr>
                 <%
-                 if (btne !=""){
-                        Rset_Clave = con.consulta("SELECT F_ClaPro,F_ClaLot,F_FecCad,F_ExiLot,F_Ubica FROM tb_lote WHERE F_IdLote='"+btne+"'");
-                        while(Rset_Clave.next()){
-                            clave = Rset_Clave.getString("F_ClaPro");
-                            lote = Rset_Clave.getString("F_ClaLot");
-                            caducidad = Rset_Clave.getString("F_FecCad");
-                            cantidad = Rset_Clave.getString("F_ExiLot");
-                            ubica = Rset_Clave.getString("F_Ubica");
-                        }
-                        con.actualizar("insert into tb_movinv values(0,curdate(),'53','"+clave+"','"+cantidad+"','-1','"+lote+"','"+caducidad+"','"+ubica+"',curtime(),'"+usua+"')");
-                        con.actualizar("UPDATE tb_lote SET F_ExiLot='0' where F_IdLote ='"+btne+"'");
-                        
-                    }
-           
                 if (CB !=""){
                     Rset_Clave = con.consulta("SELECT L.F_ClaPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y'),U.F_DesUbi,L.F_ExiLot,L.F_IdLote FROM tb_lote L INNER JOIN tb_ubica U on L.F_Ubica=U.F_ClaUbi WHERE U.F_Cb='"+CB+"' AND F_ExiLot>0");
-                }else if(ubica !=""){
-                    Rset_Clave = con.consulta("SELECT L.F_ClaPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y'),U.F_DesUbi,L.F_ExiLot,L.F_IdLote FROM tb_lote L INNER JOIN tb_ubica U on L.F_Ubica=U.F_ClaUbi WHERE U.F_ClaUbi='"+ubica+"' AND F_ExiLot>0");
-                }
                     while(Rset_Clave.next()){
                         
                     Id2 = Rset_Clave.getString(6);                                         
@@ -428,6 +365,11 @@ System.out.println(e);
                 </tr>
                 <%
                     }
+                    }
+                if (btne !=""){
+                        con.actualizar("DELETE FROM tb_lote where F_IdLote ='"+btne+"'");
+                    }
+                
                 
                 %>
             </table>
@@ -461,9 +403,10 @@ System.out.println(e);
         
     </script>
     
+   
     <script>
         
-        function Descripcion(){
+        function Ubicacionc(){
            var text = $("#descrip").val();
             var dir = 'jsp/consultas.jsp?ban=55&text='+text+''
             
@@ -544,163 +487,10 @@ System.out.println(e);
         
         };
         
-   
-        
-        function Ubicacionc(){
-           var text = $("#actual").val();
-            var dir = 'jsp/consultas.jsp?ban=45&text='+text+''
-           // alert(dir);
-                    $.ajax({
-                        url: dir,
-                        type: 'json',
-                        async: false,
-                        success: function(data){
-                            MostrarDatosUbi(data);
-                        }, 
-                                error: function() {
-                            alert("Ha ocurrido un error");	
-                        }
-                    });
-                   function MostrarDatosUbi(data){
-                       var x = 0;
-                      
-                       var json = JSON.parse(data);
-                       for(var i = 0; i < json.length; i++) {
-                           x++;
-                           var uni = json[i].ubicac;
-                       
-                           if (x < json.length){
-                               
-                               if (x == 1){
-                                   var unid1 = uni;
-                               }else if (x == 2){
-                               var unid2 = uni;
-                               }else if (x == 3){
-                               var unid3 = uni;
-                               }else if (x == 4){
-                               var unid4 = uni;
-                               }else if (x == 5){
-                               var unid5 = uni;
-                               }else if (x == 6){
-                               var unid6 = uni;
-                               }else if (x == 7){
-                               var unid7 = uni;
-                               }else if (x == 8){
-                               var unid8 = uni;
-                               }else if (x == 9){
-                               var unid9 = uni;
-                               }
-                           }else{
-                              var unid10 = uni;
-                              
-                           }
-                           if (json.length == 1){
-                               var availableTags = [unid10];
-                           }else if (json.length == 2){
-                               var availableTags = [unid1,unid10];
-                           }else if (json.length == 3){
-                               var availableTags = [unid1,unid2,unid10];
-                           }else if (json.length == 4){
-                               var availableTags = [unid1,unid2,unid3,unid10];
-                           }else if (json.length == 5){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid10];
-                           }else if (json.length == 6){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid10];
-                           }else if (json.length == 7){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid6,unid10];
-                           }else if (json.length == 8){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid6,unid7,unid10];
-                           }else if (json.length == 9){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid6,unid7,unid8,unid10];
-                           }else if (json.length == 10){
-                               var availableTags = [unid1,unid2,unid3,unid4,unid5,unid6,unid7,unid8,unid9,unid10];
-                           } 
-                               
-                           
-                           
-                           $( "#actual" ).autocomplete({
-                               source: availableTags
-                           }); 
-
-                       }  
-        }
-        
-        };
-        
-        function validaCadu() {
-            var cad = document.getElementById('caducidad').value;
-            if (cad === "") {
-                
-                
-            } else if (cad.length < 10) {
-                    alert("Caducidad Incorrecta");
-                    document.getElementById('caducidad').focus();
-                    return false;
-                } else {
-                    var dtFechaActual = new Date();
-                    var sumarDias = parseInt(365);
-                    dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
-                    var fechaSpl = cad.split("/");
-                    var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
-                    /*alert(Caducidad);*/
-                    if (Date.parse(dtFechaActual) > Date.parse(Caducidad)) {
-                        alert("La fecha de caducidad no puede ser menor a 12 meses próximos");
-                        document.getElementById('caducidad').focus();
-                        return false;
-                    }
-                }
-        }
-        
-        otro = 0;
-        function LP_data(e, esto) {
-            var key = (document.all) ? e.keyCode : e.which; //codigo de tecla. 
-             if (key < 48 || key > 57)//si no es numero 
-                 return false; //anula la entrada de texto.
-               else
-                 anade(esto);
-       }
-       function tabular(e, obj){
-           tecla = (document.all) ? e.keyCode : e.which;
-           if (tecla != 13)
-               return;
-           frm = obj.form;
-           for (i = 0; i < frm.elements.length; i++)
-               if (frm.elements[i] == obj)
-           {
-               if (i == frm.elements.length - 1)
-                   i = -1;
-               break
-           }
-           /*ACA ESTA EL CAMBIO*/
-           if (frm.elements[i + 1].disabled == true)
-               tabular(e, frm.elements[i + 1]);
-           else
-               frm.elements[i + 1].focus();
-           return false;
-       }
-       function anade(esto) {
-           if (esto.value.length > otro) {
-               if (esto.value.length === 2) {
-                   esto.value += "/";
-               }
-           }
-           if (esto.value.length > otro) {
-               if (esto.value.length === 5) {
-                   esto.value += "/";
-               }
-           }
-           if (esto.value.length < otro) {
-               if (esto.value.length === 2 || esto.value.length === 5) {
-                   esto.value = esto.value.substring(0, esto.value.length - 1);
-               }
-           }
-           otro = esto.value.length;
-        }
-        
     </script>
     <script>
         $(document).ready(function() {
-           $("#selectc").click(function() {
+            $("#selectc").click(function() {
                 $("#selectl").empty();
                 $("#selectl").append($("<option></option>").text("--Lote--").val("--Lote--"));
                 var clavel = $("#selectc").val();                
@@ -731,40 +521,14 @@ System.out.println(e);
                 $("#selectCadu").empty(); 
                  $("#selectCadu").append($("<option></option>").text("--Caducidad--").val("--Caducidad--"));
                 
-            var Claves = $("#clave").val();
-            var dir = 'jsp/consultasInv.jsp?ban=4&clave='+Claves+''  
-             $.ajax({
-                url: dir,
-                type: 'json',
-                async: false,
-                success: function(data) {
-                    MostrarDescr(data);
-                },
-                error: function() {
-                    alert("Ha ocurrido un error");
-
-                }                
-
-            });
-            function MostrarDescr(data) {
-
-                var json = JSON.parse(data);
-                $("#obs").text(json.descripc);
-            }
-
             });
             
             $("#selectl").click(function() {
                  $("#selectCadu").empty(); 
                  $("#selectCadu").append($("<option></option>").text("--Caducidad--").val("--Caducidad--"));
                 var clavel = $("#selectc").val();
-                var clavels = $("#clave").val();
                 var lotel = $("#selectl").val();
-                if (clavel !="--Clave--"){
                 var dir = 'jsp/consultasInv.jsp?ban=2&clave='+clavel+'&lote='+lotel+''
-                }else{
-                    var dir = 'jsp/consultasInv.jsp?ban=2&clave='+clavels+'&lote='+lotel+''
-                }
             $.ajax({
                 url: dir,
                 type: 'json',
@@ -860,19 +624,6 @@ System.out.println(e);
             });
 
             $("#btn-agregar").click(function() {
-                
-                $('#loading').html('<img src="img/ajax-loader-1.gif" width="10%" height="10%">');
-                
-            $.ajax({
-                url: dir,
-                    type: 'json',
-                    async: false,
-                success: function (d) {
-                    setTimeout(function () {                        
-                        $('#loading').html('');
-                    }, 2000);
-                }
-                });
 
                 var missinginfo = "";
                 var clave = $("#clave").val();
@@ -931,39 +682,6 @@ System.out.println(e);
             $("#btn-regresar").click(function(){
                 self.location='Consultas.jsp';
             });
-            
-            
-            
-                $("#selectl").empty();
-                $("#selectl").append($("<option></option>").text("--Lote--").val("--Lote--"));
-                var clavel = $("#clave").val();                
-                var dir = 'jsp/consultasInv.jsp?ban=1&clave='+clavel+''
-            $.ajax({
-                url: dir,
-                type: 'json',
-                async: false,
-                success: function(data) {
-                    MostrarLotes(data);
-                },
-                error: function() {
-                    alert("Ha ocurrido un error");
-
-                }
-                
-
-            });
-            function MostrarLotes(data) {
-
-                var json = JSON.parse(data);
-                for (var x = 0; x < json.length; x++) {
-                    var lote = json[x].lote;                   
-                    $("#selectl").append($("<option></option>").text(lote).val(lote));
-
-                }
-            }
-                $("#selectCadu").empty(); 
-                 $("#selectCadu").append($("<option></option>").text("--Caducidad--").val("--Caducidad--"));
-            
         });
     </script>
     <link rel="stylesheet" href="themes/base/jquery.ui.all.css">
@@ -974,6 +692,6 @@ System.out.println(e);
     <script src="ui/jquery.ui.datepicker.js"></script>
 
     <script>
-        //$("#caducidad").datepicker();
+        $("#caducidad").datepicker();
     </script>
 </html>

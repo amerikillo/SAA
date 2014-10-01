@@ -81,7 +81,7 @@ public class Devoluciones extends HttpServlet {
                     byte[] a = request.getParameter("Obser").getBytes("ISO-8859-1");
                     String Observaciones = (new String(a, "UTF-8")).toUpperCase();
 
-                    con.insertar("insert into tb_devolcompra values ('" + request.getParameter("IdLote") + "','"+Observaciones+"','0','"+cant+"')");
+                    con.insertar("insert into tb_devolcompra values ('" + request.getParameter("IdLote") + "','" + Observaciones + "','0','" + cant + "')");
                     con.insertar("insert into tb_movinv values('0',CURDATE(),'0','52','" + ClaPro + "','" + cant + "','" + costo + "','" + importe + "','-1','" + FolLote + "','" + Ubicacion + "','" + Provee + "',CURTIME(),'" + (String) sesion.getAttribute("nombre") + "')");
 
                     //consql.insertar("insert into TB_MovInv values(CONVERT(date,GETDATE()),'1','','52','" + ClaPro + "','" + cant + "','" + costo + "','" + iva + "','" + importe + "','-1','" + FolLotSql + "','" + indMov + "','A','0','','','','" + Provee + "','" + (String) sesion.getAttribute("nombre") + "')");
@@ -100,7 +100,7 @@ public class Devoluciones extends HttpServlet {
         }
     }
 
-    double devuelveImporte(String clave, int cantidad) throws SQLException {
+    public double devuelveImporte(String clave, int cantidad) throws SQLException {
 
         ConectionDB con = new ConectionDB();
         int Tipo = 0;
@@ -123,7 +123,7 @@ public class Devoluciones extends HttpServlet {
         return MontoIva;
     }
 
-    double devuelveIVA(String clave, int cantidad) throws SQLException {
+    public double devuelveIVA(String clave, int cantidad) throws SQLException {
 
         ConectionDB con = new ConectionDB();
         int Tipo = 0;
@@ -144,7 +144,7 @@ public class Devoluciones extends HttpServlet {
         return IVAPro;
     }
 
-    double devuelveCosto(String Clave) throws SQLException {
+    public double devuelveCosto(String Clave) throws SQLException {
         ConectionDB con = new ConectionDB();
         double Costo = 0.0;
         con.conectar();
@@ -156,6 +156,19 @@ public class Devoluciones extends HttpServlet {
 
     }
 
+    public int devuelveIndLote() throws SQLException {
+        ConectionDB con = new ConectionDB();
+        int indice = 0;
+        con.conectar();
+        ResultSet rset_Ind = con.consulta("SELECT F_IndLote FROM tb_indice");
+        while (rset_Ind.next()) {
+            indice = rset_Ind.getInt("F_IndLote");
+            int FolioLot = indice + 1;
+            con.actualizar("update tb_indice set F_IndLote='" + FolioLot + "'");
+        }
+        con.cierraConexion();
+        return indice;
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

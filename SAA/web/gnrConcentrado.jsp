@@ -11,8 +11,8 @@
     ConectionDB con = new ConectionDB();
     String cli = "", fec = "";
 
-    //response.setContentType("application/vnd.ms-excel");
-    //response.setHeader("Content-Disposition", "attachment;filename=\"ConcentradoGlobal.xls\"");
+    response.setContentType("application/vnd.ms-excel");
+    response.setHeader("Content-Disposition", "attachment;filename=\"ConcentradoGlobal.xls\"");
 %>
 <table border="1">
     <tr>
