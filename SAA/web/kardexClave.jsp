@@ -280,8 +280,13 @@
                                     <td><%=rset.getString(1)%></td>
                                     <td><%=Documento%></td>
                                     <td>
-                                        <%if (!Documento.equals("")) {
-                                                out.println(rset.getString("F_FolRemi"));
+                                        <%
+                                            if (!Documento.equals("")) {
+                                                ResultSet rset2 = con.consulta("select F_FolRemi from tb_compra where F_ClaPro = '" + rset.getString("F_ProMov") + "' and F_ClaDoc = '" + rset.getString("F_DocMov") + "' ");
+                                                while (rset2.next()) {
+                                                    out.println(rset2.getString("F_FolRemi"));
+                                                }
+                                                //out.println(rset.getString("F_FolRemi"));
                                             }
                                         %>
                                     </td>
@@ -301,7 +306,7 @@
                                         }
                                         con.cierraConexion();
                                     } catch (Exception e) {
-
+                                        System.out.println(e.getMessage());
                                     }
                                 %>
                             </tbody>
@@ -309,8 +314,8 @@
                     </div>
 
 
-                            <div style="width:100%; margin: auto" class="panel panel-body panel-danger">
-                                <h3>Redistribución</h3>
+                    <div style="width:100%; margin: auto" class="panel panel-body panel-danger">
+                        <h3>Redistribución</h3>
                         <table class="table table-bordered table-striped" width="100%" id="kardexTab">
                             <thead> 
                                 <tr>

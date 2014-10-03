@@ -48,6 +48,8 @@ public class FacturacionManual extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         try {
             if (!request.getParameter("accionEliminar").equals("")) {
+
+                sesion.setAttribute("F_IndGlobal", null);
                 con.conectar();
                 con.insertar("delete from tb_facttemp where F_IdFact = '" + request.getParameter("accionEliminar") + "' ");
                 con.cierraConexion();

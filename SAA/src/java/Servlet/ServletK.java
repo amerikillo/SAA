@@ -64,11 +64,13 @@ public class ServletK extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         conection ObjMySQL = new conection();
         ConectionDBInv ObjInv = new ConectionDBInv();
 
         String Query;
         ResultSet Consultas = null;
+
         try {
             processRequest(request, response);
             PrintWriter out = response.getWriter();
@@ -345,6 +347,9 @@ public class ServletK extends HttpServlet {
 
                             QueryDatos = "SELECT F_IdFact,F_Id,F_ClaCli,F_FecEnt,F_StsFact,F_User,F_Cant from tb_facttemp where F_StsFact<='4' AND F_IdLot='" + Id + "'";
                             Consulta = ObjMySQL.consulta(QueryDatos);
+                            Consulta.last();
+                            int renConsulta = Consulta.getRow();
+                            Consulta.first();
                             while (Consulta.next()) {
                                 Cont++;
                                 Difexifact = Integer.parseInt(Consulta.getString("F_Cant"));
@@ -367,13 +372,17 @@ public class ServletK extends HttpServlet {
                                         ObjMySQL.actualizar("insert into tb_facttemp  values ('" + IdFact + "','" + ClaCli + "','" + UbicaFol + "','" + CantidadM + "','" + FecEnt + "','" + StsFact + "',0,'" + User2 + "')");
                                     }
                                 }
-                                CantidadM = CantidadM - Difexifact;
+                                if (Consulta.getRow() < renConsulta - 1) {
+                                    CantidadM = CantidadM - Difexifact;
+                                }
                             }
 
                         }
 
                     }
-
+                    if (CantidadM < 0) {
+                        CantidadM = CantidadM * (-1);
+                    }
                     ObjMySQL.actualizar("insert into tb_movinv values(0,curdate(),'0','1000','" + Clave + "','" + CantidadM + "','" + Costo + "','" + MontoT + "','-1','" + Folio + "','" + Ubicacion + "','" + Org + "',curtime(),'" + Usuario + "')");
                     ObjMySQL.actualizar("insert into tb_movinv values(0,curdate(),'0','1000','" + Clave + "','" + CantidadM + "','" + Costo + "','" + MontoT + "','1','" + Folio + "','" + Ubinew + "','" + Org + "',curtime(),'" + Usuario + "')");
 
@@ -778,7 +787,7 @@ public class ServletK extends HttpServlet {
                         response.sendRedirect("Ubicaciones/Comparacion.jsp");
                     } else {
                         out.println("ENTRO LOTE");
-                        //QueryDatos = "SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM TB_Lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";    
+                        //QueryDatos = "SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM Tb_Lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";    
                         QueryDatos = "SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM tb_lote GROUP BY F_ClaPro,F_ClaLot,F_FecCad order by F_ClaPro,F_ClaLot,F_FecCad asc";
                         Consulta = ObjMySQL.consulta(QueryDatos);
                         while (Consulta.next()) {
@@ -789,7 +798,7 @@ public class ServletK extends HttpServlet {
                             Cadu = Consulta.getString("F_FecCad");
                             ObjMySQL.actualizar("insert into tb_comparacion values('" + Clave + "','" + Lote + "','" + Cadu + "','" + Cantidad + "','sistemas','LOTE','" + sesion.getAttribute("nombre") + "',0)");
                         }
-                        //QueryUbi="SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM TB_Lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";
+                        //QueryUbi="SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM tb_lote WHERE F_ExiLot>0 GROUP BY F_ClaPro,F_ClaLot order by F_ClaPro,F_ClaLot,F_FecCad asc";
                         QueryUbi = "SELECT F_ClaPro as clave,F_ClaLot as lote,F_FecCad,SUM(F_ExiLot) as cantidad FROM tb_lote GROUP BY F_ClaPro,F_ClaLot,F_FecCad order by F_ClaPro,F_ClaLot,F_FecCad asc";
                         ConsultaUbi = ObjInv.consulta(QueryUbi);
                         while (ConsultaUbi.next()) {

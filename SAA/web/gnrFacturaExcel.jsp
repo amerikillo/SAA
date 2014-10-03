@@ -47,9 +47,9 @@
         orden_compra = "";
         fecha = "";
     }
-    
-        response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "attachment;filename=\"Factura_"+request.getParameter("fol_gnkl")+".xls\"");
+
+    response.setContentType("application/vnd.ms-excel");
+    response.setHeader("Content-Disposition", "attachment;filename=\"Factura_" + request.getParameter("fol_gnkl") + ".xls\"");
 %>
 <div>
     <h4>Folio de Factura: <%=request.getParameter("fol_gnkl")%></h4>
@@ -68,7 +68,7 @@
     <%
         int req = 0, sur = 0;
         Double imp = 0.0;
-        ResultSet rset2 = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,(F.F_CantSur) as surtido,(F.F_CantReq) as requerido,F.F_Costo,(F.F_Monto) as importe, F.F_Ubicacion FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
+        ResultSet rset2 = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,(F.F_CantSur) as surtido,(F.F_CantReq) as requerido,F.F_Costo,(F.F_Monto) as importe, F.F_Ubicacion, DATE_FORMAT(L.F_FecFab, '%d/%m/%Y') AS F_FecFab, Mar.F_DesMar FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
         while (rset2.next()) {
             req = req + rset2.getInt("requerido");
             sur = sur + rset2.getInt("surtido");
@@ -107,6 +107,8 @@
                         <td>Ent.</td>
                         <td>Costo U</td>
                         <td>Importe</td>
+                        <td>Fec Fab</td>
+                        <td>Marca</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -114,7 +116,7 @@
                         try {
                             con.conectar();
                             try {
-                                ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
+                                ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, DATE_FORMAT(L.F_FecFab, '%d/%m/%Y') AS F_FecFab, Mar.F_DesMar FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli  INNER JOIN tb_marca Mar ON Mar.F_ClaMar = L.F_ClaMar WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
                                 while (rset.next()) {
                     %>
                     <tr>
@@ -127,6 +129,8 @@
                         <td><%=rset.getString(9)%></td>
                         <td><%=rset.getString(10)%></td>
                         <td><%=rset.getString(11)%></td>
+                        <td><%=rset.getString("F_FecFab")%></td>
+                        <td><%=rset.getString("F_DesMar")%></td>
                     </tr>
                     <%
                                 }

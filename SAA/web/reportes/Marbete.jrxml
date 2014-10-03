@@ -71,10 +71,15 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Pieza}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="4f2b4eb5-f500-40c5-b097-ab665ff9344d" x="253" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[F_Cb]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="293">
+		<band height="320">
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="79a53dd9-83ae-4dc8-87f2-55da051f66ab" x="0" y="50" width="752" height="118"/>
 				<textElement>
@@ -123,14 +128,18 @@
 					<jr:codeExpression><![CDATA[$F{F_Cb}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
+			<textField>
+				<reportElement uuid="a468b2c8-c0d2-4cd0-946d-f9e14770070d" x="247" y="292" width="311" height="28"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Cb}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band/>
 	</columnFooter>
-	<pageFooter>
-		<band height="17"/>
-	</pageFooter>
 	<summary>
 		<band/>
 	</summary>

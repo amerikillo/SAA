@@ -214,7 +214,7 @@
                         <div class="row">
                             <h4 class="col-sm-2">Ingrese CB</h4>
                             <div class="col-sm-3">
-                                <input class="form-control" name="F_Cb" />
+                                <input class="form-control" name="F_Cb" autofocus />
                             </div>
                             <h4 class="col-sm-2">Clave</h4>
                             <div class="col-sm-3">
