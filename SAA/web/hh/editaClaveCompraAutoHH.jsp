@@ -15,10 +15,12 @@
 
     HttpSession sesion = request.getSession();
     String usua = "";
+    String tipo = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("../index.jsp");
     }
     ConectionDB con = new ConectionDB();
     String folio_gnk = "", fecha = "", folio_remi = "", orden = "", provee = "", recib = "", entrega = "", origen = "", coincide = "", observaciones = "", clave = "", descrip = "", cod_bar = "", um = "", lote = "", cadu = "", cajas = "", piezas = "", tarimas = "", marca = "", fec_fab = "", proveedor = "", tarimasInc = "";
@@ -115,10 +117,31 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="../captura.jsp">Entrada Manual</a></li>
                                     <li><a href="../compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="../reimpresion.jsp" target="blank_">Reimpresión de Compras</a></li>
-                                    <li><a href="../ordenesCompra.jsp" target="blank_">Órdenes de Compras</a></li>
-                                    <li><a href="../kardexClave.jsp" target="blank_">Kardex Claves</a></li>
-                                    <li><a href="../Ubicaciones/Consultas.jsp" target="blank_">Ubicaciones</a></li>
+                                    <!--li class="divider"></li>
+                                    <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
+                                    <li class="divider"></li-->
+                                    <%
+                                        if (tipo.equals("2") || tipo.equals("3")) {
+                                    %>
+                                    <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
+                                        <%
+                                            }
+                                        %>
+                                    <li><a href="#" onclick="window.open('../reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
+                                    <li><a href="#"  onclick="window.open('../ordenesCompra.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Órdenes de Compras</a></li>
+                                    <li><a href="#"  onclick="window.open('../kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
+                                    <li><a href="#"  onclick="window.open('../Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
+                                    <li><a href="#"  onclick="window.open('../creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
+                                    <li class="divider"></li>
+                                        <%
+                                            if (tipo.equals("5")) {
+                                        %>
+                                    <li><a href="insumoNuevoRedist.jsp">Redistribución HH</a></li>
+                                        <%
+                                            }
+                                        %>
+                                    <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
+                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li-->
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -126,22 +149,45 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="../requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="../factura.jsp">Facturación Automática</a></li>
+                                    <li><a href="../validacionSurtido.jsp">Validación Surtido</a></li>
+                                    <li><a href="../validacionAuditores.jsp">Validación Auditores</a></li>
+                                        <%
+                                            if (tipo.equals("7")) {
+                                        %>
+                                    <li><a href="../remisionarCamion.jsp">Generar Remisiones</a></li>
+                                        <%
+                                            }
+                                        %>
+                                    <li><a href="../facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="../reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="../reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
+                                    <li><a href="../comparativoGlobal.jsp">Comparativo Global</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#"  onclick="window.open('../Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
+                                    <li><a href="#"  onclick="window.open('../movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
+                                    <li><a href="#"  onclick="window.open('../semaforo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Semaforización</a></li>
+                                    <li><a href="#"  onclick="window.open('../invenCiclico/nuevoInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario Ciclico</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="../medicamento.jsp" target="blank_">Catálogo de Medicamento</a></li>
-                                    <li><a href="../catalogo.jsp" target="blank_">Catálogo de Proveedores</a></li>
-                                    <li><a href="../marcas.jsp" target="blank_">Catálogo de Marcas</a></li>
+                                    <li><a href="#" onclick="window.open('../medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
+                                    <li><a href="#" onclick="window.open('../catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
+                                    <li><a href="#" onclick="window.open('../marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="../Entrega.jsp" target="blank_">Fecha de Recibo en CEDIS</a></li> 
-                                    <li><a href="../historialOC.jsp" target="blank_">Historial OC</a></li>                                      
+                                    <li><a href="#" onclick="window.open('../Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
+                                    <li><a href="#" onclick="window.open('../historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>
+                                    <li><a href="#" onclick="window.open('../ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>
+                                    
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -159,8 +205,8 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
+                                    <li><a href="../usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
+                                    <li><a href="../usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
                                 </ul>
                             </li>
                             <%                                }

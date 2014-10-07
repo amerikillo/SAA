@@ -221,7 +221,7 @@
                         </div>
                     </form>
                     <hr/>
-                    <div style="width:100%; margin: auto" class="panel panel-success panel-body">
+                    <div style="width:100%; margin: auto" class="panel panel-success panel-body table-responsive">
                         <h3>Ingresos / Egresos</h3>
                         <table class="table table-bordered table-striped" width="100%" id="kardexTab2">
                             <thead> 
@@ -329,7 +329,7 @@
                     </div>
 
 
-                    <div style="width:100%; margin: auto" class="panel panel-body panel-danger">
+                    <div style="width:100%; margin: auto" class="panel panel-body panel-danger table-responsive">
                         <h3>Redistribución</h3>
                         <table class="table table-bordered table-striped" width="100%" id="kardexTab">
                             <thead> 

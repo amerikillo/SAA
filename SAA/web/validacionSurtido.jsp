@@ -46,7 +46,7 @@
     if (Clave == null) {
         Clave = (String) sesion.getAttribute("Nombre");
         if (Clave == null) {
-            Clave="";
+            Clave = "";
         }
     }
 %>
@@ -95,6 +95,13 @@
                                     <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                                     <li><a href="#"  onclick="window.open('creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
+                                        <%
+                                            if (tipo.equals("5")) {
+                                        %>
+                                    <li><a href="hh/insumoNuevoRedist.jsp">Redistribución HH</a></li>
+                                        <%
+                                            }
+                                        %>
                                     <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
                                     <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li-->
                                 </ul>
@@ -114,7 +121,7 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
@@ -403,15 +410,15 @@
     <script src="js/jquery-1.9.1.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    
+
     <script>
-        function validaCliente(){
-            var Cliente = document.getElementById('Nombre').value;
-            if(Cliente===""){
-                alert('Seleccione el Punto de Entrega')
-                return false;
-            }
-        }
+                                function validaCliente() {
+                                    var Cliente = document.getElementById('Nombre').value;
+                                    if (Cliente === "") {
+                                        alert('Seleccione el Punto de Entrega')
+                                        return false;
+                                    }
+                                }
     </script>
 
 </html>
