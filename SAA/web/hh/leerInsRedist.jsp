@@ -29,7 +29,7 @@
     }
     ConectionDB con = new ConectionDB();
     
-    String ClaPro = "", UbiAnt = "";
+    String ClaPro = "", UbiAnt = "", UbiCb = "";
     try {
         ClaPro = request.getParameter("ClaPro");
         UbiAnt = request.getParameter("UbiAnt");
@@ -41,6 +41,20 @@
     }
     if (UbiAnt == null) {
         UbiAnt = "";
+    }
+    
+    try {
+        con.conectar();
+        ResultSet rset = con.consulta("select F_Cb from tb_ubica where F_ClaUbi='" + UbiAnt + "'");
+        while (rset.next()) {
+            UbiCb = rset.getString("F_Cb");
+        }
+        if(!UbiCb.equals("")){
+            UbiAnt=UbiCb;
+        }
+        con.cierraConexion();
+    } catch (Exception e) {
+        
     }
 %>
 <html>
@@ -75,9 +89,9 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="../captura.jsp">Entrada Manual</a></li>
                                     <li><a href="../compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <!--li class="divider"></li>
+                                    <li class="divider"></li>
                                     <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
-                                    <li class="divider"></li-->
+                                    <li class="divider"></li>
                                     <%                                        
                                         if (tipo.equals("2") || tipo.equals("3")) {
                                     %>
@@ -187,10 +201,10 @@
                 try {
                     con.conectar();
                     ResultSet rset = con.consulta("select F_DesUbi from tb_ubica where F_Cb= '" + UbiAnt + "' ");
-                    while(rset.next()){
-                        %>
-                        <h4>Ubicacion: <%=rset.getString(1)%></h4>
-                        <%
+                    while (rset.next()) {
+            %>
+            <h4>Ubicacion: <%=rset.getString(1)%></h4>
+            <%
                     }
                     con.cierraConexion();
                 } catch (Exception e) {

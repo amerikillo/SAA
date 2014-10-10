@@ -61,9 +61,9 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="../captura.jsp">Entrada Manual</a></li>
                                     <li><a href="../compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <!--li class="divider"></li>
+                                    <li class="divider"></li>
                                     <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
-                                    <li class="divider"></li-->
+                                    <li class="divider"></li>
                                     <%
                                         if (tipo.equals("2") || tipo.equals("3")) {
                                     %>
@@ -170,7 +170,7 @@
                 <div class="row">
                     <h5 class="col-lg-12">CB de la Ubicación a Mover</h5>
                     <div class="col-lg-12">
-                        <input class="form-control" name="UbiAnt" type="number" autofocus />
+                        <input class="form-control" name="UbiAnt" type="text" autofocus />
                     </div>
                 </div>
                 <br/>

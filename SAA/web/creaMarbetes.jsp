@@ -65,7 +65,7 @@
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
             <hr/>
-            <h3>Generación de Marbetes</h3>
+            <h3>Generación de Marbetes y Consulta de CB</h3>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Ingrese los Datos

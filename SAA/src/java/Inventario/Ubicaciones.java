@@ -60,8 +60,7 @@ public class Ubicaciones extends HttpServlet {
         Devoluciones objDev = new Devoluciones();
         ConectionDB con = new ConectionDB();
         con.conectar();
-        System.out.println("Hola");
-        String UbicaMov = "";
+        String UbicaMov = CBUbica;
         int CantMov = Integer.parseInt(cantMov);
         String F_ClaPro = "", F_ClaLot = "", F_FecCad = "", F_FolLot = "", F_ClaOrg = "", F_Ubica = "", F_FecFab = "", F_Cb = "", F_ClaMar = "";
         int F_ExiLot = 0, F_IdLote = 0, F_ExiLotDestino = 0;
@@ -83,7 +82,7 @@ public class Ubicaciones extends HttpServlet {
         while (rset.next()) {
             UbicaMov = rset.getString("F_ClaUbi");
         }
-        rset = con.consulta("select F_IdLote, F_ExiLot from tb_lote where F_ClaLot = '" + F_ClaLot + "' and F_FolLot = '" + F_FolLot + "' and F_Ubica = '" + UbicaMov + "' ");
+        rset = con.consulta("select F_IdLote, F_ExiLot from tb_lote where F_ClaPro= '" + F_ClaPro + "' and F_ClaLot = '" + F_ClaLot + "' and F_FecCad = '" + F_FecCad + "' and F_Ubica = '" + UbicaMov + "' ");
         while (rset.next()) {
             F_ExiLotDestino = rset.getInt("F_ExiLot");
             F_IdLote = rset.getInt("F_IdLote");
