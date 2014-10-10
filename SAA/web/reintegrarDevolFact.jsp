@@ -84,6 +84,9 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="captura.jsp">Entrada Manual</a></li>
                                     <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
+                                    <li class="divider"></li>
                                         <%
                                             if (tipo.equals("2") || tipo.equals("3")) {
                                         %>
