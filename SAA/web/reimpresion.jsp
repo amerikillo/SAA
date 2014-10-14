@@ -156,7 +156,8 @@
                                 <tr>
 
                                     <td><%=rset.getString(1)%></td>
-                                    <td><%=rset.getString(2)%></td>
+                                    <td><button type="submit" class="btn btn-default btn-block" data-toggle="modal" data-target="#EditaRemision" id="<%=rset.getString(1)%>,<%=rset.getString(2)%>" onclick="ponerRemision(this.id)"><%=rset.getString(2)%></button>
+                                    </td>
                                     <td><%=rset.getString(3)%></td>
                                     <td><%=df3.format(df2.parse(rset.getString(4)))%></td>
                                     <td><%=rset.getString(5)%></td>
@@ -250,9 +251,53 @@
                     </form>
                 </div>
             </div>
-            <!--
-            /Modal
-            -->
+        </div>
+
+
+
+        <div class="modal fade" id="EditaRemision" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <form action="Modificaciones">
+                        <div class="modal-header">
+                            <h3>Edición de remisiones</h3>
+                        </div>
+                        <div class="modal-body">
+                            <input name="idRem" id="idRem" class="form-control" />
+                            <h4 class="modal-title" id="myModalLabel">Remisión Incorrecta</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" name="remiIncorrecta" id="remiIncorrecta" class="form-control" readonly="" />
+                                </div>
+                            </div>
+                            <h4 class="modal-title" id="myModalLabel">Remisión</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" name="remiCorrecta" id="remiCorrecta" class="form-control" />
+                                </div>
+                            </div>
+                            <h4 class="modal-title" id="myModalLabel">Contraseña</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="password" name="fecRecepcion" id="remiContraseña" class="form-control"  onkeyup="validaContra(this.id);" />
+                                </div>
+                            </div>
+                            <div style="display: none;" class="text-center" id="LoaderRemi">
+                                <img src="imagenes/ajax-loader-1.gif" height="150" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" onclick="return validaRemision();" name="accion" value="actualizarRemi" id="actualizaRemi" disabled>Actualizar</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--
+        /Modal
+        -->
     </body>
 </html>
 
@@ -280,20 +325,34 @@
 
     function ponerFolio(id) {
         document.getElementById('idCom').value = id;
+        document.getElementById('idCom').value = id;
+    }
 
+
+    function ponerRemision(id) {
+        var elem = id.split(',');
+        document.getElementById('idRem').value = elem[0];
+        document.getElementById('remiIncorrecta').value = elem[1];
     }
 
     function validaRemision() {
-        var fr = document.getElementById('fecRevision').value;
-        var fs = document.getElementById('fecRecepcion').value;
+        var fr = document.getElementById('remiIncorrecta').value;
+        var fs = document.getElementById('remiCorrecta').value;
 
         if (fr === "" || fs === "") {
-            alert('Ingrese todas las Fechas')
+            alert('Ingrese todas los datos')
             return false;
+        } 
+    }
+
+    function validaContra(elemento) {
+        //alert(elemento);
+        var pass = document.getElementById(elemento).value;
+        //alert(pass);
+        if (pass === "GnKlTolu2014") {
+            document.getElementById('actualizaRemi').disabled = false;
         } else {
-            //document.getElementById('fecRevision').value = "";
-            //document.getElementById('fecRecepcion').value = "";
-            $('Observaciones').modal('hide')
+            document.getElementById('actualizaRemi').disabled = true;
         }
     }
 </script>

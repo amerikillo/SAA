@@ -45,6 +45,18 @@ public class Modificaciones extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession sesion = request.getSession(true);
         try {
+            if (request.getParameter("accion").equals("actualizarRemi")) {
+                con.conectar();
+                try {
+                    con.insertar("update tb_compra set F_FolRemi = '" + request.getParameter("remiCorrecta") + "' where F_FolRemi = '" + request.getParameter("remiIncorrecta") + "' and F_ClaDoc='" + request.getParameter("idRem") + "'");
+                    out.println("<script>alert('Modificación Correcta!!')</script>");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    out.println("<script>alert('Modificación Incorrecta!!')</script>");
+                }
+                out.println("<script>window.location='reimpresion.jsp'</script>");
+                con.cierraConexion();
+            }
             if (request.getParameter("accion").equals("modificarVerifica")) {
                 System.out.println("modificar");
                 request.getSession().setAttribute("id", request.getParameter("id"));
