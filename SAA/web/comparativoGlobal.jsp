@@ -319,14 +319,28 @@
                                 <td class="text-center">
                                     <%
                                         if (rset.getString("F_StsFact").equals("4")) {
-                                            out.println("X");
+                                            String valido = "";
+                                            ResultSet rset2 = con.consulta("select F_Usuario from tb_regvalida where F_idFactTemp='" + rset.getString("F_Id") + "'");
+                                            while (rset2.next()) {
+                                                valido = valido + "Validó: " + rset2.getString("F_Usuario") + "\n";
+                                            }
+                                    %>
+                                    <a title="<%=valido%>" href="#">X</a>
+                                    <%
                                         }
                                     %>
                                 </td>
                                 <td class="text-center">
                                     <%
                                         if (rset.getString("F_StsFact").equals("5")) {
-                                            out.println("X");
+                                            String valido = "";
+                                            ResultSet rset2 = con.consulta("select F_Usuario from tb_regvalida where F_idFactTemp='" + rset.getString("F_Id") + "'");
+                                            while (rset2.next()) {
+                                                valido = valido + "Validó: " + rset2.getString("F_Usuario") + "\n";
+                                            }
+                                    %>
+                                    <a title="<%=valido%>" href="#">X</a>
+                                    <%
                                         }
                                     %>
                                 </td>
