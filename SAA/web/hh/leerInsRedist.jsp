@@ -28,33 +28,33 @@
         response.sendRedirect("../index.jsp");
     }
     ConectionDB con = new ConectionDB();
-    
+
     String ClaPro = "", UbiAnt = "", UbiCb = "";
     try {
         ClaPro = request.getParameter("ClaPro");
         UbiAnt = request.getParameter("UbiAnt");
     } catch (Exception e) {
     }
-    
+
     if (ClaPro == null) {
         ClaPro = "";
     }
     if (UbiAnt == null) {
         UbiAnt = "";
     }
-    
+
     try {
         con.conectar();
         ResultSet rset = con.consulta("select F_Cb from tb_ubica where F_ClaUbi='" + UbiAnt + "'");
         while (rset.next()) {
             UbiCb = rset.getString("F_Cb");
         }
-        if(!UbiCb.equals("")){
-            UbiAnt=UbiCb;
+        if (!UbiCb.equals("")) {
+            UbiAnt = UbiCb;
         }
         con.cierraConexion();
     } catch (Exception e) {
-        
+
     }
 %>
 <html>
@@ -92,11 +92,11 @@
                                     <li class="divider"></li>
                                     <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
                                     <li class="divider"></li>
-                                    <%                                        
-                                        if (tipo.equals("2") || tipo.equals("3")) {
-                                    %>
+                                        <%
+                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                        %>
                                     <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
-                                        <%            
+                                        <%
                                             }
                                         %>
                                     <li><a href="#" onclick="window.open('../reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
@@ -105,11 +105,11 @@
                                     <li><a href="#"  onclick="window.open('../Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                                     <li><a href="#"  onclick="window.open('../creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
-                                        <%    
-                                            if (tipo.equals("5")) {
+                                        <%
+                                            if (tipo.equals("5") || tipo.equals("3")) {
                                         %>
                                     <li><a href="insumoNuevoRedist.jsp">Redistribución HH</a></li>
-                                        <%        
+                                        <%
                                             }
                                         %>
                                     <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
@@ -123,11 +123,11 @@
                                     <li><a href="../factura.jsp">Facturación Automática</a></li>
                                     <li><a href="../validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="../validacionAuditores.jsp">Validación Auditores</a></li>
-                                        <%    
+                                        <%
                                             if (tipo.equals("7")) {
                                         %>
                                     <li><a href="../remisionarCamion.jsp">Generar Remisiones</a></li>
-                                        <%        
+                                        <%
                                             }
                                         %>
                                     <li><a href="../facturacionManual.jsp">Facturación Manual</a></li>
@@ -208,7 +208,7 @@
                     }
                     con.cierraConexion();
                 } catch (Exception e) {
-                    
+
                 }
             %>
             <form action="leerInsRedist.jsp" method="post">
@@ -231,7 +231,7 @@
             <%
                 try {
                     if (!UbiAnt.equals("PorUbicar")) {
-                        
+
                         con.conectar();
                         ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '" + UbiAnt + "' and l.F_Cb = '" + ClaPro + "' ");
                         while (rset.next()) {
@@ -260,7 +260,7 @@
             <%
                 }
             } else {
-                
+
                 con.conectar();
                 ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
                 while (rset.next()) {
@@ -287,12 +287,12 @@
             </form>
             <hr/>
             <%
-                            
+
                         }
                         con.cierraConexion();
                     }
                 } catch (Exception e) {
-                    
+
                 }
             %>
         </div>

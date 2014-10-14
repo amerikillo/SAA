@@ -87,9 +87,9 @@
                                     <li class="divider"></li>
                                     <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
                                     <li class="divider"></li>
-                                    <%
-                                        if (tipo.equals("2") || tipo.equals("3")) {
-                                    %>
+                                        <%
+                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                        %>
                                     <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
                                         <%
                                             }
@@ -101,7 +101,7 @@
                                     <li><a href="#"  onclick="window.open('../creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
                                         <%
-                                            if (tipo.equals("5")) {
+                                            if (tipo.equals("5") || tipo.equals("3")) {
                                         %>
                                     <li><a href="insumoNuevoRedist.jsp">Redistribución HH</a></li>
                                         <%
@@ -154,7 +154,7 @@
                                     <li><a href="#" onclick="window.open('../Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
                                     <li><a href="#" onclick="window.open('../historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>
                                     <li><a href="#" onclick="window.open('../ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>
-                                    
+
                                 </ul>
                             </li>
                             <!--li class="dropdown">
@@ -212,7 +212,7 @@
                     Clave: <%=rset.getString("F_ClaPro")%>
                     <br/>
                     Cantidad: <%=formatter.format(rset.getInt("F_ExiLot"))%>
-                    <input name="CantAnt" id="CantAnt" class="hidden" value="<%=(rset.getInt("F_ExiLot")-canApartada)%>" />
+                    <input name="CantAnt" id="CantAnt" class="hidden" value="<%=(rset.getInt("F_ExiLot") - canApartada)%>" />
                     <br/>
                     Descripción: <%=rset.getString("F_DesPro")%>
                     <br/>
@@ -224,7 +224,7 @@
                 <div class="row">
                     <h5 class="col-lg-12">Cantidad a Mover:</h5>
                     <div class="col-lg-12">
-                        <input class="form-control" placeholder="Cantidad a Mover" type="number" name="CantMov" id="CantMov" min="1" max="<%=(rset.getInt("F_ExiLot")-canApartada)%>" />
+                        <input class="form-control" placeholder="Cantidad a Mover" type="number" name="CantMov" id="CantMov" min="1" max="<%=(rset.getInt("F_ExiLot") - canApartada)%>" />
                     </div>
                 </div>
                 <div class="row">
@@ -242,7 +242,7 @@
                     <strong>Este insumo está apartado con <%=canApartada%> piezas</strong>
                 </div>
                 <div class="alert alert-warning">
-                    <strong>Cantidad máxima a mover: <%=(rset.getInt("F_ExiLot")-canApartada)%> piezas</strong>
+                    <strong>Cantidad máxima a mover: <%=(rset.getInt("F_ExiLot") - canApartada)%> piezas</strong>
                 </div>
                 <%
                     }

@@ -62,6 +62,3 @@
 
     %>
 </table>
-<%    response.setContentType("application/vnd.ms-excel");
-    response.setHeader("Content-Disposition", "attachment;filename=\"ConcentradoGlobal_" + cli + "_" + fec + ".xls\"");
-%>

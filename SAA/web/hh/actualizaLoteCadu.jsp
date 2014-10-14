@@ -64,11 +64,11 @@
                                     <li class="divider"></li>
                                     <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
                                     <li class="divider"></li>
-                                    <%
-                                        if (tipo.equals("2") || tipo.equals("3")) {
-                                    %>
+                                        <%                                        
+                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                        %>
                                     <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
-                                        <%
+                                        <%            
                                             }
                                         %>
                                     <li><a href="#" onclick="window.open('../reimpresion.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reimpresión de Compras</a></li>
@@ -77,11 +77,11 @@
                                     <li><a href="#"  onclick="window.open('../Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                                     <li><a href="#"  onclick="window.open('../creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
-                                        <%
-                                            if (tipo.equals("5")) {
+                                        <%    
+                                            if (tipo.equals("5") || tipo.equals("3")) {
                                         %>
                                     <li><a href="insumoNuevoRedist.jsp">Redistribución HH</a></li>
-                                        <%
+                                        <%        
                                             }
                                         %>
                                     <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
@@ -95,11 +95,11 @@
                                     <li><a href="../factura.jsp">Facturación Automática</a></li>
                                     <li><a href="../validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="../validacionAuditores.jsp">Validación Auditores</a></li>
-                                        <%
+                                        <%    
                                             if (tipo.equals("7")) {
                                         %>
                                     <li><a href="../remisionarCamion.jsp">Generar Remisiones</a></li>
-                                        <%
+                                        <%        
                                             }
                                         %>
                                     <li><a href="../facturacionManual.jsp">Facturación Manual</a></li>
@@ -131,7 +131,7 @@
                                     <li><a href="#" onclick="window.open('../Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
                                     <li><a href="#" onclick="window.open('../historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>
                                     <li><a href="#" onclick="window.open('../ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>
-                                    
+
                                 </ul>
                             </li>
                             <!--li class="dropdown">

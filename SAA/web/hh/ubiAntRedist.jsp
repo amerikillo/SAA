@@ -64,9 +64,9 @@
                                     <li class="divider"></li>
                                     <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
                                     <li class="divider"></li>
-                                    <%
-                                        if (tipo.equals("2") || tipo.equals("3")) {
-                                    %>
+                                        <%
+                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                        %>
                                     <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
                                         <%
                                             }
@@ -78,7 +78,7 @@
                                     <li><a href="#"  onclick="window.open('../creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
                                         <%
-                                            if (tipo.equals("5")) {
+                                            if (tipo.equals("5") || tipo.equals("3")) {
                                         %>
                                     <li><a href="insumoNuevoRedist.jsp">Redistribución HH</a></li>
                                         <%
@@ -170,7 +170,7 @@
                 <div class="row">
                     <h5 class="col-lg-12">CB de la Ubicación a Mover</h5>
                     <div class="col-lg-12">
-                        <input class="form-control" name="UbiAnt" type="text" autofocus />
+                        <input class="form-control" name="UbiAnt" type="text" id="F_ClaUbi" autofocus />
                     </div>
                 </div>
                 <br/>
@@ -192,4 +192,5 @@
     <script src="../js/bootstrap.js"></script>
     <script src="../js/jquery-ui-1.10.3.custom.js"></script>
     <script src="../js/bootstrap-datepicker.js"></script>
+    <script src="../js/funcRedistribucion.js"></script>
 </html>

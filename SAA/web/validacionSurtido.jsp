@@ -99,7 +99,7 @@
                                     <li><a href="#"  onclick="window.open('creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
                                         <%
-                                            if (tipo.equals("5")) {
+                                            if (tipo.equals("5") || tipo.equals("3")) {
                                         %>
                                     <li><a href="hh/insumoNuevoRedist.jsp">Redistribución HH</a></li>
                                         <%

@@ -120,9 +120,9 @@
                                     <li class="divider"></li>
                                     <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
                                     <li class="divider"></li>
-                                    <%
-                                        if (tipo.equals("2") || tipo.equals("3")) {
-                                    %>
+                                        <%
+                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                        %>
                                     <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
                                         <%
                                             }
@@ -134,7 +134,7 @@
                                     <li><a href="#"  onclick="window.open('../creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
                                     <li class="divider"></li>
                                         <%
-                                            if (tipo.equals("5")) {
+                                            if (tipo.equals("5") || tipo.equals("3")) {
                                         %>
                                     <li><a href="insumoNuevoRedist.jsp">Redistribución HH</a></li>
                                         <%
@@ -187,7 +187,7 @@
                                     <li><a href="#" onclick="window.open('../Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
                                     <li><a href="#" onclick="window.open('../historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>
                                     <li><a href="#" onclick="window.open('../ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>
-                                    
+
                                 </ul>
                             </li>
                             <!--li class="dropdown">

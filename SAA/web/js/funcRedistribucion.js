@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/*
+
 $('#F_ClaUbi').keyup(function() {
     var descripcion = $('#F_ClaUbi').val();
     $('#F_ClaUbi').autocomplete({
@@ -21,7 +21,7 @@ $('#F_ClaUbi').keyup(function() {
                 .appendTo(ul);
     };
 });
-*/
+
 function validaRedist() {
     var CantAnt = document.getElementById('CantAnt').value;
     var CantMov = document.getElementById('CantMov').value;
