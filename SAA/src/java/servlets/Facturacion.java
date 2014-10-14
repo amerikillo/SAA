@@ -75,6 +75,7 @@ public class Facturacion extends HttpServlet {
                 try {
                     con.conectar();
                     con.insertar("update tb_facttemp set F_StsFact='2' WHERE F_Id= '" + request.getParameter("folio") + "'");
+                    con.insertar("insert into tb_regvalida values ('" + request.getParameter("folio") + "','"+sesion.getAttribute("nombre")+"',0)");
                     con.cierraConexion();
                 } catch (Exception e) {
 
@@ -87,6 +88,7 @@ public class Facturacion extends HttpServlet {
                 try {
                     con.conectar();
                     con.insertar("update tb_facttemp set F_StsFact='1' WHERE F_Id= '" + request.getParameter("folio") + "'");
+                    con.insertar("insert into tb_regvalida values ('" + request.getParameter("folio") + "','"+sesion.getAttribute("nombre")+"',0)");
                     con.cierraConexion();
                 } catch (Exception e) {
 

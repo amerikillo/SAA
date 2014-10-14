@@ -52,11 +52,10 @@ public class JQInvenCiclico extends HttpServlet {
                     if (F_IdLote != "") {
                         con.insertar("update tb_loteinv set F_ExiLot = '" + (ncant + FolCant) + "', F_FolLot='" + request.getParameter("F_Presentacion") + "' where F_IdLote = '" + F_IdLote + "'");
                     } else {
-                        con.insertar("insert into tb_loteinv values (0,'" + request.getParameter("F_ClaPro") + "','" + request.getParameter("F_ClaLot") + "','" + (ncant) + "','" + request.getParameter("F_Presentacion") + "','" + request.getParameter("F_ClaUbi") + "','2014-01-01','1111111','1')");
+                        con.insertar("insert into tb_loteinv values (0,'" + request.getParameter("F_ClaPro") + "','" + request.getParameter("F_ClaLot") + "',STR_TO_DATE('" + request.getParameter("F_FecCad") + "', '%d/%m/%Y'),'" + (ncant) + "','" + request.getParameter("F_Presentacion") + "','1','" + request.getParameter("F_ClaUbi") + "','2014-01-01','1111111','1')");
                     }
                     con.cierraConexion();
-                }
-                if (request.getParameter("accion").equals("buscaDescrip")) {
+                } else if (request.getParameter("accion").equals("buscaDescrip")) {
                     con.conectar();
                     JSONObject json = new JSONObject();
                     JSONArray jsona = new JSONArray();
@@ -69,8 +68,7 @@ public class JQInvenCiclico extends HttpServlet {
                     con.cierraConexion();
                     out.println(jsona);
                     System.out.println(jsona);
-                }
-                if (request.getParameter("accion").equals("buscaClaUbi")) {
+                } else if (request.getParameter("accion").equals("buscaClaUbi")) {
                     con.conectar();
                     JSONObject json = new JSONObject();
                     JSONArray jsona = new JSONArray();
@@ -83,8 +81,7 @@ public class JQInvenCiclico extends HttpServlet {
                     con.cierraConexion();
                     out.println(jsona);
                     System.out.println(jsona);
-                }
-                if (request.getParameter("accion").equals("BuscarUbi")) {
+                } else if (request.getParameter("accion").equals("BuscarUbi")) {
                     con.conectar();
                     JSONObject json = new JSONObject();
                     JSONArray jsona = new JSONArray();
@@ -105,6 +102,29 @@ public class JQInvenCiclico extends HttpServlet {
                     con.cierraConexion();
                     out.println(jsona);
                     System.out.println(jsona);
+                } else if (request.getParameter("accion").equals("BuscarCBMed")) {/*
+                    con.conectar();
+                    JSONObject json = new JSONObject();
+                    JSONArray jsona = new JSONArray();
+                    ResultSet rset = con.consulta("select F_Ubica from tb_lote where F_Cb= '" + request.getParameter("F_CBMed") + "' group by F_Ubica");
+                    while (rset.next()) {
+                        json.put("F_ClaUbi", rset.getString(1));
+                        jsona.add(json);
+                        json = new JSONObject();
+                    }
+
+                    //out.println(jsona);
+                    rset = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad from tb_loteinv where F_Cb = '" + request.getParameter("F_CBMed") + "' group by F_ClaPro, F_ClaLot, F_FecCad");
+                    while (rset.next()) {
+                        json.put("F_ClaPro", rset.getString("F_ClaPro"));
+                        json.put("F_ClaLot", rset.getString("F_ClaLot"));
+                        json.put("F_FecCad", rset.getString("F_FecCad"));
+                        jsona.add(json);
+                        json = new JSONObject();
+                    }
+                    con.cierraConexion();
+                    out.println(jsona);
+                    System.out.println(jsona);*/
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());

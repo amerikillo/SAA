@@ -122,7 +122,7 @@
                                             }
                                         %>
                                     <li><a href="facturacionManual.jsp">Facturación Manual</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
+                                    <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
                                 </ul>
@@ -288,14 +288,30 @@
                                 <td class="text-center">
                                     <%
                                         if (rset.getString("F_StsFact").equals("1")) {
-                                            out.println("X");
+                                            String valido = "";
+                                            ResultSet rset2 = con.consulta("select F_Usuario from tb_regvalida where F_idFactTemp='" + rset.getString("F_Id") + "'");
+                                            while (rset2.next()) {
+                                                valido = valido + "Validó: " + rset2.getString("F_Usuario") + "\n";
+                                            }
+                                    %>
+                                    <a title="<%=valido%>" href="#">X</a>
+                                    <%
                                         }
                                     %>
                                 </td>
                                 <td class="text-center">
                                     <%
                                         if (rset.getString("F_StsFact").equals("2")) {
-                                            out.println("X");
+                                            String valido = "";
+                                            int cont = 1;
+                                            ResultSet rset2 = con.consulta("select F_Usuario from tb_regvalida where F_idFactTemp='" + rset.getString("F_Id") + "'");
+                                            while (rset2.next()) {
+                                                valido = valido + "Validó " + cont + " :" + rset2.getString("F_Usuario") + "\n";
+                                                cont++;
+                                            }
+                                    %>
+                                    <a title="<%=valido%>" href="#">X</a>
+                                    <%
                                         }
                                     %>
                                 </td>

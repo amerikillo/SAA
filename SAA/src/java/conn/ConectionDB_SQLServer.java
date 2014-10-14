@@ -90,14 +90,15 @@ public class ConectionDB_SQLServer {
     }
 
 //la conexion propiamente dicha
-    public void conectar() throws SQLException {
+    public boolean conectar() throws SQLException {
         try {
             Class.forName(this.driverClassName).newInstance();
             this.conn = DriverManager.getConnection(this.url, this.usuario, this.clave);
 //           System.out.println("Se conectó de FORMA EXITOSA ");
-
+            return true;
         } catch (Exception err) {
             System.out.println("Error " + err.getMessage());
+            return false;
         }
     }
     //Cerrar la conexion
