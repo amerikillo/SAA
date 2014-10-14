@@ -21,8 +21,10 @@
 	(f.F_Cant DIV p.F_Pzs),
 	(f.F_Cant MOD p.F_Pzs),
 	m.F_DesPro,
-	f.F_Id
+	f.F_Id,
+	@rownum:=@rownum+1 as rownum
 FROM
+	(SELECT @rownum:=0) as rownum,
 	tb_facttemp f,
 	tb_lote l,
 	tb_uniatn u,
@@ -71,6 +73,7 @@ f.F_Id;]]>
 	<field name="F_Id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="rownum" class="java.lang.Long"/>
 	<variable name="(f.F_Cant DIV p.F_Pzs)_1" class="java.lang.Long" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{(f.F_Cant DIV p.F_Pzs)}]]></variableExpression>
 	</variable>
@@ -153,21 +156,21 @@ f.F_Id;]]>
 			</line>
 			<staticText>
 				<reportElement uuid="70830bc3-713e-4e25-8e3c-4fe43c5397b2" x="179" y="0" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Clave]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="f9a753f6-1f96-49fe-a8f8-9f276115459f" x="246" y="1" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Lote]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="a8812132-4231-4ebf-8e02-d98e85a77888" x="316" y="1" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Caducidad]]></text>
@@ -181,7 +184,7 @@ f.F_Id;]]>
 			</staticText>
 			<staticText>
 				<reportElement uuid="22b58b54-b0a7-4855-a512-1275a1d38153" x="111" y="1" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[C.B.]]></text>
@@ -195,7 +198,7 @@ f.F_Id;]]>
 			</staticText>
 			<staticText>
 				<reportElement uuid="fc0b5714-44ca-47b9-876c-85af72a9d7ce" x="49" y="1" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[ID]]></text>
@@ -206,14 +209,14 @@ f.F_Id;]]>
 		<band height="37" splitType="Stretch">
 			<textField>
 				<reportElement uuid="01db694b-de64-467a-8a0f-8dd5ff6680b7" x="246" y="2" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaLot}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="0e630cfc-2cba-4258-b38f-2adec11d542e" x="316" y="2" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DATE_FORMAT(l.F_FecCad, '%d/%m/%Y')}]]></textFieldExpression>
@@ -227,14 +230,14 @@ f.F_Id;]]>
 			</textField>
 			<textField>
 				<reportElement uuid="64abfbc0-523b-454d-b9ff-72248bdae34f" x="179" y="2" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="8a51cdc2-c388-4478-a58f-2ac1ad119888" x="111" y="2" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Cb}]]></textFieldExpression>
@@ -258,10 +261,17 @@ f.F_Id;]]>
 			</textField>
 			<textField>
 				<reportElement uuid="1ebdbb6c-adec-4e2c-9dc8-8db5f6d4cf08" x="49" y="2" width="50" height="8"/>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="798764ce-80b0-468d-a463-0a57449de859" x="0" y="2" width="49" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rownum}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

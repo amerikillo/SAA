@@ -45,6 +45,32 @@ public class Facturacion extends HttpServlet {
         ConectionDB con = new ConectionDB();
         //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
         try {
+            if (request.getParameter("accion").equals("validarVariasAuditor")) {
+                con.conectar();
+                String[] claveschk = request.getParameterValues("chkId");
+                for (int i = 0; i < claveschk.length; i++) {
+                    con.insertar("update tb_facttemp set F_StsFact='2' WHERE F_Id= '" + claveschk[i] + "'");
+                    con.insertar("insert into tb_regvalida values ('" + claveschk[i] + "','" + sesion.getAttribute("nombre") + "',0)");
+                }
+                con.cierraConexion();
+
+                sesion.setAttribute("Nombre", request.getParameter("Nombre"));
+                out.println("<script>alert('Claves Validadas Correctamente')</script>");
+                out.println("<script>window.location='validacionSurtido.jsp'</script>");
+            }
+            if (request.getParameter("accion").equals("validarVariasSurtido")) {
+                con.conectar();
+                String[] claveschk = request.getParameterValues("chkId");
+                for (int i = 0; i < claveschk.length; i++) {
+                    con.insertar("update tb_facttemp set F_StsFact='1' WHERE F_Id= '" + claveschk[i] + "'");
+                    con.insertar("insert into tb_regvalida values ('" + claveschk[i] + "','" + sesion.getAttribute("nombre") + "',0)");
+                }
+                con.cierraConexion();
+
+                sesion.setAttribute("Nombre", request.getParameter("Nombre"));
+                out.println("<script>alert('Claves Validadas Correctamente')</script>");
+                out.println("<script>window.location='validacionSurtido.jsp'</script>");
+            }
             if (request.getParameter("accion").equals("actualizarCBAuditor")) {
                 try {
                     con.conectar();
@@ -54,6 +80,7 @@ public class Facturacion extends HttpServlet {
                 } catch (Exception e) {
 
                 }
+                sesion.setAttribute("Nombre", request.getParameter("Nombre"));
                 out.println("<script>alert('CB actualizado Correctamente, ingrese el CB')</script>");
                 out.println("<script>alert('Reimprima el Marbete Correcto')</script>");
                 out.println("<script>window.location='validacionAuditores.jsp'</script>");
@@ -67,6 +94,7 @@ public class Facturacion extends HttpServlet {
                 } catch (Exception e) {
 
                 }
+                sesion.setAttribute("Nombre", request.getParameter("Nombre"));
                 out.println("<script>alert('CB actualizado Correctamente, ingrese el CB')</script>");
                 out.println("<script>alert('Reimprima el Marbete Correcto')</script>");
                 out.println("<script>window.location='validacionSurtido.jsp'</script>");
@@ -75,7 +103,7 @@ public class Facturacion extends HttpServlet {
                 try {
                     con.conectar();
                     con.insertar("update tb_facttemp set F_StsFact='2' WHERE F_Id= '" + request.getParameter("folio") + "'");
-                    con.insertar("insert into tb_regvalida values ('" + request.getParameter("folio") + "','"+sesion.getAttribute("nombre")+"',0)");
+                    con.insertar("insert into tb_regvalida values ('" + request.getParameter("folio") + "','" + sesion.getAttribute("nombre") + "',0)");
                     con.cierraConexion();
                 } catch (Exception e) {
 
@@ -88,7 +116,7 @@ public class Facturacion extends HttpServlet {
                 try {
                     con.conectar();
                     con.insertar("update tb_facttemp set F_StsFact='1' WHERE F_Id= '" + request.getParameter("folio") + "'");
-                    con.insertar("insert into tb_regvalida values ('" + request.getParameter("folio") + "','"+sesion.getAttribute("nombre")+"',0)");
+                    con.insertar("insert into tb_regvalida values ('" + request.getParameter("folio") + "','" + sesion.getAttribute("nombre") + "',0)");
                     con.cierraConexion();
                 } catch (Exception e) {
 
