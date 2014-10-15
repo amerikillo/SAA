@@ -145,7 +145,7 @@
                     </div>
                     <br/>
                     <div class="text-center">
-                        <%if (Tipo == 3 || Tipo == 5) {
+                        <%if (Tipo == 3) {
                             if ((usua.equals("Ana")) || (usua.equals("salvador"))){%>
                         <button class="btn btn-sm btn-primary" id="btn-buscarq">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-ubi">POR UBICAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-mostrarq">MOSTRAR TODAS&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-clave">AGREGAR CLAVE&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-inv">INVENTARIO&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<button class="btn btn-sm btn-primary" id="btn-compara">COMPARACIÓN&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;<!--button class="btn btn-sm btn-primary" id="btn-kardex">IR KARDEX&nbsp;<label class="icon-th-list"></label></button-->      
                         <%}else{%>
@@ -288,7 +288,7 @@
                         }
                         var numero = formatNumber.new(cantidad);
                         var numero1 = formatNumber.new(exist);
-                        <%if (Tipo == 3 || Tipo == 5) {%>
+                        <%if (Tipo == 3) {%>
                         aDataSet.push([descripc, lote, caducidad, numero, ubicacion, cadena]);
                         <%}else{%>
                          aDataSet.push([descripc, lote, caducidad, numero, ubicacion]);   
@@ -315,7 +315,7 @@
                                 {"sTitle": "Caducidad", "sClass": "center"},
                                 {"sTitle": "Total Piezas", "sClass": "center"},
                                 {"sTitle": "Ubicación", "sClass": "center"},
-                                <%if (Tipo == 3 || Tipo == 5) {%>
+                                <%if (Tipo == 3) {%>
                                 {"sTitle": "ReUbicar", "sClass": "center"}
                                 <%}%>
                             ]

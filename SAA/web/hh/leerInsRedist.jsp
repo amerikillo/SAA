@@ -33,6 +33,12 @@
     try {
         ClaPro = request.getParameter("ClaPro");
         UbiAnt = request.getParameter("UbiAnt");
+        con.conectar();
+        ResultSet rset = con.consulta("select l.F_Cb from tb_lote l, tb_ubica u where l.F_Ubica = u.F_ClaUbi and F_ClaPro= '" + ClaPro + "' and u.F_Cb='" + UbiAnt + "'");
+        while (rset.next()) {
+            ClaPro = rset.getString("F_Cb");
+        }
+        con.cierraConexion();
     } catch (Exception e) {
     }
 
@@ -231,9 +237,15 @@
             <%
                 try {
                     if (!UbiAnt.equals("PorUbicar")) {
-
+                        ResultSet rset = null;
                         con.conectar();
-                        ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '" + UbiAnt + "' and l.F_Cb = '" + ClaPro + "' ");
+                        if (!ClaPro.equals("")) {
+                            System.out.println("1");
+                            rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '" + UbiAnt + "' and l.F_Cb = '" + ClaPro + "' ");
+                        } else if (!UbiAnt.equals("1")) {
+                            System.out.println("2");
+                            rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '" + UbiAnt + "' ");
+                        }
                         while (rset.next()) {
             %>
             <h5>
@@ -261,6 +273,7 @@
                 }
             } else {
 
+                System.out.println("3");
                 con.conectar();
                 ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
                 while (rset.next()) {

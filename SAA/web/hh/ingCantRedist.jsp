@@ -51,6 +51,16 @@
     if (UbiAnt == null) {
         UbiAnt = "";
     }
+    try {
+        con.conectar();
+        ResultSet rset = con.consulta("select F_Ubica from tb_lote where F_IdLote='" + idLote + "'");
+        while (rset.next()) {
+        UbiAnt=rset.getString(1);
+        }
+        con.cierraConexion();
+    } catch (Exception e) {
+
+    }
 %>
 <html>
     <head>

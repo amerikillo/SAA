@@ -28,6 +28,40 @@
         response.sendRedirect("../index.jsp");
     }
     ConectionDB con = new ConectionDB();
+
+    String ClaPro = "", UbiAnt = "", UbiCb = "";
+    try {
+        ClaPro = request.getParameter("ClaPro");
+        UbiAnt = request.getParameter("UbiAnt");
+        con.conectar();
+        ResultSet rset = con.consulta("select l.F_Cb from tb_lote l, tb_ubica u where l.F_Ubica = u.F_ClaUbi and F_ClaPro= '" + ClaPro + "' and u.F_Cb='" + UbiAnt + "'");
+        while (rset.next()) {
+            ClaPro = rset.getString("F_Cb");
+        }
+        con.cierraConexion();
+    } catch (Exception e) {
+    }
+
+    if (ClaPro == null) {
+        ClaPro = "";
+    }
+    if (UbiAnt == null) {
+        UbiAnt = "";
+    }
+
+    try {
+        con.conectar();
+        ResultSet rset = con.consulta("select F_Cb from tb_ubica where F_ClaUbi='" + UbiAnt + "'");
+        while (rset.next()) {
+            UbiCb = rset.getString("F_Cb");
+        }
+        if (!UbiCb.equals("")) {
+            UbiAnt = UbiCb;
+        }
+        con.cierraConexion();
+    } catch (Exception e) {
+
+    }
 %>
 <html>
     <head>
@@ -165,17 +199,95 @@
             </div>
 
             <h4>Redistribución</h4>
-            <form action="leerInsRedist.jsp" method="post">
-                <input name="UbiAnt" value="1" class="hidden">
-                <button type="submit" class="btn btn-block btn-primary btn-lg">Insumo Recién Ingresado</button>
-            </form>
-            <br/>
-            <a class="btn btn-block btn-success btn-lg" href="ubiAntRedist.jsp">Insumo Ya Ubicado</a>
-            <br/>
             <form action="leerInsRedistClave.jsp" method="post">
-                <input name="UbiAnt" value="1" class="hidden">
-                <button type="submit" class="btn btn-block btn-warning btn-lg">Por Clave de Insumo</button>
+                <a class="btn btn-default" href="insumoNuevoRedist.jsp">Regresar</a>
+                <button class="btn btn-success" type="submit" name="UbiAnt" value="PorUbicar">Por Ubicar</button>
             </form>
+            
+            <form action="leerInsRedistClave.jsp" method="post">
+                <div class="row">
+                    <h5 class="col-lg-12">CB del Insumo a Mover</h5>
+                    <div class="col-lg-12">
+                        <input class="hidden" name="UbiAnt" value="<%=UbiAnt%>" />
+                        <input class="form-control" name="ClaPro" value="<%=ClaPro%>" autofocus="" />
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button class="btn btn-block btn-primary btn-lg">Leer Insumo</button>
+                    </div>
+                </div>
+            </form>
+            <hr/>
+            <h4>Insumos Médicos</h4>
+            <%
+                try {
+                    if (!UbiAnt.equals("PorUbicar")) {
+
+                        con.conectar();
+                        ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_Cb = '" + ClaPro + "' ");
+                        while (rset.next()) {
+            %>
+            <h5>
+                Ubicación: <%=rset.getString("F_DesUbi")%>
+                <br/>
+                Clave: <%=rset.getString("F_ClaPro")%>
+                <br/>
+                Cantidad: <%=formatter.format(rset.getInt("F_ExiLot"))%>
+                <br/>
+                Descripción: <%=rset.getString("F_DesPro")%>
+                <br/>
+                Lote: <%=rset.getString("F_ClaLot")%>
+                <br/>
+                Caducidad: <%=rset.getString("F_FecCad")%>
+                <br/>
+            </h5>
+            <form action="ingCantRedist.jsp" method="post">
+                <input class="hidden" name="UbiAnt" value="<%=UbiAnt%>" />
+                <input class="hidden" name="ClaPro" value="<%=ClaPro%>" />
+                <input value="<%=rset.getString("F_IdLote")%>" class="hidden" name="idLote" />
+                <button class="btn btn-block btn-success" type="submit">Seleccionar</button>
+            </form>
+            <hr/>
+            <%
+                }
+            } else {
+
+                con.conectar();
+                ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
+                while (rset.next()) {
+            %>
+            <h5>
+                Ubicación: <%=rset.getString("F_DesUbi")%>
+                <br/>
+                Clave: <%=rset.getString("F_ClaPro")%>
+                <br/>
+                Cantidad: <%=formatter.format(rset.getInt("F_ExiLot"))%>
+                <br/>
+                Descripción: <%=rset.getString("F_DesPro")%>
+                <br/>
+                Lote: <%=rset.getString("F_ClaLot")%>
+                <br/>
+                Caducidad: <%=rset.getString("F_FecCad")%>
+                <br/>
+            </h5>
+            <form action="ingCantRedist.jsp" method="post">
+                <input class="hidden" name="UbiAnt" value="<%=UbiAnt%>" />
+                <input class="hidden" name="ClaPro" value="<%=ClaPro%>" />
+                <input value="<%=rset.getString("F_IdLote")%>" class="hidden" name="idLote" />
+                <button class="btn btn-block btn-success" type="submit">Seleccionar</button>
+            </form>
+            <hr/>
+            <%
+
+                        }
+                        con.cierraConexion();
+                    }
+                } catch (Exception e) {
+
+                }
+            %>
         </div>
 
     </body>
