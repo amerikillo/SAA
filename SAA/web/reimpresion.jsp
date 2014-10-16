@@ -336,8 +336,8 @@
     }
 
     function validaRemision() {
-        var fr = document.getElementById('remiIncorrecta').value;
-        var fs = document.getElementById('remiCorrecta').value;
+        var fr = document.getElementById('fecRecepcion').value;
+        var fs = document.getElementById('fecRevision').value;
 
         if (fr === "" || fs === "") {
             alert('Ingrese todas los datos')

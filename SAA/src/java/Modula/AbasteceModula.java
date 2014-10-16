@@ -6,7 +6,7 @@
 package Modula;
 
 import ISEM.NuevoISEM;
-import conn.ConectionDB;
+import conn.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -40,6 +40,7 @@ public class AbasteceModula extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         ConectionDB con = new ConectionDB();
+        ConectionDB_SQLServer conModula = new ConectionDB_SQLServer();
         FacturacionManual factObj = new FacturacionManual();
         Devoluciones objDev = new Devoluciones();
         //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
@@ -47,6 +48,7 @@ public class AbasteceModula extends HttpServlet {
         NuevoISEM objSql = new NuevoISEM();
         java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy");
         java.text.DateFormat df3 = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        java.text.DateFormat df4 = new java.text.SimpleDateFormat("yyyyMMdd");
         java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion = request.getSession(true);
@@ -156,6 +158,27 @@ public class AbasteceModula extends HttpServlet {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
+                }
+
+                if (request.getParameter("accion").equals("AbastecerConcentrado")) {
+                    con.conectar();
+                    conModula.conectar();
+                    try {
+                        ResultSet rset = con.consulta("select F_ClaPro, F_ClaLot, F_FecCad, F_CB, F_Ori, F_Cant, F_Id from tb_concentradomodula where F_Sts=0");
+                        while (rset.next()) {
+                            /*
+                             * La 'I' es de inserción
+                             */
+                            conModula.ejecutar("insert into IMP_AVVISIINGRESSO values('A','" + rset.getString("F_ClaPro") + "','" + rset.getString("F_ClaLot") + "','" + rset.getString("F_Ori") + "','" + rset.getString("F_Cant") + "','" + df4.format(df3.parse(rset.getString("F_FecCad"))) + "','Observaciones','" + rset.getString("F_CB") + "','')");
+                            con.insertar("update tb_concentradomodula set F_Sts='1' where F_Id='" + rset.getString("F_Id") + "'");
+                        }
+
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    conModula.cierraConexion();
+                    con.cierraConexion();
+                    response.sendRedirect("modula/conexionModula.jsp");
                 }
             } catch (Exception e) {
             }

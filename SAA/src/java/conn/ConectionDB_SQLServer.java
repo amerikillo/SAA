@@ -41,9 +41,9 @@ public class ConectionDB_SQLServer {
     //(meter los datos correspondientes)
     public ConectionDB_SQLServer() {
         //poner los datos apropiados
-        this.usuario = "sa";
-        this.clave = "gnklmex";
-        this.url = "jdbc:sqlserver://1.1.1.1:1433;databaseName=gnklmex_consolidada;";
+        this.usuario = "system_Españ";
+        this.clave = "SYS123";
+        this.url = "jdbc:sqlserver://192.168.0.140\\PC_SYSTEM\\SQLEXPRESS:49157;databaseName=HOST_IMPEXP_GNK";
         this.driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     }
 
@@ -113,29 +113,11 @@ public class ConectionDB_SQLServer {
         System.out.println(consulta);
         return this.estancia.executeQuery(consulta);
     }
-
-    // -------------------
-    public void actualizar(String actualiza) throws SQLException {
-        System.out.println(actualiza);
-        this.estancia = (Statement) conn.createStatement();
-        estancia.executeUpdate(actualiza);
-        //this.conn.commit();
-    }
-
-    public ResultSet borrar(String borra) throws SQLException {
+//METODO PARA EJECUTAR
+    public int ejecutar(String ejecuta) throws SQLException {
+        System.out.println(ejecuta);
         Statement st = (Statement) this.conn.createStatement();
-        return (ResultSet) st.executeQuery(borra);
-    }
-
-    public void borrar2(String borra) throws SQLException {
-        this.estancia = (Statement) conn.createStatement();
-        estancia.executeUpdate(borra);
-    }
-
-    public int insertar(String inserta) throws SQLException {
-        System.out.println(inserta);
-        Statement st = (Statement) this.conn.createStatement();
-        return st.executeUpdate(inserta);
+        return st.executeUpdate(ejecuta);
     }
 }
 /**/

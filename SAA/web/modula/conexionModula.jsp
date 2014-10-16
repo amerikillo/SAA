@@ -4,14 +4,90 @@
     Author     : Americo
 --%>
 
+<%@page import="conn.ConectionDB"%>
+<%@page import="java.sql.ResultSet"%>
 <%@page import="conn.ConectionDB_SQLServer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <%
     ConectionDB_SQLServer con = new ConectionDB_SQLServer();
+    ConectionDB conMysql = new ConectionDB();
 
     if (con.conectar()) {
-        out.println("Conexión Exitosa");
+        //out.println("Conexión Exitosa");
+        try {
+            /*
+             La I es de insercion
+        
+             */
+            //con.ejecutar("insert into IMP_AVVISIINGRESSO values('I','0437','LOTE12','100','20160517','','')");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+%>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Estilos CSS -->
+        <link href="../css/bootstrap.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
+        <link href="../css/navbar-fixed-top.css" rel="stylesheet">
+        <!---->
+        <title>SIALSS</title>
+    </head>
+    <body class="container">
+        <table border="1" class="table table-bordered table-condensed table-striped">
+            <tr>
+                <td>Clave</td>
+                <td>Descrip</td>
+                <td>Lote</td>
+                <td>Cadu</td>
+                <td>Cajón</td>
+                <td>Posición</td>
+                <td>Cant</td>
+            </tr>
+            <%
+                try {
+                    con.conectar();
+                    conMysql.conectar();
+                    ResultSet rset = con.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0");
+                    while (rset.next()) {
+                        String Descrip = "";
+                        ResultSet rset2 = conMysql.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + rset.getString("SCO_ARTICOLO") + "'");
+                        while (rset2.next()) {
+                            Descrip = rset2.getString(1);
+                        }
+            %>
+            <tr>
+                <td><%=rset.getString("SCO_ARTICOLO")%></td>
+                <td><%=Descrip%></td>
+                <td><%=rset.getString("SCO_SUB1")%></td>
+                <td><%=rset.getString("SCO_DSCAD")%></td>
+                <td><%=rset.getString("UDC_UDC")%></td>
+                <td><%=rset.getString("SCO_POSI")%></td>
+                <td><%=rset.getString("SCO_GIAC")%></td>
+            </tr>
+            <%
+                    }
+                    conMysql.cierraConexion();
+                    con.cierraConexion();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            %>
+        </table>
+
+        <a class="btn btn-large btn-danger btn-block" href="conexionModula.jsp">Actualizar</a>
+        <br/>
+        <form action="../AbasteceModula">
+            <button class="btn btn-large btn-primary btn-block"  name="accion" value="AbastecerConcentrado">Abastecer</button>
+        </form>
+    </body>
+</html>
+
+<%
     } else {
         out.println("Conexión Fallida");
     }
