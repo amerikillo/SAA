@@ -30,8 +30,8 @@ public class CargaExcelReqRural {
 
     private Vector vectorDataExcelXLSX = new Vector();
     ConectionDB con = new ConectionDB();
-    DateFormat df = new SimpleDateFormat("dd-MMM-YYYY");
-    DateFormat df2 = new SimpleDateFormat("YYYY-MM-dd");
+    DateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+    DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 
     public boolean obtieneArchivo(String path, String file) {
         String excelXLSXFileName = path + "/exceles/" + file;
@@ -102,8 +102,8 @@ public class CargaExcelReqRural {
             for (int j = 0; j < 7; j++) {
                 if (j == 1) {
                     try {
-                        String Clave = (vectorCellEachRowData.get(j).toString() + "");
-                        
+
+                        String Clave = (vectorCellEachRowData.get(j).toString());
                         qry = qry + "'" + df2.format(df.parse(Clave)) + "' , ";
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
