@@ -51,7 +51,7 @@ public class FacturacionManual extends HttpServlet {
 
                 sesion.setAttribute("F_IndGlobal", null);
                 con.conectar();
-                con.insertar("delete from tb_facttemp where F_IdFact = '" + request.getParameter("accionEliminar") + "' ");
+                //con.insertar("delete from tb_facttemp where F_IdFact = '" + request.getParameter("accionEliminar") + "' ");
                 con.cierraConexion();
                 out.println("<script>alert('Clave Eliminada Correctamente')</script>");
                 out.println("<script>window.location='facturacionManual.jsp'</script>");
@@ -157,7 +157,7 @@ public class FacturacionManual extends HttpServlet {
             if (request.getParameter("accion").equals("CancelarFactura")) {
                 try {
                     con.conectar();
-                    con.insertar("delete from tb_facttemp where F_ClaCLi = '" + (String) sesion.getAttribute("ClaCliFM") + "' ");
+                    //con.insertar("delete from tb_facttemp where F_ClaCLi = '" + (String) sesion.getAttribute("ClaCliFM") + "' ");
                     con.cierraConexion();
                     out.println("<script>alert('Factura Eliminada Correctamente')</script>");
                     out.println("<script>window.location='facturacionManual.jsp'</script>");

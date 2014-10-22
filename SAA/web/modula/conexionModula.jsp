@@ -4,6 +4,8 @@
     Author     : Americo
 --%>
 
+<%@page import="java.text.DecimalFormatSymbols"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="conn.ConectionDB"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="conn.ConectionDB_SQLServer"%>
@@ -11,6 +13,13 @@
 <!DOCTYPE html>
 
 <%
+    DecimalFormat formatter = new DecimalFormat("#,###,###");
+    DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
+    DecimalFormatSymbols custom = new DecimalFormatSymbols();
+    custom.setDecimalSeparator('.');
+    custom.setGroupingSeparator(',');
+    formatter.setDecimalFormatSymbols(custom);
+    formatterDecimal.setDecimalFormatSymbols(custom);
     ConectionDB_SQLServer con = new ConectionDB_SQLServer();
     ConectionDB conMysql = new ConectionDB();
 
@@ -52,7 +61,7 @@
                 try {
                     con.conectar();
                     conMysql.conectar();
-                    ResultSet rset = con.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0");
+                    ResultSet rset = con.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0 order by SCO_ARTICOLO");
                     while (rset.next()) {
                         String Descrip = "";
                         ResultSet rset2 = conMysql.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + rset.getString("SCO_ARTICOLO") + "'");
@@ -67,7 +76,7 @@
                 <td><%=rset.getString("SCO_DSCAD")%></td>
                 <td><%=rset.getString("UDC_UDC")%></td>
                 <td><%=rset.getString("SCO_POSI")%></td>
-                <td><%=rset.getString("SCO_GIAC")%></td>
+                <td><%=formatter.format(rset.getInt("SCO_GIAC"))%></td>
             </tr>
             <%
                     }

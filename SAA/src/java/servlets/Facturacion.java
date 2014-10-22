@@ -56,7 +56,7 @@ public class Facturacion extends HttpServlet {
 
                 sesion.setAttribute("Nombre", request.getParameter("Nombre"));
                 out.println("<script>alert('Claves Validadas Correctamente')</script>");
-                out.println("<script>window.location='validacionSurtido.jsp'</script>");
+                out.println("<script>window.location='validacionAuditores.jsp'</script>");
             }
             if (request.getParameter("accion").equals("validarVariasSurtido")) {
                 con.conectar();
@@ -128,7 +128,7 @@ public class Facturacion extends HttpServlet {
             if (request.getParameter("accion").equals("EliminaConcentrado")) {
                 try {
                     con.conectar();
-                    con.insertar("delete from tb_facttemp WHERE F_IdFact = '" + request.getParameter("fol_gnkl") + "'");
+                    //con.insertar("delete from tb_facttemp WHERE F_IdFact = '" + request.getParameter("fol_gnkl") + "'");
                     con.cierraConexion();
                 } catch (Exception e) {
 

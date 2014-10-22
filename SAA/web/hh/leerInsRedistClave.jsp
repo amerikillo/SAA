@@ -36,7 +36,7 @@
         con.conectar();
         ResultSet rset = con.consulta("select l.F_Cb from tb_lote l, tb_ubica u where l.F_Ubica = u.F_ClaUbi and F_ClaPro= '" + ClaPro + "' and u.F_Cb='" + UbiAnt + "'");
         while (rset.next()) {
-            ClaPro = rset.getString("F_Cb");
+            //ClaPro = rset.getString("F_Cb");
         }
         con.cierraConexion();
     } catch (Exception e) {
@@ -206,7 +206,7 @@
             
             <form action="leerInsRedistClave.jsp" method="post">
                 <div class="row">
-                    <h5 class="col-lg-12">CB del Insumo a Mover</h5>
+                    <h5 class="col-lg-12">Clave del Insumo a Mover</h5>
                     <div class="col-lg-12">
                         <input class="hidden" name="UbiAnt" value="<%=UbiAnt%>" />
                         <input class="form-control" name="ClaPro" value="<%=ClaPro%>" autofocus="" />
@@ -226,7 +226,7 @@
                     if (!UbiAnt.equals("PorUbicar")) {
 
                         con.conectar();
-                        ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_Cb = '" + ClaPro + "' ");
+                        ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, l.F_Cb from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_ClaPro = '" + ClaPro + "' ");
                         while (rset.next()) {
             %>
             <h5>
@@ -242,6 +242,8 @@
                 <br/>
                 Caducidad: <%=rset.getString("F_FecCad")%>
                 <br/>
+                CB: <%=rset.getString("F_Cb")%>
+                <br/>
             </h5>
             <form action="ingCantRedist.jsp" method="post">
                 <input class="hidden" name="UbiAnt" value="<%=UbiAnt%>" />
@@ -255,7 +257,7 @@
             } else {
 
                 con.conectar();
-                ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
+                ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, l.F_Cb from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
                 while (rset.next()) {
             %>
             <h5>
@@ -270,6 +272,8 @@
                 Lote: <%=rset.getString("F_ClaLot")%>
                 <br/>
                 Caducidad: <%=rset.getString("F_FecCad")%>
+                <br/>
+                CB: <%=rset.getString("F_Cb")%>
                 <br/>
             </h5>
             <form action="ingCantRedist.jsp" method="post">

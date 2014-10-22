@@ -169,7 +169,7 @@ public class AbasteceModula extends HttpServlet {
                             /*
                              * La 'I' es de inserción
                              */
-                            conModula.ejecutar("insert into IMP_AVVISIINGRESSO values('A','" + rset.getString("F_ClaPro") + "','" + rset.getString("F_ClaLot") + "','" + rset.getString("F_Ori") + "','" + rset.getString("F_Cant") + "','" + df4.format(df3.parse(rset.getString("F_FecCad"))) + "','Observaciones','" + rset.getString("F_CB") + "','')");
+                            conModula.ejecutar("insert into IMP_AVVISIINGRESSO values('A','" + rset.getString("F_ClaPro") + "','" + rset.getString("F_ClaLot") + "','" + rset.getString("F_Ori") + "','" + rset.getString("F_Cant") + "','" + df4.format(df3.parse(rset.getString("F_FecCad"))) + "','" + rset.getString("F_CB") + "','','')");
                             con.insertar("update tb_concentradomodula set F_Sts='1' where F_Id='" + rset.getString("F_Id") + "'");
                         }
 
@@ -179,6 +179,32 @@ public class AbasteceModula extends HttpServlet {
                     conModula.cierraConexion();
                     con.cierraConexion();
                     response.sendRedirect("modula/conexionModula.jsp");
+                }
+                if (request.getParameter("accion").equals("MandaRequerimento")) {
+                    con.conectar();
+                    conModula.conectar();
+                    try {
+
+                        ResultSet rset = con.consulta("select F_ClaCli, F_FecEnt, F_FolRemi from tb_reqmodula where F_Sts=0 group by F_FolRemi");
+                        while (rset.next()) {
+                            conModula.ejecutar("insert into IMP_ORDINI values ('" + rset.getString("F_FolRemi") + "','A','','" + df4.format(df3.parse(rset.getString("F_FecEnt"))) + "','P','" + rset.getString("F_ClaCli") + "','1')");
+                        }
+                        rset = con.consulta("select F_ClaCli, F_FecEnt, F_FolRemi, F_ClaPro, F_ClaLot, F_FecCad, F_CB, F_Ori, F_Cant, F_Id from tb_reqmodula where F_Sts=0");
+                        while (rset.next()) {
+                            /*
+                             * La 'A' es de inserción
+                             */
+                            conModula.ejecutar("insert into IMP_ORDINI_RIGHE values('" + rset.getString("F_FolRemi") + "','','" + rset.getString("F_ClaPro") + "','" + rset.getString("F_ClaLot") + "','" + rset.getString("F_Ori") + "','" + rset.getString("F_Cant") + "','" + rset.getString("F_CB") + "','" + df4.format(df3.parse(rset.getString("F_FecCad"))) + "','')");
+                            con.insertar("update tb_reqmodula set F_Sts='1' where F_Id='" + rset.getString("F_Id") + "'");
+                        }
+
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    conModula.cierraConexion();
+                    con.cierraConexion();
+                    response.sendRedirect("modula/requerimentoModula.jsp");
+
                 }
             } catch (Exception e) {
             }

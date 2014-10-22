@@ -206,7 +206,7 @@
                 try {
                     int canApartada = 0;
                     con.conectar();
-                    ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_IdLote = '" + idLote + "' ");
+                    ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, u.F_ClaUbi, u.F_Cb as CbUbica from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_IdLote = '" + idLote + "' ");
                     while (rset.next()) {
                         int banAlerta = 0;
                         ResultSet rset2 = con.consulta("select F_IdLot, SUM(F_Cant) from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
@@ -242,6 +242,8 @@
                     <div class="col-lg-12">
                         <input class="form-control" id="F_ClaUbi" name="F_ClaUbi" placeholder="CB de Nueva Ubicación" type="text" />
                         <input class="hidden" id="F_IdLote" name="F_IdLote" value="<%=idLote%>" />
+                        <input id="aClaUbi" class="hidden" value="<%=rset.getString("F_ClaUbi")%>"/>
+                        <input id="aCbUbica" class="hidden" value="<%=rset.getString("CbUbica")%>"/>
                     </div>
                 </div>
                 <br/>
