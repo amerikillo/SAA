@@ -215,8 +215,19 @@
                                     %>
                                 </select>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-5">
                                 <button class="btn btn-primary" name="accion" value="Buscar">Buscar</button>
+                                <%
+                                    try {
+                                        if (!request.getParameter("Lote").equals("")) {
+                                %>
+                                <a class="btn btn-success" a href="gnrKardexClave.jsp?Clave=<%=Clave%>&Lote=<%=request.getParameter("Lote")%>&Cadu=<%=request.getParameter("Cadu")%>">Generar reporte de Trazabilidad</a>
+                                <%
+                                        }
+                                    } catch (Exception e) {
+
+                                    }
+                                %>
                             </div>
                         </div>
                     </form>
@@ -336,7 +347,7 @@
                                 <tr>
                                     <td>No. Mov</td>
                                     <td>Usuario</td>
-                                    
+
                                     <td>Concepto</td>
                                     <td>Clave</td>
                                     <td>Lote</td>
@@ -382,7 +393,7 @@
                                 <tr>
                                     <td><%=rset.getString("F_IdMov")%></td>
                                     <td><%=rset.getString(1)%></td>
-                                    
+
                                     <td><%=rset.getString(3)%></td>
                                     <td><%=rset.getString(4)%></td>
                                     <td><%=rset.getString(5)%></td>
@@ -424,7 +435,7 @@
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
-                                    $(document).ready(function() {
+                                    $(document).ready(function () {
                                         $('#kardexTab').dataTable();
                                         $('#kardexTab2').dataTable();
                                     });
