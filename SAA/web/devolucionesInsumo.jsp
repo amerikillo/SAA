@@ -50,11 +50,11 @@
         </div>
         <div class="container">
             <h3>
-                Devoluciones
+                Cambio Físico
             </h3>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Insumo a Devolver
+                    Insumo a Cambiar
                 </div>
                 <div class="panel-body">
                     <table class="table table-condensed table-bordered table-striped ">
@@ -123,32 +123,57 @@
                     while (rset.next()) {
         %>
         <div class="modal fade" id="Devolucion<%=rset.getString("F_IdLote")%>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <form action="Devoluciones">
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="row">
                                 <div class="col-sm-5">
-                                    Devolución:
+                                    Cambio Físico
                                 </div>
                             </div>
                         </div>
                         <div class="modal-body">
                             <input id="IdLote" name="IdLote" value="<%=rset.getString("F_IdLote")%>" class="hidden">
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="col-sm-3">
-                                        Clave: <%=rset.getString("F_ClaPro")%>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        Descripción: <%=rset.getString("F_DesPro")%>
-                                    </div>
+                                <div class="col-sm-3">
+                                    Clave: <%=rset.getString("F_ClaPro")%>
+                                </div>
+                                <div class="col-sm-9">
+                                    Descripción: <%=rset.getString("F_DesPro")%>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    Lote: <%=rset.getString("F_ClaLot")%>
+                                </div>
+                                <div class="col-sm-4">
+                                    Caducidad: <%=rset.getString("F_FecCad")%>
+                                </div>
+                                <div class="col-sm-4">
+                                    Ubicación: <%=rset.getString("F_Ubica")%>
+                                </div>
+                            </div>
+                            <hr/>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h4>Cantidad a Devolver:<%=rset.getString("F_ExiLot")%></h4>
+                                    <h4>Cantidad a Cambiar:<%=rset.getString("F_ExiLot")%></h4>
+                                </div>
+                            </div>
+                            <hr/>
+                            Ingrese los nuevos datos del insumo
+                            <div class="row">
+                                <h4 class="col-sm-2">
+                                    Lote:
+                                </h4>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="Lote<%=rset.getString("F_IdLote")%>" name="F_ClaLot" />
+                                </div>
+                                <h4 class="col-sm-2">
+                                    Caducidad:
+                                </h4>
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="date" id="Cadu<%=rset.getString("F_IdLote")%>" name="F_FecCad"/>
                                 </div>
                             </div>
                             <h4 class="modal-title" id="myModalLabel">Observaciones</h4>
@@ -157,11 +182,17 @@
                                     <textarea name="Obser" id="Obser<%=rset.getString("F_IdLote")%>" class="form-control"></textarea>
                                 </div>
                             </div>
+                            <h4 class="modal-title" id="myModalLabel">Contraseña</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input name="ContraDevo<%=rset.getString("F_IdLote")%>" id="ContraDevo<%=rset.getString("F_IdLote")%>" class="form-control" type="password" onkeyup="validaContra(this.id);" />
+                                </div>
+                            </div>
                             <div style="display: none;" class="text-center" id="Loader">
                                 <img src="imagenes/ajax-loader-1.gif" height="150" />
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" id="<%=rset.getString("F_IdLote")%>" onclick="return validaDevolucion(this.id);" name="accion" value="devolucion">Devolver</button>
+                                <button type="submit" class="btn btn-primary" id="<%=rset.getString("F_IdLote")%>" disabled onclick="return validaDevolucion(this.id);" name="accion" value="devolucion">Devolver</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
@@ -195,9 +226,25 @@
     <script>
                                     function validaDevolucion(e) {
                                         var id = e;
-                                        if (document.getElementById('Obser' + id).value === "") {
-                                            alert("Ingrese las observaciones de la devolución")
+
+                                        if (document.getElementById('Obser' + id).value === "" || document.getElementById('Lote' + id).value === "" || document.getElementById('Cadu' + id).value === "") {
+                                            alert("Ingrese la información necesaria")
                                             return false;
+                                        }
+                                    }
+
+
+                                    function validaContra(elemento) {
+                                        //alert(elemento);
+                                        var pass = document.getElementById(elemento).value;
+                                        var id = elemento.split("ContraDevo");
+                                        if (pass === "rosalino") {
+                                            //alert(pass);
+                                            document.getElementById(id[1]).disabled = false;
+                                            //$(id[1]).prop("disabled", false);
+                                        } else {
+                                            document.getElementById(id[1]).disabled = true;
+                                            //$(id[1]).prop("disabled", true);
                                         }
                                     }
     </script>

@@ -20,11 +20,21 @@
     custom.setDecimalSeparator(',');
     formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
-    String usua = "ISEM", Clave = "1", Claves = "", Kardex = "";
+    String usua = "ISEM", Clave = "1", Claves = "";
+    int exist = 0;
     ResultSet rset;
     ResultSet rset2;
     int Cantidad = 0;
     double monto = 0, montof = 0;
+
+    try {
+        Claves = request.getParameter("clave");
+    } catch (Exception e) {
+
+    }
+    if (Claves == null) {
+        Claves = "";
+    }
 
     /*if (sesion.getAttribute("nombre") != null) {
      usua = (String) sesion.getAttribute("nombre");
@@ -74,13 +84,14 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Men&uacute; de Opciones <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="indexMain.jsp">Men&uacute; Principal</a></li>
-                                    <li><a href="semaforo.jsp">Semaforización</a></li>
+                                    <li><a href="clave.jsp">Concentrado por Clave</a></li>                                
                                     <li><a href="entregas.jsp">Entrega a Proveedores</a></li>
                                     <li><a href="exist.jsp">Existencias en CEDIS</a></li>
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>
+                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>                                
                                     <li><a href="historialOC.jsp">Historial OC</a></li>
-                                    <li><a href="factura.jsp">Ingresos en Almac&eacute;n</a></li>
                                     <li><a href="ordenesCompra.jsp">Órdenes de Compra</a></li>
+                                    <li><a href="factura.jsp">Recibo en Almac&eacute;n</a></li>
+                                    <li><a href="semaforo.jsp">Semaforización</a></li>
                                     <!--li><a href="rep.jsp">Reporteador</a></li>
                                     <!--li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li class="divider"></li>
@@ -124,75 +135,51 @@
             </div>
         </div>
         <div class="container">
-            <form action="semaforo.jsp" method="post">
+            <form action="clave.jsp" method="post">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Semaforización
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--input type="text" name="clave" id="clave" placeholder="Clave" > <button class="btn btn-sm btn-success" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button-->&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="1" onchange="this.form.submit();" /> Menor a 9 Meses&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="2" onchange="this.form.submit();" /> Entre 9 y 12 Meses&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="3" onchange="this.form.submit();" />Mayor a 12 Meses <!--a href="gnr.jsp">Descargar<label class="glyphicon glyphicon-download"></label></a-->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="semaforo.jsp">Actualizar<label class="glyphicon glyphicon-refresh"></label></a></h3>
+                        <h3 class="panel-title">Concentrado por Clave
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="clave" id="clave" placeholder="Clave" > <button class="btn btn-sm btn-success" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="clave_gnr.jsp?clave=<%=Claves%>">Descargar<label class="glyphicon glyphicon-download"></label></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="clave.jsp">Actualizar<label class="glyphicon glyphicon-refresh"></label></a></h3>
                     </div>
 
                     <div class="panel-footer">
                         <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="datosProv">
                             <thead>
                                 <tr>
+                                    <td>Proveedor</td>
                                     <td>Clave</td>
-                                    <td>Descripción</td>
-                                    <td>Lote</td>
-                                    <td>Caducidad</td>                                
-                                    <td>Cantidad</td>
-                                    <td>Costo U.</td>
-                                    <td>Monto</td>
-                                    <td>Semaforización</td>
+                                    <td>Descripción</td>                                
+                                    <td>Existencia</td>                                                                
                                 </tr>
                             </thead>
                             <tbody>
                                 <%
                                     try {
                                         con.conectar();
-                                        Kardex = request.getParameter("kardex");
 
-                                        if (Kardex.equals("1")) {
-                                            rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, SUM(F_ExiLot), (m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo FROM tb_lote l, tb_medica m, tb_ubica u WHERE m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 AND F_FecCad < DATE_ADD(CURDATE(), INTERVAL 9 MONTH) GROUP BY l.F_ClaPro,l.F_ClaLot,l.F_FecCad");
-                                        } else if (Kardex.equals("2")) {
-                                            rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, SUM(F_ExiLot), (m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo FROM tb_lote l, tb_medica m, tb_ubica u WHERE m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 AND F_FecCad BETWEEN DATE_ADD(CURDATE(), INTERVAL 9 MONTH) AND DATE_ADD(CURDATE(), INTERVAL 12 MONTH) GROUP BY l.F_ClaPro,l.F_ClaLot,l.F_FecCad");
+                                        if (Claves.equals("")) {
+                                            rset = con.consulta("SELECT P.F_NomPro,l.F_ClaPro, m.F_DesPro, SUM(F_ExiLot),P.F_ClaProve FROM tb_lote l, tb_medica m, tb_proveedor P  WHERE m.F_ClaPro = l.F_ClaPro AND l.F_ClaOrg=P.F_ClaProve AND F_ExiLot != 0 GROUP BY l.F_ClaPro, P.F_NomPro order by l.F_ClaPro+0");
                                         } else {
-                                            rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, SUM(F_ExiLot), (m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo FROM tb_lote l, tb_medica m, tb_ubica u WHERE m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 AND F_FecCad > DATE_ADD(CURDATE(), INTERVAL 12 MONTH) GROUP BY l.F_ClaPro,l.F_ClaLot,l.F_FecCad");
+                                            rset = con.consulta("SELECT P.F_NomPro,l.F_ClaPro, m.F_DesPro, SUM(F_ExiLot),P.F_ClaProve FROM tb_lote l, tb_medica m, tb_proveedor P  WHERE m.F_ClaPro = l.F_ClaPro AND l.F_ClaOrg=P.F_ClaProve AND F_ExiLot != 0 and l.F_ClaPro='" + Claves + "' GROUP BY l.F_ClaPro, P.F_NomPro order by l.F_ClaPro+0");
                                         }
                                         while (rset.next()) {
+                                            System.out.println(rset.getString(1));
+                                            exist = Integer.parseInt(rset.getString(4));
                                 %>
                                 <tr>
                                     <td><%=rset.getString(1)%></td>
                                     <td><%=rset.getString(2)%></td>
                                     <td><%=rset.getString(3)%></td>
-                                    <td><%=rset.getString(4)%></td>
-                                    <td><%=formatter.format(rset.getInt(5))%></td>
-                                    <td><%=formatter2.format(rset.getDouble(7))%></td>
-                                    <td><%=formatter2.format(rset.getDouble(6))%></td>
-                                    <%if (Kardex.equals("1")) {%>
-
-                                    <td><span class="label label-danger">Menor 9 Meses</span></td>
-
-                                    <%} else if (Kardex.equals("2")) {%>
-
-                                    <td><span class="label label-warning">Entre 9 y 12 Meses</span></td>
-
-                                    <%} else if (Kardex.equals("3")) {%>
-
-                                    <td><span class="label label-success">Mayor a 12 Meses</span></td>
-                                    <%} else {%>
-                                    <td><span class="label label-success"> Mayor a 12 Meses</span></td>
-                                    <%}%>
-
-
+                                    <td><!--a href="kardex.jsp?clave=<%//=rset.getString(2)%>&provee=<%//=rset.getString(5)%>" target="_black"><//%=rset.getString(4)%></a-->
+                                        <a href="#" onclick="window.open('kardex.jsp?clave=<%=rset.getString(2)%>&provee=<%=rset.getString(5)%>', '', 'width=1200,height=800,left=50,top=50,toolbar=no')"><%=formatter.format(exist)%></a>
+                                    </td>                                                                      
                                 </tr>
                                 <%
                                         }
-                                        if (Kardex.equals("1")) {
-                                            rset2 = con.consulta("SELECT SUM(F_ExiLot) as suma,sum((m.F_Costo*l.F_ExiLot)) as monto, l.F_ClaPro FROM tb_lote l INNER JOIN tb_medica m on l.F_ClaPro=m.F_ClaPro where F_FecCad < DATE_ADD(CURDATE(), INTERVAL 9 MONTH) group by l.F_ClaPro");
-                                        } else if (Kardex.equals("2")) {
-                                            rset2 = con.consulta("SELECT SUM(F_ExiLot) as suma,sum((m.F_Costo*l.F_ExiLot)) as monto, l.F_ClaPro FROM tb_lote l INNER JOIN tb_medica m on l.F_ClaPro=m.F_ClaPro where F_FecCad BETWEEN DATE_ADD(CURDATE(), INTERVAL 9 MONTH) AND DATE_ADD(CURDATE(), INTERVAL 12 MONTH) group by l.F_ClaPro");
+                                        if (Claves.equals("")) {
+                                            rset2 = con.consulta("SELECT l.F_ClaPro, SUM(F_ExiLot) as suma,sum((m.F_Costo*l.F_ExiLot)) as monto FROM tb_lote l INNER JOIN tb_medica m on l.F_ClaPro=m.F_ClaPro group by l.F_ClaPro");
                                         } else {
-                                            rset2 = con.consulta("SELECT SUM(F_ExiLot) as suma,sum((m.F_Costo*l.F_ExiLot)) as monto, l.F_ClaPro FROM tb_lote l INNER JOIN tb_medica m on l.F_ClaPro=m.F_ClaPro where F_FecCad > DATE_ADD(CURDATE(), INTERVAL 12 MONTH) group by l.F_ClaPro");
+                                            rset2 = con.consulta("SELECT l.F_ClaPro, SUM(F_ExiLot),sum((m.F_Costo*l.F_ExiLot)) as monto FROM tb_lote l INNER JOIN tb_medica m on l.F_ClaPro=m.F_ClaPro where l.F_ClaPro='" + Claves + "' group by l.F_ClaPro");
                                         }
                                         while (rset2.next()) {
                                             double monto1 = 0;
@@ -201,7 +188,7 @@
                                             } else {
                                                 monto1 = (Double.parseDouble(rset2.getString("monto")) * 1.16);
                                             }
-                                            Cantidad = Cantidad + Integer.parseInt(rset2.getString("suma"));
+                                            Cantidad = Cantidad +Integer.parseInt(rset2.getString("suma"));
                                             monto = monto + monto1;
                                         }
                                         con.cierraConexion();
@@ -218,8 +205,8 @@
         </div>
         <br><br><br>
         <div class="navbar navbar-fixed-bottom navbar-inverse">
+            GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
             <div class="text-center text-muted">
-                GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
                 Todos los Derechos Reservados
             </div>
         </div>
@@ -238,9 +225,9 @@
 <script src="js/dataTables.bootstrap.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script>
-                                $(document).ready(function() {
-                                    $('#datosProv').dataTable();
-                                });
+                                            $(document).ready(function() {
+                                                $('#datosProv').dataTable();
+                                            });
 </script>
 <script>
 

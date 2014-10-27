@@ -152,6 +152,7 @@
             <h3>
                 Kardex de Insumo
             </h3>
+
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Criterios de Búsqueda
@@ -215,12 +216,71 @@
                                     %>
                                 </select>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-5">
                                 <button class="btn btn-primary" name="accion" value="Buscar">Buscar</button>
+                                <%
+                                    try {
+                                        if (!request.getParameter("Lote").equals("")) {
+                                %>
+                                <a class="btn btn-success" a href="gnrKardexClave.jsp?Clave=<%=Clave%>&Lote=<%=request.getParameter("Lote")%>&Cadu=<%=request.getParameter("Cadu")%>">Generar reporte de Trazabilidad</a>
+                                <%
+                                        }
+                                    } catch (Exception e) {
+
+                                    }
+                                %>
                             </div>
                         </div>
                     </form>
                     <hr/>
+                    <h3>Clave: <%=Clave%></h3>
+                    <h4>Lote: 
+                        <%
+                            if (request.getParameter("Lote") != null) {
+                                out.println(request.getParameter("Lote"));
+                            }
+                        %>
+                    </h4>
+                    <h4>Caducidad: 
+                        <%
+                            if (request.getParameter("Cadu") != null) {
+                                out.println(request.getParameter("Cadu"));
+                            }
+                        %>
+                    <%
+                        try {
+                            con.conectar();
+                            ResultSet rset = con.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + Clave + "'");
+                            while (rset.next()) {
+                                out.println("<h4>" + rset.getString(1) + "</h4>");
+                            }
+                            con.cierraConexion();
+                        } catch (Exception e) {
+
+                        }
+                    %>
+                    <br/>
+                    <h4>Existencia Actual</h4>
+                    <%
+                        try {
+                            con.conectar();
+                            ResultSet rset = con.consulta("select SUM(F_ExiLot) from tb_lote where F_ClaPro = '" + Clave + "' and F_ClaLot ='" + request.getParameter("Lote") + "' and F_FecCad = STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y')  and F_ExiLot !=0");
+                            while (rset.next()) {
+                                String Total = "0";
+                                Total = rset.getString(1);
+                                if (Total == null) {
+                                    Total = "0";
+                                }
+                    %>
+                    <h4>Total: <%=formatter.format(Integer.parseInt(Total))%></h4>
+                    <br/>
+                    <%
+                            }
+                            con.cierraConexion();
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    %>
                     <div style="width:100%; margin: auto" class="panel panel-success panel-body table-responsive">
                         <h3>Ingresos / Egresos</h3>
                         <table class="table table-bordered table-striped" width="100%" id="kardexTab2">
@@ -330,13 +390,13 @@
 
 
                     <div style="width:100%; margin: auto" class="panel panel-body panel-danger table-responsive">
-                        <h3>Redistribución</h3>
+                        <h3>Redistribución en Almacén</h3>
                         <table class="table table-bordered table-striped" width="100%" id="kardexTab">
                             <thead> 
                                 <tr>
                                     <td>No. Mov</td>
                                     <td>Usuario</td>
-                                    
+
                                     <td>Concepto</td>
                                     <td>Clave</td>
                                     <td>Lote</td>
@@ -351,7 +411,7 @@
                                 <%
                                     try {
                                         con.conectar();
-                                        ResultSet rset = con.consulta("select m.F_User, m.F_ConMov, c.F_DesCon, m.F_ProMov, l.F_ClaLot,  DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), (m.F_CantMov*m.F_SigMov), m.F_CostMov, u.F_DesUbi, DATE_FORMAT(m.F_FecMov, '%d/%m/%Y'), m.F_hora, m.F_DocMov, com.F_FolRemi, m.F_IdMov FROM tb_movinv m, tb_coninv c, tb_ubica u, tb_lote l, tb_compra com WHERE l.F_FolLot = com.F_Lote and m.F_ConMov = c.F_IdCon AND m.F_UbiMov = u.F_ClaUbi AND m.F_LotMov = l.F_FolLot and m.F_ProMov = '" + Clave + "' and l.F_ClaLot ='" + request.getParameter("Lote") + "' and l.F_FecCad=STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y') and m.F_ConMov=1000 GROUP BY m.F_IdMov ORDER BY m.F_IdMov");
+                                        ResultSet rset = con.consulta("select m.F_User, m.F_ConMov, c.F_DesCon, m.F_ProMov, l.F_ClaLot,  DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), (m.F_CantMov*m.F_SigMov), m.F_CostMov, u.F_DesUbi, DATE_FORMAT(m.F_FecMov, '%d/%m/%Y'), m.F_hora, m.F_DocMov, com.F_FolRemi, m.F_IdMov FROM tb_movinv m, tb_coninv c, tb_ubica u, tb_lote l, tb_compra com WHERE l.F_FolLot = com.F_Lote and m.F_ConMov = c.F_IdCon AND m.F_UbiMov = u.F_ClaUbi AND m.F_LotMov = l.F_FolLot and m.F_ProMov = '" + Clave + "' and l.F_ClaLot ='" + request.getParameter("Lote") + "' and l.F_FecCad=STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y') and (m.F_ConMov=1000 or m.F_ConMov=1) GROUP BY m.F_IdMov ORDER BY m.F_IdMov");
                                         while (rset.next()) {
                                             String Documento = "", Cliente = "", Provoeedor = "", FactRemi = "";
                                             if (rset.getString(2).equals("1")) {
@@ -382,7 +442,7 @@
                                 <tr>
                                     <td><%=rset.getString("F_IdMov")%></td>
                                     <td><%=rset.getString(1)%></td>
-                                    
+
                                     <td><%=rset.getString(3)%></td>
                                     <td><%=rset.getString(4)%></td>
                                     <td><%=rset.getString(5)%></td>
@@ -424,7 +484,7 @@
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
-                                    $(document).ready(function() {
+                                    $(document).ready(function () {
                                         $('#kardexTab').dataTable();
                                         $('#kardexTab2').dataTable();
                                     });

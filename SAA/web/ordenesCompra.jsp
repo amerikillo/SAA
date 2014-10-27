@@ -190,7 +190,7 @@
                         </select>
                     </div>
 
-                            <a href="Procesos/comparativaClavesOC.jsp" class="btn btn-success">Comparativa Pendiente x Recibir</a>
+                    <a href="Procesos/comparativaClavesOC.jsp" class="btn btn-success">Comparativa Pendiente x Recibir</a>
                 </div>
                 <br/>
                 <div class="row">
@@ -285,23 +285,20 @@
                                     <button class="btn btn-success btn-block" name="accion" id="reactivar" value="reactivar" onclick="return confirm('¿Seguro que desea reactivar la orden de comrpa?')">Reactivar</button>
                                 </form>
                             </div>
-                            <div class="col-sm-1">
-                                <a class="btn btn-default btn-block" target="_blank" href="imprimeOrdenCompra.jsp?ordenCompra=<%=NoCompra%>"><span class="glyphicon glyphicon-print"></span></a>
-                            </div>
                             <%
-                            } else {
+                            } else if (tipo.equals("2")) {
                             %>
                             <div class="col-sm-3 col-sm-offset-2">
                                 <form action="CapturaPedidos?NoCompra=<%=NoCompra%>" method="post">
                                     <button class="btn btn-danger btn-block" name="accion" id="cerrar" value="cerrar" onclick="return confirm('¿Seguro que desea cerrar la orden de comrpa?')">Cerrar</button>
                                 </form>
                             </div>
-                            <div class="col-sm-1 col-sm-offset-9">
-                                <a class="btn btn-default" target="_blank" href="imprimeOrdenCompra.jsp?ordenCompra=<%=NoCompra%>"><span class="glyphicon glyphicon-print"></span></a>
-                            </div>
                             <%
                                 }
                             %>
+                            <div class="col-sm-1">
+                                <a class="btn btn-default" target="_blank" href="imprimeOrdenCompra.jsp?ordenCompra=<%=NoCompra%>"><span class="glyphicon glyphicon-print"></span></a>
+                            </div>
                         </div>
                         <div class="panel-body">
                             <form name="FormBusca" action="CapturaPedidos" method="post">
@@ -441,11 +438,11 @@
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
-                                        $(document).ready(function() {
+                                        $(document).ready(function () {
                                             $('#datosCompras').dataTable();
                                         });
 
-                                        $(function() {
+                                        $(function () {
                                             $("#Fecha").datepicker();
                                             $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
                                         });

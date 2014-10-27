@@ -51,6 +51,10 @@ public class FacturacionManual extends HttpServlet {
 
                 sesion.setAttribute("F_IndGlobal", null);
                 con.conectar();
+                ResultSet rset = con.consulta("select * from tb_facttemp where F_IdFact = '" + request.getParameter("accionEliminar") + "'");
+                while (rset.next()) {
+                    con.insertar("insert into tb_facttemp_elim values ('" + rset.getString(1) + "','" + rset.getString(2) + "','" + rset.getString(3) + "','" + rset.getString(4) + "','" + rset.getString(5) + "','" + rset.getString(6) + "','" + rset.getString(7) + "', '" + (String) sesion.getAttribute("nombre") + "', NOW())");
+                }
                 con.insertar("delete from tb_facttemp where F_IdFact = '" + request.getParameter("accionEliminar") + "' ");
                 con.cierraConexion();
                 out.println("<script>alert('Clave Eliminada Correctamente')</script>");
@@ -101,6 +105,7 @@ public class FacturacionManual extends HttpServlet {
                         con.insertar("insert into tb_movinv values (0,curdate(),'" + ClaDoc + "','3', '" + ClaPro + "', '" + CantSur + "', '" + Costo + "', '" + Monto + "' ,'1', '" + FolLote + "', 'NUEVA', '" + Proveedor + "',curtime(),'" + (String) sesion.getAttribute("nombre") + "') ");
 
                         con.insertar("update tb_factdevol set F_FactSts=1 where F_IdFact = '" + F_IdFact + "'");
+                        sesion.setAttribute("F_IndGlobal", null);
                         response.sendRedirect("reimp_factura.jsp");
                     }
                 } catch (Exception e) {
@@ -152,13 +157,19 @@ public class FacturacionManual extends HttpServlet {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                sesion.setAttribute("F_IndGlobal", null);
                 response.sendRedirect("reimp_factura.jsp");
             }
             if (request.getParameter("accion").equals("CancelarFactura")) {
                 try {
                     con.conectar();
+                    ResultSet rset = con.consulta("select * from tb_facttemp where F_ClaCLi = '" + (String) sesion.getAttribute("ClaCliFM") + "'");
+                    while (rset.next()) {
+                        con.insertar("insert into tb_facttemp_elim values ('" + rset.getString(1) + "','" + rset.getString(2) + "','" + rset.getString(3) + "','" + rset.getString(4) + "','" + rset.getString(5) + "','" + rset.getString(6) + "','" + rset.getString(7) + "', '" + (String) sesion.getAttribute("nombre") + "', NOW())");
+                    }
                     con.insertar("delete from tb_facttemp where F_ClaCLi = '" + (String) sesion.getAttribute("ClaCliFM") + "' ");
                     con.cierraConexion();
+                    sesion.setAttribute("F_IndGlobal", null);
                     out.println("<script>alert('Factura Eliminada Correctamente')</script>");
                     out.println("<script>window.location='facturacionManual.jsp'</script>");
                 } catch (Exception e) {
@@ -272,6 +283,8 @@ public class FacturacionManual extends HttpServlet {
                     sesion.setAttribute("FechaEntFM", "");
                     sesion.setAttribute("ClaProFM", "");
                     sesion.setAttribute("DesProFM", "");
+                    sesion.setAttribute("F_IndGlobal", null);
+                    //Aqui tenemos que poner en nulo la variable de folio de dactura
                     out.println("<script>window.open('reimpFactura.jsp?fol_gnkl=" + FolioFactura + "','_blank')</script>");
                     out.println("<script>window.location='remisionarCamion.jsp'</script>");
                 } catch (Exception e) {

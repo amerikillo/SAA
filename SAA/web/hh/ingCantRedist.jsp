@@ -81,6 +81,7 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span clss="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -92,12 +93,17 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
+                                    <%
+                                        if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")) {
+                                    %>
+
                                     <li><a href="../captura.jsp">Entrada Manual</a></li>
                                     <li><a href="../compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
+                                    <li><a href="compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
                                     <li class="divider"></li>
                                         <%
+                                            }
                                             if (tipo.equals("2") || tipo.equals("3")) {
                                         %>
                                     <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
@@ -109,14 +115,18 @@
                                     <li><a href="#"  onclick="window.open('../kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
                                     <li><a href="#"  onclick="window.open('../Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                                     <li><a href="#"  onclick="window.open('../creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
-                                    <li class="divider"></li>
+                                    
                                         <%
                                             if (tipo.equals("5") || tipo.equals("3")) {
                                         %>
+                                    <li class="divider"></li>
                                     <li><a href="insumoNuevoRedist.jsp">Redistribución HH</a></li>
+                                    <li class="divider"></li>
                                         <%
                                             }
                                         %>
+                                    <li><a href="#"  onclick="window.open('../Ubicaciones/index_Marbete.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Marbete de Salida</a></li>
+                                    <li><a href="#"  onclick="window.open('../Ubicaciones/index_Marbete_resto.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Marbete de Resto</a></li>
                                     <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
                                     <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devolver</a></li-->
                                 </ul>
@@ -124,29 +134,48 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
+                                    <%
+                                        if (tipo.equals("7") || tipo.equals("3")) {
+                                    %>
                                     <li><a href="../requerimiento.jsp">Carga de Requerimiento</a></li>
                                     <li><a href="../factura.jsp">Facturación Automática</a></li>
+                                        <%
+                                            }
+                                        %>
+                                        <%
+                                            if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7")) {
+                                        %>
                                     <li><a href="../validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="../validacionAuditores.jsp">Validación Auditores</a></li>
+                                        <%
+                                            }
+                                        %>
                                         <%
                                             if (tipo.equals("7")) {
                                         %>
                                     <li><a href="../remisionarCamion.jsp">Generar Remisiones</a></li>
+                                    <li><a href="../facturacionManual.jsp">Facturación Manual</a></li>
                                         <%
                                             }
                                         %>
-                                    <li><a href="../facturacionManual.jsp">Facturación Manual</a></li>
                                     <li><a href="../reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="../reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="../comparativoGlobal.jsp">Comparativo Global</a></li>
+
                                 </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inventario<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#"  onclick="window.open('../Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
+                                        <%
+                                            if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7")) {
+                                        %>
                                     <li><a href="#"  onclick="window.open('../movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
                                     <li><a href="#"  onclick="window.open('../semaforo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Semaforización</a></li>
+                                        <%
+                                            }
+                                        %>
                                     <li><a href="#"  onclick="window.open('../invenCiclico/nuevoInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario Ciclico</a></li>
                                 </ul>
                             </li>
@@ -167,27 +196,6 @@
 
                                 </ul>
                             </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="../usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="../usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
-                                </ul>
-                            </li>
-                            <%                                }
-                            %>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
@@ -206,7 +214,7 @@
                 try {
                     int canApartada = 0;
                     con.conectar();
-                    ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_IdLote = '" + idLote + "' ");
+                    ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, u.F_ClaUbi, u.F_Cb as CbUbica from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_IdLote = '" + idLote + "' ");
                     while (rset.next()) {
                         int banAlerta = 0;
                         ResultSet rset2 = con.consulta("select F_IdLot, SUM(F_Cant) from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
@@ -242,6 +250,8 @@
                     <div class="col-lg-12">
                         <input class="form-control" id="F_ClaUbi" name="F_ClaUbi" placeholder="CB de Nueva Ubicación" type="text" />
                         <input class="hidden" id="F_IdLote" name="F_IdLote" value="<%=idLote%>" />
+                        <input id="aClaUbi" class="hidden" value="<%=rset.getString("F_ClaUbi")%>"/>
+                        <input id="aCbUbica" class="hidden" value="<%=rset.getString("CbUbica")%>"/>
                     </div>
                 </div>
                 <br/>
