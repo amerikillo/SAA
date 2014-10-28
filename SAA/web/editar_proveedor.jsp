@@ -15,9 +15,11 @@
 
     HttpSession sesion = request.getSession();
     String usua = "", id = "";
+    String tipo = "";
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
         id = (String) sesion.getAttribute("id");
+        tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("index.jsp");
     }
@@ -107,6 +109,15 @@
                                         %>
                                     <li class="divider"></li>
                                     <li><a href="hh/insumoNuevoRedist.jsp">Redistribución HH</a></li>
+                                    <li class="divider"></li>
+                                        <%
+                                            }
+                                        %>
+                                        <%
+                                            if (usua.equals("oscar")) {
+                                        %>
+                                    <li class="divider"></li>
+                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Cambio Físico</a></li>
                                     <li class="divider"></li>
                                         <%
                                             }

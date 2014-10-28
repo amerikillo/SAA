@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <%
     HttpSession sesion = request.getSession();
-    String usua = "";
+    String usua = "", tipo = "";
     String Usuario = "", Valida = "", Nombre = "";
     int Tipo = 0;
     
@@ -16,6 +16,7 @@
         usua = (String) sesion.getAttribute("Usuario");
         Nombre = (String) sesion.getAttribute("nombre");
         Tipo = Integer.parseInt((String) sesion.getAttribute("Tipo"));
+        tipo = (String) sesion.getAttribute("Tipo");
         System.out.println(Usuario + Nombre + Tipo);
     } else {
         response.sendRedirect("SAA/index.jsp");
@@ -91,6 +92,15 @@
                                         %>
                                     <li class="divider"></li>
                                     <li><a href="hh/insumoNuevoRedist.jsp">Redistribución HH</a></li>
+                                    <li class="divider"></li>
+                                        <%
+                                            }
+                                        %>
+                                        <%
+                                            if (usua.equals("oscar")) {
+                                        %>
+                                    <li class="divider"></li>
+                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Cambio Físico</a></li>
                                     <li class="divider"></li>
                                         <%
                                             }

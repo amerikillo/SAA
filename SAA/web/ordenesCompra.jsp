@@ -262,9 +262,13 @@
                     <div class="panel-body">
                         <%                try {
                                 con.conectar();
-                                ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, F_Usuario, F_StsPed, F_Recibido from tb_pedidoisem o, tb_proveedor p, tb_usuariosisem u where u.F_IdUsu = o.F_IdUsu and  o.F_Provee = p.F_ClaProve and F_NoCompra = '" + NoCompra + "'  group by o.F_NoCompra");
+                                ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, F_Usuario, F_StsPed, F_Recibido from tb_pedidoisem o, tb_proveedor p, tb_usuariosisem u where u.F_IdUsu = o.F_IdUsu and  o.F_Provee = p.F_ClaProve and F_NoCompra = '" + NoCompra + "' group by o.F_NoCompra");
                                 while (rset.next()) {
-                                    int recibido = rset.getInt("F_Recibido");
+                                    int recibido = 0;
+                                    ResultSet rset2 = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, F_Usuario, F_StsPed, F_Recibido from tb_pedidoisem o, tb_proveedor p, tb_usuariosisem u where u.F_IdUsu = o.F_IdUsu and  o.F_Provee = p.F_ClaProve and F_NoCompra = '" + NoCompra + "' and F_Recibido=1 group by o.F_NoCompra");
+                                    while (rset2.next()) {
+                                        recibido = rset2.getInt("F_Recibido");
+                                    }
                         %>
                         <div class="row">
                             <div class="col-sm-2">
@@ -317,7 +321,7 @@
                                     System.out.println("###" + rset.getString("F_StsPed"));
                                     if (rset.getString("F_StsPed").equals("2")) {
                                         String obserRechazo = "";
-                                        ResultSet rset2 = con.consulta("select F_Observaciones from tb_obscancela where F_NoCompra = '" + rset.getString(1) + "' ");
+                                        rset2 = con.consulta("select F_Observaciones from tb_obscancela where F_NoCompra = '" + rset.getString(1) + "' ");
                                         while (rset2.next()) {
                                             obserRechazo = rset2.getString(1);
                                         }
@@ -329,7 +333,7 @@
                                 } else {
                                     String obserRechazo = "";
                                     int banRechazo = 0;
-                                    ResultSet rset2 = con.consulta("select F_Observaciones, F_Fecha from tb_rechazos where F_NoCompra = '" + rset.getString(1) + "' ");
+                                    rset2 = con.consulta("select F_Observaciones, F_Fecha from tb_rechazos where F_NoCompra = '" + rset.getString(1) + "' ");
                                     while (rset2.next()) {
                                         obserRechazo = obserRechazo + "Fecha: " + rset2.getString(2) + "\nObservaciones: " + rset2.getString(1) + "\n";
                                         banRechazo = 1;
@@ -362,7 +366,7 @@
                                 <%
 
                                     if (rset.getString("F_StsPed").equals("2")) {
-                                        ResultSet rset2 = con.consulta("select F_Observaciones from tb_obscancela where F_NoCompra = '" + NoCompra + "' ");
+                                        rset2 = con.consulta("select F_Observaciones from tb_obscancela where F_NoCompra = '" + NoCompra + "' ");
                                         while (rset2.next()) {
                                 %>
                                 <br/>
@@ -438,11 +442,11 @@
     <script src="js/jquery.dataTables.js"></script>
     <script src="js/dataTables.bootstrap.js"></script>
     <script>
-                                        $(document).ready(function () {
+                                        $(document).ready(function() {
                                             $('#datosCompras').dataTable();
                                         });
 
-                                        $(function () {
+                                        $(function() {
                                             $("#Fecha").datepicker();
                                             $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
                                         });
