@@ -360,7 +360,15 @@
 
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h4>Cantidad a Devolver:<%=rset.getString("F_CantSur")%></h4>
+                                    <h4>Cantidad a Remisionada:<%=rset.getString("F_CantSur")%></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>Cantidad a a Devolver:</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input class="form-control" value="<%=rset.getString("F_CantSur")%>" name="CantDevolver" />
                                 </div>
                             </div>
                             <h4 class="modal-title" id="myModalLabel">Observaciones</h4>

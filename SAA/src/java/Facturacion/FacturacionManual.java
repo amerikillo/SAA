@@ -6,6 +6,7 @@
 package Facturacion;
 
 import conn.*;
+import Inventario.Devoluciones;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -37,6 +38,7 @@ public class FacturacionManual extends HttpServlet {
             throws ServletException, IOException {
 
         ConectionDB con = new ConectionDB();
+        Devoluciones dev = new Devoluciones();
         //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
         Facturacion fact = new Facturacion();
         NuevoISEM objSql = new NuevoISEM();
@@ -116,11 +118,12 @@ public class FacturacionManual extends HttpServlet {
                 String idFact = request.getParameter("IdFact");
                 try {
                     con.conectar();
+                    int cantDevol = Integer.parseInt(request.getParameter("CantDevolver"));
                     //consql.conectar();
-                    String ClaCli = "", StsFact = "", ClaPro = "", ClaLot = "", FecCad = "", CantSur = "", FecEnt = "", Ubicacion = "", ClaDoc = "", Proveedor = "", FecFab = "", CB = "", Marca = "", Monto = "", FecCadSQL = "", FecFabSQL = "", Costo = "", FolLote = "", IVA = "";
+                    String ClaCli = "", StsFact = "", ClaPro = "", ClaLot = "", FecCad = "", CantSur = "", FecEnt = "", Ubicacion = "", ClaDoc = "", Proveedor = "", FecFab = "", CB = "", Marca = "", Monto = "", FecCadSQL = "", FecFabSQL = "", Costo = "", FolLote = "", IVA = "", F_Hora = "", F_User = "";
                     String FolioLoteSQL = "";
                     int FolioMovi = 0, FolMov, FolioMoviSQL = 0, FolMovSQL;
-                    ResultSet rset = con.consulta("select f.F_ClaCli, f.F_StsFact, f.F_ClaPro, l.F_ClaLot, l.F_FecCad, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS FECAD, f.F_CantSur, f.F_FecEnt, f.F_Ubicacion, f.F_ClaDoc, l.F_ClaOrg, l.F_FecFab, DATE_FORMAT(l.F_FecFab,'%d/%m/%Y') AS FEFAB, l.F_Cb, l.F_ClaMar, f.F_Monto, f.F_Costo, f.F_Lote, f.F_Iva from tb_factura f, tb_lote l where f.F_Lote = l.F_FolLot and f.F_IdFact='" + idFact + "'");
+                    ResultSet rset = con.consulta("select f.F_ClaCli, f.F_StsFact, f.F_ClaPro, l.F_ClaLot, l.F_FecCad, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS FECAD, f.F_CantSur, f.F_FecEnt, f.F_Ubicacion, f.F_ClaDoc, l.F_ClaOrg, l.F_FecFab, DATE_FORMAT(l.F_FecFab,'%d/%m/%Y') AS FEFAB, l.F_Cb, l.F_ClaMar, f.F_Monto, f.F_Costo, f.F_Lote, f.F_Iva, f.F_Hora, f.F_User from tb_factura f, tb_lote l where f.F_Lote = l.F_FolLot and f.F_IdFact='" + idFact + "'");
                     while (rset.next()) {
                         ClaCli = rset.getString("F_ClaCli");
                         StsFact = rset.getString("F_StsFact");
@@ -128,7 +131,7 @@ public class FacturacionManual extends HttpServlet {
                         ClaLot = rset.getString("F_ClaLot");
                         FecCad = rset.getString("F_FecCad");
                         CantSur = rset.getString("F_CantSur");
-                        FecEnt = rset.getString("F_CantSur");
+                        FecEnt = rset.getString("F_FecEnt");
                         Ubicacion = rset.getString("F_Ubicacion");
                         ClaDoc = rset.getString("F_ClaDoc");
                         Proveedor = rset.getString("F_ClaOrg");
@@ -141,16 +144,28 @@ public class FacturacionManual extends HttpServlet {
                         Costo = rset.getString("F_Costo");
                         FolLote = rset.getString("F_Lote");
                         IVA = rset.getString("F_Iva");
-
+                        F_Hora = rset.getString("F_Hora");
+                        F_User = rset.getString("F_User");
                     }
-
                     byte[] a = request.getParameter("Obser").getBytes("ISO-8859-1");
                     String Observaciones = (new String(a, "UTF-8")).toUpperCase();
-                    con.insertar("update tb_factura set F_StsFact = 'C', F_Obs='" + Observaciones + "' where F_IdFact = '" + idFact + "'");
 
-                    ResultSet rsetfact = con.consulta("select * from tb_factura where F_IdFact = '" + idFact + "' ");
-                    while (rsetfact.next()) {
-                        con.insertar("insert into tb_factdevol values ('" + rsetfact.getString(1) + "','" + rsetfact.getString(2) + "','" + rsetfact.getString(3) + "','" + rsetfact.getString(4) + "','" + rsetfact.getString(5) + "','" + rsetfact.getString(6) + "','" + rsetfact.getString(7) + "','" + rsetfact.getString(8) + "','" + rsetfact.getString(9) + "','" + rsetfact.getString(10) + "','" + rsetfact.getString(11) + "','" + rsetfact.getString(12) + "','" + rsetfact.getString(13) + "','" + rsetfact.getString(14) + "','" + rsetfact.getString(15) + "','" + rsetfact.getString(16) + "','" + rsetfact.getString(17) + "',0) ");
+                    if (Integer.parseInt(CantSur) - cantDevol == 0) {
+                        con.insertar("update tb_factura set F_StsFact = 'C', F_Obs='" + Observaciones + "' where F_IdFact = '" + idFact + "'");
+
+                        ResultSet rsetfact = con.consulta("select * from tb_factura where F_IdFact = '" + idFact + "' ");
+                        while (rsetfact.next()) {
+                            con.insertar("insert into tb_factdevol values ('" + rsetfact.getString(1) + "','" + rsetfact.getString(2) + "','" + rsetfact.getString(3) + "','" + rsetfact.getString(4) + "','" + rsetfact.getString(5) + "','" + rsetfact.getString(6) + "','" + rsetfact.getString(7) + "','" + rsetfact.getString(8) + "','" + rsetfact.getString(9) + "','" + rsetfact.getString(10) + "','" + rsetfact.getString(11) + "','" + rsetfact.getString(12) + "','" + rsetfact.getString(13) + "','" + rsetfact.getString(14) + "','" + rsetfact.getString(15) + "','" + rsetfact.getString(16) + "','" + rsetfact.getString(17) + "',0) ");
+                        }
+
+                    } else {
+                        con.insertar("update tb_factura set F_CantSur = '" + (Integer.parseInt(CantSur) - cantDevol) + "', F_Iva='" + dev.devuelveIVA(ClaPro, Integer.parseInt(CantSur) - cantDevol) + "', F_Monto = '" + dev.devuelveImporte(ClaPro, Integer.parseInt(CantSur) - cantDevol) + "' where F_IdFact = '" + idFact + "'");
+                        con.insertar("insert into tb_factura values(0,'" + ClaDoc + "','" + ClaCli + "','C',CURDATE(),'" + ClaPro + "','" + cantDevol + "','" + cantDevol + "','" + Costo + "','" + dev.devuelveIVA(ClaPro, cantDevol) + "','" + dev.devuelveImporte(ClaPro, cantDevol) + "','" + FolLote + "','" + FecEnt + "','" + F_Hora + "','" + F_User + "','" + Ubicacion + "','" + Observaciones + "')");
+
+                        ResultSet rsetfact = con.consulta("select * from tb_factura where F_Obs = '" + Observaciones + "' and F_ClaDoc='" + ClaDoc + "' and F_ClaPro='" + ClaPro + "' and F_Lote='" + FolLote + "' ");
+                        while (rsetfact.next()) {
+                            con.insertar("insert into tb_factdevol values ('" + rsetfact.getString(1) + "','" + rsetfact.getString(2) + "','" + rsetfact.getString(3) + "','" + rsetfact.getString(4) + "','" + rsetfact.getString(5) + "','" + rsetfact.getString(6) + "','" + rsetfact.getString(7) + "','" + rsetfact.getString(8) + "','" + rsetfact.getString(9) + "','" + rsetfact.getString(10) + "','" + rsetfact.getString(11) + "','" + rsetfact.getString(12) + "','" + rsetfact.getString(13) + "','" + rsetfact.getString(14) + "','" + rsetfact.getString(15) + "','" + rsetfact.getString(16) + "','" + rsetfact.getString(17) + "',0) ");
+                        }
                     }
 
                     con.cierraConexion();
