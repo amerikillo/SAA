@@ -148,6 +148,15 @@
                                         <%
                                             }
                                         %>
+                                        <%
+                                            if (usua.equals("oscar")) {
+                                        %>
+                                    <li class="divider"></li>
+                                    <li><a href="#"  onclick="window.open('../devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Cambio Físico</a></li>
+                                    <li class="divider"></li>
+                                        <%
+                                            }
+                                        %>
                                     <li><a href="#"  onclick="window.open('../Ubicaciones/index_Marbete.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Marbete de Salida</a></li>
                                     <li><a href="#"  onclick="window.open('../Ubicaciones/index_Marbete_resto.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Marbete de Resto</a></li>
                                     <!--li><a href="#"  onclick="window.open('verDevolucionesEntrada.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Imprimir Devoluciones</a></li>
