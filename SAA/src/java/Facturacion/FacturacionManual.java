@@ -105,12 +105,12 @@ public class FacturacionManual extends HttpServlet {
                         con.insertar("insert into tb_movinv values (0,curdate(),'" + ClaDoc + "','3', '" + ClaPro + "', '" + CantSur + "', '" + Costo + "', '" + Monto + "' ,'1', '" + FolLote + "', 'NUEVA', '" + Proveedor + "',curtime(),'" + (String) sesion.getAttribute("nombre") + "') ");
 
                         con.insertar("update tb_factdevol set F_FactSts=1 where F_IdFact = '" + F_IdFact + "'");
-                        sesion.setAttribute("F_IndGlobal", null);
-                        response.sendRedirect("reimp_factura.jsp");
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                sesion.setAttribute("F_IndGlobal", null);
+                response.sendRedirect("reimp_factura.jsp");
             }
             if (request.getParameter("accion").equals("devolucion")) {
                 String idFact = request.getParameter("IdFact");

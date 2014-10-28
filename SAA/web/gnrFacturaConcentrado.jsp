@@ -72,6 +72,7 @@
                         <td>Ent.</td>
                         <td>Costo U</td>
                         <td>Importe</td>
+                        <td>Status</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,7 +80,7 @@
                         try {
                             con.conectar();
                             try {
-                                ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli GROUP BY F.F_IdFact");
+                                ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F_StsFact FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli GROUP BY F.F_IdFact");
                                 while (rset.next()) {
                     %>
                     <tr>
@@ -95,6 +96,7 @@
                         <td><%=rset.getString(9)%></td>
                         <td><%=rset.getString(10)%></td>
                         <td><%=rset.getString(11)%></td>
+                        <td><%=rset.getString("F_StsFact")%></td>
                     </tr>
                     <%
                                 }

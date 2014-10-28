@@ -76,12 +76,21 @@
                                     <li><a href="#"  onclick="window.open('kardexClave.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Kardex Claves</a></li>
                                     <li><a href="#"  onclick="window.open('Ubicaciones/Consultas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Ubicaciones</a></li>
                                     <li><a href="#"  onclick="window.open('creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
-                                    
-                                        <%
-                                            if (tipo.equals("5") || tipo.equals("3")) {
-                                        %>
+
+                                    <%
+                                        if (tipo.equals("5") || tipo.equals("3")) {
+                                    %>
                                     <li class="divider"></li>
                                     <li><a href="hh/insumoNuevoRedist.jsp">Redistribución HH</a></li>
+                                    <li class="divider"></li>
+                                        <%
+                                            }
+                                        %>
+                                    <%
+                                        if (usua.equals("americo")) {
+                                    %>
+                                    <li class="divider"></li>
+                                    <li><a href="#"  onclick="window.open('devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Cambio Físico</a></li>
                                     <li class="divider"></li>
                                         <%
                                             }
