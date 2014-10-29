@@ -126,7 +126,7 @@
                                     <li class="divider"></li>
                                         <%
                                             }
-                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                            if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")) {
                                         %>
                                     <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
                                         <%

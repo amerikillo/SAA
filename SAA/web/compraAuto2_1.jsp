@@ -760,7 +760,7 @@
                                 </form>
                             </div>
                             <%
-                                if (tipo.equals("2") || tipo.equals("3")) {
+                                if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")) {
                             %>
                             <div class="col-lg-3">
                                 <form action="nuevoAutomaticaLotes" method="post">

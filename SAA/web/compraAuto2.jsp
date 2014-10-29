@@ -190,7 +190,7 @@
                                     <li class="divider"></li>
                                         <%
                                             }
-                                            if (tipo.equals("2") || tipo.equals("3")) {
+                                            if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")) {
                                         %>
                                     <li><a href="verificarCompraAuto.jsp">Verificar OC</a></li>
                                         <%
@@ -388,7 +388,7 @@
                                 <div class="col-sm-2"><input class="form-control" value="<%=folioRemi%>" name="folioRemi" id="folioRemi" onkeypress="return tabular(event, this)" /></div>
                                 <div class="col-sm-2">
                                     <%
-                                        if (tipo.equals("2") || tipo.equals("3")) {
+                                        if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")) {
                                     %>
                                     <a class="btn btn-default" href="verificarCompraAuto.jsp">Verificar Remisión</a>
                                     <%
@@ -884,7 +884,7 @@
                                 </form>
                             </div>
                             <%
-                                if (tipo.equals("2") || tipo.equals("3")) {
+                                if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")) {
                             %>
                             <!--div class="col-lg-3">
                                 <form action="nuevoAutomaticaLotes" method="post">
