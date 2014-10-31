@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package handheld.entradas;
 
 import Correo.CorreoConfirmaRemision;
@@ -15,6 +14,7 @@ import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
  */
 public class CompraAutomaticaHH extends HttpServlet {
 
-   ConectionDB con = new ConectionDB();
+    ConectionDB con = new ConectionDB();
     NuevoISEM nuevo = new NuevoISEM();
     CorreoConfirmaRemision correoConfirma = new CorreoConfirmaRemision();
 
@@ -43,7 +43,8 @@ public class CompraAutomaticaHH extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     */ protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion = request.getSession(true);
@@ -212,7 +213,22 @@ public class CompraAutomaticaHH extends HttpServlet {
                 String Clave = request.getParameter("ClaPro");
                 String cadu = df2.format(df3.parse(request.getParameter("cad")));
                 c1.setTime(df3.parse(request.getParameter("cad")));
-                c1.add(Calendar.YEAR, -3);
+                ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + Clave + "'");
+                while (rset_medica.next()) {
+                    Tipo = rset_medica.getString("F_TipMed");
+                    Costo = Double.parseDouble(rset_medica.getString("F_Costo"));
+                    if (Tipo.equals("2504")) {
+                        c1.add(Calendar.YEAR, -3);
+                        IVA = 0.0;
+                    } else {
+                        c1.add(Calendar.YEAR, -5);
+                        IVA = 0.16;
+                    }
+                }
+
+                while (c1.after(new Date())) {
+                    c1.add(Calendar.YEAR, -1);
+                }
                 String fecFab = (df2.format(c1.getTime()));
                 String CodBar = request.getParameter("codbar");
                 String Tarimas = request.getParameter("Tarimas");
@@ -253,16 +269,6 @@ public class CompraAutomaticaHH extends HttpServlet {
                     Resto = "0";
                 }
                 Resto = Resto.replace(",", "");
-                ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + Clave + "'");
-                while (rset_medica.next()) {
-                    Tipo = rset_medica.getString("F_TipMed");
-                    Costo = Double.parseDouble(rset_medica.getString("F_Costo"));
-                    if (Tipo.equals("2504")) {
-                        IVA = 0.0;
-                    } else {
-                        IVA = 0.16;
-                    }
-                }
                 IVAPro = (Double.parseDouble(Piezas) * Costo) * IVA;
                 Monto = Double.parseDouble(Piezas) * Costo;
                 MontoIva = Monto + IVAPro;
@@ -292,7 +298,22 @@ public class CompraAutomaticaHH extends HttpServlet {
                         String Clave = rset.getString("F_Clave");
                         String cadu = df2.format(df3.parse(request.getParameter("cad_" + rset.getString("F_IdIsem"))));
                         c1.setTime(df3.parse(request.getParameter("cad_" + rset.getString("F_IdIsem"))));
-                        c1.add(Calendar.YEAR, -3);
+                        ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + Clave + "'");
+                        while (rset_medica.next()) {
+                            Tipo = rset_medica.getString("F_TipMed");
+                            Costo = Double.parseDouble(rset_medica.getString("F_Costo"));
+                            if (Tipo.equals("2504")) {
+                                c1.add(Calendar.YEAR, -3);
+                                IVA = 0.0;
+                            } else {
+                                c1.add(Calendar.YEAR, -5);
+                                IVA = 0.16;
+                            }
+                        }
+
+                        while (c1.after(new Date())) {
+                            c1.add(Calendar.YEAR, -1);
+                        }
                         String fecFab = (df2.format(c1.getTime()));
                         String CodBar = request.getParameter("codbar_" + rset.getString("F_IdIsem"));
                         String Tarimas = request.getParameter("Tarimas_" + rset.getString("F_IdIsem"));
@@ -325,16 +346,6 @@ public class CompraAutomaticaHH extends HttpServlet {
                         if (Resto.equals("")) {
                             Resto = "0";
                         }
-                        ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + Clave + "'");
-                        while (rset_medica.next()) {
-                            Tipo = rset_medica.getString("F_TipMed");
-                            Costo = Double.parseDouble(rset_medica.getString("F_Costo"));
-                            if (Tipo.equals("2504")) {
-                                IVA = 0.0;
-                            } else {
-                                IVA = 0.16;
-                            }
-                        }
                         IVAPro = (Double.parseDouble(Piezas) * Costo) * IVA;
                         Monto = Double.parseDouble(Piezas) * Costo;
                         MontoIva = Monto + IVAPro;
@@ -356,7 +367,7 @@ public class CompraAutomaticaHH extends HttpServlet {
                 //out.println("<script>window.open('reimp_marbete.jsp?fol_gnkl=" + F_IndCom + "','_blank')</script>");
                 //correoConfirma.enviaCorreo(F_IndCom);
                 //out.println("<script>window.location='Ubicaciones/Consultas.jsp'</script>");
-                
+
                 response.sendRedirect("hh/compraAuto3.jsp");
             }
         } catch (Exception e) {
