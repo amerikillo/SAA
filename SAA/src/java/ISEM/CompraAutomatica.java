@@ -225,7 +225,9 @@ public class CompraAutomatica extends HttpServlet {
                         c1.add(Calendar.YEAR, -5);
                     }
                 }
-                while (c1.after(new Date())) {
+                Calendar FecAct = GregorianCalendar.getInstance();
+                FecAct.setTime(new Date());
+                while (c1.after(FecAct)) {
                     c1.add(Calendar.YEAR, -1);
                 }
                 String fecFab = (df2.format(c1.getTime()));
@@ -311,7 +313,9 @@ public class CompraAutomatica extends HttpServlet {
                             }
                         }
 
-                        while (c1.after(new Date())) {
+                        Calendar FecAct = GregorianCalendar.getInstance();
+                        FecAct.setTime(new Date());
+                        while (c1.after(FecAct)) {
                             c1.add(Calendar.YEAR, -1);
                         }
                         String fecFab = (df2.format(c1.getTime()));
