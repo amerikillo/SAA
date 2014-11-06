@@ -238,7 +238,7 @@
                                         //alert(elemento);
                                         var pass = document.getElementById(elemento).value;
                                         var id = elemento.split("ContraDevo");
-                                        if (pass === "rosalino") {
+                                        if (pass === "30090824102411oscar") {
                                             //alert(pass);
                                             document.getElementById(id[1]).disabled = false;
                                             //$(id[1]).prop("disabled", false);
