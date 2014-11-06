@@ -74,7 +74,7 @@ public class Rechazos extends HttpServlet {
 
                         con1.insertar("insert into tb_rechazos values (0,'" + request.getParameter("NoCompraRechazo") + "','" + Observaciones + "', NOW())");
                         con1.insertar("update tb_pedidoisem set F_FecSur = '" + request.getParameter("FechaOrden") + "' , F_HorSur = '" + request.getParameter("HoraOrden") + "' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
-                        con1.insertar("update tb_pedidoisem set F_Recibido = '2' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
+                        //con1.insertar("update tb_pedidoisem set F_Recibido = '2' where F_NoCompra = '" + request.getParameter("NoCompraRechazo") + "' ");
                         //correo.enviaCorreo(request.getParameter("NoCompraRechazo"), horaA, fechaA, request.getParameter("correoProvee"), claves);
                         con1.cierraConexion();
                     } catch (Exception e) {

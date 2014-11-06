@@ -341,7 +341,7 @@
                                     }
                                     if (banRechazo == 1) {
                                 %>
-                                <h4 class="text-danger">FOLIO RECHAZADO</h4>
+                                <h4 class="text-danger">FOLIO RECALENDARIZADO</h4>
                                 <textarea rows="7" class="form-control" readonly=""><%=obserRechazo%></textarea>
                                 <br/>
                                 <%
