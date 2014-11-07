@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compras" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6336019d-9f1f-4558-a5b6-5fcef7ba5fdd">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="264"/>
+	<property name="ireport.y" value="14"/>
 	<parameter name="folcom" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -22,6 +22,9 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="NoFolio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Observaciones" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -151,7 +154,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{F_NomPro}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="e843ba86-9914-4320-a19d-ece658b92f27" x="0" y="99" width="155" height="14"/>
+				<reportElement uuid="e843ba86-9914-4320-a19d-ece658b92f27" x="0" y="99" width="172" height="14"/>
 				<textElement>
 					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
@@ -165,7 +168,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$F{F_FolRemi}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="2329c1b1-b538-4f7c-bdb6-59f1dc5de85a" x="0" y="124" width="214" height="15"/>
+				<reportElement uuid="2329c1b1-b538-4f7c-bdb6-59f1dc5de85a" x="0" y="124" width="222" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
@@ -187,7 +190,7 @@ ORDER BY
 				<text><![CDATA[FOLIO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e58270c8-9674-413c-90b6-444e90f0ee20" x="501" y="79" width="94" height="15"/>
+				<reportElement uuid="e58270c8-9674-413c-90b6-444e90f0ee20" x="478" y="79" width="117" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
@@ -207,8 +210,8 @@ ORDER BY
 				<reportElement uuid="cef76b30-2ed0-4fea-9677-409916bbd1d1" x="595" y="98" width="140" height="16"/>
 			</rectangle>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="b29dbab1-bc0a-4a8e-a539-e0049e769bd2" x="612" y="98" width="100" height="15"/>
-				<textElement/>
+				<reportElement uuid="b29dbab1-bc0a-4a8e-a539-e0049e769bd2" x="596" y="98" width="139" height="15"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{fecRecep}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -217,8 +220,8 @@ ORDER BY
 				<textFieldExpression><![CDATA[$P{NoContrato}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="02c5eaa2-9356-4e0b-9bde-92f5a1430fee" x="621" y="35" width="89" height="15"/>
-				<textElement/>
+				<reportElement uuid="02c5eaa2-9356-4e0b-9bde-92f5a1430fee" x="596" y="35" width="139" height="15"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{NoFolio}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -330,11 +333,11 @@ ORDER BY
 				<text><![CDATA[Observaciones:]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement uuid="46f40887-8f14-4eaa-b67b-e033672f1146" x="104" y="3" width="567" height="28"/>
+				<reportElement uuid="46f40887-8f14-4eaa-b67b-e033672f1146" x="104" y="3" width="567" height="51"/>
 			</rectangle>
 			<image>
-				<reportElement uuid="fc4dc97d-1cde-4ba1-a0a9-fd5eb7c0e04a" mode="Transparent" x="1" y="118" width="161" height="99"/>
-				<imageExpression><![CDATA["logoeruviel.JPG"]]></imageExpression>
+				<reportElement uuid="fc4dc97d-1cde-4ba1-a0a9-fd5eb7c0e04a" mode="Transparent" x="19" y="56" width="96" height="88"/>
+				<imageExpression><![CDATA["logoeruviel2.JPG"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement uuid="1c658009-a7f0-4fc1-8301-2d75dd0b9eb2" mode="Opaque" x="553" y="201" width="157" height="13" backcolor="#FFFFFF"/>
@@ -351,53 +354,58 @@ ORDER BY
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="c34fc353-7550-4f02-b3cc-ee87c6ac56ca" x="30" y="72" width="125" height="1"/>
+				<reportElement uuid="c34fc353-7550-4f02-b3cc-ee87c6ac56ca" x="141" y="87" width="125" height="1"/>
 			</line>
 			<line>
-				<reportElement uuid="86cc6fac-aa4c-4055-b560-7e8cb9932c6f" x="596" y="64" width="125" height="1"/>
+				<reportElement uuid="86cc6fac-aa4c-4055-b560-7e8cb9932c6f" x="596" y="82" width="125" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="4dfd889c-5e04-4c6a-bdb5-6cb1a9d543ce" x="162" y="144" width="26" height="11"/>
+				<reportElement uuid="4dfd889c-5e04-4c6a-bdb5-6cb1a9d543ce" x="51" y="144" width="26" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOTA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="36fbf92f-2470-48d8-a56e-3483c85ed32a" x="191" y="144" width="545" height="50"/>
+				<reportElement uuid="36fbf92f-2470-48d8-a56e-3483c85ed32a" x="77" y="144" width="659" height="50"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[En pleno complimiento y responsabilidad de acuerdo a las cláusulas del contrato establecido con el Instituto de Salud del Estado de México, en el que manifiesta responsabilidad de recepción, revisión resguardo y control de insumos quedan a cargo de la empresa GNK S.A. de C.V. La Subdirección de Recursos Materiales, solo acude para verificar la entrega-recepción de insumos por parte del proveedor.]]></text>
+				<text><![CDATA[En pleno cumplimiento y responsabilidad de acuerdo a las cláusulas del contrato establecido con el Instituto de Salud del  Estado de México, en el que manifiesta responsablidad de recepción, revisión, resguardo y control de insumos  quedan a cargo de la empresa GNK S.A. de C.V. Por parte de la Subdirección de Recursos Materiales, solo acudirán a revisar la recepción de los insumos.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8abaebf7-3dd8-48cb-911f-d19761cecdb8" x="4" y="39" width="168" height="28"/>
+				<reportElement uuid="8abaebf7-3dd8-48cb-911f-d19761cecdb8" x="115" y="54" width="168" height="28"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[REVISÓ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1e364c83-ab29-4b69-befb-46e18295c510" x="568" y="67" width="168" height="43"/>
+				<reportElement uuid="1e364c83-ab29-4b69-befb-46e18295c510" x="568" y="85" width="168" height="43"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[LIC. YOLANDA OROZCO PAULIN COORDINADORA DE LA EMPRESA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b10fa50d-64d0-44b6-b901-ad879233cda4" x="567" y="34" width="168" height="25"/>
+				<reportElement uuid="b10fa50d-64d0-44b6-b901-ad879233cda4" x="567" y="52" width="168" height="25"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[GNK S.A. de C.V.]]></text>
+				<text><![CDATA[GNKL S.A. de C.V.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2678829d-8764-48d7-b511-5f891d32b489" x="4" y="73" width="168" height="37"/>
+				<reportElement uuid="2678829d-8764-48d7-b511-5f891d32b489" x="115" y="88" width="168" height="37"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Q.B.P. ESPERANZA CARDENAS KANG REPRESENTANTE DE LA SUBDIRECCIÓN DE RECURSOS MATERIALES DEL ISEM]]></text>
 			</staticText>
+			<textField>
+				<reportElement uuid="bb0d6e3f-ab95-4207-81ae-7a885725323b" x="115" y="3" width="546" height="49"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{Observaciones}]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 	<summary>

@@ -7,7 +7,6 @@
 <%@page import="conn.ConectionDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="net.sf.jasperreports.engine.*" %> 
-<%@ page errorPage="error.html" %>
 <%@ page import="java.util.*" %> 
 <%@ page import="java.io.*" %> 
 <%@ page import="java.sql.*" %> 
@@ -29,6 +28,8 @@
     String F_OrdCom = request.getParameter("F_OrdCom");
     String NoContrato = request.getParameter("NoContrato");
     String NoFolio = request.getParameter("NoFolio");
+    byte[] a = request.getParameter("Observaciones").getBytes("ISO-8859-1");
+    String Observaciones = (new String(a, "UTF-8")).toUpperCase();
     Connection conexion;
     Class.forName("com.mysql.jdbc.Driver").newInstance();
     conexion = con.getConn();
@@ -44,6 +45,7 @@
     parameters.put("fecRecep", fecRep);
     parameters.put("NoContrato", NoContrato);
     parameters.put("NoFolio", NoFolio);
+    parameters.put("Observaciones", Observaciones);
     /*Enviamos la ruta del reporte, los parámetros y la conexión(objeto Connection)*/
     byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters, conexion);
     /*Indicamos que la respuesta va a ser en formato PDF*/ response.setContentType("application/pdf");
