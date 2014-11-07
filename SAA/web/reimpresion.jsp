@@ -156,7 +156,8 @@
                                 <tr>
 
                                     <td><%=rset.getString(1)%></td>
-                                    <td><button type="submit" class="btn btn-default btn-block" data-toggle="modal" data-target="#EditaRemision" id="<%=rset.getString(1)%>,<%=rset.getString(2)%>" onclick="ponerRemision(this.id)"><%=rset.getString(2)%></button>
+                                    <td>
+                                        <button type="submit" class="btn btn-default btn-block" data-toggle="modal" data-target="#EditaRemision" id="<%=rset.getString(1)%>,<%=rset.getString(2)%>" onclick="ponerRemision(this.id)"><%=rset.getString(2)%></button>
                                     </td>
                                     <td><%=rset.getString(3)%></td>
                                     <td><%=df3.format(df2.parse(rset.getString(4)))%></td>
@@ -224,7 +225,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
 
-                    <form action="reimpISEM.jsp" target="_blank">
+                    <form action="reimpISEM.jsp" method="post" target="_blank">
                         <div class="modal-header">
                         </div>
                         <div class="modal-body">
@@ -238,10 +239,16 @@
                                 </div>
                             </div>
 
+                            <h4 class="modal-title" id="myModalLabel">No de Folio</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" name="NoFolio" id="NoFolio" class="form-control" />
+                                </div>
+                            </div>
                             <h4 class="modal-title" id="myModalLabel">Fecha</h4>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <input type="date" name="fecRecepcion" id="fecRecepcion" class="form-control" />
+                                    <input type="date" name="fecRecepcion" id="fecRecepcionISEM" class="form-control" />
                                 </div>
                             </div>
 
@@ -249,7 +256,7 @@
                                 <img src="imagenes/ajax-loader-1.gif" height="150" />
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" onclick="return validaRemision();" name="accion" value="actualizarCB">Imprimir</button>
+                                <button type="submit" class="btn btn-primary" onclick="return validaISEM();" name="accion" value="actualizarCB">Imprimir</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
@@ -257,8 +264,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <div class="modal fade" id="EditaRemision" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div class="modal-dialog">
@@ -269,7 +274,7 @@
                             <h3>Edición de remisiones</h3>
                         </div>
                         <div class="modal-body">
-                            <input name="idRem" id="idRem" class="form-control" />
+                            <input name="idRem" id="idRem" class="hidden" />
                             <h4 class="modal-title" id="myModalLabel">Remisión Incorrecta</h4>
                             <div class="row">
                                 <div class="col-sm-12">
@@ -282,10 +287,16 @@
                                     <input type="text" name="remiCorrecta" id="remiCorrecta" class="form-control" />
                                 </div>
                             </div>
+                            <h4 class="modal-title" id="myModalLabel">Fecha de Recepción</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="date" name="fecRemision" id="fecRemision" class="form-control" />
+                                </div>
+                            </div>
                             <h4 class="modal-title" id="myModalLabel">Contraseña</h4>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <input type="password" name="fecRecepcion" id="remiContraseña" class="form-control"  onkeyup="validaContra(this.id);" />
+                                    <input type="password" name="contrasena" id="remiContraseña" class="form-control"  onkeyup="validaContra(this.id);" />
                                 </div>
                             </div>
                             <div style="display: none;" class="text-center" id="LoaderRemi">
@@ -318,12 +329,12 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                    $(document).ready(function() {
+                                    $(document).ready(function () {
                                         $('#datosCompras').dataTable();
                                     });
 </script>
 <script>
-    $(function() {
+    $(function () {
         $("#fecha").datepicker();
         $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
     });
@@ -334,6 +345,20 @@
         document.getElementById('F_OrdCom').value = document.getElementById("F_OC" + id).value;
     }
 
+    function validaISEM() {
+        if (document.getElementById('NoContrato').value === "") {
+            alert('Capture el número de contrato');
+            return false;
+        }
+        if (document.getElementById('NoFolio').value === "") {
+            alert('Capture el número de folio');
+            return false;
+        }
+        if (document.getElementById('fecRecepcionISEM').value === "") {
+            alert('Capture la fecha');
+            return false;
+        }
+    }
 
     function ponerRemision(id) {
         var elem = id.split(',');
@@ -342,13 +367,13 @@
     }
 
     function validaRemision() {
-        var fr = document.getElementById('fecRecepcion').value;
-        var fs = document.getElementById('fecRevision').value;
+        var remiCorrecta = document.getElementById('remiCorrecta').value;
+        var fecRemision = document.getElementById('fecRemision').value;
 
-        if (fr === "" || fs === "") {
-            alert('Ingrese todas los datos')
+        if (remiCorrecta === "" && fecRemision === "") {
+            alert('Ingrese al menos una corrección')
             return false;
-        } 
+        }
     }
 
     function validaContra(elemento) {

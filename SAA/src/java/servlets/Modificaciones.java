@@ -46,10 +46,34 @@ public class Modificaciones extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         try {
             if (request.getParameter("accion").equals("actualizarRemi")) {
+
                 con.conectar();
                 try {
-                    con.insertar("update tb_compra set F_FolRemi = '" + request.getParameter("remiCorrecta") + "' where F_FolRemi = '" + request.getParameter("remiIncorrecta") + "' and F_ClaDoc='" + request.getParameter("idRem") + "'");
-                    out.println("<script>alert('Modificación Correcta!!')</script>");
+
+                    String remi = request.getParameter("remiCorrecta");
+                    String fecha = request.getParameter("fecRemision");
+                    System.out.println(remi + "---" + fecha);
+
+                    if (remi == null) {
+                        remi = "";
+                    }
+                    if (fecha == null) {
+                        fecha = "";
+                    }
+                    try {
+                        if (!remi.equals("") && fecha.equals("")) {
+                            con.insertar("update tb_compra set F_FolRemi = '" + remi + "' where F_FolRemi = '" + request.getParameter("remiIncorrecta") + "' and F_ClaDoc='" + request.getParameter("idRem") + "'");
+                        }
+                        if (remi.equals("") && !fecha.equals("")) {
+                            con.insertar("update tb_compra set F_FecApl = '" + fecha + "' where F_FolRemi = '" + request.getParameter("remiIncorrecta") + "' and F_ClaDoc='" + request.getParameter("idRem") + "'");
+                        }
+                        if (!remi.equals("") && !fecha.equals("")) {
+                            con.insertar("update tb_compra set F_FolRemi = '" + remi + "', F_FecApl='" + fecha + "' where F_FolRemi = '" + request.getParameter("remiIncorrecta") + "' and F_ClaDoc='" + request.getParameter("idRem") + "'");
+                        }
+                        out.println("<script>alert('Modificación Correcta!!')</script>");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     out.println("<script>alert('Modificación Incorrecta!!')</script>");
