@@ -7,6 +7,7 @@
 <%@page import="conn.ConectionDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="net.sf.jasperreports.engine.*" %> 
+<%@ page errorPage="error.html" %>
 <%@ page import="java.util.*" %> 
 <%@ page import="java.io.*" %> 
 <%@ page import="java.sql.*" %> 
@@ -20,24 +21,29 @@
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
     } else {
-        response.sendRedirect("index.jsp");
+        //response.sendRedirect("index.jsp");
     }
     String folio_gnk = request.getParameter("idCom");
     String fecRecepcion = request.getParameter("fecRecepcion");
-    String fecRevision = request.getParameter("fecRevision");
+    String F_FolRemi = request.getParameter("F_FolRemi");
+    String F_OrdCom = request.getParameter("F_OrdCom");
+    String NoContrato = request.getParameter("NoContrato");
+    String NoFolio = request.getParameter("NoFolio");
     Connection conexion;
     Class.forName("com.mysql.jdbc.Driver").newInstance();
     conexion = con.getConn();
     /*Establecemos la ruta del reporte*/
-    File reportFile = new File(application.getRealPath("reportes/RecepcionBienes.jasper"));
+    File reportFile = new File(application.getRealPath("reportes/RecepcionBienes2.jasper"));
     /* No enviamos parámetros porque nuestro reporte no los necesita asi que escriba 
      cualquier cadena de texto ya que solo seguiremos el formato del método runReportToPdf*/
     Map parameters = new HashMap();
     parameters.put("folcom", folio_gnk);
+    parameters.put("F_FolRemi", F_FolRemi);
+    parameters.put("F_OrdCom", F_OrdCom);
     String fecRep = (df3.format(df2.parse(fecRecepcion)) + "").toString();
-    String fecRev = (df3.format(df2.parse(fecRevision)) + "").toString();
-    parameters.put("fecRecep",fecRep);
-    parameters.put("fecRev", fecRev);
+    parameters.put("fecRecep", fecRep);
+    parameters.put("NoContrato", NoContrato);
+    parameters.put("NoFolio", NoFolio);
     /*Enviamos la ruta del reporte, los parámetros y la conexión(objeto Connection)*/
     byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters, conexion);
     /*Indicamos que la respuesta va a ser en formato PDF*/ response.setContentType("application/pdf");

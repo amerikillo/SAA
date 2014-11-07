@@ -18,7 +18,7 @@
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
     } else {
-        response.sendRedirect("index.jsp");
+        //response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
 
@@ -139,10 +139,7 @@
                                     <td>Fecha</td>
                                     <td>Usuario</td>
                                     <td>Proveedor</td>
-                                    <td>Compra</td>
                                     <td>REP ISEM</td>
-                                    <td>Marbete</td>
-                                    <td>Ver Compra</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -150,48 +147,31 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT c.F_ClaDoc, c.F_FolRemi, c.F_OrdCom, c.F_FecApl, c.F_User, p.F_NomPro FROM tb_compra c, tb_proveedor p where c.F_ProVee = p.F_ClaProve GROUP BY F_ClaDoc; ");
+                                            ResultSet rset = con.consulta("SELECT c.F_ClaDoc, c.F_FolRemi, c.F_OrdCom, c.F_FecApl, c.F_User, p.F_NomPro FROM tb_compra c, tb_proveedor p where c.F_ProVee = p.F_ClaProve GROUP BY F_OrdCom, F_FolRemi; ");
+                                            int i = 1;
                                             while (rset.next()) {
                                 %>
                                 <tr>
 
                                     <td><%=rset.getString(1)%></td>
-                                    <td><button type="submit" class="btn btn-default btn-block" data-toggle="modal" data-target="#EditaRemision" id="<%=rset.getString(1)%>,<%=rset.getString(2)%>" onclick="ponerRemision(this.id)"><%=rset.getString(2)%></button>
-                                    </td>
+                                    <td><%=rset.getString(2)%></td>
                                     <td><%=rset.getString(3)%></td>
                                     <td><%=df3.format(df2.parse(rset.getString(4)))%></td>
                                     <td><%=rset.getString(5)%></td>
                                     <td><%=rset.getString(6)%></td>
                                     <td>
-                                        <form action="reimpReporte.jsp" target="_blank">
-                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <button class="btn btn-block btn-primary">Imprimir</button>
-                                        </form>
-                                    </td>
-                                    <td>
                                         <form action="reimpISEM.jsp" target="_blank">
-                                            <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#Observaciones" name="accion" value="remisionCamion" id="<%=rset.getString(1)%>" onclick="ponerFolio(this.id)">Imprimir</button>
+                                            <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#Observaciones" name="accion" value="remisionCamion" id="<%=i%>" onclick="ponerFolio(this.id)">Imprimir</button>
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <input class="hidden" id="F_FR<%=rset.getString(1)%>" value="<%=rset.getString("F_FolRemi")%>">
-                                            <input class="hidden" id="F_OC<%=rset.getString(1)%>" value="<%=rset.getString("F_OrdCom")%>">
+                                            <input class="hidden" id="F_FR<%=i%>" value="<%=rset.getString("F_FolRemi")%>">
+                                            <input class="hidden" id="F_OC<%=i%>" value="<%=rset.getString("F_OrdCom")%>">
                                             <!--button class="btn btn-block btn-primary">Imprimir</button-->
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="reimp_marbete.jsp" target="_blank">
-                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <button class="btn btn-block btn-primary">Imprimir</button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="verCompra.jsp" method="post">
-                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <button class="btn btn-block btn-primary">Ver Compra</button>
                                         </form>
                                     </td>
 
                                 </tr>
                                 <%
+                                                i++;
                                             }
                                         } catch (Exception e) {
 
@@ -224,7 +204,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
 
-                    <form action="reimpISEM.jsp" target="_blank">
+                    <form action="reimpISEM.jsp" method="post" target="_blank">
                         <div class="modal-header">
                         </div>
                         <div class="modal-body">
@@ -238,10 +218,16 @@
                                 </div>
                             </div>
 
+                            <h4 class="modal-title" id="myModalLabel">No de Folio</h4>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" name="NoFolio" id="NoFolio" class="form-control" />
+                                </div>
+                            </div>
                             <h4 class="modal-title" id="myModalLabel">Fecha</h4>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <input type="date" name="fecRecepcion" id="fecRecepcion" class="form-control" />
+                                    <input type="date" name="fecRecepcion" id="fecRecepcionISEM" class="form-control" />
                                 </div>
                             </div>
 
@@ -249,7 +235,7 @@
                                 <img src="imagenes/ajax-loader-1.gif" height="150" />
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" onclick="return validaRemision();" name="accion" value="actualizarCB">Imprimir</button>
+                                <button type="submit" class="btn btn-primary" onclick="return validaISEM();" name="accion" value="actualizarCB">Imprimir</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
@@ -264,7 +250,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
 
-                    <form action="Modificaciones">
+                    <form action="Modificaciones" >
                         <div class="modal-header">
                             <h3>Edición de remisiones</h3>
                         </div>
@@ -341,24 +327,18 @@
         document.getElementById('remiIncorrecta').value = elem[1];
     }
 
-    function validaRemision() {
-        var fr = document.getElementById('fecRecepcion').value;
-        var fs = document.getElementById('fecRevision').value;
-
-        if (fr === "" || fs === "") {
-            alert('Ingrese todas los datos')
+    function validaISEM() {
+        if (document.getElementById('NoContrato').value === "") {
+            alert('Capture el número de contrato');
             return false;
-        } 
-    }
-
-    function validaContra(elemento) {
-        //alert(elemento);
-        var pass = document.getElementById(elemento).value;
-        //alert(pass);
-        if (pass === "GnKlTolu2014") {
-            document.getElementById('actualizaRemi').disabled = false;
-        } else {
-            document.getElementById('actualizaRemi').disabled = true;
+        }
+        if (document.getElementById('NoFolio').value === "") {
+            alert('Capture el número de folio');
+            return false;
+        }
+        if (document.getElementById('fecRecepcionISEM').value === "") {
+            alert('Capture la fecha');
+            return false;
         }
     }
 </script>
