@@ -222,7 +222,8 @@
 <script>
                             $(document).ready(function() {
                                 $('#datosProv').dataTable();
-                            });</script>
+                            });
+</script>
 <script>
 
 

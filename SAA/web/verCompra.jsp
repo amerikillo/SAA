@@ -124,7 +124,7 @@
                     try {
                         con.conectar();
                         try {
-                            ResultSet rset = con.consulta("SELECT P.F_NomPro, C.F_ClaDoc, C.F_ClaPro, M.F_DesPro, L.F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y')   F_FecCad, C.F_Resto, C.F_Cajas, C.F_Resto, C.F_CanCom, C.F_Costo, C.F_ComTot, (@csum:= @csum+F_ComTot) AS totales FROM (SELECT @csum := 0) r, tb_compra C INNER JOIN tb_lote L ON C.F_Lote = L.F_FolLot INNER JOIN tb_medica M ON C.F_ClaPro = M.F_ClaPro INNER JOIN tb_proveedor P ON C.F_ProVee = P.F_ClaProve WHERE C.F_ClaDoc = '" + request.getParameter("fol_gnkl") + "' GROUP BY P.F_NomPro;");
+                            ResultSet rset = con.consulta("SELECT P.F_NomPro, C.F_ClaDoc, C.F_ClaPro, M.F_DesPro, L.F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y')   F_FecCad, C.F_Resto, C.F_Cajas, C.F_Resto, C.F_CanCom, C.F_Costo, C.F_ComTot, (@csum:= @csum+F_ComTot) AS totales FROM (SELECT @csum := 0) r, tb_compra C INNER JOIN tb_lote L ON C.F_Lote = L.F_FolLot INNER JOIN tb_medica M ON C.F_ClaPro = M.F_ClaPro INNER JOIN tb_proveedor P ON C.F_ProVee = P.F_ClaProve WHERE C.F_OrdCom = '" + request.getParameter("F_OrdCom") + "' and C.F_FolRemi = '"+request.getParameter("F_FolRemi")+"'  GROUP BY P.F_NomPro;");
                             while (rset.next()) {
                 %>
                 <h4>Proveedor: <%=rset.getString(1)%></h4>
@@ -161,7 +161,7 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT P.F_NomPro, C.F_ClaDoc, C.F_ClaPro, M.F_DesPro, L.F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y')   F_FecCad, C.F_Resto, C.F_Cajas, C.F_Resto, C.F_CanCom, C.F_Costo, C.F_ComTot, (@csum:= @csum+F_ComTot) AS totales FROM (SELECT @csum := 0) r, tb_compra C INNER JOIN tb_lote L ON C.F_Lote = L.F_FolLot INNER JOIN tb_medica M ON C.F_ClaPro = M.F_ClaPro INNER JOIN tb_proveedor P ON C.F_ProVee = P.F_ClaProve WHERE C.F_ClaDoc = '" + request.getParameter("fol_gnkl") + "' GROUP BY L.F_ClaLot, F_FecCad;");
+                                            ResultSet rset = con.consulta("SELECT P.F_NomPro, C.F_ClaDoc, C.F_ClaPro, M.F_DesPro, L.F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y')   F_FecCad, C.F_Resto, C.F_Cajas, C.F_Resto, C.F_CanCom, C.F_Costo, C.F_ComTot, (@csum:= @csum+F_ComTot) AS totales FROM (SELECT @csum := 0) r, tb_compra C INNER JOIN tb_lote L ON C.F_Lote = L.F_FolLot INNER JOIN tb_medica M ON C.F_ClaPro = M.F_ClaPro INNER JOIN tb_proveedor P ON C.F_ProVee = P.F_ClaProve WHERE C.F_OrdCom = '" + request.getParameter("F_OrdCom") + "' and C.F_FolRemi = '"+request.getParameter("F_FolRemi")+"' GROUP BY L.F_ClaLot, F_FecCad;");
                                             while (rset.next()) {
                                 %>
                                 <tr>

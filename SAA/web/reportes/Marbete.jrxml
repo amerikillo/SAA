@@ -4,8 +4,14 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="folmar" class="java.lang.String"/>
+	<parameter name="F_OrdCom" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="F_FolRemi" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT F_ClaPro,F_DesPro,F_ClaLot,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as F_FecCad,F_Cb,F_OrdCom,F_Pieza FROM tb_marbetes where F_ClaDoc=$P{folmar}]]>
+		<![CDATA[SELECT F_ClaPro,F_DesPro,F_ClaLot,DATE_FORMAT(F_FecCad,'%d/%m/%Y') as F_FecCad,F_Cb,F_OrdCom,F_Pieza FROM tb_marbetes where F_OrdCom = $P{F_OrdCom}]]>
 	</queryString>
 	<field name="F_ClaPro" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

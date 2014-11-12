@@ -30,6 +30,8 @@
      cualquier cadena de texto ya que solo seguiremos el formato del método runReportToPdf*/
     Map parameters = new HashMap();
     parameters.put("folcom", folio_gnk);
+    parameters.put("F_OrdCom", request.getParameter("F_OrdCom"));
+    parameters.put("F_FolRemi", request.getParameter("F_FolRemi"));
     /*Enviamos la ruta del reporte, los parámetros y la conexión(objeto Connection)*/
     byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters, conexion);
     /*Indicamos que la respuesta va a ser en formato PDF*/ response.setContentType("application/pdf");

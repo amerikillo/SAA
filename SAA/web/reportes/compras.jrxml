@@ -4,6 +4,12 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="folcom" class="java.lang.String"/>
+	<parameter name="F_OrdCom" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="F_FolRemi" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
 	P.F_NomPro,
@@ -39,7 +45,8 @@ AND C.F_ClaPro = M.F_ClaPro
 AND C.F_ProVee = P.F_ClaProve
 AND C.F_OrdCom = I.F_NoCompra
 AND C.F_ClaPro = I.F_Clave
-AND C.F_ClaDoc = $P{folcom}
+AND C.F_OrdCom = $P{F_OrdCom}
+AND C.F_FolRemi = $P{F_FolRemi}
 GROUP BY
 	C.F_IdCom
 ORDER BY

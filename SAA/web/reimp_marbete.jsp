@@ -27,7 +27,7 @@
     try {
         con.conectar();
         con.insertar("delete from tb_marbetes where F_ClaDoc='" + folio_gnk + "'");
-        ResultSet rset = con.consulta("SELECT C.F_ClaPro,M.F_DesPro,L.F_ClaLot,L.F_FecCad,L.F_Cb,C.F_ClaDoc,C.F_OrdCom,C.F_CanCom,COM.F_Pz,COM.F_Tarimas,COM.F_TarimasI,COM.F_Cajas,COM.F_CajasI,COM.F_Resto FROM tb_compra C INNER JOIN tb_compraregistro COM ON C.F_OrdCom=COM.F_OrdCom AND C.F_ClaPro=COM.F_ClaPro AND C.F_CanCom=COM.F_Pz INNER JOIN tb_lote L ON C.F_Lote=L.F_FolLot INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE C.F_ClaDoc='" + folio_gnk + "' GROUP BY C.F_ClaPro,L.F_ClaLot,L.F_FecCad,L.F_Cb");
+        ResultSet rset = con.consulta("SELECT C.F_ClaPro,M.F_DesPro,L.F_ClaLot,L.F_FecCad,L.F_Cb,C.F_ClaDoc,C.F_OrdCom,C.F_CanCom,COM.F_Pz,COM.F_Tarimas,COM.F_TarimasI,COM.F_Cajas,COM.F_CajasI,COM.F_Resto FROM tb_compra C INNER JOIN tb_compraregistro COM ON C.F_OrdCom=COM.F_OrdCom AND C.F_ClaPro=COM.F_ClaPro AND C.F_CanCom=COM.F_Pz INNER JOIN tb_lote L ON C.F_Lote=L.F_FolLot INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE C.F_OrdCom='" + request.getParameter("F_OrdCom") + "' and C.F_FolRemi = '" + request.getParameter("F_FolRemi") + "' GROUP BY C.F_ClaPro,L.F_ClaLot,L.F_FecCad,L.F_Cb");
         while (rset.next()) {
             TTarimas = Integer.parseInt(rset.getString("COM.F_Tarimas"));
             TarimasI = Integer.parseInt(rset.getString("COM.F_TarimasI"));
@@ -101,6 +101,7 @@
      cualquier cadena de texto ya que solo seguiremos el formato del método runReportToPdf*/
     Map parameters = new HashMap();
     parameters.put("folmar", folio_gnk);
+    parameters.put("F_OrdCom", request.getParameter("F_OrdCom"));
     /*Enviamos la ruta del reporte, los parámetros y la conexión(objeto Connection)*/
     byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters, conexion);
     /*Indicamos que la respuesta va a ser en formato PDF*/ response.setContentType("application/pdf");

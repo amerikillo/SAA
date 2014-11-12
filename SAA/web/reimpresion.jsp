@@ -140,7 +140,6 @@
                                     <td>Usuario</td>
                                     <td>Proveedor</td>
                                     <td>Compra</td>
-                                    <td>REP ISEM</td>
                                     <td>Marbete</td>
                                     <td>Ver Compra</td>
                                 </tr>
@@ -150,7 +149,7 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT c.F_ClaDoc, c.F_FolRemi, c.F_OrdCom, c.F_FecApl, c.F_User, p.F_NomPro FROM tb_compra c, tb_proveedor p where c.F_ProVee = p.F_ClaProve GROUP BY F_ClaDoc; ");
+                                            ResultSet rset = con.consulta("SELECT c.F_ClaDoc, c.F_FolRemi, c.F_OrdCom, c.F_FecApl, c.F_User, p.F_NomPro FROM tb_compra c, tb_proveedor p where c.F_ProVee = p.F_ClaProve GROUP BY F_OrdCom, F_FolRemi; ");
                                             while (rset.next()) {
                                 %>
                                 <tr>
@@ -165,27 +164,24 @@
                                     <td><%=rset.getString(6)%></td>
                                     <td>
                                         <form action="reimpReporte.jsp" target="_blank">
+                                            <input class="hidden" name="F_FolRemi" value="<%=rset.getString("F_FolRemi")%>">
+                                            <input class="hidden" name="F_OrdCom" value="<%=rset.getString("F_OrdCom")%>">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
                                             <button class="btn btn-block btn-primary">Imprimir</button>
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="reimpISEM.jsp" target="_blank">
-                                            <button type="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#Observaciones" name="accion" value="remisionCamion" id="<%=rset.getString(1)%>" onclick="ponerFolio(this.id)">Imprimir</button>
-                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
-                                            <input class="hidden" id="F_FR<%=rset.getString(1)%>" value="<%=rset.getString("F_FolRemi")%>">
-                                            <input class="hidden" id="F_OC<%=rset.getString(1)%>" value="<%=rset.getString("F_OrdCom")%>">
-                                            <!--button class="btn btn-block btn-primary">Imprimir</button-->
-                                        </form>
-                                    </td>
-                                    <td>
                                         <form action="reimp_marbete.jsp" target="_blank">
+                                            <input class="hidden" name="F_FolRemi" value="<%=rset.getString("F_FolRemi")%>">
+                                            <input class="hidden" name="F_OrdCom" value="<%=rset.getString("F_OrdCom")%>">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
                                             <button class="btn btn-block btn-primary">Imprimir</button>
                                         </form>
                                     </td>
                                     <td>
                                         <form action="verCompra.jsp" method="post">
+                                            <input class="hidden" name="F_FolRemi" value="<%=rset.getString("F_FolRemi")%>">
+                                            <input class="hidden" name="F_OrdCom" value="<%=rset.getString("F_OrdCom")%>">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
                                             <button class="btn btn-block btn-primary">Ver Compra</button>
                                         </form>

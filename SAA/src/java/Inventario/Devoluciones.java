@@ -100,7 +100,7 @@ public class Devoluciones extends HttpServlet {
                         F_FolLot = devuelveIndLote() + "";
                         con.insertar("insert into tb_lote values (0,'" + ClaPro + "','" + request.getParameter("F_ClaLot") + "','" + request.getParameter("F_FecCad") + "','" + cant + "','" + F_FolLot + "','" + Provee + "','NUEVA','" + Fecfab + "','" + F_Cb + "','"+F_ClaMar+"') ");
                     } else {
-                        con.insertar("update tb_lote set F_ExiLot = '0' where F_IdLote = '" + request.getParameter("IdLote") + "' ");
+                        con.insertar("update tb_lote set F_ExiLot = '"+ncant+"' where F_IdLote = '" + request.getParameter("IdLote") + "' ");
                     }
 
                     con.insertar("insert into tb_movinv values('0',CURDATE(),'0','53','" + ClaPro + "','" + cant + "','" + costo + "','" + importe + "','-1','" + FolLote + "','" + Ubicacion + "','" + Provee + "',CURTIME(),'" + (String) sesion.getAttribute("nombre") + "')");

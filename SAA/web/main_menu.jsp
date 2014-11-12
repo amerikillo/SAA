@@ -113,7 +113,7 @@
                                             }
                                         %>
                                         <%
-                                           if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2")) {
+                                            if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2")) {
                                         %>
                                     <li><a href="validacionSurtido.jsp">Validación Surtido</a></li>
                                     <li><a href="validacionAuditores.jsp">Validación Auditores</a></li>
@@ -128,6 +128,7 @@
                                         <%
                                             }
                                         %>
+                                    <li><a href="#"  onclick="window.open('verDevoluciones.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devoluciones</a></li>
                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
                                     <li><a href="reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                                     <li><a href="comparativoGlobal.jsp">Comparativo Global</a></li>
@@ -139,7 +140,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#"  onclick="window.open('Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
                                         <%
-                                           if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2")) {
+                                            if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2")) {
                                         %>
                                     <li><a href="#"  onclick="window.open('movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
                                     <li><a href="#"  onclick="window.open('semaforo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Semaforización</a></li>
@@ -178,6 +179,54 @@
             <div class="text-center">
                 <br /><br /><br />
                 <img src="imagenes/Logo GNK claro2.jpg" width="200" height="100" alt="Logo GNK claro2"/>
+                <br/><br/><%
+                    if (usua.equals("oscar")) {
+                %>
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        Devoluciones pendientes.
+                    </div>
+
+                    <div class="panel-body">
+                        <table class="table table-condensed table-bordered table-striped">
+                            <tr>
+                                <td>Remisión</td>
+                                <td>Cliente</td>
+                                <td>Fecha</td>
+                                <td>Insumo</td>
+                                <td>Cant</td>
+                                <td>Monto</td>
+                                <td>Observaciones</td>
+                            </tr>
+                            <%
+                                try {
+                                    con.conectar();
+                                    ResultSet rset = con.consulta("select F_ClaDoc, F_ClaCli, DATE_FORMAT(F_FecApl, '%d/%m/%Y') as F_FecApl, F_ClaPro, F_CantSur, F_Monto, F_Obs from tb_factdevol where F_FactSts=0");
+                                    while (rset.next()) {
+                            %>
+                            <tr>
+                                <td><%=rset.getString("F_ClaDoc")%></td>
+                                <td><%=rset.getString("F_ClaCli")%></td>
+                                <td><%=rset.getString("F_FecApl")%></td>
+                                <td><%=rset.getString("F_ClaPro")%></td>
+                                <td><%=rset.getString("F_CantSur")%></td>
+                                <td><%=rset.getString("F_Monto")%></td>
+                                <td><%=rset.getString("F_Obs")%></td>
+                            </tr>
+                            <%
+                                    }
+                                    con.cierraConexion();
+                                } catch (Exception e) {
+
+                                }
+                            %>
+                        </table>
+                    </div>
+                </div>
+                <%
+                    }
+                %>
+
             </div>
         </div>
         <br><br><br>
