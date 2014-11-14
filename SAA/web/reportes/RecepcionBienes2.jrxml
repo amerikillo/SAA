@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compras" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6336019d-9f1f-4558-a5b6-5fcef7ba5fdd">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="264"/>
-	<property name="ireport.y" value="14"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="folcom" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -54,7 +54,7 @@
 FROM
 	(SELECT @csum := 0) r,
 	tb_compra C,
-	tb_lote L,
+	tb_lote_repisem L,
 	tb_medica M,
 	tb_proveedor P,
 	tb_pedidoisem I
@@ -140,11 +140,11 @@ ORDER BY
 				<reportElement uuid="893a7ca5-e112-4fd6-b82f-75b6c9eb2b3c" x="595" y="35" width="140" height="16"/>
 			</rectangle>
 			<staticText>
-				<reportElement uuid="52d2fa2a-5055-426e-b397-31ef21a9e30e" x="214" y="10" width="307" height="20"/>
+				<reportElement uuid="52d2fa2a-5055-426e-b397-31ef21a9e30e" x="211" y="24" width="307" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FORMATO DE ENTREGA - RECEPCIÓN DE BIENES]]></text>
+				<text><![CDATA[DE ENTREGA - RECEPCIÓN DE BIENES]]></text>
 			</staticText>
 			<textField>
 				<reportElement uuid="3539ccb5-f06a-4c79-9366-394d08b46fe8" x="172" y="99" width="306" height="25"/>
@@ -190,14 +190,14 @@ ORDER BY
 				<text><![CDATA[FOLIO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e58270c8-9674-413c-90b6-444e90f0ee20" x="478" y="79" width="117" height="15"/>
+				<reportElement uuid="e58270c8-9674-413c-90b6-444e90f0ee20" x="385" y="78" width="117" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif"/>
 				</textElement>
 				<text><![CDATA[NO. CONTRATO:]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement uuid="a17825fb-09c8-466d-9a1d-8d72b5dac386" x="595" y="78" width="140" height="16"/>
+				<reportElement uuid="a17825fb-09c8-466d-9a1d-8d72b5dac386" x="502" y="78" width="233" height="16"/>
 			</rectangle>
 			<staticText>
 				<reportElement uuid="cf10921c-02ee-43ea-b75c-03c198ee1a87" x="478" y="99" width="117" height="15"/>
@@ -215,7 +215,7 @@ ORDER BY
 				<textFieldExpression><![CDATA[$P{fecRecep}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="4467f71f-3165-4835-8cbe-eed301f9a3cf" x="596" y="79" width="139" height="15"/>
+				<reportElement uuid="4467f71f-3165-4835-8cbe-eed301f9a3cf" x="502" y="78" width="233" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{NoContrato}]]></textFieldExpression>
 			</textField>
@@ -224,6 +224,13 @@ ORDER BY
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{NoFolio}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="2d002ebc-d65e-4a9f-9b30-2ff12c0a7100" x="211" y="10" width="307" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HOJA DE CONTROL]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
@@ -360,8 +367,8 @@ ORDER BY
 				<reportElement uuid="86cc6fac-aa4c-4055-b560-7e8cb9932c6f" x="596" y="82" width="125" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="4dfd889c-5e04-4c6a-bdb5-6cb1a9d543ce" x="51" y="144" width="26" height="11"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
+				<reportElement uuid="4dfd889c-5e04-4c6a-bdb5-6cb1a9d543ce" x="19" y="144" width="53" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOTA:]]></text>
