@@ -39,6 +39,20 @@
         orden_compra = "";
         fecha = "";
     }
+
+    String proveedor = "";
+    try {
+        byte[] a = request.getParameter("Proveedor").getBytes("ISO-8859-1");
+        proveedor = (new String(a, "UTF-8")).toUpperCase();
+    } catch (Exception e) {
+
+    }
+
+    if (proveedor == null) {
+        proveedor = "";
+    }
+
+
 %>
 <html>
     <head>
@@ -62,7 +76,35 @@
             <div>
                 <h3>Reimpresion de folios de Compras</h3>
                 <h4>Seleccione el folio a imprimir</h4>
+                <div class="row">
+                    <form action="reimpresionISEM.jsp" method="post">
+                        <h4 class="col-sm-3">Seleccione el Proveedor</h4>
 
+                        <div class="col-sm-5">
+                            <select class="form-control" name="Proveedor" id="Proveedor" onchange="SelectProve(this.form);
+                                document.getElementById('Fecha').focus()">
+                                <option value="">--Proveedor--</option>
+                                <%                                try {
+                                        con.conectar();
+                                        ResultSet rset = con.consulta("select F_ClaProve, F_NomPro from tb_proveedor order by F_NomPro");
+                                        while (rset.next()) {
+                                %>
+                                <option value="<%=rset.getString(2)%>" ><%=rset.getString(2)%></option>
+                                <%
+                                        }
+                                        con.cierraConexion();
+                                    } catch (Exception e) {
+                                    }
+                                %>
+
+                            </select>
+                        </div>
+
+                        <div class="col-sm-1">
+                            <button class="btn btn-primary btn-block" name="accion" value="Buscar">Buscar</button>
+                        </div>
+                    </form>
+                </div>
                 <br />
                 <div class="panel panel-primary">
                     <div class="panel-body table-responsive">
@@ -83,7 +125,7 @@
                                     try {
                                         con.conectar();
                                         try {
-                                            ResultSet rset = con.consulta("SELECT c.F_ClaDoc, c.F_FolRemi, c.F_OrdCom, c.F_FecApl, c.F_User, p.F_NomPro FROM tb_compra c, tb_proveedor p where c.F_ProVee = p.F_ClaProve GROUP BY F_OrdCom, F_FolRemi; ");
+                                            ResultSet rset = con.consulta("SELECT c.F_ClaDoc, c.F_FolRemi, c.F_OrdCom, c.F_FecApl, c.F_User, p.F_NomPro FROM tb_compra c, tb_proveedor p where p.F_NomPro like '%" + proveedor + "' and  c.F_ProVee = p.F_ClaProve GROUP BY F_OrdCom, F_FolRemi; ");
                                             int i = 1;
                                             while (rset.next()) {
                                 %>
@@ -205,12 +247,12 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                    $(document).ready(function() {
+                                    $(document).ready(function () {
                                         $('#datosCompras').dataTable();
                                     });
 </script>
 <script>
-    $(function() {
+    $(function () {
         $("#fecha").datepicker();
         $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
     });

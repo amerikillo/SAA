@@ -157,7 +157,7 @@
                                         con.conectar();
                                         int tipo = 0;
                                         String DesTipo = "";
-                                        ResultSet rset = con.consulta("SELECT * FROM tb_medica ORDER BY F_DesPro ASC");
+                                        ResultSet rset = con.consulta("SELECT * FROM tb_medica where F_Costo!=0 ORDER BY F_DesPro ASC");
                                         while (rset.next()) {
                                             tipo = Integer.parseInt(rset.getString(4));
                                             if (tipo == 2504) {
