@@ -112,7 +112,7 @@
         <link href="css/navbar-fixed-top.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
-        <title>SIE Sistema de Ingreso de Entradas</title>
+        <title>SIALSS</title>
     </head>
     <body>
         <div class="container">

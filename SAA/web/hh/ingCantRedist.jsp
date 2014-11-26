@@ -72,7 +72,7 @@
         <link href="../css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>SIE Sistema de Ingreso de Entradas</title>
+        <title>SIALSS</title>
     </head>
     <body>
         <div class="container">

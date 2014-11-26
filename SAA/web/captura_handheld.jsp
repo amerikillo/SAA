@@ -81,7 +81,7 @@
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
         <link href="css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
-        <title>SIE Sistema de Ingreso de Entradas</title>
+        <title>SIALSS</title>
     </head>
     <body onLoad="foco();mueveReloj();">
         <div class="container">            
