@@ -27,29 +27,29 @@
     try {
         if (request.getParameter("accion").equals("buscar")) {
             if (!request.getParameter("F_ClaPro").equals("") && request.getParameter("F_ClaPro") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "'";
             }
             if (!request.getParameter("F_ClaLot").equals("") && request.getParameter("F_ClaLot") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "'";
             }
             if (!request.getParameter("F_Ubica").equals("") && request.getParameter("F_Ubica") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "'";
             }
             if (!request.getParameter("F_Cb").equals("") && request.getParameter("F_Cb") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "'";
             }
         }
         if (request.getParameter("accion").equals("porUbicar")) {
 
-            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
+            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where  F_Ubica='NUEVA'";
         }
         if (request.getParameter("accion").equals("mostrarTodas")) {
-            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot from v_existencias where F_ExiLot!=0";
+            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias";
         }
 
@@ -113,6 +113,9 @@
                 <div class="col-sm-2">
                     <button class="btn btn-block btn-primary btn-sm" name="accion" value="mostrarTodas">Mostrar Todas</button>
                 </div>
+                <div class="col-sm-2">
+                    <a class="btn btn-block btn-success btn-sm" href="../Procesos/descargaInventario.jsp">Descargar Inventario</a>
+                </div>
             </div>
         </form>
         <br/><br/>
@@ -124,6 +127,7 @@
                     <td>Caducidad</td>
                     <td>Ubicación</td>
                     <td>Piezas</td>
+                    <td></td>
                 </tr>
             </thead>
             <tbody>
@@ -139,6 +143,14 @@
                     <td><%=rset2.getString("F_FecCad")%></td>
                     <td><%=rset2.getString("F_DesUbi")%></td>
                     <td><%=formatter.format(rset2.getInt("F_ExiLot"))%></td>
+                    <td>
+                        <form action="../Ubicaciones/indexValida.jsp" method="post">
+                            <input name="folio" value="<%=rset2.getString("F_FolLot")%>" class="hidden" />
+                            <input name="ubicacion" value="<%=rset2.getString("F_Ubica")%>" class="hidden" />
+                            <input name="id" value="<%=rset2.getString("F_IdLote")%>" class="hidden" />
+                            <button class="btn btn-block btn-warning btn-sm" id="folio" name="accion" value="Modificar"><span class="glyphicon glyphicon-edit"></span></button>
+                        </form>
+                    </td>
                 </tr>
                 <%
                         }

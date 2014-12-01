@@ -9,26 +9,26 @@
 <%
     HttpSession sesion = request.getSession();
     String usua = "";
-    String Usuario = "", Valida = "", Nombre = "", Folio="", ubicac1="",id="";
+    String Usuario = "", Valida = "", Nombre = "", Folio = "", ubicac1 = "", id = "";
     int Tipo = 0;
-    
+
     if (sesion.getAttribute("nombre") != null) {
         Usuario = (String) sesion.getAttribute("Usuario");
         Nombre = (String) sesion.getAttribute("nombre");
-        Tipo = Integer.parseInt((String) sesion.getAttribute("Tipo"));        
+        Tipo = Integer.parseInt((String) sesion.getAttribute("Tipo"));
         System.out.println(Usuario + Nombre + Tipo);
-      //  out.println("Usuario"+Usuario +"<nombre>"+ Nombre +"<tipo>"+ Tipo);
+        //  out.println("Usuario"+Usuario +"<nombre>"+ Nombre +"<tipo>"+ Tipo);
     } else {
         response.sendRedirect("Consultas.jsp");
     }
     String info = null;
-    
-    Folio = (String) sesion.getAttribute("folio");
-    ubicac1 = (String) sesion.getAttribute("ubicacion");
-    id = (String) sesion.getAttribute("id");
-    
+
+    Folio = request.getParameter("folio");
+    ubicac1 = request.getParameter("ubicacion");
+    id = request.getParameter("id");
+
     //out.println("folio"+Folio+"<ubi>"+ubicac1+"<id>"+id);
-    
+
 %>
 
 <!DOCTYPE html>
@@ -83,11 +83,11 @@
                         }
                         sesion.invalidate();
                     %>
-                    
+
                 </div>
                 <br><button id="btn-distribuir" class="btn btn-lg btn-primary btn-block" name="ban" value="13">Entrar</button>
-                 
-                     <button id="btn-distribuir" class="btn btn-lg btn-success btn-block" name="ban" value="12">Regresar</button>                 
+
+                <button id="btn-distribuir" class="btn btn-lg btn-success btn-block" name="ban" value="12">Regresar</button>                 
                 <br>
                 <input type="hidden" name="Usuariou" id="Usuariou" class="form-control" value="<%=Usuario%>" readonly="" hidden="true">
                 <input type="hidden" name="Nombreu" id="nombreu" class="form-control" value="<%=Nombre%>" readonly="">

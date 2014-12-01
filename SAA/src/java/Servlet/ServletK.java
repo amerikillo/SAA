@@ -640,7 +640,7 @@ public class ServletK extends HttpServlet {
                     break;
                 case 14:
 
-                    response.sendRedirect("Ubicaciones/Consultas.jsp");
+                    response.sendRedirect("hh/ubicacionesConsultas.jsp");
                     break;
 
                 case 15:
