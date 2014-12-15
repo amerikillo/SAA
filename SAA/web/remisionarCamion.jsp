@@ -79,7 +79,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <h3>
@@ -128,7 +128,7 @@
                         </div>
                     </form>
                 </div>
-                <form action="FacturacionManual" methos="post" name="FormFactura" id="FormFactura">
+                <form action="FacturacionManual" method="post" name="FormFactura" id="FormFactura">
                     <input name="Nombre" value="<%=Clave%>" class="hidden" />
                     <input name="Fecha" value="<%=Fecha%>" class="hidden" />
 
@@ -203,6 +203,7 @@
                     <div class="hidden">
                         <textarea id="Obs" name="Obs"></textarea>
                         <input id="F_Req" name="F_Req" />
+                        <input id="F_Tipo" name="F_Tipo" />
                     </div>
                 </form>
             </div>
@@ -229,6 +230,15 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <h4 class="modal-title" id="myModalLabel">Tipo</h4>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <select class="form-control" name="tipo" id="tipo">
+                                    <option value="Ordinario" >Ordinario</option>
+                                    <option value="Extraordinario" >Extraordinario</option>
+                                </select>
+                            </div>
+                        </div>
                         <h4 class="modal-title" id="myModalLabel">Requerimiento</h4>
                         <div class="row">
                             <div class="col-sm-12">
@@ -252,39 +262,43 @@
                     </div>
                 </div>
             </div>
-            <!--
-            /Modal
-            -->
-    </body>
-    <!-- 
+        </div>
+        <!--
+        /Modal
+        --><!-- 
     ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="js/jquery.dataTables.js"></script>
-    <script src="js/dataTables.bootstrap.js"></script>
-    <script>
-                                function validaRemision() {
-                                    var seg = confirm('Desea Remisionar este Insumo?');
-                                    if (seg == false) {
-                                        return false;
-                                    } else {
-                                        document.getElementById('Loader').style.display = 'block';
-                                        var observaciones = document.getElementById('Obser').value;
-                                        document.getElementById('Obs').value = observaciones;
-                                        var req = document.getElementById('Requerimiento').value;
-                                        document.getElementById('F_Req').value = req;
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
+                                    function validaRemision() {
+                                        var seg = confirm('Desea Remisionar este Insumo?');
+                                        if (seg == false) {
+                                            return false;
+                                        } else {
+                                            document.getElementById('Loader').style.display = 'block';
+                                            var observaciones = document.getElementById('Obser').value;
+                                            document.getElementById('Obs').value = observaciones;
+                                            var req = document.getElementById('Requerimiento').value;
+                                            document.getElementById('F_Req').value = req;
+                                            var tipo = document.getElementById('tipo').value;
+                                            document.getElementById('F_Tipo').value = tipo;
 
-                                        document.getElementById('Facturar').click();
+
+                                            document.getElementById('Facturar').click();
+                                        }
+
                                     }
+                                    /*$(document).ready(function() {
+                                     $('#datosProv').dataTable();
+                                     });*/
 
-                                }
-                                /*$(document).ready(function() {
-                                 $('#datosProv').dataTable();
-                                 });*/
+        </script>
+    </body>
 
-    </script>
 </html>
 

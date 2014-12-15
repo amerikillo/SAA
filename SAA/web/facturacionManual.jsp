@@ -23,7 +23,7 @@
     ConectionDB con = new ConectionDB();
 
     String ClaCli = "", FechaEnt = "", ClaPro = "", DesPro = "";
-
+    String F_IndGlobal = (String) sesion.getAttribute("F_IndGlobal");
     try {
         ClaCli = (String) sesion.getAttribute("ClaCliFM");
         FechaEnt = (String) sesion.getAttribute("FechaEntFM");
@@ -62,7 +62,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div class="row">
@@ -79,8 +79,7 @@
                     <div class="col-sm-5">
                         <select class="form-control" name="ClaCli" id="ClaCli">
                             <option value="">-Seleccione Unidad-</option>
-                            <%
-                                try {
+                            <%                                try {
                                     con.conectar();
                                     ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn");
                                     while (rset.next()) {
@@ -155,6 +154,10 @@
 
                     </div>
                 </div>
+                <%
+                    if (F_IndGlobal != null) {
+                %>
+                <input name="F_IndGlob" value="<%=F_IndGlobal%>" class="hidden">
                 <table class="table table-condensed table-striped table-bordered table-responsive">
                     <tr>
                         <td>Clave</td>
@@ -168,7 +171,7 @@
                         int banBtn = 0;
                         try {
                             con.conectar();
-                            ResultSet rset = con.consulta("SELECT l.F_ClaPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), f.F_Cant, l.F_Ubica, f.F_IdFact FROM tb_facttemp f, tb_lote l WHERE f.F_IdLot = l.F_IdLote and F_ClaCli = '" + ClaCli + "' and F_StsFact=3;");
+                            ResultSet rset = con.consulta("SELECT l.F_ClaPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), f.F_Cant, l.F_Ubica, f.F_IdFact, f.F_Id FROM tb_facttemp f, tb_lote l WHERE f.F_IdLot = l.F_IdLote and F_ClaCli = '" + ClaCli + "' and F_StsFact=3;");
                             while (rset.next()) {
                                 banBtn = 1;
                     %>
@@ -179,7 +182,7 @@
                         <td><%=rset.getString(5)%></td>
                         <td><%=rset.getString(4)%></td>
                         <td>
-                            <button class="btn btn-block btn-danger" name="accionEliminar" value="<%=rset.getString("F_IdFact")%>" onclick="return confirm('Seguro que desea eliminar esta clave?')"><span class="glyphicon glyphicon-remove"></span></button>
+                            <button class="btn btn-block btn-danger" name="accionEliminarIns" value="<%=rset.getString("F_Id")%>" onclick="return confirm('Seguro que desea eliminar esta clave?')"><span class="glyphicon glyphicon-remove"></span></button>
                         </td>
                     </tr>
                     <%
@@ -203,6 +206,7 @@
                 </div>
 
                 <%
+                        }
                     }
                 %>
 
@@ -214,16 +218,15 @@
                 GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
                 Todos los Derechos Reservados
             </div>
-        </div>
-    </body>
-    <!-- 
+        </div> 
+        <!-- 
     ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script>
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script>
                             function justNumbers(e)
                             {
                                 var keynum = window.event ? window.event.keyCode : e.which;
@@ -270,6 +273,8 @@
                                 }
 
                             }
-    </script>
+        </script>
+    </body>
+
 </html>
 

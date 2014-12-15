@@ -52,8 +52,8 @@ public class Devoluciones extends HttpServlet {
                 if (request.getParameter("accion").equals("devolucion")) {
                     con.conectar();
                     //consql.conectar();
-                    String ClaPro = "", Total = "", Ubicacion = "", Provee = "", FolLote = "", ClaLot = "", FecCad = "";
-                    String F_Cb = "", F_ClaMar="";
+                    String ClaPro = "", Total = "", Ubicacion = "", Provee = "", FolLote = "", ClaLot = "", FecCad = "", F_IdLote = "";
+                    String F_Cb = "", F_ClaMar = "";
                     String FolLotSql = "";
                     int cantSQL = 0, cant = 0;
                     ResultSet rset = con.consulta("select * from tb_lote where F_IdLote = '" + request.getParameter("IdLote") + "'");
@@ -88,9 +88,10 @@ public class Devoluciones extends HttpServlet {
                     String F_FolLot = "";
 
                     con.insertar("update tb_lote set F_ExiLot = '0' where F_IdLote = '" + request.getParameter("IdLote") + "' ");
-                    ResultSet rset2 = con.consulta("select F_FolLot from tb_lote where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_FecCad = '" + request.getParameter("F_FecCad") + "' and F_Ubica='NUEVA'");
+                    ResultSet rset2 = con.consulta("select F_FolLot, F_IdLote from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_FecCad = '" + request.getParameter("F_FecCad") + "' and F_Ubica='NUEVA'");
                     while (rset2.next()) {
                         F_FolLot = rset2.getString("F_FolLot");
+                        F_IdLote = rset2.getString("F_IdLote");
                     }
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(df3.parse(request.getParameter("F_FecCad")));
@@ -98,9 +99,9 @@ public class Devoluciones extends HttpServlet {
                     String Fecfab = "" + df3.format(cal.getTime());
                     if (F_FolLot.equals("")) {
                         F_FolLot = devuelveIndLote() + "";
-                        con.insertar("insert into tb_lote values (0,'" + ClaPro + "','" + request.getParameter("F_ClaLot") + "','" + request.getParameter("F_FecCad") + "','" + cant + "','" + F_FolLot + "','" + Provee + "','NUEVA','" + Fecfab + "','" + F_Cb + "','"+F_ClaMar+"') ");
+                        con.insertar("insert into tb_lote values (0,'" + ClaPro + "','" + request.getParameter("F_ClaLot") + "','" + request.getParameter("F_FecCad") + "','" + cant + "','" + F_FolLot + "','" + Provee + "','NUEVA','" + Fecfab + "','" + F_Cb + "','" + F_ClaMar + "') ");
                     } else {
-                        con.insertar("update tb_lote set F_ExiLot = '"+ncant+"' where F_IdLote = '" + request.getParameter("IdLote") + "' ");
+                        con.insertar("update tb_lote set F_ExiLot = '" + (-ncant) + "' where F_IdLote = '" + F_IdLote + "' ");
                     }
 
                     con.insertar("insert into tb_movinv values('0',CURDATE(),'0','53','" + ClaPro + "','" + cant + "','" + costo + "','" + importe + "','-1','" + FolLote + "','" + Ubicacion + "','" + Provee + "',CURTIME(),'" + (String) sesion.getAttribute("nombre") + "')");
