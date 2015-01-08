@@ -278,14 +278,14 @@ public class CapturaPedidos extends HttpServlet {
             if (request.getParameter("accion").equals("confirmar")) {
                 con.conectar();
                 try {
-                    con.insertar("update tb_pedidoisem set F_StsPed = '1' where F_NoCompra = '" + (String) sesion.getAttribute("NoCompra") + "'  and F_IdUsu = '" + (String) sesion.getAttribute("Usuario") + "' ");
-                    correo.enviaCorreo((String) sesion.getAttribute("NoCompra"));
+                    con.insertar("update tb_pedidoisem set F_StsPed = '1' where F_NoCompra = '" + request.getParameter("NoCompra") + "'  and F_IdUsu = '" + (String) sesion.getAttribute("Usuario") + "' ");
+                    //correo.enviaCorreo((String) sesion.getAttribute("NoCompra"));
                     sesion.setAttribute("clave", "");
                     sesion.setAttribute("descripcion", "");
                     sesion.setAttribute("proveedor", "");
                     sesion.setAttribute("fec_entrega", "");
                     sesion.setAttribute("hor_entrega", "");
-                    sesion.setAttribute("NoCompra", "");
+                    sesion.setAttribute("NoCompra", null);
                 } catch (Exception e) {
                 }
                 con.cierraConexion();

@@ -4,6 +4,7 @@
     Author     : Americo
 --%>
 
+<%@page import="conn.ConectionDB_Linux"%>
 <%@page import="java.text.*"%>
 <%@page import="conn.ConectionDB"%>
 <%@page import="ISEM.CapturaPedidos"%>
@@ -12,6 +13,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     DecimalFormat formatter = new DecimalFormat("#,###,###");
+    DecimalFormat formNoCom = new DecimalFormat("000");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
     custom.setGroupingSeparator(',');
@@ -24,6 +26,7 @@
         response.sendRedirect("indexIsem.jsp");
     }
     ConectionDB con = new ConectionDB();
+    ConectionDB_Linux conLinux = new ConectionDB_Linux();
     CapturaPedidos indice = new CapturaPedidos();
     String proveedor = "", fecEnt = "", horEnt = "", claPro = "", desPro = "", NoCompra = "";
     try {
@@ -50,9 +53,38 @@
         NoCompra = "";
     }
 
-    if (NoCompra.equals("")) {
-        NoCompra = indice.noCompra();
-        sesion.setAttribute("NoCompra", NoCompra);
+    if (NoCompra == null || NoCompra.equals("")) {
+        System.out.println("***" + NoCompra);
+        try {
+            con.conectar();
+            int banIndice = 0;
+            ResultSet rset = con.consulta("select MAX(F_NoCompra) as F_NoCompra, F_StsPed from tb_pedidoisem where F_IdUsu='" + usua + "'");
+            while (rset.next()) {
+                if (rset.getInt("F_StsPed") == 0) {
+                    NoCompra = rset.getString("F_NoCompra");
+                    banIndice = 1;
+                }
+            }
+            System.out.println(NoCompra + "---");
+            if (NoCompra == null || NoCompra.equals("")) {
+                rset = con.consulta("select MAX(F_NoCompra) as F_NoCompra from tb_pedidoisem");
+                int F_IndIsem = 0, maxIndice = 0;
+                while (rset.next()) {
+                    String NoMax[] = rset.getString(1).split("-");
+                    maxIndice = Integer.parseInt(NoMax[0]);
+                }
+                rset = con.consulta("select F_IndIsem from tb_indice");
+                while (rset.next()) {
+                    F_IndIsem = rset.getInt("F_IndIsem");
+                }
+                NoCompra = indice.noCompra();
+                NoCompra = formNoCom.format(Integer.parseInt(NoCompra)) + "-2015";
+                sesion.setAttribute("NoCompra", NoCompra);
+            }
+            con.cierraConexion();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 %>
 
@@ -188,7 +220,7 @@
                     <div class="col-sm-1">
                         <button class="btn btn-primary btn-block" onclick="return validaClaDes(this);" name="accion" value="Clave">Clave</button>
                     </div>
-                    
+
                 </div>
             </form>
             <br/>
@@ -264,15 +296,15 @@
                             <%
                                 String cantidad = "0";
                                 try {
-                                    con.conectar();
-                                    ResultSet rset = con.consulta(" select SUM(F_ExiLot) from tb_lote where F_ClaPro = '" + claPro + "' group by F_ClaPro  ");
+                                    conLinux.conectar();
+                                    ResultSet rset = conLinux.consulta(" select SUM(F_ExiLot) from tb_lote where F_ClaPro = '" + claPro + "' group by F_ClaPro  ");
                                     while (rset.next()) {
                                         cantidad = rset.getString(1);
                                     }
                                     if (cantidad == null) {
                                         cantidad = "0";
                                     }
-                                    con.cierraConexion();
+                                    conLinux.cierraConexion();
                                 } catch (Exception e) {
                                     System.out.println(e.getMessage());
                                 }
@@ -288,11 +320,12 @@
                             </label>
                             <div class="col-sm-2">
                                 <select  class="form-control" name="Prioridad" id="Prioridad" onchange="document.getElementById('CanPro').focus()" >
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option selected="">5</option>
+                                    <option selected="">1-2015</option>
+                                    <option>2-2015</option>
+                                    <option>3-2015</option>
+                                    <option>4-2015</option>
+                                    <option>5-2015</option>
+                                    <option>6-2015</option>
                                     <option>ND</option>
                                 </select>
                             </div>
@@ -376,6 +409,7 @@
                 %>
                 <form name="FormCaptura" action="CapturaPedidos" method="post">
                     <div class="col-sm-6">
+                        <input class="hidden" name="NoCompra" value="<%=NoCompra%>"/>
                         <button class="btn btn-success btn-block" name="accion" value="confirmar" onclick="return confirm('¿Seguro que desea CONFIRMAR el pedido?')">Confirmar Orden de Compra</button>
                     </div>
                     <div class="col-sm-6">
@@ -478,7 +512,7 @@
             <%
                 try {
                     con.conectar();
-                    ResultSet rset3 = con.consulta("select DISTINCT F_ClaProve from tb_prodprov order by F_ClaProve limit 0,50");
+                    ResultSet rset3 = con.consulta("select DISTINCT F_ClaProve from tb_prodprov");
                     while (rset3.next()) {
                         out.println("if (form.Proveedor.value == '" + rset3.getString(1) + "') {");
                         out.println("var select = document.getElementById('Clave');");
@@ -500,9 +534,8 @@
             %>
                             }
 
-
+                            
         </script>
-       
     </body>
 
 </html>

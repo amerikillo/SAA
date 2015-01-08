@@ -80,6 +80,7 @@ public class Correo extends HttpServlet {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("yolanda.orozco@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("vicente.flores@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("msergio0505@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("ctrlabastoisem@gmail.com"));//Aqui se pone la direccion a donde se enviara el correo
             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("javier.calero@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("mario.garcia@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo
             //message.addRecipient(Message.RecipientType.TO,new InternetAddress("joseluis.chavez@gnkl.mx"));//Aqui se pone la direccion a donde se enviara el correo*/
