@@ -14,7 +14,7 @@ import java.sql.Statement;
  *
  * @author wence
  */
-public class ConectionDB {
+public class ConectionDB_Medalfa {
 
 //variables miembro
     private String usuario;
@@ -30,7 +30,7 @@ public class ConectionDB {
 
 //CONSTRUCTORES
     //Constructor que toma los datos de conexion por medio de parametros
-    public ConectionDB(String usuario, String clave, String url, String driverClassName) {
+    public ConectionDB_Medalfa(String usuario, String clave, String url, String driverClassName) {
         this.usuario = usuario;
         this.clave = clave;
         this.url = url;
@@ -39,7 +39,7 @@ public class ConectionDB {
 
     //Constructor que crea la conexion sin parametros con unos definidos en la clase
     //(meter los datos correspondientes)
-    public ConectionDB() {
+    public ConectionDB_Medalfa() {
         //poner los datos apropiados
 
         /* this.usuario = "isemusr";
@@ -48,7 +48,7 @@ public class ConectionDB {
          this.driverClassName = "org.gjt.mm.mysql.Driver";*/
         this.usuario = "root";
         this.clave = "eve9397";
-        this.url = "jdbc:mysql://localhost:3306/gnklmex_consolidada2";
+        this.url = "jdbc:mysql://localhost:3306/gnklmex_medalfa";
         this.driverClassName = "org.gjt.mm.mysql.Driver";
     }
 

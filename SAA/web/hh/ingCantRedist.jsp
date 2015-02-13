@@ -55,7 +55,7 @@
         con.conectar();
         ResultSet rset = con.consulta("select F_Ubica from tb_lote where F_IdLote='" + idLote + "'");
         while (rset.next()) {
-        UbiAnt=rset.getString(1);
+            UbiAnt = rset.getString(1);
         }
         con.cierraConexion();
     } catch (Exception e) {
@@ -77,7 +77,7 @@
     <body>
         <div class="container">
             <h1>SIALSS</h1>
-            
+
             <%@include file="../jspf/menuPrincipal.jspf"%>
             <h4>Redistribución</h4>
             <form action="leerInsRedist.jsp" method="post">
@@ -92,9 +92,8 @@
                     ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, u.F_ClaUbi, u.F_Cb as CbUbica from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_IdLote = '" + idLote + "' ");
                     while (rset.next()) {
                         int banAlerta = 0;
-                        ResultSet rset2 = con.consulta("select F_IdLot, SUM(F_Cant) from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
+                        ResultSet rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
                         while (rset2.next()) {
-                            banAlerta = 1;
                             canApartada = rset2.getInt(2);
                         }
             %>
@@ -131,11 +130,22 @@
                 </div>
                 <br/>
                 <%
-                    if (banAlerta == 1) {
+                    rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdFact");
+                    while (rset2.next()) {
+                        canApartada = rset2.getInt(2);
                 %>
                 <div class="alert alert-danger">
-                    <strong>Este insumo está apartado con <%=canApartada%> piezas</strong>
+                    <strong>Este insumo está apartado con <%=canApartada%> piezas en el concentrado <%=rset2.getInt("F_IdFact")%></strong>
                 </div>
+                <%
+                    }
+                %>
+
+                <%
+                    rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
+                    while (rset2.next()) {
+                        canApartada = rset2.getInt(2);
+                %>
                 <div class="alert alert-warning">
                     <strong>Cantidad máxima a mover: <%=(rset.getInt("F_ExiLot") - canApartada)%> piezas</strong>
                 </div>

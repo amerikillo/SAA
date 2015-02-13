@@ -118,6 +118,7 @@
                                     <li><a href="#" onclick="window.open('/SAA/medicamento.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Medicamento</a></li>
                                     <li><a href="#" onclick="window.open('/SAA/catalogo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Proveedores</a></li>
                                     <li><a href="#" onclick="window.open('/SAA/marcas.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Marcas</a></li>
+                                    <li><a href="#" onclick="window.open('/SAA/catalogoUnidades.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Catálogo de Unidades</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">

@@ -66,7 +66,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div>
@@ -97,10 +97,14 @@
                 %>
 
                 <div class="row">
-                    <h5 class="col-sm-3">Total Solicitado: <%=formatter.format(req)%></h5>
-                    <h5 class="col-sm-3">Total Surtido: <%=formatter.format(sur)%></h5>
-                    <h5 class="col-sm-3">Total Importe: $ <%=formatterDecimal.format(imp)%></h5>
-                    <a class="btn btn-default" href="reimp_factura.jsp">Regresar</a>
+                    <form action="AbastecerDistribuidor">
+                        <h5 class="col-sm-3">Total Solicitado: <%=formatter.format(req)%></h5>
+                        <h5 class="col-sm-3">Total Surtido: <%=formatter.format(sur)%></h5>
+                        <h5 class="col-sm-3">Total Importe: $ <%=formatterDecimal.format(imp)%></h5>
+                        <a class="btn btn-default" href="reimp_factura.jsp">Regresar</a>
+                        <input name="F_ClaDoc" value="<%=request.getParameter("fol_gnkl")%>" class="hidden" />
+                        <button name="accion" value="enviarMedalfa" class="btn btn-primary">Enviar MEDALFA</button>
+                    </form>
                 </div>
                 <%
                             }
@@ -184,7 +188,7 @@
 
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                         Devoluciones
+                        Devoluciones
                     </div>
                     <div class="panel-body">
                         <table class="table table-bordered table-striped table-condensed" id="devoRemi">
@@ -275,10 +279,10 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                        $(document).ready(function() {
-                                            $('#datosCompras').dataTable();
-                                            $('#devoRemi').dataTable();
-                                        });
+    $(document).ready(function() {
+        $('#datosCompras').dataTable();
+        $('#devoRemi').dataTable();
+    });
 </script>
 <script>
     $(function() {
