@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import servlets.Facturacion;
 import ISEM.*;
+import Modula.RequerimientoModula;
 import java.sql.SQLException;
 
 /**
@@ -323,6 +324,8 @@ public class FacturacionManual extends HttpServlet {
             if (request.getParameter("accion").equals("ConfirmarFactura")) {
                 try {
                     con.conectar();
+                    RequerimientoModula reqMod = new RequerimientoModula();
+                    reqMod.enviaRequerimiento((String) sesion.getAttribute("F_IndGlobal"));
                     con.insertar("update tb_facttemp set F_StsFact = '0' where F_IdFact = '" + (String) sesion.getAttribute("F_IndGlobal") + "' ");
                     con.cierraConexion();
                     sesion.setAttribute("F_IndGlobal", null);
@@ -334,6 +337,11 @@ public class FacturacionManual extends HttpServlet {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+            }
+            if (request.getParameter("accion").equals("ReenviarFactura")) {
+                RequerimientoModula reqMod = new RequerimientoModula();
+                reqMod.enviaRequerimiento(request.getParameter("fol_gnkl"));
+                response.sendRedirect("reimpConcentrado.jsp");
             }
             if (request.getParameter("accion").equals("AgregarClave")) {
                 try {

@@ -4,6 +4,7 @@
     Author     : Americo
 --%>
 
+<%@page import="conn.ConectionDB_Modula"%>
 <%@page import="java.text.DecimalFormatSymbols"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.sql.ResultSet"%>
@@ -18,6 +19,7 @@
     formatter.setDecimalFormatSymbols(custom);
     formatterDecimal.setDecimalFormatSymbols(custom);
     ConectionDB con = new ConectionDB();
+    ConectionDB_Modula conModula = new ConectionDB_Modula();
     int banConsulta = 0;
     int totalPiezas = 0;
     ResultSet rset = null;
@@ -162,20 +164,68 @@
             </tbody>
         </table>
         <hr/>
-        <h3>Total de Piezas: <%=formatter.format(totalPiezas)%></h3>
+        <h3>Total de Piezas: <%=formatter.format(totalPiezas)%></h3><hr />
+        <h3>Modula</h3>
+        <table border="1" class="table table-bordered table-condensed table-striped" id="existModula">
+            <thead>
+                <tr>
+                    <td>Clave</td>
+                    <td>Descrip</td>
+                    <td>Lote</td>
+                    <td>Cadu</td>
+                    <td>Cajón</td>
+                    <td>Posición</td>
+                    <td>Cant</td>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    try {
+
+                        conModula.conectar();
+                        con.conectar();
+                        ResultSet rset4 = conModula.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0 order by SCO_ARTICOLO");
+                        while (rset4.next()) {
+                            String Descrip = "";
+                            ResultSet rset5 = con.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + rset4.getString("SCO_ARTICOLO") + "'");
+                            while (rset5.next()) {
+                                Descrip = rset5.getString(1);
+                            }
+                %>
+                <tr>
+                    <td><%=rset4.getString("SCO_ARTICOLO")%></td>
+                    <td><%=Descrip%></td>
+                    <td><%=rset4.getString("SCO_SUB1")%></td>
+                    <td><%=rset4.getString("SCO_DSCAD")%></td>
+                    <td><%=rset4.getString("UDC_UDC")%></td>
+                    <td><%=rset4.getString("SCO_POSI")%></td>
+                    <td><%=formatter.format(rset4.getInt("SCO_GIAC"))%></td>
+                </tr>
+                <%
+                        }
+                        conModula.cierraConexion();
+                        con.cierraConexion();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                %>
+            </tbody>
+        </table>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/jquery.dataTables.js"></script>
+        <script src="../js/dataTables.bootstrap.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#tablaUbicaciones').dataTable();
+                $('#existModula').dataTable();
+            });
+        </script>
     </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="../js/jquery.dataTables.js"></script>
-    <script src="../js/dataTables.bootstrap.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#tablaUbicaciones').dataTable();
-        });
-    </script>
 </html>

@@ -14,11 +14,11 @@
 	M.F_DesPro,
 	Lotes.F_ClaLot,
 	Lotes.F_FecCad,
-	SUM((F.F_CantReq+0)/100) as F_CantReq,
-	SUM((F.F_CantSur+0)/100) as F_CantSur,
-	(F.F_Costo)*100 as F_Costo,
+	SUM((F.F_CantReq + 0)/(PX.F_Pzs+0)) AS F_CantReq,
+	SUM((F.F_CantSur + 0)/(PX.F_Pzs+0)) AS F_CantSur,
+	F.F_Costo,
 	F.F_Iva,
-	SUM(F.F_Monto+0) as F_Monto,
+	SUM(F.F_Monto + 0) AS F_Monto,
 	F.F_Ubicacion,
 	(@csum := F.F_Monto +@csum) AS totales,
 	O.F_Obser,
@@ -38,15 +38,20 @@ FROM
 	tb_factura F,
 	tb_medica M,
 	tb_uniatn U,
-	tb_obserfact O
+	tb_obserfact O,
+	tb_pzxcaja PX
 WHERE
 	F.F_ClaDoc = O.F_IdFact
+AND F.F_ClaPro = PX.F_ClaPro
 AND F.F_ClaPro = M.F_ClaPro
 AND F.F_ClaCli = U.F_ClaCli
 AND F.F_lote = Lotes.F_FolLot
 AND F.F_ClaDoc = $P{Folfact}
-AND F.F_StsFact='A'
-group by F.F_ClaPro, Lotes.F_ClaLot, Lotes.F_FecCad
+AND F.F_StsFact = 'A'
+GROUP BY
+	F.F_ClaPro,
+	Lotes.F_ClaLot,
+	Lotes.F_FecCad
 ORDER BY
 	F.F_ClaPro]]>
 	</queryString>
@@ -115,7 +120,7 @@ ORDER BY
 		<band/>
 	</background>
 	<pageHeader>
-		<band height="97">
+		<band height="85">
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="2fa00f35-a6fa-4f60-9d8e-1312e126dafa" x="122" y="61" width="276" height="11"/>
 				<textElement>
@@ -203,14 +208,14 @@ ORDER BY
 				<text><![CDATA[PUNTO DE ENTREGA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="123a43d9-1de1-404f-9b50-6522ec600a3e" x="10" y="83" width="112" height="11"/>
+				<reportElement uuid="123a43d9-1de1-404f-9b50-6522ec600a3e" x="10" y="74" width="112" height="11"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[NO. ORDEN:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="85cf5e21-d96b-4705-96ff-78b5992d5d03" x="122" y="83" width="268" height="11"/>
+				<reportElement uuid="85cf5e21-d96b-4705-96ff-78b5992d5d03" x="122" y="74" width="268" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

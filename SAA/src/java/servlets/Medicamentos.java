@@ -21,9 +21,7 @@ import javax.servlet.http.HttpSession;
  */
 public class Medicamentos extends HttpServlet {
 
-    ConectionDB con = new ConectionDB();
     //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,6 +36,8 @@ public class Medicamentos extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession sesion = request.getSession(true);
+        ConectionDB con = new ConectionDB();
+        ConectionDB_Modula conModula = new ConectionDB_Modula();
         try {
             /*
              *Para actualizar Registros
@@ -135,9 +135,53 @@ public class Medicamentos extends HttpServlet {
 
             }
 
+            if (request.getParameter("accion").equals("Actualizar")) {
+                try {
+                    conModula.conectar();
+                    con.conectar();
+                    ResultSet rset = con.consulta("select * from tb_medica");
+                    while (rset.next()) {
+                        int banMedicamento = 0;
+                        ResultSet rset2 = con.consulta("select F_Id, F_Min from tb_maxmodula where F_ClaPro = '" + rset.getString("F_ClaPro") + "'");
+                        while (rset2.next()) {
+                            banMedicamento = 1;
+                        }
+                        if (banMedicamento == 0) {
+                            try {
+                                con.insertar("insert into tb_maxmodula values('" + rset.getString("F_ClaPro") + "','0','0','0')");
+                            } catch (Exception e) {
+                            }
+                        } else {
+
+                            try {
+
+                                con.insertar("update tb_maxmodula set F_Max = '0', F_Min ='0' where F_ClaPro='" + rset.getString("F_ClaPro") + "'");
+                            } catch (Exception e) {
+                            }
+                        }
+                        rset2 = con.consulta("select F_Id, F_Min from tb_maxmodula where F_ClaPro = '" + rset.getString("F_ClaPro") + "'");
+                        int min = 0;
+                        while (rset2.next()) {
+                            banMedicamento = 1;
+                            min = rset2.getInt("F_Min");
+                        }
+                        if (rset.getString("F_DesPro").length() > 40) {
+                            conModula.ejecutar("insert into IMP_ARTICOLI (ART_OPERAZIONE, ART_ARTICOLO, ART_DES, ART_UMI, ART_MIN, ART_PROY) values ('I','" + rset.getString("F_ClaPro") + "','" + (rset.getString("F_DesPro").substring(1, 40)) + "','PZ','" + min + "', 'CC')");
+                        } else {
+                            conModula.ejecutar("insert into IMP_ARTICOLI (ART_OPERAZIONE, ART_ARTICOLO, ART_DES, ART_UMI, ART_MIN, ART_PROY) values ('I','" + rset.getString("F_ClaPro") + "','" + (rset.getString("F_DesPro")) + "','PZ','" + min + "', 'CC')");
+                        }
+                    }
+                    conModula.cierraConexion();
+                    con.cierraConexion();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    out.println("<script>alert('Error: " + e.getMessage() + "')</script>");
+                    out.println("<script>window.location='medicamento.jsp'</script>");
+                }
+                out.println("<script>window.location='medicamento.jsp'</script>");
+            }
             if (request.getParameter("accion").equals("obtieneProvee")) {
                 try {
-                    proveedores();
                     out.println("<script>alert('Se obtuvieron los Proveedores Correctamente')</script>");
                 } catch (Exception e) {
                     out.println("<script>alert('Error al obtener proveedores')</script>");
@@ -187,23 +231,5 @@ public class Medicamentos extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    public void proveedores() {
-        try {
-            //consql.conectar();
-            con.conectar();
-            try {
-                /*con.insertar("truncate table provee_all");
-                 ResultSet rset = consql.consulta("select * from TB_Provee;");
-                 while (rset.next()) {
-                 con.insertar("insert into provee_all values ('" + rset.getString(1) + "', '" + rset.getString(2) + "', '" + rset.getString(3) + "', '" + rset.getString(4) + "', '" + rset.getString(5) + "', '" + rset.getString(6) + "', '" + rset.getString(7) + "', '" + rset.getString(8) + "' ,'" + rset.getString(9) + "', '" + rset.getString(10) + "', '" + rset.getString(11) + "', '" + rset.getString(12) + "', '" + rset.getString(13) + "')");
-                 }*/
-            } catch (Exception e) {
-            }
-            con.cierraConexion();
-            //consql.cierraConexion();
-        } catch (Exception e) {
-        }
-    }
 
 }

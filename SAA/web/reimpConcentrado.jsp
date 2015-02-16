@@ -59,7 +59,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div>
@@ -79,6 +79,7 @@
                                     <td>Marbetes</td>
                                     <td>Excel</td>
                                     <td>Cancelar</td>
+                                    <td>Reenviar</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -119,6 +120,12 @@
                                                 <%
                                                     }
                                                 %>
+                                        </form>
+                                    </td><td>
+                                        <form action="FacturacionManual" method="post">
+                                            <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_IdFact")%>">
+                                            <button class="btn btn-block btn-info" name="accion" value="ReenviarFactura" onclick="return confirm('Seguro de Reenviar este concentrado?')"><span class="glyphicon glyphicon-upload"></span></button>
+
                                         </form>
                                     </td>
                                 </tr>

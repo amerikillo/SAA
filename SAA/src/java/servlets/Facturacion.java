@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import Modula.RequerimientoModula;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -273,6 +274,8 @@ public class Facturacion extends HttpServlet {
                         }
                         con.actualizar("update tb_unireq set F_Status='2' where F_IdReq='" + rset_cantidad.getString("F_IdReq") + "'");
                     }
+                    RequerimientoModula reqMod = new RequerimientoModula();
+                    reqMod.enviaRequerimiento(FolioFactura + "");
                     //con.actualizar("delete * FROM tb_unireq WHERE F_ClaUni='" + ClaUni + "' and F_FecCarg = CURDATE()");
                     con.cierraConexion();
                     //consql.cierraConexion();

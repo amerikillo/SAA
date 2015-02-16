@@ -8,7 +8,7 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="conn.ConectionDB"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="conn.ConectionDB_Modula"%>
+<%@page import="conn.ConectionDB_SQLServer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
@@ -20,7 +20,7 @@
     custom.setGroupingSeparator(',');
     formatter.setDecimalFormatSymbols(custom);
     formatterDecimal.setDecimalFormatSymbols(custom);
-    ConectionDB_Modula con = new ConectionDB_Modula();
+    ConectionDB_SQLServer con = new ConectionDB_SQLServer();
     ConectionDB conMysql = new ConectionDB();
 
     if (con.conectar()) {
@@ -33,6 +33,7 @@
             //con.ejecutar("insert into IMP_AVVISIINGRESSO values('I','0437','LOTE12','100','20160517','','')");
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            out.println(e.getMessage());
         }
 %>
 <html>
@@ -93,6 +94,20 @@
         <form action="../AbasteceModula">
             <button class="btn btn-large btn-primary btn-block"  name="accion" value="AbastecerConcentrado">Abastecer</button>
         </form>
+
+        <%
+            try {
+                con.conectar();
+
+                ResultSet rset = con.consulta("select * from VIEW_MODULA_EXISTENCIA_MIN");
+                while (rset.next()) {
+                    out.println(rset.getString(1)+"---"+rset.getString(2)+"---"+rset.getString(3)+"---"+rset.getString(4)+"<br/>");
+                }
+                con.cierraConexion();
+            } catch (Exception e) {
+
+            }
+        %>
     </body>
 </html>
 

@@ -6,10 +6,14 @@
 package Inventario;
 
 import conn.ConectionDB;
+import conn.ConectionDB_Modula;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +48,7 @@ public class Ubicaciones extends HttpServlet {
                 if (request.getParameter("accion").equals("Redistribucion")) {
 
                     int nIdLote = Reubica(request.getParameter("F_IdLote"), request.getParameter("F_ClaUbi"), request.getParameter("CantMov"), (String) sesion.getAttribute("nombre"));
-                    ReubicaApartado(request.getParameter("F_IdLote"), nIdLote);
+                    //ReubicaApartado(request.getParameter("F_IdLote"), nIdLote);
                     response.sendRedirect("hh/insumoNuevoRedist.jsp");
                 }
             } catch (Exception e) {
@@ -59,8 +63,13 @@ public class Ubicaciones extends HttpServlet {
         int idLoteNuevo = 0;
         Devoluciones objDev = new Devoluciones();
         ConectionDB con = new ConectionDB();
+        ConectionDB_Modula conModula = new ConectionDB_Modula();
         con.conectar();
+        conModula.conectar();
         String UbicaMov = CBUbica;
+        DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+        DateFormat df2 = new SimpleDateFormat("yyyyMMdd");
+        DateFormat df3 = new SimpleDateFormat("yyyy-MM-dd");
         int CantMov = Integer.parseInt(cantMov);
         String F_ClaPro = "", F_ClaLot = "", F_FecCad = "", F_FolLot = "", F_ClaOrg = "", F_Ubica = "", F_FecFab = "", F_Cb = "", F_ClaMar = "";
         int F_ExiLot = 0, F_IdLote = 0, F_ExiLotDestino = 0;
@@ -90,8 +99,14 @@ public class Ubicaciones extends HttpServlet {
 
         if (F_IdLote != 0) {//Ya existe insumo en el desitno
             con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLotDestino + CantMov) + "' where F_IdLote='" + F_IdLote + "'");
+            if (CBUbica.equals("MODULA")) {
+                conModula.ejecutar("insert into IMP_AVVISIINGRESSO (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+            }
         } else {//No existe insumo en el destino
             con.insertar("insert into tb_lote values(0,'" + F_ClaPro + "','" + F_ClaLot + "','" + F_FecCad + "','" + CantMov + "','" + F_FolLot + "','" + F_ClaOrg + "','" + UbicaMov + "','" + F_FecFab + "','" + F_Cb + "','" + F_ClaMar + "')");
+            if (CBUbica.equals("MODULA")) {
+                conModula.ejecutar("insert into IMP_AVVISIINGRESSO  (RIG_OPERAZIONE, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_QTAR, RIG_DSCAD, RIG_REQ_NOTE, RIG_ATTR1, RIG_ERRORE, RIG_HOSTINF) values('A','" + F_ClaPro + "','" + F_ClaLot + "','1','" + (CantMov) + "','" + F_FecCad.replace("-", "") + "','" + F_Cb + "','','','" + df.format(new Date()) + "')");
+            }
         }
         con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLot - CantMov) + "' where F_IdLote = '" + idLote + "' ");
 
@@ -102,6 +117,7 @@ public class Ubicaciones extends HttpServlet {
         while (rset.next()) {
             idLoteNuevo = rset.getInt("F_IdLote");
         }
+        conModula.cierraConexion();
         con.cierraConexion();
         return idLoteNuevo;
     }
