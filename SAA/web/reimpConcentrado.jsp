@@ -80,11 +80,11 @@
                                     <td>Excel</td>
                                     <td>Cancelar</td>
                                     <td>Reenviar</td>
+                                    <td>Editar</td>
                                 </tr>
                             </thead>
                             <tbody>
-                                <%
-                                    try {
+                                <%                                    try {
                                         con.conectar();
                                         try {
                                             ResultSet rset = con.consulta("SELECT u.F_NomCli, DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as FecEnt, l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'),	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs),	(f.F_Cant MOD p.F_Pzs) FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro GROUP BY f.F_IdFact;");
@@ -128,6 +128,15 @@
 
                                         </form>
                                     </td>
+                                    <td>
+                                        <%
+                                            if (usua.equals("esteban") || usua.equals("americo") || usua.equals("sistemas")) {
+                                        %>
+                                        <button class="btn btn-block btn-success" name="btnEditar" id="btnEditar" value="Editar" onclick="EditarConcentrado('<%=rset.getString("F_IdFact")%>', '<%=rset.getString("F_NomCli")%>', '<%=rset.getString("FecEnt")%>')" data-toggle="modal" data-target="#EditarConcentrado"><span class="glyphicon glyphicon-edit"></span></button>
+                                            <%
+                                                }
+                                            %>
+                                    </td>
                                 </tr>
                                 <%
                                             }
@@ -148,32 +157,159 @@
         <br><br><br>
         <div class="navbar navbar-fixed-bottom navbar-inverse">
             <div class="text-center text-muted">
-                GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
+                GNK Logística || Desarrollo de Aplicaciones 2009 - 2015 <span class="glyphicon glyphicon-registration-mark"></span><br />
                 Todos los Derechos Reservados
             </div>
         </div>
+        <div id="EditarConcentrado" class="modal fade in" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a data-dismiss="modal" class="close">×</a>
+                        <h3>Editar Concentrado</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="panel panel-body">
+                            <div class="row">
+                                <input class="hidden" id="hdIdCon" value="">
+                                <label>Folio: </label><span  id="lbIdCon"></span>
+                                <label>Punto de entrega: </label><span id="lbPun"></span>
+                                <label>Fecha: </label><span id="lbFecha"></span>
+                            </div><br/>
+                            <div class="row">
+                                <label class="col-sm-2">Buscar Id</label>
+                                <div class="col-sm-2">
+                                    <input class="form-control" type="text" id="txtId" name="txtId" value="">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary btn-sm" id="btnBuscarId" onclick="" name="btnBuscarId" value="Modificar"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </div><hr/>
+
+                            <div class="row">
+                                <!--   <label class="col-sm-2">Existencias:</label><label id="lbExistencias" class="col-sm-1">123</label>-->
+                                <input type="hidden" id="hdIdCla">
+                                <span class="col-sm-1">Clave:</span><label id="lbClave" class="col-sm-2"></label>
+                                <span class="col-sm-1">Lote:</span><label id="lbLote" class="col-sm-2"></label>
+                                <span class="col-sm-1">Caducidad:</span><label id="lbCaducidad" class="col-sm-2"></label>
+                                <span class="col-sm-1">Cantidad:</span><label id="lbCantidad" class="col-sm-2"></label>
+                            </div><br/>
+                            <div class="row">
+                                <label class="col-sm-3">Modificar Cantidad:</label>
+                                <div class="col-sm-2">
+                                    <input class="form-control" type="text" id="txtCant" name="txtCant" >
+                                </div>
+                            </div><br/>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-primary" id="btnModificar" onclick="" name="btnModificar" value="Modificar">Modificar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">                        
+                        <a href="#" data-dismiss="modal" class="btn btn-primary">Cerrar</a>
+                    </div>
+                </div>
+            </div>                
+        </div> 
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script  type="text/javascript">
+                                            $(document).ready(function() {
+                                                $('#datosCompras').dataTable();
+                                            });
+                                            function EditarConcentrado(idCon, distri, fecha) {
+                                                $('#hdIdCon').val(idCon);
+                                                $('#lbIdCon').html("  " + idCon);
+                                                $('#lbPun').html("  " + distri);
+                                                $('#lbFecha').html("  " + fecha);
+                                                $('#txtId').val("");
+                                                $('#lbClave').html("");
+                                                $('#lbLote').html("");
+                                                $('#lbCaducidad').html("");
+                                                $('#lbClave').html("");
+                                                $('#lbCantidad').html("");
+                                                $('#btnModificar').addClass("disabled");
+                                                $('#txtCant').val("");
+                                            }
+                                            $('#btnBuscarId').click(function() {
+                                                var dir = "Concentrados";
+                                                var id = $('#txtId').val();
+                                                $.ajax({
+                                                    url: dir,
+                                                    data: {que: "b", id: id},
+                                                    success: function(data) {
+                                                        var json = JSON.parse(data);
+                                                        $('#btnModificar').removeClass("disabled");
+                                                        $('#txtId').val("");
+                                                        $('#hdIdCla').val(json.id);
+                                                        $('#lbClave').html(json.clave);
+                                                        $('#lbLote').html(json.lote);
+                                                        $('#lbCaducidad').html(json.caduc);
+                                                        $('#lbClave').html(json.clave);
+                                                        $('#lbCantidad').html(json.cant);
+                                                        if (json.mgs === "0") {
+                                                            $('#btnModificar').addClass("disabled");
+                                                            alert("Error al consultar");
+                                                        }
+                                                    },
+                                                    error: function() {
+                                                        $('#txtId').val("");
+                                                        alert("Ocurrió un error");
+                                                    }
+                                                });
+                                            });
+                                            $('#btnModificar').click(function() {
+                                                if ($('#txtCant').val() === "" || parseInt($('#txtCant').val()) > parseInt($('#lbCantidad').html())) {
+                                                    alert("La cantida no puede ser cero o mayor a la actual");
+                                                    $('#txtCant').focus();
+                                                    return false;
+                                                }
+                                                var dir = "Concentrados";
+                                                var id = $('#hdIdCla').val();
+                                                var cant = $('#txtCant').val();
+                                                $.ajax({
+                                                    url: dir,
+                                                    data: {que: "mod", id: id, cant: cant},
+                                                    success: function(data) {
+                                                        var json = JSON.parse(data);
+                                                        if (json.msg === "1") {
+                                                            alert('Actualizado Correctamene');
+                                                            $('#lbLote').html("");
+                                                            $('#lbCaducidad').html("");
+                                                            $('#lbClave').html("");
+                                                            $('#lbCantidad').html("");
+                                                            $('#txtCant').val("");
+                                                        } else {
+                                                            alert('Error al Actualizar');
+                                                            $('#lbLote').html("");
+                                                            $('#lbCaducidad').html("");
+                                                            $('#lbClave').html("");
+                                                            $('#lbCantidad').html("");
+                                                            $('#txtCant').val("");
+                                                        }
+                                                    },
+                                                    error: function() {
+                                                        $('#txtId').val("");
+                                                        alert("Ocurrió un error");
+                                                    }
+                                                });
+                                            });
+        </script>
+        <script>
+            $(function() {
+                $("#fecha").datepicker();
+                $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+            });
+        </script>
     </body>
 </html>
-
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script>
-                                                $(document).ready(function() {
-                                                    $('#datosCompras').dataTable();
-                                                });
-</script>
-<script>
-    $(function() {
-        $("#fecha").datepicker();
-        $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
-</script>

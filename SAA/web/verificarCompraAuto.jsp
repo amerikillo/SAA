@@ -72,7 +72,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
             <form action="verificarCompraAuto.jsp" method="get">
                 <br/>
@@ -206,18 +206,18 @@
 
                 <div class="panel-body table-responsive">
                     <div class="row">
-                        <form action="nuevoAutomaticaLotes" method="post">
+                        <form action="nuevoAutomaticaLotes" method="post" onsubmit="desactivaBotones()">
                             <input name="vOrden" type="text" style="" class="hidden" value='<%=vOrden%>' />
                             <input name="vRemi" type="text" style="" class="hidden" value='<%=vRemi%>' />
                             <div class="col-lg-3 col-lg-offset-3">
-                                <button  value="EliminarVerifica" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Remisión</button>
+                                <button id="EliminarVerifica" value="EliminarVerifica" name="accion" class="btn btn-danger btn-block" onclick="return confirm('Seguro que desea eliminar la compra?');">Cancelar Remisión</button>
                             </div>
                             <div class="col-lg-3">
-                                <button  value="GuardarAbiertaVerifica" name="accion" class="btn btn-warning  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
+                                <button id="GuardarAbiertaVerifica" value="GuardarAbiertaVerifica" name="accion" class="btn btn-warning  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
                                         return validaCompra();">Remisión Abierta</button>
                             </div>
                             <div class="col-lg-3">
-                                <button  value="GuardarVerifica" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
+                                <button id="GuardarVerifica" value="GuardarVerifica" name="accion" class="btn btn-success  btn-block" onclick="return confirm('Seguro que desea realizar la compra?');
                                         return validaCompra();">Confirmar Remisión</button>
                             </div>
                         </form>
@@ -348,19 +348,20 @@
         <!--
         /Modal
         -->
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script type="text/javascript">
+                                    function desactivaBotones() {
+                                        /*$('#EliminarVerifica').prop('disabled', true);
+                                        $('#GuardarAbiertaVerifica').prop('disabled', true);
+                                        $('#GuardarVerifica').prop('disabled', true);*/
+                                    }
+        </script>
     </body>
-
-
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript">
-
-    </script>
-
 </html>

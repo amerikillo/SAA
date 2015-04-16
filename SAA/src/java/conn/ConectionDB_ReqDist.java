@@ -14,7 +14,7 @@ import java.sql.Statement;
  *
  * @author wence
  */
-public class ConectionDB_Linux {
+public class ConectionDB_ReqDist {
 
 //variables miembro
     private String usuario;
@@ -30,7 +30,7 @@ public class ConectionDB_Linux {
 
 //CONSTRUCTORES
     //Constructor que toma los datos de conexion por medio de parametros
-    public ConectionDB_Linux(String usuario, String clave, String url, String driverClassName) {
+    public ConectionDB_ReqDist(String usuario, String clave, String url, String driverClassName) {
         this.usuario = usuario;
         this.clave = clave;
         this.url = url;
@@ -39,7 +39,7 @@ public class ConectionDB_Linux {
 
     //Constructor que crea la conexion sin parametros con unos definidos en la clase
     //(meter los datos correspondientes)
-    public ConectionDB_Linux() {
+    public ConectionDB_ReqDist() {
         //poner los datos apropiados
 
         /* this.usuario = "isemusr";
@@ -48,8 +48,7 @@ public class ConectionDB_Linux {
          this.driverClassName = "org.gjt.mm.mysql.Driver";*/
         this.usuario = "root";
         this.clave = "eve9397";
-        //this.url = "jdbc:mysql://localhost:3306/gnklmex_consolidada2";
-        this.url = "jdbc:mysql://localhost:3306/gnklmex_consolidada2";
+        this.url = "jdbc:mysql://192.168.0.180:3306/gnkl_reqisemcc";
         this.driverClassName = "org.gjt.mm.mysql.Driver";
     }
 

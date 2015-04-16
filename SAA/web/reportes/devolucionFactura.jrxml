@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d36d56d-e705-43d8-bec6-461dd4e714a4">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="482"/>
+	<property name="ireport.y" value="347"/>
 	<parameter name="Folfact" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT DISTINCT
@@ -387,7 +387,7 @@ ORDER BY
 		<band height="7"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="51">
+		<band height="54">
 			<textField>
 				<reportElement uuid="90da2b7c-eec7-43b6-bc78-a5f7ee2f0d56" mode="Opaque" x="400" y="2" width="130" height="13" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
@@ -413,10 +413,31 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="9114822c-c330-4f36-82c4-a5fa81e9410f" x="0" y="43" width="60" height="11"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN: 0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2b4133c5-3f56-4204-b559-2bd3f90ca8e3" x="216" y="43" width="136" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA: 16/04/2015]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="89d9ddde-e832-4f5b-90a0-9c45ed766b17" x="493" y="43" width="79" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[GNKL-T-7 F 14 F]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="44">
+		<band height="50">
 			<textField>
 				<reportElement uuid="bbaded5d-90cb-4843-8b4c-a0a34ee16569" mode="Opaque" x="401" y="1" width="130" height="13" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
@@ -442,10 +463,31 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="85ed8382-cd8f-4144-826f-d83009b7f710" x="216" y="39" width="136" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA: 16/04/2015]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bfecec1f-dbfe-4d53-b32b-aaf75ee944ee" x="493" y="39" width="79" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[GNKL-T-7 F 14 F]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6739bbb3-64a6-43a2-87fd-8e5457cab64f" x="0" y="39" width="60" height="11"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN: 0]]></text>
+			</staticText>
 		</band>
 	</lastPageFooter>
 	<summary>
-		<band height="255">
+		<band height="151">
 			<textField pattern="###,###,###,##0">
 				<reportElement uuid="725d5750-7548-47dc-8fe3-564b87a38ce5" x="341" y="8" width="57" height="13"/>
 				<textElement textAlignment="Right">

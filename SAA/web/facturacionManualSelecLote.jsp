@@ -167,7 +167,7 @@
                         while (rset.next()) {
                             int cant = 0, cantTemp = 0;
                             int cantLot = rset.getInt(5);
-                            ResultSet rset2 = con.consulta("select F_Cant from tb_facttemp where F_IdLot = '" + rset.getString("F_IdLote") + "' and F_StsFact ='0' ");
+                            ResultSet rset2 = con.consulta("select SUM(F_Cant) from tb_facttemp where F_IdLot = '" + rset.getString("F_IdLote") + "' and F_StsFact <5 ");
                             while (rset2.next()) {
                                 cantTemp = rset2.getInt(1);
                             }

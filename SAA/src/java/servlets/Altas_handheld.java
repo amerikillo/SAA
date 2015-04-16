@@ -171,6 +171,9 @@ public class Altas_handheld extends HttpServlet {
                             anofec = fcdu - 5;
                         }
                     }
+                    if (cla_pro.equals("4186")) {
+                        Costo = Costo / 30;
+                    }
                     String FeFab = anofec + "-" + cmm + "-" + cdd;
                     IVAPro = (cantidad * Costo) * IVA;
                     Monto = cantidad * Costo;
@@ -243,6 +246,9 @@ public class Altas_handheld extends HttpServlet {
                         }
                     }
 
+                    if (cla_pro.equals("4186")) {
+                        Costo = Costo / 30;
+                    }
                     IVAPro = (cantidad * Costo) * IVA;
                     Monto = cantidad * Costo;
                     MontoIva = Monto + IVAPro;

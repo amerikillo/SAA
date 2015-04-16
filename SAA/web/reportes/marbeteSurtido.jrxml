@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="marbeteSurtido" language="groovy" columnCount="2" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="376" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cdf28c87-482c-48a9-a5a4-6179bb1e655f">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="1"/>
 	<parameter name="idFact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -22,7 +22,8 @@
 	(f.F_Cant MOD p.F_Pzs),
 	m.F_DesPro,
 	l.F_IdLote,
-	f.F_Id
+	f.F_Id,
+	f.F_IdFact
 FROM
 	tb_facttemp f,
 	tb_lote l,
@@ -78,7 +79,7 @@ AND F_IdFact = $P{idFact}
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="281" splitType="Stretch">
+		<band height="288" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="24095a33-8ecb-4868-a3cb-14f83bf600cf" x="1" y="169" width="66" height="13"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -94,7 +95,7 @@ AND F_IdFact = $P{idFact}
 				<text><![CDATA[Caducidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="fa1d4d41-d807-42c2-83b0-aa43cf00671a" x="1" y="43" width="83" height="14"/>
+				<reportElement uuid="fa1d4d41-d807-42c2-83b0-aa43cf00671a" x="1" y="49" width="83" height="14"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -128,7 +129,7 @@ AND F_IdFact = $P{idFact}
 				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c41ec14f-48ce-4c7f-8610-1953f2ef3ea8" x="84" y="43" width="279" height="14"/>
+				<reportElement uuid="c41ec14f-48ce-4c7f-8610-1953f2ef3ea8" x="84" y="49" width="279" height="14"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -198,7 +199,7 @@ AND F_IdFact = $P{idFact}
 				<textFieldExpression><![CDATA[$F{F_Cant}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="619b270b-34d2-4819-be1e-411f59e02d08" x="19" y="2" width="344" height="24"/>
+				<reportElement uuid="619b270b-34d2-4819-be1e-411f59e02d08" x="100" y="2" width="170" height="24"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="18"/>
 				</textElement>
@@ -237,6 +238,43 @@ AND F_IdFact = $P{idFact}
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Id}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="0897d241-d9f1-41e6-90fa-7b105dbb9455" x="1" y="35" width="83" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Concentrado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1ecf30b6-a0df-4997-972d-9b7a6d6e99d0" x="84" y="35" width="279" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{F_IdFact}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="2f929d54-4c40-467a-8025-859064f7d545" x="1" y="2" width="83" height="33"/>
+				<imageExpression><![CDATA["Logo GNK claro2.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="fba54a96-f0b7-4367-9a58-3fb319f7e2e5" x="293" y="273" width="79" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[GNKL-T-7 F 30 B]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ff4b1a0f-2efe-4c0d-ada2-168c8f4058c1" x="128" y="274" width="96" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA: 16/04/2015]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="525d239e-de23-4ee0-b002-3c06c7596279" x="1" y="274" width="60" height="11"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN: 0]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

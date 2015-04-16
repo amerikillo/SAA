@@ -29,29 +29,29 @@
     try {
         if (request.getParameter("accion").equals("buscar")) {
             if (!request.getParameter("F_ClaPro").equals("") && request.getParameter("F_ClaPro") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_DesPro from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_ClaPro = '" + request.getParameter("F_ClaPro") + "'";
             }
             if (!request.getParameter("F_ClaLot").equals("") && request.getParameter("F_ClaLot") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_DesPro from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_ClaLot = '" + request.getParameter("F_ClaLot") + "'";
             }
             if (!request.getParameter("F_Ubica").equals("") && request.getParameter("F_Ubica") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_DesPro from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_CBUbica = '" + request.getParameter("F_Ubica") + "'";
             }
             if (!request.getParameter("F_Cb").equals("") && request.getParameter("F_Cb") != null) {
-                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "' and F_ExiLot!=0";
+                qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_DesPro from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "' and F_ExiLot!=0";
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "'";
             }
         }
         if (request.getParameter("accion").equals("porUbicar")) {
 
-            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
+            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_DesPro from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where  F_Ubica='NUEVA'";
         }
         if (request.getParameter("accion").equals("mostrarTodas")) {
-            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot from v_existencias where F_ExiLot!=0";
+            qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_DesPro from v_existencias where F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias";
         }
 
@@ -61,7 +61,7 @@
 
     try {
         con.conectar();
-        rset = con.consulta(qry1);
+        rset = con.consulta("select sum(F_ExiLot) as totalPiezas from tb_lote");
         while (rset.next()) {
             totalPiezas = rset.getInt("totalPiezas");
         }
@@ -86,6 +86,81 @@
         <form action="ubicacionesConsultas.jsp" method="post">
             <h1>SIALSS</h1>
             <hr />
+            <!--div class="row">
+                <div class="col-sm-6">
+                    Nivel de ocupación en almacén:
+                    <%
+                        int totalPosiciones = 0;
+                        int totalOcupada = 0;
+                        try {
+                            con.conectar();
+                            ResultSet rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'A%'");
+                            while (rsetUbica.next()) {
+                                totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
+                            }
+                            rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'A%' and F_ExiLot!=0 group by F_Ubica");
+                            while (rsetUbica.next()) {
+                                totalOcupada++;
+                            }
+
+                            rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'B%'");
+                            while (rsetUbica.next()) {
+                                totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
+                            }
+                            rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'B%' and F_ExiLot!=0 group by F_Ubica");
+                            while (rsetUbica.next()) {
+                                totalOcupada++;
+                            }
+
+                            rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'C%'");
+                            while (rsetUbica.next()) {
+                                totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
+                            }
+                            rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'C%' and F_ExiLot!=0 group by F_Ubica");
+                            while (rsetUbica.next()) {
+                                totalOcupada++;
+                            }
+
+                            con.cierraConexion();
+                        } catch (Exception e) {
+
+                        }
+                        double porcentaje = (double) totalOcupada * 100 / (double) totalPosiciones;
+                        //out.print(formatter.format(totalPosiciones));
+                        int piezasUbica = totalPiezas / totalOcupada;
+                        int ubicaRestantes = totalPosiciones - totalOcupada;
+                    %>
+
+                    <%=formatter.format(totalOcupada)%> de <%=formatter.format(totalPosiciones)%> posiciones
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <%=formatterDecimal.format(porcentaje)%>%;">
+                            <%=formatterDecimal.format(porcentaje)%>%
+                        </div>
+                    </div>
+                </div>
+            </div-->
+            <!--div class="row">
+                <div class="col-sm-6">
+                    Piezas aprox. por Ubicación: <%=formatter.format(piezasUbica)%>
+                </div>
+
+                <div class="col-sm-3 text-left">
+                    <small>0%</small>
+                </div>
+                <div class="col-sm-3 text-right">
+                    <small>100%</small>
+                </div>
+                <div class="col-sm-12">
+                    Ubicaciones Restantes: <%=formatter.format(ubicaRestantes)%>
+                </div>
+                <div class="col-sm-12">
+                    Estimado de piezas disponibles para recibir: <%=formatter.format(ubicaRestantes * piezasUbica)%>
+                </div>
+            </div>
+            <hr/-->
             <div class="row small">
                 <h5 class="col-sm-1">Clave</h5>
                 <div class="col-sm-2">
@@ -99,7 +174,7 @@
                 <div class="col-sm-2">
                     <input class="form-control input-sm" placeholder="CB Ubicación" name="F_Ubica" />
                 </div>
-                <h5 class="col-sm-1">CB Med</h5>
+                <h5 class="col-sm-1">CB Ins</h5>
                 <div class="col-sm-2">
                     <input class="form-control input-sm" placeholder="CB Insumo" name="F_Cb" />
                 </div>
@@ -125,6 +200,7 @@
             <thead>
                 <tr>
                     <td>Clave</td>
+                    <td>Descripción</td>
                     <td>Lote</td>
                     <td>Caducidad</td>
                     <td>Ubicación</td>
@@ -141,6 +217,7 @@
                 %>
                 <tr>
                     <td><%=rset2.getString("F_ClaPro")%></td>
+                    <td><small><%=rset2.getString("F_DesPro")%></small></td>
                     <td><%=rset2.getString("F_ClaLot")%></td>
                     <td><%=rset2.getString("F_FecCad")%></td>
                     <td><%=rset2.getString("F_DesUbi")%></td>

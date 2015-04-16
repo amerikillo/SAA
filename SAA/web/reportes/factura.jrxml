@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d36d56d-e705-43d8-bec6-461dd4e714a4">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="288"/>
 	<parameter name="Folfact" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT DISTINCT
@@ -120,16 +120,16 @@ ORDER BY
 		<band/>
 	</background>
 	<pageHeader>
-		<band height="85">
+		<band height="98">
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="2fa00f35-a6fa-4f60-9d8e-1312e126dafa" x="122" y="61" width="276" height="11"/>
+				<reportElement uuid="2fa00f35-a6fa-4f60-9d8e-1312e126dafa" x="122" y="73" width="276" height="11"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_NomCli}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="08d9dc9d-ff07-45d2-9121-3965da3c1de8" mode="Opaque" x="408" y="50" width="90" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="08d9dc9d-ff07-45d2-9121-3965da3c1de8" mode="Opaque" x="408" y="62" width="90" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
@@ -143,21 +143,21 @@ ORDER BY
 				<text><![CDATA[CONTROL DE ALMACÉN Y ABASTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bbe4a43b-0a00-4c22-8913-ec6c4df8ffe9" x="10" y="50" width="214" height="11"/>
+				<reportElement uuid="bbe4a43b-0a00-4c22-8913-ec6c4df8ffe9" x="10" y="62" width="214" height="11"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[PROYECTO: ISEM COMPRA CONSOLIDADA]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="df805613-084e-4635-84ef-0b7a9f059437" x="498" y="61" width="74" height="11"/>
+				<reportElement uuid="df805613-084e-4635-84ef-0b7a9f059437" x="498" y="73" width="74" height="11"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_FecEnt}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="00000">
-				<reportElement uuid="3b3f968c-19a7-4dd5-8f92-1bc2c6ba4e5f" x="498" y="50" width="74" height="11"/>
+				<reportElement uuid="3b3f968c-19a7-4dd5-8f92-1bc2c6ba4e5f" x="498" y="62" width="74" height="11"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -171,7 +171,7 @@ ORDER BY
 				<text><![CDATA[GNK Logística S.A. de C.V.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="cbf4da09-a22e-4794-b4f7-e545305d4278" mode="Opaque" x="401" y="61" width="97" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="cbf4da09-a22e-4794-b4f7-e545305d4278" mode="Opaque" x="401" y="73" width="97" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
@@ -201,26 +201,33 @@ ORDER BY
 				<text><![CDATA[CEDIS Lerma Park]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="448d2aee-a3d1-4def-9e18-6a8315075829" x="10" y="61" width="112" height="11"/>
+				<reportElement uuid="448d2aee-a3d1-4def-9e18-6a8315075829" x="10" y="73" width="112" height="11"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[PUNTO DE ENTREGA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="123a43d9-1de1-404f-9b50-6522ec600a3e" x="10" y="74" width="112" height="11"/>
+				<reportElement uuid="123a43d9-1de1-404f-9b50-6522ec600a3e" x="10" y="86" width="112" height="11"/>
 				<textElement>
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[NO. ORDEN:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="85cf5e21-d96b-4705-96ff-78b5992d5d03" x="122" y="74" width="268" height="11"/>
+				<reportElement uuid="85cf5e21-d96b-4705-96ff-78b5992d5d03" x="122" y="86" width="268" height="11"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_Req}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="2f12f5ab-5871-4f71-840c-c650d34ce3ef" x="10" y="40" width="214" height="21"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REMISIÓN]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -367,7 +374,7 @@ ORDER BY
 		<band height="7"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="51">
+		<band height="55">
 			<textField>
 				<reportElement uuid="90da2b7c-eec7-43b6-bc78-a5f7ee2f0d56" mode="Opaque" x="400" y="2" width="130" height="13" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
@@ -393,10 +400,31 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="b7a551cb-bae6-4680-9281-8d4d5397e73f" x="204" y="43" width="164" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA: 16/04/2015]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cc8b2895-5006-4686-b83e-a30c1555f58c" x="458" y="43" width="114" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[GNKL-T-7 F 12G]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6df7d09c-458b-4624-9e45-806d41bf2348" x="0" y="43" width="60" height="11"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN: 0]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="44">
+		<band height="50">
 			<textField>
 				<reportElement uuid="bbaded5d-90cb-4843-8b4c-a0a34ee16569" mode="Opaque" x="401" y="1" width="130" height="13" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
@@ -421,6 +449,27 @@ ORDER BY
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ba2ba1ac-981e-4b56-85ae-167d01a8419c" x="458" y="39" width="114" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[GNKL-T-7 F 12G]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="78170670-cb37-4abe-be2e-38f117dc96e6" x="0" y="39" width="60" height="11"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN: 0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1365b985-4235-4d3e-afe5-16525778adb6" x="204" y="39" width="164" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA: 16/04/2015]]></text>
 			</staticText>
 		</band>
 	</lastPageFooter>

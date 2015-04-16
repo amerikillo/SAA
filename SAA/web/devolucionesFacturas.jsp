@@ -67,7 +67,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div>
@@ -150,14 +150,16 @@
                                     <td><%=rset.getString(9)%></td>
                                     <td><%=rset.getString(10)%></td>
                                     <td><%=rset.getString(11)%></td>
-                                    <td>
+                                    <td align="center">
                                         <%
                                             if (rset.getString("F_StsFact").equals("A")) {
                                         %>
+
                                         <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdFact")%>"><span class="glyphicon glyphicon-remove-circle"></span></a>
-                                            <%
-                                            } else {
-                                            %>
+                                        <input class="checkbox-inline" value="<%=rset.getString("F_IdFact")%>" onchange="Pruebachk(this,<%=request.getParameter("fol_gnkl")%>)" type="checkbox" id="chkDev" name="chkDev">
+                                        <%
+                                        } else {
+                                        %>
                                         <a href="#" title="<%=rset.getString("F_Obs")%>">Observaciones</a>
                                         <%
                                             }
@@ -176,6 +178,9 @@
                                 %>
                             </tbody>
                         </table>
+                        <div align="right">
+                            <a class="btn btn-warning disabled" id="devolVarias" data-toggle="modal" data-target="#DevolucionMultiple">Devolver Varias</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -187,12 +192,48 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-
-
-
         <!--
                 Modal
         -->
+        <div id="DevolucionMultiple" class="modal fade in" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a data-dismiss="modal" class="close">×</a>
+                        <h3>Devolución Multiple</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="panel panel-body">
+                            <table id="tbDev">
+                                <tr><td>
+                                        <%=sesion.getAttribute("list")%>
+                                    </td></tr>
+                            </table>
+                            <div class="row h4">
+                                Observaciones
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <textarea name="ObserM" id="ObserM" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="row h4">
+                                Contraseña
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input name="ContraDevoM" id="ContraDevoM" class="form-control" type="password" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary disabled" id="devM" onclick="return validaDevolucionM();" name="devM" value="Devolución">Devolver</button>
+                        <a href="#" data-dismiss="modal" class="btn btn-primary">Cerrar</a>
+                    </div>
+                </div>
+            </div>                
+        </div> 
         <%
             try {
                 con.conectar();
@@ -250,7 +291,7 @@
                                 </div>
                             </div>
                             <div style="display: none;" class="text-center" id="Loader">
-                                <img src="imagenes/ajax-loader-1.gif" height="150" />
+                                <img src="imagenes/ajax-loader-1.gif" height="150" alt="" />
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary" id="<%=rset.getString("F_IdFact")%>" disabled onclick="return validaDevolucion(this.id);" name="accion" value="devolucion">Devolver</button>
@@ -274,50 +315,110 @@
         <!--
         /Modal
         -->
-    </body>
-</html>
-
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script>
-                                    $(document).ready(function() {
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
+                                    $(document).ready(function () {
                                         $('#datosCompras').dataTable();
                                     });
-</script>
-<script>
-    $(function() {
-        $("#fecha").datepicker();
-        $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
+        </script>
+        <script type="text/javascript">
+            $(function () {
+                $("#fecha").datepicker();
+                $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+            });
 
-    function validaDevolucion(e) {
-        var id = e;
-        if (document.getElementById('Obser' + id).value === "") {
-            alert("Ingrese las observaciones de la devolución")
-            return false;
-        }
-    }
+            function validaDevolucion(e) {
+                var id = e;
+                if (document.getElementById('Obser' + id).value === "") {
+                    alert("Ingrese las observaciones de la devolución");
+                    return false;
+                }
+            }
 
-    function validaContra(elemento) {
-        //alert(elemento);
-        var pass = document.getElementById(elemento).value;
-        var id = elemento.split("ContraDevo");
-        if (pass === "rosalino") {
-            //alert(pass);
-            document.getElementById(id[1]).disabled = false;
-            //$(id[1]).prop("disabled", false);
-        } else {
-            document.getElementById(id[1]).disabled = true;
-            //$(id[1]).prop("disabled", true);
-        }
-    }
-</script>
+            function validaContra(elemento) {
+                //alert(elemento);
+                var pass = document.getElementById(elemento).value;
+                var id = elemento.split("ContraDevo");
+                if (pass === "rosalino") {
+                    //alert(pass);
+                    document.getElementById(id[1]).disabled = false;
+                    //$(id[1]).prop("disabled", false);
+                } else {
+                    document.getElementById(id[1]).disabled = true;
+                    //$(id[1]).prop("disabled", true);
+                }
+            }
+            $('#ContraDevoM').keyup(function(){
+                if($('#ContraDevoM').val()==="rosalino"){
+                   $('#devM').removeClass("disabled");
+                } else {
+                    $('#devM').addClass("disabled");
+                }
+            });
+            $('#devM').click(function(){
+                if (document.getElementById('ObserM').value === "") {
+                    alert("Ingrese las observaciones de la devolución");
+                    return false;
+                }
+                var dir = "DevolucionMultiple";
+                var ObserM=$('#ObserM').val();
+                $.ajax({
+                        url: dir,
+                        data: {que: "g", ObserM: ObserM},
+                        success: function (data) {
+                            if(data!=="no"){
+                                alert('Devoluciones Exitosas');
+                                window.location.reload();
+                            }else{
+                                alert('Error al Realizar las Devoluciones');
+                                window.location.reload();
+                            }      
+                        },
+                        error: function () {
+                            alert('Error al Realizar las Devoluciones');
+                            window.location.href='devolucionesFacturas.jsp';
+                        }
+                    });
+            });
+            function Pruebachk(chk, folio) {
+                if (chk.checked === true) {
+                    var id = chk.value;
+                    var dir = "DevolucionMultiple";
+                    $.ajax({
+                        url: dir,
+                        data: {que: "add", id: id, folio: folio},
+                        success: function (data) {
+                            $('#devolVarias').removeClass("disabled");
+                            $('#tbDev').load('devolucionesFacturas.jsp #tbDev');
+                        },
+                        error: function () {
+                            alert("Ocurrió un error");
+                        }
+                    });
+                } else {
+                    var id = chk.value;
+                    var dir = "DevolucionMultiple";
+                    $.ajax({
+                        url: dir,
+                        data: {que: "rem", id: id, folio: folio},
+                        success: function (data) {
+                            $('#tbDev').load('devolucionesFacturas.jsp #tbDev');
+                        },
+                        error: function () {
+                            alert("Ocurrió un error");
+                        }
+                    });
+                }
+            }
+        </script>
+    </body>
+</html>

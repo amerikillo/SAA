@@ -270,6 +270,9 @@ public class CompraAutomaticaHH extends HttpServlet {
                 if (Resto.equals("")) {
                     Resto = "0";
                 }
+                        if (Clave.equals("4186")) {
+                            Costo = Costo / 30;
+                        }
                 Resto = Resto.replace(",", "");
                 IVAPro = (Double.parseDouble(Piezas) * Costo) * IVA;
                 Monto = Double.parseDouble(Piezas) * Costo;
@@ -349,6 +352,9 @@ public class CompraAutomaticaHH extends HttpServlet {
                         String Resto = request.getParameter("Resto_" + rset.getString("F_IdIsem"));
                         if (Resto.equals("")) {
                             Resto = "0";
+                        }
+                        if (Clave.equals("4186")) {
+                            Costo = Costo / 30;
                         }
                         IVAPro = (Double.parseDouble(Piezas) * Costo) * IVA;
                         Monto = Double.parseDouble(Piezas) * Costo;

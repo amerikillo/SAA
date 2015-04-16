@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.sql.ResultSet"%>
-<%@page import="conn.ConectionDB_SQLServer"%>
+<%@page import="conn.ConectionDB_Modula"%>
 <%@page import="java.text.DecimalFormatSymbols"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="conn.ConectionDB"%>
@@ -31,7 +31,7 @@
         response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
-    ConectionDB_SQLServer conSql = new ConectionDB_SQLServer();
+    ConectionDB_Modula conSql = new ConectionDB_Modula();
 
     String fol_gnkl = "", fol_remi = "", orden_compra = "", fecha = "";
     try {

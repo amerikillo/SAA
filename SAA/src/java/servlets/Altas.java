@@ -165,6 +165,9 @@ public class Altas extends HttpServlet {
                             anofec = fcdu - 5;
                         }
                     }
+                    if (cla_pro.equals("4186")) {
+                        Costo = Costo / 30;
+                    }
                     String FeFab = anofec + "-" + cmm + "-" + cdd;
                     IVAPro = (piezas * Costo) * IVA;
                     Monto = piezas * Costo;
@@ -232,6 +235,9 @@ public class Altas extends HttpServlet {
                     String resto = request.getParameter("Resto");
                     if (resto.equals("")) {
                         resto = "0";
+                    }
+                    if (cla_pro.equals("4186")) {
+                        Costo = Costo / 30;
                     }
                     IVAPro = (piezas * Costo) * IVA;
                     Monto = piezas * Costo;

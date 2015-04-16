@@ -97,13 +97,13 @@
                 %>
 
                 <div class="row">
-                    <form action="AbastecerDistribuidor">
+                    <form action="AbastecerDistribuidor?accion=enviarCEDISSendero" onsubmit="mandaRemision()" method="post">
                         <h5 class="col-sm-3">Total Solicitado: <%=formatter.format(req)%></h5>
                         <h5 class="col-sm-3">Total Surtido: <%=formatter.format(sur)%></h5>
                         <h5 class="col-sm-3">Total Importe: $ <%=formatterDecimal.format(imp)%></h5>
                         <a class="btn btn-default" href="reimp_factura.jsp">Regresar</a>
                         <input name="F_ClaDoc" value="<%=request.getParameter("fol_gnkl")%>" class="hidden" />
-                        <button name="accion" value="enviarMedalfa" class="btn btn-primary">Enviar MEDALFA</button>
+                        <button  id="btnEnviaRemi" class="btn btn-primary" onclick="return confirm('Seguro de Enviar la Remisión?')">Enviar CEDIS Sendero</button>
                     </form>
                 </div>
                 <%
@@ -116,6 +116,9 @@
 
                     }
                 %>
+                <div class="text-center" id="imagenLoader">
+                    <img src="imagenes/ajax-loader-1.gif" width="100" />
+                </div>
                 <br />
                 <div class="panel panel-primary">
                     <div class="panel-body">
@@ -260,33 +263,37 @@
         <br><br><br>
         <div class="navbar navbar-fixed-bottom navbar-inverse">
             <div class="text-center text-muted">
-                GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
+                GNK Logística || Desarrollo de Aplicaciones 2009 - 2015 <span class="glyphicon glyphicon-registration-mark"></span><br />
                 Todos los Derechos Reservados
             </div>
         </div>
+
+
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
+                            $(document).ready(function() {
+                                $('#imagenLoader').toggle();
+                                $('#datosCompras').dataTable();
+                                $('#devoRemi').dataTable();
+                            });
+
+
+                            function mandaRemision() {
+                                $('#imagenLoader').toggle();
+                                $('#btnEnviaRemi').prop('disabled', true);
+                            }
+
+        </script>
+
+
     </body>
 </html>
-
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#datosCompras').dataTable();
-        $('#devoRemi').dataTable();
-    });
-</script>
-<script>
-    $(function() {
-        $("#fecha").datepicker();
-        $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
-</script>

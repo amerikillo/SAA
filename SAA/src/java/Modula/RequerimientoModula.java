@@ -6,7 +6,7 @@
 package Modula;
 
 import conn.ConectionDB;
-import conn.ConectionDB_SQLServer;
+import conn.ConectionDB_Modula;
 import java.sql.ResultSet;
 
 /**
@@ -19,7 +19,7 @@ public class RequerimientoModula {
         java.text.DateFormat df3 = new java.text.SimpleDateFormat("yyyy-MM-dd");
         java.text.DateFormat df4 = new java.text.SimpleDateFormat("yyyyMMdd");
         ConectionDB con = new ConectionDB();
-        ConectionDB_SQLServer conModula = new ConectionDB_SQLServer();
+        ConectionDB_Modula conModula = new ConectionDB_Modula();
         try {
             con.conectar();
             conModula.conectar();

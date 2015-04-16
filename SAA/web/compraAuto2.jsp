@@ -639,7 +639,7 @@
                                     <%}%>
                                 </div>
                                 <%
-                                    if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")) {
+                                    if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")|| tipo.equals("8")) {
                                 %>
                                 <div class="col-sm-4">
                                     <button class="btn btn-block btn-primary" name="accion" id="accion" value="guardarLote" onclick="return validaCompra();" >Guardar Lote</button>

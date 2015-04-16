@@ -28,7 +28,7 @@ if(!Valida.equals("Valido")){
         <meta charset="utf-8">
         
         <link rel="shortcut icon" type="image/ico" href="img/Logo GNK claro2.jpg">
-        <title>AGREGAR ISSEMYM</title>
+        <title>AGREGAR</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script src="ckeditor/ckeditor.js"></script>
@@ -42,7 +42,7 @@ if(!Valida.equals("Valido")){
             <div class="row-fluid">
                 <header class="span12"> 
                     <img src="img/Logo GNK claro2.jpg" class="pull-left" id="logo-savi" height="70" width="140" />
-                    <h3 class=" span6 offset1 text-center">PROYECTO ISSEMYM</h3>	       	
+                    <h3 class=" span6 offset1 text-center">PROYECTO</h3>	       	
                     <h3 class=" span6 offset1 text-center">SISTEMA UBICACIONES Y REDISTRIBUCIÓN</h3>	       	
                     <div class="row-fluid">
                         <nav class="span12">
