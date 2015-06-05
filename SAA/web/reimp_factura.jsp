@@ -64,10 +64,15 @@
 
             <div class="row">
                 <h3 class="col-sm-3">Administrar Remisiones</h3>
-                <div class="col-sm-2 col-sm-offset-7">
+                <div class="col-sm-2 col-sm-offset-5">
                     <br/>
-                    <a class="btn btn-success" href="gnrFacturaConcentrado.jsp" target="_blank">Exportar Global</a>
-                </div><br/>
+                    <a class="btn btn-success" href="gnrFacturaConcentrado.jsp?fecha=2014" target="_blank">Exportar Global 2014</a>
+                </div>
+                <div class="col-sm-2">
+                    <br/>
+                    <a class="btn btn-success" href="gnrFacturaConcentrado.jsp?fecha=2015" target="_blank">Exportar Global 2015</a>
+                </div>
+                <br/>
             </div>
             <div class="row">
                 <label class="col-sm-2">Filtrar por fecha</label>
@@ -97,7 +102,7 @@
                                     <td>Imprimir</td>
                                     <td>Ver Factura</td>
                                     <td>Devolución</td>
-                                    <%                                        if (usua.equals("oscar")) {
+                                    <%                                        if (usua.equals("oscar") || tipo.equals("8")) {
                                             out.println("<td>Reintegrar Insumo</td>");
                                         }
                                     %>
@@ -111,16 +116,16 @@
                                         if (session.getAttribute("whereRF") == null) {
                                             where = "WHERE F.F_FecEnt BETWEEN '01/01/01' AND '01/01/01'";
                                         } else {
-                                            
-                                            where=session.getAttribute("whereRF").toString();
+
+                                            where = session.getAttribute("whereRF").toString();
                                         }
                                     } catch (Exception ex) {
                                         where = "WHERE F.F_FecEnt BETWEEN '01/01/01' AND '01/01/01'";
                                     }
                                     try {
                                         con.conectar();
-                                        try {                                            
-                                            ResultSet rset = con.consulta("SELECT F.F_ClaDoc,F.F_ClaCli,U.F_NomCli,DATE_FORMAT(F.F_FecApl,'%d/%m/%Y') AS F_FecApl,SUM(F.F_Monto) AS F_Costo,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt FROM tb_factura F INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli "+where+" GROUP BY F.F_ClaDoc ORDER BY F.F_ClaDoc+0;");
+                                        try {
+                                            ResultSet rset = con.consulta("SELECT F.F_ClaDoc,F.F_ClaCli,U.F_NomCli,DATE_FORMAT(F.F_FecApl,'%d/%m/%Y') AS F_FecApl,SUM(F.F_Monto) AS F_Costo,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt FROM tb_factura F INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli " + where + " GROUP BY F.F_ClaDoc ORDER BY F.F_ClaDoc+0;");
                                             while (rset.next()) {
 
                                 %>
@@ -143,7 +148,7 @@
                                     </td>
                                     <td>
                                         <%
-                                            if (tipo.equals("7")||tipo.equals("8")) {
+                                            if (tipo.equals("7") || tipo.equals("8")) {
                                         %>
                                         <form action="devolucionesFacturas.jsp" method="post">
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString(1)%>">
@@ -154,7 +159,7 @@
                                         %>
                                     </td>
                                     <%
-                                        if (usua.equals("oscar")||tipo.equals("8")) {
+                                        if (usua.equals("oscar") || tipo.equals("8")) {
                                     %>
                                     <td>
                                         <%
@@ -214,13 +219,13 @@
         <script src="js/jquery.dataTables.js"></script>
         <script src="js/dataTables.bootstrap.js"></script>
         <script>
-                            $(document).ready(function () {
+                            $(document).ready(function() {
                                 $('#datosCompras').dataTable();
                                 $('#imagenLoader').toggle();
                             });
         </script>
         <script type="text/javascript">
-            $(function () {
+            $(function() {
                 $("#fecha").datepicker();
                 $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
                 $('#fIni').datepicker();
@@ -233,11 +238,11 @@
                     $.ajax({
                         url: dir,
                         data: {que: "add", id: id},
-                        success: function (data) {
+                        success: function(data) {
                             $('#btnCedisSendero').removeClass("disabled");
                             //$('#tbDev').load('devolucionesFacturas.jsp #tbDev');
                         },
-                        error: function () {
+                        error: function() {
                             alert("Ocurrió un error");
                         }
                     });
@@ -247,31 +252,31 @@
                     $.ajax({
                         url: dir,
                         data: {que: "rem", id: id},
-                        success: function (data) {
+                        success: function(data) {
                             //$('#tbDev').load('devolucionesFacturas.jsp #tbDev');
                         },
-                        error: function () {
+                        error: function() {
                             alert("Ocurrió un error");
                         }
                     });
                 }
             }
-            $('#btnCedisSendero').click(function () {
+            $('#btnCedisSendero').click(function() {
                 var dir = "EnviarCedisSendero";
                 $('#imagenLoader').toggle();
                 $.ajax({
                     url: dir,
                     data: {que: "g"},
-                    success: function (data) {
+                    success: function(data) {
                         //$('#datosCompras').load('reimp_factura.jsp #datosCompras');
                         window.location.reload();
                     },
-                    error: function () {
+                    error: function() {
                         alert("Ocurrió un error");
                     }
                 });
             });
-            $('#btnBuscarFecha').click(function () {
+            $('#btnBuscarFecha').click(function() {
                 var fIni = $('#fIni').val();
                 var fFin = $('#fFin').val();
                 var dir = "EnviarCedisSendero";
@@ -285,26 +290,26 @@
                 }
                 $.ajax({
                     url: dir,
-                    data: {que: "b",fIni: fIni,fFin: fFin},
-                    success: function (data) {
+                    data: {que: "b", fIni: fIni, fFin: fFin},
+                    success: function(data) {
                         //$('#datosCompras').load('reimp_factura.jsp #datosCompras');
                         window.location.reload();
                     },
-                    error: function () {
+                    error: function() {
                         alert("Ocurrió un error");
                     }
                 });
             });
-            $('#btnRestablecer').click(function () {
+            $('#btnRestablecer').click(function() {
                 var dir = "EnviarCedisSendero";
                 $.ajax({
                     url: dir,
                     data: {que: "r"},
-                    success: function (data) {
+                    success: function(data) {
                         //$('#datosCompras').load('reimp_factura.jsp #datosCompras');
                         window.location.reload();
                     },
-                    error: function () {
+                    error: function() {
                         alert("Ocurrió un error");
                     }
                 });

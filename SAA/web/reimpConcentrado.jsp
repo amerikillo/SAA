@@ -113,7 +113,7 @@
                                     <td>
                                         <form action="Facturacion" method="post">
                                             <%
-                                                if (usua.equals("esteban")) {
+                                                if (usua.equals("esteban")||tipo.equals("7")) {
                                             %>
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_IdFact")%>">
                                             <button class="btn btn-block btn-danger" name="accion" value="EliminaConcentrado" onclick="return confirm('Seguro de eliminar este concentrado?')"><span class="glyphicon glyphicon-remove"></span></button>
@@ -130,7 +130,7 @@
                                     </td>
                                     <td>
                                         <%
-                                            if (usua.equals("esteban") || usua.equals("americo") || usua.equals("sistemas")) {
+                                            if (usua.equals("esteban") || usua.equals("americo") || usua.equals("sistemas")||tipo.equals("7")) {
                                         %>
                                         <button class="btn btn-block btn-success" name="btnEditar" id="btnEditar" value="Editar" onclick="EditarConcentrado('<%=rset.getString("F_IdFact")%>', '<%=rset.getString("F_NomCli")%>', '<%=rset.getString("FecEnt")%>')" data-toggle="modal" data-target="#EditarConcentrado"><span class="glyphicon glyphicon-edit"></span></button>
                                             <%

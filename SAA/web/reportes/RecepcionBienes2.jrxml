@@ -42,7 +42,7 @@
 	C.F_Pz,
 	C.F_Cajas,
 	C.F_Resto,
-	C.F_CanCom,
+	SUM(C.F_CanCom) as F_CanCom,
 	C.F_Costo,
 	C.F_ImpTo,
 	C.F_ComTot,
@@ -54,7 +54,7 @@
 FROM
 	(SELECT @csum := 0) r,
 	tb_compra C,
-	tb_lote_repisem L,
+	(select F_ClaPro, F_FecCad, F_ClaLot, F_FolLot from tb_lote_repisem l group by l.F_ClaPro, l.F_FecCad, l.F_ClaLot) as L ,
 	tb_medica M,
 	tb_proveedor P,
 	tb_pedidoisem I
@@ -67,7 +67,7 @@ AND C.F_ClaPro = I.F_Clave
 AND C.F_OrdCom = $P{F_OrdCom}
 AND C.F_FolRemi = $P{F_FolRemi}
 GROUP BY
-	C.F_IdCom
+	L.F_ClaPro, L.F_ClaLot, L.F_FecCad
 ORDER BY
 	C.F_IdCom;]]>
 	</queryString>
@@ -110,7 +110,7 @@ ORDER BY
 	<field name="F_Resto" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="F_CanCom" class="java.lang.Integer">
+	<field name="F_CanCom" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="F_Costo" class="java.lang.Double">
@@ -283,7 +283,7 @@ ORDER BY
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20">
+		<band height="90">
 			<line>
 				<reportElement uuid="d635f727-2cd1-435a-aadc-b06bc9985991" positionType="FixRelativeToBottom" x="64" y="17" width="657" height="1"/>
 			</line>

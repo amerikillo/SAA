@@ -47,7 +47,7 @@
             <table class="table table-bordered table-condensed table-striped" id="tablaCB">
                 <thead>
                     <tr>
-                        <td>SICCAL</td>
+                        <td>CLAVE</td>
                         <td>Lote</td>
                         <td>Caducidad</td>
                         <td>CB</td>

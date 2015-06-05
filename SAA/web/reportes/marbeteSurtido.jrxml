@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="marbeteSurtido" language="groovy" columnCount="2" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="376" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cdf28c87-482c-48a9-a5a4-6179bb1e655f">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="idFact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -79,7 +79,7 @@ AND F_IdFact = $P{idFact}
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="288" splitType="Stretch">
+		<band height="274" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="24095a33-8ecb-4868-a3cb-14f83bf600cf" x="1" y="169" width="66" height="13"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -109,7 +109,7 @@ AND F_IdFact = $P{idFact}
 				<text><![CDATA[Ubicación]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement uuid="c1ca1a14-52ce-4512-8444-a31528999fe6" x="160" y="246" width="200" height="21"/>
+				<reportElement uuid="c1ca1a14-52ce-4512-8444-a31528999fe6" x="160" y="237" width="200" height="21"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
 					<jr:codeExpression><![CDATA[$F{F_Id}]]></jr:codeExpression>
 				</jr:barbecue>
@@ -212,7 +212,7 @@ AND F_IdFact = $P{idFact}
 				<reportElement uuid="65e4288d-6f78-4ff3-98a8-d22e7e23e5a7" x="0" y="273" width="372" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="84d79c3e-5876-4dc9-a490-402d73fcbe77" x="1" y="246" width="66" height="21"/>
+				<reportElement uuid="84d79c3e-5876-4dc9-a490-402d73fcbe77" x="1" y="237" width="66" height="21"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
@@ -232,7 +232,7 @@ AND F_IdFact = $P{idFact}
 				</jr:barbecue>
 			</componentElement>
 			<textField>
-				<reportElement uuid="3ce489cd-fc8e-4dbc-9635-00ed47ff06b9" x="67" y="246" width="93" height="21"/>
+				<reportElement uuid="3ce489cd-fc8e-4dbc-9635-00ed47ff06b9" x="67" y="237" width="93" height="21"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
@@ -255,21 +255,21 @@ AND F_IdFact = $P{idFact}
 				<imageExpression><![CDATA["Logo GNK claro2.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="fba54a96-f0b7-4367-9a58-3fb319f7e2e5" x="293" y="273" width="79" height="11"/>
+				<reportElement uuid="fba54a96-f0b7-4367-9a58-3fb319f7e2e5" x="274" y="259" width="79" height="11"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[GNKL-T-7 F 30 B]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ff4b1a0f-2efe-4c0d-ada2-168c8f4058c1" x="128" y="274" width="96" height="11"/>
+				<reportElement uuid="ff4b1a0f-2efe-4c0d-ada2-168c8f4058c1" x="112" y="259" width="96" height="11"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[FECHA: 16/04/2015]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="525d239e-de23-4ee0-b002-3c06c7596279" x="1" y="274" width="60" height="11"/>
+				<reportElement uuid="525d239e-de23-4ee0-b002-3c06c7596279" x="1" y="259" width="60" height="11"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>

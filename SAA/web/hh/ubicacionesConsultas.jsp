@@ -241,7 +241,8 @@
             </tbody>
         </table>
         <hr/>
-        <h3>Total de Piezas: <%=formatter.format(totalPiezas)%></h3><hr />
+        <h3>Total de Piezas: <%=formatter.format(totalPiezas)%></h3>
+        <hr />
         <h3>Modula</h3>
         <table border="1" class="table table-bordered table-condensed table-striped" id="existModula">
             <thead>
@@ -257,12 +258,14 @@
             </thead>
             <tbody>
                 <%
+                int totalModula=0;
                     try {
 
                         conModula.conectar();
                         con.conectar();
                         ResultSet rset4 = conModula.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0 order by SCO_ARTICOLO");
                         while (rset4.next()) {
+                            totalModula=totalModula+rset4.getInt("SCO_GIAC");
                             String Descrip = "";
                             ResultSet rset5 = con.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + rset4.getString("SCO_ARTICOLO") + "'");
                             while (rset5.next()) {
@@ -289,6 +292,7 @@
                 %>
             </tbody>
         </table>
+            <h3>Total Modula: <%=formatter.format(totalModula)%></h3>
         <!-- 
         ================================================== -->
         <!-- Se coloca al final del documento para que cargue mas rapido -->

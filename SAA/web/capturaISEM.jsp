@@ -4,6 +4,9 @@
     Author     : Americo
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.util.GregorianCalendar"%>
+<%@page import="java.util.Calendar"%>
 <%@page import="conn.ConectionDB_Linux"%>
 <%@page import="java.text.*"%>
 <%@page import="conn.ConectionDB"%>
@@ -11,6 +14,9 @@
 <%@page import="javax.servlet.http.HttpSession"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%java.text.DateFormat df = new java.text.SimpleDateFormat("yyyyMMddhhmmss"); %>
+<%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
+<%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formNoCom = new DecimalFormat("000");
@@ -242,18 +248,75 @@
                             </div>
                         </div>
                         <%
+
+                            Double NIM = 0.0;
+                            int banNIM = 0;
                             try {
                                 con.conectar();
-                                ResultSet rset = con.consulta("select pp.F_CantMax, pp.F_CantMin, m.F_PrePro from tb_prodprov pp, tb_medica m where m.F_ClaPro = pp.F_ClaPro and pp.F_ClaPro = '" + claPro + "' ");
+                                ResultSet rset = con.consulta("select pp.F_CantMax, pp.F_CantMin, m.F_PrePro from tb_prodprov pp, tb_medica m where m.F_ClaPro = pp.F_ClaPro and pp.F_ClaPro = '" + claPro + "' and pp.F_ClaProve='" + proveedor + "' ");
                                 while (rset.next()) {
                                     int cantUsada = 0;
                                     int cantMax = 0;
+                                    double totalClave = 0, remisionadoClave = 0, CPM = 0, CPCM2014 = 0, invMen2014 = 0;
                                     cantMax = rset.getInt(1);
-                                    ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_pedidoisem where F_Clave='" + claPro + "' and F_StsPed !='2'");
+                                    ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_pedidoisem where F_Clave='" + claPro + "' and F_Provee='" + proveedor + "' and F_StsPed !='2'");
                                     while (rset2.next()) {
                                         cantUsada = rset2.getInt(1);
                                     }
                                     int cantRestante = cantMax - cantUsada;
+
+                                    String catalogo = "2014";
+                                    rset2 = con.consulta("select F_ClaPro from tb_cat2015 where F_ClaPro = '" + claPro + "'");
+                                    while (rset2.next()) {
+                                        catalogo = "2015";
+                                    }
+
+                                    rset2 = con.consulta("select t1.F_ClaPro from tb_cat2015 t1, tb_cat2014 t2 where t1.F_ClaPro = t2.F_ClaPro and t1.F_ClaPro = '" + claPro + "'");
+                                    while (rset2.next()) {
+                                        catalogo = "2014/2015";
+                                    }
+
+                                    int difd = 0;
+                                    try {
+                                        String F_Min = "2015-01-01";
+
+                                        if (!catalogo.equals("2015")) {
+                                            F_Min = "2014-09-01";
+                                        }
+
+                                        Calendar date = GregorianCalendar.getInstance();
+                                        Calendar date2 = GregorianCalendar.getInstance();
+                                        date.setTime(df2.parse(F_Min));
+                                        date2.setTime(new Date());
+                                        long difms = date2.getTimeInMillis() - date.getTimeInMillis();
+                                        difd = (int) (difms / (1000 * 60 * 60 * 24));
+
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    int F_ExiLot = 0;
+                                    rset2 = con.consulta("select SUM(F_ExiLot) as F_ExiLot from tb_lote where F_ClaPro = '" + claPro + "' ");
+
+                                    while (rset2.next()) {
+                                        F_ExiLot = rset2.getInt("F_ExiLot");
+                                    }
+
+                                    rset2 = con.consulta("select SUM(F_ExiLot) as F_ExiLot from tb_lote where F_ClaPro = '" + claPro + "'  ");
+                                    while (rset2.next()) {
+                                        totalClave = rset2.getInt("F_ExiLot");
+                                    }
+
+                                    rset2 = con.consulta("select SUM(F_CantSur) as F_CantSur from tb_factura where F_ClaPro = '" + claPro + "' and F_StsFact='A'  ");
+                                    while (rset2.next()) {
+                                        remisionadoClave = rset2.getDouble("F_CantSur");
+                                    }
+                                    if (remisionadoClave > 0) {
+                                        CPM = (remisionadoClave / difd) * 30;
+                                        NIM = (double) totalClave / CPM;
+                                    }
+                                    banNIM = 1;
+
                         %>
                         <div class="row">
                             <label class="col-sm-2 text-right">
@@ -347,7 +410,28 @@
                                 <input type="text" class="form-control" name="CanPro" id="CanPro" onKeyPress="return justNumbers(event);" />
                             </div>
                         </div>
-                        <br/>
+                        <div class="alert
+                             <%
+                                 if (banNIM == 1) {
+                                     if (NIM == 0) {
+                                         out.println("alert-danger");
+                                     } else if (NIM > 6) {
+                                         out.println("alert-info");
+                                     }                                  %>
+                             ">
+
+                            <%
+                                    if (NIM == 0) {
+                                        out.println("Agotada:");
+                                    } else if (NIM > 6) {
+                                        out.println("Sobre Abasto:");
+                                    }
+                                }
+                            %>
+
+
+                            Meses de Inventario <%=formatter.format(NIM)%>
+                        </div>
                         <div class="row">
                             <label class="col-sm-2 text-right">
                                 <h4>Observaciones</h4>
@@ -518,7 +602,7 @@
                         out.println("var select = document.getElementById('Clave');");
                         out.println("select.options.length = 0;");
                         int i = 1;
-                        ResultSet rset4 = con.consulta("select F_ClaPro from tb_prodprov where F_ClaProve = '" + rset3.getString(1) + "'");
+                        ResultSet rset4 = con.consulta("select F_ClaPro from tb_prodprov where F_ClaProve = '" + rset3.getString(1) + "' order by F_ClaPro asc");
 
                         out.println("select.options[select.options.length] = new Option('-Seleccione-', '');");
                         while (rset4.next()) {
@@ -534,7 +618,7 @@
             %>
                             }
 
-                            
+
         </script>
     </body>
 

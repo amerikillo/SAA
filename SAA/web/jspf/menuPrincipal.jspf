@@ -17,7 +17,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <%
-                            if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")|| tipo.equals("8")) {
+                            if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1") || tipo.equals("8")) {
                         %>
 
                         <li><a href="/SAA/captura.jsp">Entrada Manual</a></li>
@@ -27,7 +27,7 @@
                         <li class="divider"></li>
                             <%
                                 }
-                                if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")|| tipo.equals("8")) {
+                                if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5") || tipo.equals("8")) {
                             %>
                         <li><a href="/SAA/verificarCompraAuto.jsp">Verificar OC</a></li>
                             <%
@@ -40,7 +40,7 @@
                         <li><a href="#"  onclick="window.open('/SAA/creaMarbetes.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Generar Marbetes</a></li>
 
                         <%
-                            if (tipo.equals("5") || tipo.equals("3")|| tipo.equals("8")) {
+                            if (tipo.equals("5") || tipo.equals("3") || tipo.equals("8")) {
                         %>
                         <li class="divider"></li>
                         <li><a href="/SAA/hh/insumoNuevoRedist.jsp">Redistribución HH</a></li>
@@ -49,7 +49,7 @@
                                 }
                             %>
                             <%
-                                if (usua.equals("oscar")|| tipo.equals("8")) {
+                                if (usua.equals("oscar") || tipo.equals("8")) {
                             %>
                         <li class="divider"></li>
                         <li><a href="#"  onclick="window.open('/SAA/devolucionesInsumo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Cambio Físico</a></li>
@@ -68,16 +68,19 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <%
-                            if (tipo.equals("7") || tipo.equals("3")|| tipo.equals("8")) {
+                            if (tipo.equals("7") || tipo.equals("3") || tipo.equals("8")) {
                         %>
                         <li><a href="/SAA/facturacion/reqsDists.jsp">Requerimientos Distribuidores</a></li>
                         <li><a href="/SAA/requerimiento.jsp">Carga de Requerimiento</a></li>
                         <li><a href="/SAA/factura.jsp">Facturación Automática</a></li>
+                        <li><a href="/SAA/facturacionManual.jsp">Facturación Manual</a></li>
                             <%
                                 }
                             %>
+
+                        <li class="divider"></li>
                             <%
-                                if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2")|| tipo.equals("8")) {
+                                if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2") || tipo.equals("8")) {
                             %>
                         <li><a href="/SAA/validacionSurtido.jsp">Validación Surtido</a></li>
                         <li><a href="/SAA/validacionAuditores.jsp">Validación Auditores</a></li>
@@ -85,18 +88,20 @@
                                 }
                             %>
                             <%
-                                if (tipo.equals("7")|| tipo.equals("8")) {
+                                if (tipo.equals("7") || tipo.equals("8")) {
                             %>
                         <li><a href="/SAA/remisionarCamion.jsp">Generar Remisiones</a></li>
-                        <li><a href="/SAA/facturacionManual.jsp">Facturación Manual</a></li>
                             <%
                                 }
                             %>
+                        <li class="divider"></li>
                         <li><a href="#"  onclick="window.open('/SAA/verDevoluciones.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Devoluciones</a></li>
-                        <li><a href="#"  onclick="window.open('modula/modulaHistorico.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Histórico Modula</a></li>
                         <li><a href="/SAA/reimp_factura.jsp">Administrar Remisiones</a></li>
                         <li><a href="/SAA/reimpConcentrado.jsp">Reimpresión Concentrados Globales</a></li>
                         <li><a href="/SAA/comparativoGlobal.jsp">Comparativo Global</a></li>
+                        <li><a href="/SAA/facturacion/eliminaConGlob.jsp">Elimina Concentrados Globales</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"  onclick="window.open('modula/modulaHistorico.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Histórico Modula</a></li>
 
                     </ul>
                 </li>
@@ -105,7 +110,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="#"  onclick="window.open('/SAA/Ubicaciones/Inventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Inventario</a></li>
                             <%
-                                if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2")|| tipo.equals("8")) {
+                                if (tipo.equals("5") || tipo.equals("3") || tipo.equals("7") || tipo.equals("2") || tipo.equals("8")) {
                             %>
                         <li><a href="#"  onclick="window.open('/SAA/movimientosUsuarioInventario.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Movimientos por Usuario</a></li>
                         <li><a href="#"  onclick="window.open('/SAA/semaforo.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Semaforización</a></li>
@@ -131,6 +136,9 @@
                         <li><a href="#" onclick="window.open('/SAA/Entrega.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Fecha de Recibo en CEDIS</a></li> 
                         <li><a href="#" onclick="window.open('/SAA/historialOC.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Historial OC</a></li>
                         <li><a href="#" onclick="window.open('/SAA/ReporteF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte por Fecha Proveedor</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#" onclick="window.open('/SAA/reportes/existSinFact.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Existencias sin Facturación</a></li>
+                        <li><a href="#" onclick="window.open('/SAA/reportes/reporteASF.jsp', '', 'width=1200,height=800,left=50,top=50,toolbar=no')">Reporte ASF</a></li>
 
                     </ul>
                 </li>

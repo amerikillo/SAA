@@ -27,6 +27,8 @@
         <td>Existencia</td>
         <td>Ubicacion</td>
         <td>CB</td>
+        <td>Costo</td>
+        <td>Importe</td>
     </tr>
     <%
         try {
@@ -45,6 +47,8 @@
         <td><%=rset.getString("F_ExiLot")%></td>
         <td><%=rset.getString("F_DesUbi")%></td>
         <td><%=rset.getString("F_Cb")%></td>
+        <td><%=rset.getString("F_Costo")%></td>
+        <td><%=rset.getString("F_Importe")%></td>
     </tr>
     <%
             }

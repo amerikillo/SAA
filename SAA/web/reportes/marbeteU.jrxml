@@ -37,11 +37,11 @@
 		<band height="3"/>
 	</title>
 	<columnHeader>
-		<band height="243">
+		<band height="227">
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="5ea55e41-044f-472e-97ac-fca7391c0758" x="0" y="114" width="752" height="127"/>
+				<reportElement uuid="5ea55e41-044f-472e-97ac-fca7391c0758" x="0" y="100" width="752" height="127"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="100"/>
+					<font fontName="SansSerif" size="92"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{claPro}]]></textFieldExpression>
 			</textField>
@@ -80,57 +80,57 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="293">
+		<band height="303">
 			<staticText>
-				<reportElement uuid="5377696e-b599-4494-bc88-f8f4757b9a81" mode="Opaque" x="86" y="158" width="186" height="39" forecolor="#000000" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="5377696e-b599-4494-bc88-f8f4757b9a81" mode="Opaque" x="86" y="129" width="186" height="39" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="25" isBold="true"/>
 				</textElement>
 				<text><![CDATA[LOTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a004ef0f-c7dc-438b-b2a5-39d4e95bcb9d" mode="Opaque" x="157" y="0" width="438" height="50" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="a004ef0f-c7dc-438b-b2a5-39d4e95bcb9d" mode="Opaque" x="157" y="5" width="438" height="28" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="36" isBold="true"/>
+					<font fontName="SansSerif" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DESCRIPCIÓN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="17645458-6049-4a01-adbe-bdd4f6608c0b" mode="Opaque" x="407" y="168" width="235" height="32" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="17645458-6049-4a01-adbe-bdd4f6608c0b" mode="Opaque" x="407" y="139" width="235" height="32" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="25" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CADUCIDAD:]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement uuid="95ad4b3c-9cb9-4917-b03b-b33e480e735d" x="197" y="240" width="311" height="31"/>
+				<reportElement uuid="95ad4b3c-9cb9-4917-b03b-b33e480e735d" x="197" y="245" width="311" height="31"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
 					<jr:codeExpression><![CDATA[$P{CB}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField>
-				<reportElement uuid="a6471d98-408e-47e7-9f5e-c0230223547f" x="0" y="50" width="752" height="118"/>
+				<reportElement uuid="a6471d98-408e-47e7-9f5e-c0230223547f" x="0" y="33" width="752" height="106"/>
 				<textElement>
-					<font size="30"/>
+					<font size="18"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{F_DesPro}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e3839ca8-cd49-4941-8aff-53362a3e472b" x="33" y="197" width="297" height="41"/>
+				<reportElement uuid="e3839ca8-cd49-4941-8aff-53362a3e472b" x="33" y="168" width="297" height="65"/>
 				<textElement textAlignment="Center">
-					<font size="24"/>
+					<font size="45"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{Lote}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="bc103005-89f8-4dfa-a1a8-292306a8d169" x="361" y="200" width="345" height="38"/>
+				<reportElement uuid="bc103005-89f8-4dfa-a1a8-292306a8d169" x="361" y="171" width="345" height="38"/>
 				<textElement textAlignment="Center">
 					<font size="24"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{Cadu}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c90fa25e-a511-4365-8ddf-cda1647ce90d" x="197" y="271" width="311" height="20"/>
+				<reportElement uuid="c90fa25e-a511-4365-8ddf-cda1647ce90d" x="197" y="276" width="311" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="15"/>
 				</textElement>

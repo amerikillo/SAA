@@ -19,7 +19,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class LeeExcel {
 
     private Vector vectorDataExcelXLSX = new Vector();
-    ConectionDB con = new ConectionDB();
 
     public boolean obtieneArchivo(String path, String file) {
         String excelXLSXFileName = path + "/exceles/" + file;
@@ -65,7 +64,20 @@ public class LeeExcel {
 
     public void displayDataExcelXLSX(Vector vectorData) {
         // Looping every row data in vector
+        ConectionDB con = new ConectionDB();
+        int id_req = 0;
+        try {
+            con.conectar();
+            ResultSet rset = con.consulta("select F_IndReq from tb_indice");
+            while (rset.next()) {
+                id_req = rset.getInt("F_IndReq");
+            }
+            con.insertar("update tb_indice set F_IndReq='" + (id_req + 1) + "'");
 
+            con.cierraConexion();
+        } catch (Exception e) {
+                    System.out.println(e.getMessage());
+        }
         for (int i = 0; i < vectorData.size(); i++) {
             Vector vectorCellEachRowData = (Vector) vectorData.get(i);
             String qry = "insert into tb_unireq values (";
@@ -75,6 +87,11 @@ public class LeeExcel {
                 if (j == 0) {
                     try {
                         String Clave = (vectorCellEachRowData.get(j).toString() + "");
+                        try {
+                            Clave = (int) Double.parseDouble(Clave) + "";
+                        } catch (Exception e) {
+                            Clave = Clave = (vectorCellEachRowData.get(j).toString() + "");
+                        }
                         qry = qry + "'" + Clave + "' , ";
                     } catch (Exception e) {
                     }
@@ -131,7 +148,7 @@ public class LeeExcel {
                     }
                 }
             }
-            qry = qry + "curdate(), 0, '0')"; // agregar campos fuera del excel
+            qry = qry + "curdate(), 0, '0','" + id_req + "')"; // agregar campos fuera del excel
             try {
                 con.conectar();
                 try {

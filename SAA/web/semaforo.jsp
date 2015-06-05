@@ -35,7 +35,7 @@
      if (Clave== null){
      Clave="";
      }*/
-    ConectionDB_SAA con = new ConectionDB_SAA();
+    ConectionDB con = new ConectionDB();
 %>
 <html>
     <head>
