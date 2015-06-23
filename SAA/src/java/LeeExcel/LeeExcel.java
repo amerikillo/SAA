@@ -66,17 +66,18 @@ public class LeeExcel {
         // Looping every row data in vector
         ConectionDB con = new ConectionDB();
         int id_req = 0;
+        String unireq = "";
         try {
-            con.conectar();
-            ResultSet rset = con.consulta("select F_IndReq from tb_indice");
-            while (rset.next()) {
-                id_req = rset.getInt("F_IndReq");
-            }
-            con.insertar("update tb_indice set F_IndReq='" + (id_req + 1) + "'");
+            /*con.conectar();
+             ResultSet rset = con.consulta("select F_IndReq from tb_indice");
+             while (rset.next()) {
+             id_req = rset.getInt("F_IndReq");
+             }
+             con.insertar("update tb_indice set F_IndReq='" + (id_req + 1) + "'");
 
-            con.cierraConexion();
+             con.cierraConexion();*/
         } catch (Exception e) {
-                    System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         for (int i = 0; i < vectorData.size(); i++) {
             Vector vectorCellEachRowData = (Vector) vectorData.get(i);
@@ -92,6 +93,7 @@ public class LeeExcel {
                         } catch (Exception e) {
                             Clave = Clave = (vectorCellEachRowData.get(j).toString() + "");
                         }
+                        unireq = Clave;
                         qry = qry + "'" + Clave + "' , ";
                     } catch (Exception e) {
                     }
@@ -148,7 +150,11 @@ public class LeeExcel {
                     }
                 }
             }
-            qry = qry + "curdate(), 0, '0','" + id_req + "')"; // agregar campos fuera del excel
+            try {
+                qry = qry + "curdate(), 0, '0','" + unireq + "-" + (int) Double.parseDouble(vectorCellEachRowData.get(4).toString()) + "')"; // agregar campos fuera del excel
+            } catch (Exception e) {
+                System.out.println(e);
+            }
             try {
                 con.conectar();
                 try {

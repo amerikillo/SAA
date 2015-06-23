@@ -41,10 +41,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Estilos CSS -->
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/datepicker3.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <link href="../css/bootstrap.css" rel="stylesheet">
+        <link href="../css/datepicker3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
+        <link href="../css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
         <title>Existencias en CEDIS</title>
     </head>
@@ -52,7 +52,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            
+
         </div>
         <div class="container">
             <hr/>
@@ -60,8 +60,24 @@
             <form action="existSinFact.jsp" method="post">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="clave" id="clave" placeholder="Clave" > <button class="btn btn-sm btn-success" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="gnrExistSinFact.jsp">Descargar<label class="glyphicon glyphicon-download"></label></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="existSinFact.jsp">Actualizar<label class="glyphicon glyphicon-refresh"></label></a></h3>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="text" name="clave" id="clave" placeholder="Clave" class="form-control input-sm" >
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-sm btn-success" id="btn-buscar2">
+                                    BUSCAR 
+                                    <label class="glyphicon glyphicon-search"></label>
+                                </button>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="gnrExistSinFact.jsp" class="btn btn-default">Descargar<label class="glyphicon glyphicon-download"></label></a>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="existSinFact.jsp" class="btn btn-default">Actualizar<label class="glyphicon glyphicon-refresh"></label></a>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="panel-footer">
@@ -92,7 +108,7 @@
                                             rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 and l.F_ClaPro='" + Claves + "' GROUP BY l.F_ClaPro");
                                         }
                                         while (rset.next()) {
-                                            double monto1 = 0, montoApar=0;
+                                            double monto1 = 0, montoApar = 0;
                                             int cantExi = rset.getInt(7);
                                             int cantTotal = 0, cantApar = 0;
                                             System.out.println(rset.getString(1));
@@ -105,12 +121,12 @@
                                             ResultSet rset3 = con.consulta("select SUM(F_Cant) as F_Cant, SUM(c.F_Cant * m.F_Costo) as Importe from clavefact c, tb_medica m where m.F_ClaPro = c.F_ClaPro and c.F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_StsFact<5 ");
                                             while (rset3.next()) {
                                                 cantApar = rset3.getInt("F_Cant");
-                                                montoApar=rset3.getDouble("Importe");
+                                                montoApar = rset3.getDouble("Importe");
                                             }
                                             cantTotal = cantExi - cantApar;
                                             Cantidad = Cantidad + cantTotal;
                                             monto = monto + monto1;
-                                            monto=monto-montoApar;
+                                            monto = monto - montoApar;
                                 %>
                                 <tr>
                                     <td><%=rset.getString(1)%></td>
@@ -145,17 +161,17 @@
         ================================================== -->
         <!-- Se coloca al final del documento para que cargue mas rapido -->
         <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-        <script src="js/jquery-1.9.1.js"></script>
-        <script src="js/bootstrap.js"></script>
-        <script src="js/jquery-ui-1.10.3.custom.js"></script>
-        <script src="js/jquery.dataTables.js"></script>
-        <script src="js/dataTables.bootstrap.js"></script>
-        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/jquery.dataTables.js"></script>
+        <script src="../js/dataTables.bootstrap.js"></script>
+        <script src="../js/bootstrap-datepicker.js"></script>
         <script>
             $(document).ready(function() {
                 $('#datosProv').dataTable();
             });
         </script>
-        
+
     </body>
 </html>

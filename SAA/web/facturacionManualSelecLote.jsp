@@ -65,7 +65,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div class="row">
@@ -82,8 +82,7 @@
                     <div class="col-sm-5">
                         <select class="form-control" name="ClaCli" id="ClaCli">
                             <option value="">-Seleccione Unidad-</option>
-                            <%
-                                try {
+                            <%                                try {
                                     con.conectar();
                                     ResultSet rset = con.consulta("select F_ClaCli, F_NomCli from tb_uniatn");
                                     while (rset.next()) {
@@ -163,7 +162,7 @@
                 <%
                     try {
                         con.conectar();
-                        ResultSet rset = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y'), F_Ubica, F_ExiLot, F_IdLote, F_FolLot from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ExiLot!=0 order by F_FecCad asc  ");
+                        ResultSet rset = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y'), F_Ubica, F_ExiLot, F_IdLote, F_FolLot from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ExiLot!=0 and F_Ubica != 'REJA_DEVOL' order by F_FecCad asc  ");
                         while (rset.next()) {
                             int cant = 0, cantTemp = 0;
                             int cantLot = rset.getInt(5);
@@ -203,19 +202,18 @@
         <br><br><br>
         <div class="navbar navbar-fixed-bottom navbar-inverse">
             <div class="text-center text-muted">
-                GNK Logística || Desarrollo de Aplicaciones 2009 - 2014 <span class="glyphicon glyphicon-registration-mark"></span><br />
+                GNK Logística || Desarrollo de Aplicaciones 2009 - 2015 <span class="glyphicon glyphicon-registration-mark"></span><br />
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script>
                                 function cambiaLoteCadu(elemento) {
                                     var indice = elemento.selectedIndex;
                                     document.getElementById('SelectCadu').selectedIndex = indice;
@@ -235,6 +233,7 @@
                                      return false;
                                      }*/
                                 }
-    </script>
+        </script>
+    </body>
 </html>
 

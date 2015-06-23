@@ -96,7 +96,7 @@ public class FacturacionManual extends HttpServlet {
                     //consql.conectar();
                     String ClaPro = "", CantSur = "", ClaDoc = "", Proveedor = "", Monto = "", Costo = "", FolLote = "", F_IdFact;
                     int FolioMovi = 0, FolMov;
-                    ResultSet rset = con.consulta("select f.F_ClaCli, f.F_IdFact, f.F_StsFact, f.F_ClaPro, l.F_ClaLot, l.F_FecCad, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS FECAD, f.F_CantSur, f.F_FecEnt, f.F_Ubicacion, f.F_ClaDoc, l.F_ClaOrg, l.F_FecFab, DATE_FORMAT(l.F_FecFab,'%d/%m/%Y') AS FEFAB, l.F_Cb, l.F_ClaMar, f.F_Monto, f.F_Costo, f.F_Lote, f.F_Iva from tb_factdevol f, tb_lote l where f.F_Lote = l.F_FolLot and f.F_ClaDoc='" + F_ClaDoc + "' and f.F_FactSts = 0 group by f.F_IdFact");
+                    ResultSet rset = con.consulta("select f.F_ClaCli, f.F_IdFact, f.F_StsFact, f.F_ClaPro, l.F_ClaLot, l.F_FecCad, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS FECAD, f.F_CantSur, f.F_FecEnt, f.F_Ubicacion, f.F_ClaDoc, l.F_ClaOrg, l.F_FecFab, DATE_FORMAT(l.F_FecFab,'%d/%m/%Y') AS FEFAB, l.F_Cb, l.F_ClaMar, f.F_Monto, f.F_Costo, f.F_Lote, f.F_Iva, l.F_ClaLot, l.F_FecCad from tb_factdevol f, tb_lote l where f.F_Lote = l.F_FolLot and f.F_ClaDoc='" + F_ClaDoc + "' and f.F_FactSts = 0 group by f.F_IdFact");
                     while (rset.next()) {
                         CantSur = rset.getString("F_CantSur");
                         ClaDoc = rset.getString("F_ClaDoc");
@@ -120,7 +120,7 @@ public class FacturacionManual extends HttpServlet {
                          */
                         String idLote = "";
                         int CantLote = 0;
-                        ResultSet rsetLote = con.consulta("select F_IdLote, SUM(F_ExiLot) from tb_lote where F_FolLot ='" + FolLote + "' AND F_Ubica in ('NUEVA', 'REJA', 'REDFRIA') group by F_IdLote");
+                        ResultSet rsetLote = con.consulta("select F_IdLote, SUM(F_ExiLot) from tb_lote where F_ClaPro ='" + ClaPro + "' and F_ClaLot = '" + rset.getString("F_ClaLot") + "' and F_FecCad = '" + rset.getString("F_FecCad") + "' AND F_Ubica in ('NUEVA', 'REJA', 'REDFRIA') group by F_IdLote");
                         while (rsetLote.next()) {
                             idLote = rsetLote.getString("F_IdLote");
                             CantLote = rsetLote.getInt(2);
@@ -272,12 +272,6 @@ public class FacturacionManual extends HttpServlet {
 
                         int Diferencia = existencia - cantidad;
 
-                        //Actualizacion de TB Lote
-                        /*ResultSet rsetLoteSQL = consql.consulta("select F_FolLot as lote from tb_lote where F_ClaPro = '" + Clave + "' and F_ClaLot = '" + ClaLot + "' and F_FecCad = '" + df2.format(df3.parse(Caducidad)) + "'  and F_Origen = '" + fact.dame5car("1") + "' ");
-                         String loteSQL = "";
-                         while (rsetLoteSQL.next()) {
-                         loteSQL = rsetLoteSQL.getString("lote");
-                         }*/
                         if (Diferencia >= 0) {
                             if (cantidad > 0) {
                                 if (Diferencia == 0) {
@@ -302,19 +296,8 @@ public class FacturacionManual extends HttpServlet {
 
                                 con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + cantidad + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
                                 con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + cantidad + "','" + cantidad + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
-                                //consql.insertar("insert into TB_MovInv values (CONVERT(date,GETDATE()),'" + FolioFactura + "','','51', '" + Clave + "', '" + cantidad + "', '" + Costo + "','" + IVAPro + "', '" + MontoIva + "' ,'-1', '" + loteSQL + "', '" + FolioMovi + "','A', '0', '','','','" + ClaProve + "','" + sesion.getAttribute("nombre") + "') ");
-                                //consql.insertar("insert into TB_Factura values ('F','" + FolioFactura + "','" + fact.dame5car(ClaUni) + "','A','',CONVERT(date,GETDATE()),'','" + Clave + "', '','1','" + cantidad + "','" + cantidad + "', '" + Monto + "','0', '" + Monto + "','" + Monto + "','" + Monto + "','" + IVAPro + "', '" + MontoIva + "','" + Costo + "' ,'" + loteSQL + "','R','" + df2.format(df3.parse(FechaE)) + "','" + sesion.getAttribute("nombre") + "','0','0','','A','" + cantidad + "','" + Ubicacion + "') ");
-
-                                /*ResultSet existSql = consql.consulta("select F_Existen from TB_Medica where F_ClaPro = '" + Clave + "' ");
-                                 while (existSql.next()) {
-                                 int difTotal = existSql.getInt("F_Existen") - cantidad;
-                                 if (difTotal < 0) {
-                                 difTotal = 0;
-                                 }
-                                 consql.actualizar("update TB_Medica set F_Existen = '" + difTotal + "' where F_ClaPro = '" + Clave + "' ");
-                                 }*/
+                                con.actualizar("update tb_facttemp set F_StsFact='5' where F_Id='" + F_Id + "'");
                             }
-                            con.actualizar("update tb_facttemp set F_StsFact='5' where F_Id='" + F_Id + "'");
                         } else {
                             out.println("<script>alert('Error, Cantidad no posible para remisionar')</script>");
                             out.println("<script>window.location='remisionarCamion.jsp'</script>");

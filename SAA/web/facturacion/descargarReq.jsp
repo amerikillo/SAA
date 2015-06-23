@@ -20,7 +20,7 @@
     response.setHeader("Content-Disposition", "attachment;filename=\"Requerimiento" + request.getParameter("F_ClaCli") + "_" + request.getParameter("F_IdPed") + ".xls\"");
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+*
 <table border="1">
     <tr>
         <td>Cla Cli</td>
@@ -52,7 +52,7 @@
             }
             conReq.cierraConexion();
         } catch (Exception e) {
-
+            out.println(e);
         }
     %>
 </table>

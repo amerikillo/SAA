@@ -72,6 +72,7 @@
                         %>
                         <li><a href="/SAA/facturacion/reqsDists.jsp">Requerimientos Distribuidores</a></li>
                         <li><a href="/SAA/requerimiento.jsp">Carga de Requerimiento</a></li>
+                        <li><a href="/SAA/facturacion/verRequerimientos.jsp">Ver Requerimientos</a></li>
                         <li><a href="/SAA/factura.jsp">Facturación Automática</a></li>
                         <li><a href="/SAA/facturacionManual.jsp">Facturación Manual</a></li>
                             <%

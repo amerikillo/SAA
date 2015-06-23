@@ -1,6 +1,6 @@
 <%-- 
-    Document   : reqsDists
-    Created on : 4/03/2015, 04:16:48 PM
+    Document   : verRequerimientos
+    Created on : 5/06/2015, 03:33:53 PM
     Author     : Americo
 --%>
 
@@ -23,7 +23,6 @@
         response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
-    ConectionDB_ReqDist conReq = new ConectionDB_ReqDist();
 %>
 <html>
     <head>
@@ -32,7 +31,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.css">
 
         <!--<link href="//cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>-->
@@ -49,56 +48,38 @@
             </div>
             <h3>Requerimientos Revisados</h3>
 
-            <table id="tblReq2" name="tblReq2"  class="table table-condensed table-bordered table-striped">
-                <thead> <tr>
+            <table id="tblReq2" class="table table-condensed table-bordered table-striped">
+                <thead> 
+                    <tr>
+                        <td>ID Requerimiento</td>
+                        <td>Clave</td>
                         <td>Distribuidor</td>
-                        <td>ID Pedido</td>
-                        <td>Status</td>
-                        <td>Fecha de Captura</td>
-                        <td>Tipo</td>
+                        <td>Fecha de Subida</td>
+                        <td>Total piezas</td>
                         <td width="100px"></td>
                     </tr></thead>
                     <%
                         try {
-                            conReq.conectar();
-                            ResultSet rset = conReq.consulta("select u.F_NomCli, p.F_IdPed, p.F_StsPed, DATE_FORMAT(p.F_FecCap,'%d/%m/%Y %H:%i:%s')as F_FecCap, p.F_ClaCli, p.F_TipoPed from tb_pedidos p, tb_uniatn u where p.F_ClaCli = u.F_ClaCli and F_StsPed=4");
+                            con.conectar();
+                            ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli, r.F_Id, DATE_FORMAT(r.F_FecCarg, '%d/%m/%Y') as F_FecCarga, SUM(F_PiezasReq) as F_PiezasReq from tb_unireq r, tb_uniatn u where u.F_ClaCli=r.F_ClaUni and r.F_Id!='' and F_Status!='1' group by r.F_Id  ");
                             while (rset.next()) {
-                                String color = "warning";
-                                String status = "Confirmado";
-                                if (rset.getString("F_StsPed").equals("1")) {
-                                    status = "Eliminado";
-                                    color = "danger";
-                                }
-                                if (rset.getString("F_StsPed").equals("2")) {
-                                    status = "Capturado";
-                                    color = "success";
-                                }
                     %>
-                <tr class="<%//=color%>">
+                <tr>
+                    <td><%=rset.getString("F_Id")%></td>
+                    <td><%=rset.getString("F_ClaCli")%></td>
                     <td><%=rset.getString("F_NomCli")%></td>
-                    <td><%=rset.getString("F_IdPed")%></td>
-                    <td><%=status%></td>
-                    <td><%=rset.getString("F_FecCap")%></td>
-                    <td><%=rset.getString("F_TipoPed")%></td>
+                    <td><%=rset.getString("F_FecCarga")%></td>
+                    <td class="text-right"><%=rset.getString("F_PiezasReq")%></td>
                     <td>
-                        <div class="row">
-                            <form action="descargarReq.jsp" method="post" class="col-sm-6">
-                                <input value="<%=rset.getString("F_IdPed")%>" name="F_IdPed"  class="hidden" />
-                                <input value="Si" name="Validado"  class="hidden" />
-                                <input value="<%=rset.getString("p.F_ClaCli")%>" name="F_ClaCli"  class="hidden" />
-                                <button class="btn btn-primary btn-sm" name="accion" value="EliminarInsumo"><span class="glyphicon glyphicon-download"></span></button>
-                            </form>
-                            <!--form action="Capturar?F_IdPed=<%=rset.getString("F_IdPed")%>" method="post" class="col-sm-6">
-                                <button class="btn btn-danger btn-sm" name="accion" onclick="return confirm('Seguro que desea eliminar el pedido?')" value="EliminarPedido">X</button>
-                            </form-->
-                        </div>
+                        <a class="btn btn-primary btn-sm" onclick="window.open('detalleRequerimiento.jsp?F_Id=<%=rset.getString("F_Id")%>', '', 'width=1200,height=800,left=50,top=50,toolbar=no')"><span class="glyphicon glyphicon-search"></span></a>
+                        <a class="btn btn-success btn-sm" href='gnrDetalleRequerimiento.jsp?F_Id=<%=rset.getString("F_Id")%>'><span class="glyphicon glyphicon-download"></span></a>
                     </td>
                 </tr>
                 <%
                         }
-                        conReq.cierraConexion();
+                        con.cierraConexion();
                     } catch (Exception e) {
-
+                        out.println(e);
                     }
                 %>
             </table>
@@ -120,9 +101,9 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $("#tblReq2").dataTable();
-            });
+                        $(document).ready(function() {
+                            $("#tblReq2").dataTable();
+                        });
         </script>
 
     </body>
