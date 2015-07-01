@@ -189,10 +189,10 @@
                             <div class="col-sm-2">
                                 <input class="form-control" name="cantidad" id="cantidad" />
                             </div>
-                            <h4 class="col-sm-2">No. Compra:</h4>
+                            <!--h4 class="col-sm-2">No. Compra:</h4>
                             <div class="col-sm-2">
                                 <input class="form-control" name="noCompra" id="noCompra" />
-                            </div>
+                            </div-->
                         </div>
                         <div class="row">
                             <div class="col-sm-12">

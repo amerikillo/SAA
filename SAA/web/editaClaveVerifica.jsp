@@ -60,10 +60,16 @@
             while (rset2.next()) {
                 marca = rset2.getString(1);
             }
-            PzxCaja = (Integer.parseInt(piezas) - resto) / Integer.parseInt(cajas);
+            int cajasResto = 0;
+            if (resto != 0) {
+                cajasResto = 1;
+            }
+            int cajasInt = 0;
+            cajasInt = Integer.parseInt(cajas) - cajasResto;
+            PzxCaja = (Integer.parseInt(piezas) - resto) / cajasInt;
             tarimasC = Integer.parseInt(tarimas) - Integer.parseInt(tarimasInc);
             tarimasI = Integer.parseInt(tarimasInc);
-            cajasPorTarimaC = (Integer.parseInt(cajas) - cajasI) / tarimasC;
+            cajasPorTarimaC = ((cajasInt) - cajasI) / tarimasC;
             cajasPorTarimaI = cajasI;
         }
         con.cierraConexion();

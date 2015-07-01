@@ -48,8 +48,8 @@ public class DevolucionMultiple extends HttpServlet {
                     try {
                         listId = (ArrayList<String>) sesion.getAttribute("listId");
                     } catch (Exception ex) {
-                        System.out.println("Exception rara" + ex+"->"+sesion.getAttribute("listId"));
-                        listId = new ArrayList<String>(); 
+                        System.out.println("Exception rara" + ex + "->" + sesion.getAttribute("listId"));
+                        listId = new ArrayList<String>();
                     }
                 }
 
@@ -111,19 +111,33 @@ public class DevolucionMultiple extends HttpServlet {
                 }
                 sesion.setAttribute("list", lista);
             } else if ("g".equals(request.getParameter("que"))) {
+                String mensaje = "Devoluciones:\n";
                 try {
                     listId = (ArrayList<String>) sesion.getAttribute("listId");
                     byte[] a = request.getParameter("ObserM").getBytes("ISO-8859-1");
                     String Observaciones = (new String(a, "UTF-8")).toUpperCase();
+                    String F_IdFact = "";
                     con.conectar();
                     for (String list1 : listId) {
                         con.actualizar("update tb_factura set F_StsFact = 'C', F_Obs='" + Observaciones + "' where F_IdFact = '" + list1 + "'");
                         ResultSet rsetfact = con.consulta("select * from tb_factura where F_IdFact = '" + list1 + "' ");
                         while (rsetfact.next()) {
                             con.insertar("insert into tb_factdevol values ('" + rsetfact.getString(1) + "','" + rsetfact.getString(2) + "','" + rsetfact.getString(3) + "','" + rsetfact.getString(4) + "','" + rsetfact.getString(5) + "','" + rsetfact.getString(6) + "','" + rsetfact.getString(7) + "','" + rsetfact.getString(8) + "','" + rsetfact.getString(9) + "','" + rsetfact.getString(10) + "','" + rsetfact.getString(11) + "','" + rsetfact.getString(12) + "','" + rsetfact.getString(13) + "','" + rsetfact.getString(14) + "','" + rsetfact.getString(15) + "','" + rsetfact.getString(16) + "','" + rsetfact.getString(17) + "',0) ");
+                            if (list1.equals(listId.get(listId.size() - 1))) {
+                                F_IdFact += list1;
+                            } else {
+                                F_IdFact += list1 + ",";
+                            }
+
                         }
                     }
-                    out.println("si");
+
+                    ResultSet rsetfact = con.consulta("select F_ClaPro, SUM(F_CantSur) from tb_factura where F_IdFact in (" + F_IdFact + ") and F_StsFact='C' group by F_ClaPro ");
+                    while (rsetfact.next()) {
+                        mensaje += "Clave: " + rsetfact.getString(1) + " Cantidad: " + rsetfact.getString(2) + "\n";
+                    }
+                    out.println("si|");
+                    out.println(mensaje);
                     sesion.setAttribute("list", "");
                     sesion.setAttribute("listId", "");
                     con.cierraConexion();

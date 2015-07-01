@@ -5,16 +5,40 @@
  */
 
 
-$('#F_ClaUbi').keyup(function () {
+function eliminarFactTemp(e) {
+    //return false;
+    var confirma = confirm('Seguro de eliminar el registro?');
+    if (confirma) {
+        var F_Id = e.value;
+        var IdLote = $('#F_IdLote').val();
+        $.ajax({
+            url: '../Ubicaciones?accion=eliminarFactTemp&F_Id=' + F_Id,
+            type: 'GET',
+            async: false,
+            success: function(data) {
+                recargarPagina();
+            },
+            error: function() {
+                alert("Ha ocurrido un error");
+            }
+        });
+        function recargarPagina() {
+            $('#divApartados').load('ingCantRedist.jsp?idLote=' + IdLote + ' #divApartados');
+            $('#divApartados1').load('ingCantRedist.jsp?idLote=' + IdLote + ' #divApartados1');
+        }
+    }
+}
+
+$('#F_ClaUbi').keyup(function() {
     var descripcion = $('#F_ClaUbi').val();
     $('#F_ClaUbi').autocomplete({
         source: "../JQInvenCiclico?accion=buscaClaUbi&descrip=" + descripcion,
         minLenght: 2,
-        select: function (event, ui) {
+        select: function(event, ui) {
             $('#F_ClaUbi').val(ui.item.F_ClaUbi);
             return false;
         }
-    }).data('ui-autocomplete')._renderItem = function (ul, item) {
+    }).data('ui-autocomplete')._renderItem = function(ul, item) {
         return $('<li>')
                 .data('ui-autocomplete-item', item)
                 .append('<a>' + item.F_ClaUbi + '</a>')

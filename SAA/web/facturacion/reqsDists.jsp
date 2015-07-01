@@ -32,7 +32,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.css">
 
         <!--<link href="//cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>-->
@@ -98,7 +98,7 @@
                         }
                         conReq.cierraConexion();
                     } catch (Exception e) {
-
+                        out.println(e);
                     }
                 %>
             </table>

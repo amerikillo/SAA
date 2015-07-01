@@ -46,7 +46,11 @@
 
     int totalClaves = 0, clavesCapturadas = 0;
     String fecha = "", noCompra = "", Proveedor = "", Fecha = "";
-                        String nomProvee="";
+    String nomProvee = "";
+    if (request.getParameter("selceccionaOC") != null) {
+        noCompra = "";
+        sesion.setAttribute("NoCompra", "");
+    }
     try {
         fecha = request.getParameter("Fecha");
     } catch (Exception e) {
@@ -145,6 +149,7 @@
     if (Cadu == null) {
         Cadu = "";
     }
+
 %>
 <html>
     <head>
@@ -154,7 +159,6 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
         <!---->
         <title>SIALSS</title>
@@ -163,7 +167,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
             <form action="compraAuto2.jsp" method="post">
                 <div class="row">
@@ -174,8 +178,7 @@
                         <select class="form-control" name="Proveedor" id="Proveedor" onchange="SelectProve(this.form);
                                 document.getElementById('Fecha').focus()">
                             <option value="">--Proveedor--</option>
-                            <%
-                                try {
+                            <%                                try {
                                     con.conectar();
                                     ResultSet rset = con.consulta("select F_ClaProve, F_NomPro from tb_proveedor order by F_NomPro");
                                     while (rset.next()) {
@@ -207,6 +210,7 @@
                     <label class="col-sm-2">
                         <h4>&Oacute;rdenes de Compra: </h4>
                     </label>
+                    <input name="selceccionaOC" value="1" class="hidden" />
                     <div class="col-sm-9">
                         <select class="form-control" name="NoCompra" onchange="this.form.submit();">
                             <option value="">-- Proveedor -- Orden de Compra --</option>
@@ -242,7 +246,7 @@
                         con.conectar();
                         ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0' group by F_NoCompra");
                         while (rset.next()) {
-                            nomProvee=rset.getString("p.F_NomPro");
+                            nomProvee = rset.getString("p.F_NomPro");
                 %>
                 <div class="row">
                     <div class="panel panel-default">
@@ -373,7 +377,7 @@
                                             }
                                             if (contadorLotes > 1) {
                                                 //Mas de 1 lote
-                                        %>
+%>
                                         <td>
                                             <input type="text" value="<%=Lote%>" class="form-control" name="lot" id="lot" onkeypress="return tabular(event, this)"/>
                                             <select class="form-control" name="list_lote" id="list_lote"  onchange="cambiaLoteCadu(this);" onkeypress="return tabular(event, this)">
@@ -519,7 +523,7 @@
                                                             }
                                                         %>
                                                         <option disabled="">---------------</option>
-                                                        
+
                                                         <%
                                                             try {
                                                                 con.conectar();
@@ -639,7 +643,7 @@
                                     <%}%>
                                 </div>
                                 <%
-                                    if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1")|| tipo.equals("8")) {
+                                    if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1") || tipo.equals("8")) {
                                 %>
                                 <div class="col-sm-4">
                                     <button class="btn btn-block btn-primary" name="accion" id="accion" value="guardarLote" onclick="return validaCompra();" >Guardar Lote</button>
@@ -956,30 +960,40 @@
         <!--
         /Modal
         -->
-    </body>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script type="text/javascript">
 
+                                $('#folioRemi').blur(function() {
+                                    var mensaje = '';
+                                    var folioRemi = $('#folioRemi').val();
+                                    var noCompra = $('#folio').val();
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'CompraAutomatica?accion=buscarFolio&F_FolRemi=' + folioRemi + '&F_OrdCom=' + noCompra,
+                                        /*data: form.serialize(),*/
+                                        success: function(data) {
+                                            dameMensaje(data);
+                                        }
+                                    });
+                                    function dameMensaje(data) {
+                                        var json = JSON.parse(data);
+                                        for (var i = 0; i < json.length; i++) {
+                                            mensaje = json[i].mensaje;
+                                            if (mensaje === "FolioCapturado") {
+                                                alert('Folio de Remisión capturado previamente, favor de ingresar uno distinto');
+                                                $('#folioRemi').focus();
+                                            }
+                                        }
+                                    }
+                                });
 
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript">
-                                /*$('#todosChk').click(function(event) {
-                                 alert('hola');
-                                 if (this.checked) {
-                                 $(':chkCancela').each(function() {
-                                 this.checked = true;
-                                 });
-                                 } else {
-                                 $(':chkCancela').each(function() {
-                                 this.checked = false;
-                                 });
-                                 }
-                                 });*/
                                 function checkea(obj) {
                                     var cbs = document.getElementsByName('chkCancela');
                                     if (obj.checked) {
@@ -1286,6 +1300,9 @@
                                     return false;
                                 }
 
-    </script>
+        </script>
+
+    </body>
+
 
 </html>

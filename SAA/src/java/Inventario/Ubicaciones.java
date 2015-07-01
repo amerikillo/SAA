@@ -44,9 +44,16 @@ public class Ubicaciones extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         try {
             try {
-
+                if (request.getParameter("accion").equals("eliminarFactTemp")) {
+                    try {
+                        con.conectar();
+                        con.insertar("delete from tb_facttemp where F_Id='" + request.getParameter("F_Id") + "'");
+                        con.cierraConexion();
+                    } catch (Exception e) {
+                    }
+                }
                 if (request.getParameter("accion").equals("Redistribucion")) {
-
+                    
                     int nIdLote = Reubica(request.getParameter("F_IdLote"), request.getParameter("F_ClaUbi"), request.getParameter("CantMov"), (String) sesion.getAttribute("nombre"));
                     //ReubicaApartado(request.getParameter("F_IdLote"), nIdLote);
                     response.sendRedirect("hh/insumoNuevoRedist.jsp");
@@ -58,7 +65,7 @@ public class Ubicaciones extends HttpServlet {
             out.close();
         }
     }
-
+    
     public int Reubica(String idLote, String CBUbica, String cantMov, String Nombre) throws SQLException {
         int idLoteNuevo = 0;
         Devoluciones objDev = new Devoluciones();
@@ -85,7 +92,7 @@ public class Ubicaciones extends HttpServlet {
             F_ClaMar = rset.getString("F_ClaMar");
             F_ExiLot = rset.getInt("F_ExiLot");
         }
-
+        
         rset = con.consulta("select F_ClaUbi from tb_ubica where F_Cb= '" + CBUbica + "' ");
         while (rset.next()) {
             UbicaMov = rset.getString("F_ClaUbi");
@@ -95,7 +102,7 @@ public class Ubicaciones extends HttpServlet {
             F_ExiLotDestino = rset.getInt("F_ExiLot");
             F_IdLote = rset.getInt("F_IdLote");
         }
-
+        
         if (F_ExiLot - CantMov >= 0) {
             if (F_IdLote != 0) {//Ya existe insumo en el desitno
                 con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLotDestino + CantMov) + "' where F_IdLote='" + F_IdLote + "'");
@@ -113,10 +120,10 @@ public class Ubicaciones extends HttpServlet {
                 }
             }
             con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLot - CantMov) + "' where F_IdLote = '" + idLote + "' ");
-
+            
             con.insertar("insert into tb_movinv values (0,CURDATE(),'0','1000','" + F_ClaPro + "','" + CantMov + "','" + objDev.devuelveCosto(F_ClaPro) + "','" + objDev.devuelveImporte(F_ClaPro, CantMov) + "', '-1','" + F_FolLot + "','" + F_Ubica + "','" + F_ClaOrg + "',CURTIME(),'" + Nombre + "')");
             con.insertar("insert into tb_movinv values (0,CURDATE(),'0','1000','" + F_ClaPro + "','" + CantMov + "','" + objDev.devuelveCosto(F_ClaPro) + "','" + objDev.devuelveImporte(F_ClaPro, CantMov) + "', '1','" + F_FolLot + "','" + UbicaMov + "','" + F_ClaOrg + "',CURTIME(),'" + Nombre + "')");
-
+            
             rset = con.consulta("select F_IdLote from tb_lote where F_FolLot = '" + F_FolLot + "' and F_Ubica = '" + UbicaMov + "' ");
             while (rset.next()) {
                 idLoteNuevo = rset.getInt("F_IdLote");
@@ -125,7 +132,7 @@ public class Ubicaciones extends HttpServlet {
         con.cierraConexion();
         return idLoteNuevo;
     }
-
+    
     public void ReubicaApartado(String idLote, int nidLote) throws SQLException {
         ConectionDB con = new ConectionDB();
         con.conectar();
@@ -147,7 +154,7 @@ public class Ubicaciones extends HttpServlet {
             System.out.println(cantFact + "-" + cantLote);
             int diferencia = cantFact - cantLote;
             System.out.println(diferencia + "/////Diferencia");
-
+            
             if (diferencia > 0) {
                 int F_Id = 0, CantAnt = 0;
                 con.insertar("update tb_facttemp set F_Cant = '" + cantLote + "' where F_Id= '" + rset.getString("F_Id") + "' ");
@@ -162,7 +169,7 @@ public class Ubicaciones extends HttpServlet {
                     con.insertar("insert into tb_facttemp values ('" + rset.getString("F_IdFact") + "','" + rset.getString("F_ClaCli") + "','" + nidLote + "','" + diferencia + "','" + rset.getString("F_FecEnt") + "','" + rset.getString("F_StsFact") + "',0,'" + rset.getString("F_User") + "')");
                 }
             }
-
+            
         }
         con.cierraConexion();
     }

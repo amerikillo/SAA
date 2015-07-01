@@ -69,7 +69,7 @@
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SIALSS</title>
@@ -113,10 +113,12 @@
                     Caducidad: <%=rset.getString("F_FecCad")%>
                     <br/>
                 </h5>
-                <div class="row">
-                    <h5 class="col-lg-12">Cantidad a Mover:</h5>
-                    <div class="col-lg-12">
-                        <input class="form-control" placeholder="Cantidad a Mover" type="number" name="CantMov" id="CantMov" min="1" max="<%=(rset.getInt("F_ExiLot") - canApartada)%>" />
+                <div id="divApartados1">
+                    <div class="row">
+                        <h5 class="col-lg-12">Cantidad a Mover:</h5>
+                        <div class="col-lg-12">
+                            <input class="form-control" placeholder="Cantidad a Mover" type="number" name="CantMov" id="CantMov" min="1" max="<%=(rset.getInt("F_ExiLot") - canApartada)%>" />
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -128,30 +130,37 @@
                         <input id="aCbUbica" class="hidden" value="<%=rset.getString("CbUbica")%>"/>
                     </div>
                 </div>
-                <br/>
-                <%
-                    rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdFact");
-                    while (rset2.next()) {
-                        canApartada = rset2.getInt(2);
-                %>
-                <div class="alert alert-danger">
-                    <strong>Este insumo está apartado con <%=canApartada%> piezas en el concentrado <%=rset2.getInt("F_IdFact")%></strong>
-                </div>
-                <%
-                    }
-                %>
+                <div id="divApartados">
+                    <br/>
+                    <%
+                        rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact, F_Id from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdFact");
+                        while (rset2.next()) {
+                            canApartada = rset2.getInt(2);
+                    %>
+                    <div class="alert alert-danger">
+                        <div class="row">
+                            <strong class="col-sm-11">Este insumo está apartado con <%=canApartada%> piezas en el concentrado <%=rset2.getInt("F_IdFact")%></strong>
+                            <div class="col-sm-1">
+                                <button class="btn btn-sm btn-danger" onclick="eliminarFactTemp(this)" value="<%=rset2.getInt("F_Id")%>" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <%
+                        }
+                    %>
+                    <%
+                        rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
+                        while (rset2.next()) {
+                            canApartada = rset2.getInt(2);
+                    %>
+                    <div class="alert alert-warning">
+                        <strong>Cantidad máxima a mover: <%=(rset.getInt("F_ExiLot") - canApartada)%> piezas</strong>
+                    </div>
+                    <%
+                        }
+                    %>
 
-                <%
-                    rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
-                    while (rset2.next()) {
-                        canApartada = rset2.getInt(2);
-                %>
-                <div class="alert alert-warning">
-                    <strong>Cantidad máxima a mover: <%=(rset.getInt("F_ExiLot") - canApartada)%> piezas</strong>
                 </div>
-                <%
-                    }
-                %>
                 <div class="row">
                     <div class="col-lg-12">
                         <button class="btn btn-block btn-primary btn-lg" onclick="return validaRedist();" name="accion" value="Redistribucion">Redistribuir</button>
@@ -167,15 +176,17 @@
             %>
         </div>
 
-    </body>
-    <!-- 
-================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <!-- 
+    ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="../js/bootstrap-datepicker.js"></script>
-    <script src="../js/funcRedistribucion.js"></script>
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/bootstrap-datepicker.js"></script>
+        <script src="../js/funcRedistribucion.js"></script>
+        <script>
+        </script>
+    </body>
 </html>

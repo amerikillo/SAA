@@ -60,10 +60,16 @@
             while (rset2.next()) {
                 marca = rset2.getString(1);
             }
-            PzxCaja = (Integer.parseInt(piezas) - resto) / Integer.parseInt(cajas);
+            int cajasResto = 0;
+            if (resto != 0) {
+                cajasResto = 1;
+            }
+            int cajasInt = 0;
+            cajasInt = Integer.parseInt(cajas) - cajasResto;
+            PzxCaja = (Integer.parseInt(piezas) - resto) / cajasInt;
             tarimasC = Integer.parseInt(tarimas) - Integer.parseInt(tarimasInc);
             tarimasI = Integer.parseInt(tarimasInc);
-            cajasPorTarimaC = (Integer.parseInt(cajas) - cajasI) / tarimasC;
+            cajasPorTarimaC = ((cajasInt) - cajasI) / tarimasC;
             cajasPorTarimaI = cajasI;
         }
         con.cierraConexion();
@@ -100,7 +106,7 @@
     <body onload="totalPiezas();">
         <div class="container">
             <h1>SAA</h1>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div class="panel panel-primary">
@@ -242,7 +248,7 @@
                             <label for="Cajas" class="col-sm-1 control-label">Tarimas</label>
                             <div class="col-sm-1">
                                 <input type="text" class="form-control" id="Tarimas" name="Tarimas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);
-                                                            return handleEnter(even);" onkeyup="totalPiezas();" value="<%=(tarimasC+tarimasI)%>" onclick="" />
+                                        return handleEnter(even);" onkeyup="totalPiezas();" value="<%=(tarimasC + tarimasI)%>" onclick="" />
                             </div>
                             <label for="pzsxcaja" class="col-sm-1 control-label">Cajas Completas</label>
                             <div class="col-sm-1">
@@ -254,7 +260,7 @@
                             </div>
                             <label for="TCajas" class="col-sm-1 control-label">Total Cajas</label>
                             <div class="col-sm-1">
-                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" value="<%=(cajasPorTarimaC+cajasPorTarimaI)%>"/>
+                                <input type="text" class="form-control" id="TCajas" name="TCajas" placeholder="0" readonly="" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" onclick="" value="<%=(cajasPorTarimaC + cajasPorTarimaI)%>"/>
                             </div>
                             <label for="Resto" class="col-sm-1 control-label">Piezas</label>
                             <div class="col-sm-2">

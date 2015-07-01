@@ -139,6 +139,7 @@ public class FacturacionManual extends HttpServlet {
                 response.sendRedirect("reimp_factura.jsp");
             }
             if (request.getParameter("accion").equals("devolucion")) {
+                String mensaje = "Devolución:\\n";
                 String idFact = request.getParameter("IdFact");
                 try {
                     con.conectar();
@@ -170,6 +171,7 @@ public class FacturacionManual extends HttpServlet {
                         IVA = rset.getString("F_Iva");
                         F_Hora = rset.getString("F_Hora");
                         F_User = rset.getString("F_User");
+                        mensaje += "Clave: " + ClaPro + "\\nCantidad: " + cantDevol + "\\n";
                     }
                     byte[] a = request.getParameter("Obser").getBytes("ISO-8859-1");
                     String Observaciones = (new String(a, "UTF-8")).toUpperCase();
@@ -179,7 +181,7 @@ public class FacturacionManual extends HttpServlet {
 
                         ResultSet rsetfact = con.consulta("select * from tb_factura where F_IdFact = '" + idFact + "' ");
                         while (rsetfact.next()) {
-                            con.insertar("insert into tb_factdevol values ('" + rsetfact.getString(1) + "','" + rsetfact.getString(2) + "','" + rsetfact.getString(3) + "','" + rsetfact.getString(4) + "','" + rsetfact.getString(5) + "','" + rsetfact.getString(6) + "','" + rsetfact.getString(7) + "','" + rsetfact.getString(8) + "','" + rsetfact.getString(9) + "','" + rsetfact.getString(10) + "','" + rsetfact.getString(11) + "','" + rsetfact.getString(12) + "','" + rsetfact.getString(13) + "','" + rsetfact.getString(14) + "','" + rsetfact.getString(15) + "','" + rsetfact.getString(16) + "','" + rsetfact.getString(17) + "',0) ");
+                            con.insertar("insert into tb_factdevol values ('" + rsetfact.getString(1) + "','" + rsetfact.getString(2) + "','" + rsetfact.getString(3) + "','" + rsetfact.getString(4) + "',CURDATE(),'" + rsetfact.getString(6) + "','" + rsetfact.getString(7) + "','" + rsetfact.getString(8) + "','" + rsetfact.getString(9) + "','" + rsetfact.getString(10) + "','" + rsetfact.getString(11) + "','" + rsetfact.getString(12) + "','" + rsetfact.getString(13) + "','" + rsetfact.getString(14) + "','" + rsetfact.getString(15) + "','" + rsetfact.getString(16) + "','" + rsetfact.getString(17) + "',0) ");
                         }
 
                     } else {
@@ -188,7 +190,7 @@ public class FacturacionManual extends HttpServlet {
 
                         ResultSet rsetfact = con.consulta("select * from tb_factura where F_Obs = '" + Observaciones + "' and F_ClaDoc='" + ClaDoc + "' and F_ClaPro='" + ClaPro + "' and F_Lote='" + FolLote + "' ");
                         while (rsetfact.next()) {
-                            con.insertar("insert into tb_factdevol values ('" + rsetfact.getString(1) + "','" + rsetfact.getString(2) + "','" + rsetfact.getString(3) + "','" + rsetfact.getString(4) + "','" + rsetfact.getString(5) + "','" + rsetfact.getString(6) + "','" + rsetfact.getString(7) + "','" + rsetfact.getString(8) + "','" + rsetfact.getString(9) + "','" + rsetfact.getString(10) + "','" + rsetfact.getString(11) + "','" + rsetfact.getString(12) + "','" + rsetfact.getString(13) + "','" + rsetfact.getString(14) + "','" + rsetfact.getString(15) + "','" + rsetfact.getString(16) + "','" + rsetfact.getString(17) + "',0) ");
+                            con.insertar("insert into tb_factdevol values ('" + rsetfact.getString(1) + "','" + rsetfact.getString(2) + "','" + rsetfact.getString(3) + "','" + rsetfact.getString(4) + "',CURDATE(),'" + rsetfact.getString(6) + "','" + rsetfact.getString(7) + "','" + rsetfact.getString(8) + "','" + rsetfact.getString(9) + "','" + rsetfact.getString(10) + "','" + rsetfact.getString(11) + "','" + rsetfact.getString(12) + "','" + rsetfact.getString(13) + "','" + rsetfact.getString(14) + "','" + rsetfact.getString(15) + "','" + rsetfact.getString(16) + "','" + rsetfact.getString(17) + "',0) ");
                         }
                     }
 
@@ -197,7 +199,9 @@ public class FacturacionManual extends HttpServlet {
                     System.out.println(e.getMessage());
                 }
                 sesion.setAttribute("F_IndGlobal", null);
-                response.sendRedirect("reimp_factura.jsp");
+                //response.sendRedirect("reimp_factura.jsp");
+                out.println("<script>alert('" + mensaje + "')</script>");
+                out.println("<script>window.location='reimp_factura.jsp'</script>");
             }
             if (request.getParameter("accion").equals("CancelarFactura")) {
                 try {

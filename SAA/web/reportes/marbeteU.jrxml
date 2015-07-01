@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Marbete" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ac5afa2b-dbeb-4948-9e26-5043590070db">
-	<property name="ireport.zoom" value="0.75"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.607691607500001"/>
+	<property name="ireport.x" value="32"/>
+	<property name="ireport.y" value="484"/>
 	<parameter name="Lote" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -46,13 +46,6 @@
 				<textFieldExpression><![CDATA[$P{claPro}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="055f32ec-6521-4891-bccf-62e9c1aa24b9" x="0" y="81" width="157" height="33"/>
-				<textElement>
-					<font fontName="SansSerif" size="25"/>
-				</textElement>
-				<text><![CDATA[N° COMPRA:]]></text>
-			</staticText>
-			<staticText>
 				<reportElement uuid="31fb7bcd-49dd-4ba0-a352-382f9a4fe959" x="428" y="81" width="141" height="33"/>
 				<textElement>
 					<font fontName="SansSerif" size="25"/>
@@ -65,13 +58,6 @@
 					<font size="25"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cant}]]></textFieldExpression>
-			</textField>
-			<textField pattern="00000">
-				<reportElement uuid="54b51165-f604-4f7e-be2c-b6bac6318d66" x="157" y="81" width="235" height="33"/>
-				<textElement>
-					<font size="25"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{noCompra}]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement uuid="b6d29b15-a4ca-4599-a21c-36ddfc3e291c" x="0" y="0" width="186" height="81"/>
@@ -148,14 +134,14 @@
 				<textElement verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[Versión: 0]]></text>
+				<text><![CDATA[Versión: 1]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="2cdd3686-5185-4581-b9dd-2bfcc783cadb" x="167" y="2" width="428" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
-				<text><![CDATA[Fecha de Liberación: 16/04/2015]]></text>
+				<text><![CDATA[Fecha de Liberación: 30/06/2015]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="4151fd09-9b43-426e-b77a-a375042003d2" x="611" y="0" width="141" height="17"/>

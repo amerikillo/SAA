@@ -19,6 +19,7 @@
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
     DecimalFormat formatter = new DecimalFormat("#,###,###");
+    DecimalFormat formatter2 = new DecimalFormat("#,###,###.##");
     DecimalFormat formNoCom = new DecimalFormat("000");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -64,9 +65,16 @@
         try {
             con.conectar();
             int banIndice = 0;
+            /*
+             * Se busca que la orden de compra esté incompleta para continuar
+             * Los Status son: En el campo F_StsPed de la tabla tb_pedidoisem
+             * 0 En captura
+             * 1 Eliminado
+             * 2 Finalizado
+             */
             ResultSet rset = con.consulta("select MAX(F_NoCompra) as F_NoCompra, F_StsPed from tb_pedidoisem where F_IdUsu='" + usua + "'");
             while (rset.next()) {
-                if (rset.getInt("F_StsPed") == 0) {
+                if (rset.getInt("F_StsPed") == 0) {//Si el STATUS es 0 quiere decir que está incompleta
                     NoCompra = rset.getString("F_NoCompra");
                     banIndice = 1;
                 }
@@ -83,6 +91,10 @@
                 while (rset.next()) {
                     F_IndIsem = rset.getInt("F_IndIsem");
                 }
+
+                /*
+                 * Hacer mejora, que no se incremente cuando no se captura orden de compra;
+                 */
                 NoCompra = indice.noCompra();
                 NoCompra = formNoCom.format(Integer.parseInt(NoCompra)) + "-2015";
                 sesion.setAttribute("NoCompra", NoCompra);
@@ -92,6 +104,9 @@
             System.out.println(e.getMessage());
         }
     }
+
+    int ExiLot = 0;
+    Double NIM = 0.0;
 %>
 
 <!DOCTYPE html>
@@ -118,18 +133,16 @@
                     <a class="btn btn-default" href="capturaISEM.jsp">Captura de Órdenes de Compra</a>
                     <a class="btn btn-default" href="verFoliosIsem.jsp">Ver Órdenes de Compra</a>
                 </div>
-                <div class="text-right">
+                <div class="col-sm-1">
                     <a class="btn btn-danger" href="indexIsem.jsp">Salir</a>
                 </div>
             </div>
             <hr/>
             <form name="FormBusca" action="CapturaPedidos" method="post">
                 <div class="row">
-                    <label class="col-sm-3 col-sm-offset-7 text-right">
-                        <h4>Número de Orden de Compra</h4>
-                    </label>
+                    <h5 class="col-sm-3 col-sm-offset-7 text-right">Número de Orden de Compra</h5>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="NoCompra" name="NoCompra" value="<%=NoCompra%>" readonly=""  />
+                        <input type="text" class="form-control input-sm" id="NoCompra" name="NoCompra" value="<%=NoCompra%>" readonly=""  />
                     </div>
                 </div>
                 <br/>
@@ -249,7 +262,7 @@
                         </div>
                         <%
 
-                            Double NIM = 0.0;
+                            int meses = 0;
                             int banNIM = 0;
                             try {
                                 con.conectar();
@@ -276,47 +289,43 @@
                                         catalogo = "2014/2015";
                                     }
 
-                                    int difd = 0;
-                                    try {
-                                        String F_Min = "2015-01-01";
+                                    int difd = 0, difd2 = 0;
+                                    rset2 = con.consulta("select datediff( now(), F_FecCarg ) as dias from tb_unireq where F_ClaPro='" + claPro + "' LIMIT 1;");
+                                    while (rset2.next()) {
+                                        difd2 = rset2.getInt(1);
+                                    }
 
-                                        if (!catalogo.equals("2015")) {
-                                            F_Min = "2014-09-01";
-                                        }
-
-                                        Calendar date = GregorianCalendar.getInstance();
-                                        Calendar date2 = GregorianCalendar.getInstance();
-                                        date.setTime(df2.parse(F_Min));
-                                        date2.setTime(new Date());
-                                        long difms = date2.getTimeInMillis() - date.getTimeInMillis();
-                                        difd = (int) (difms / (1000 * 60 * 60 * 24));
-
-                                    } catch (Exception e) {
-
+                                    rset2 = con.consulta("select datediff( now(), F_FecMov ) as dias from tb_movinv where F_ProMov='" + claPro + "' LIMIT 1;");
+                                    while (rset2.next()) {
+                                        difd = rset2.getInt(1);
+                                    }
+                                    if (difd2 > difd) {
+                                        difd = difd2;
                                     }
 
                                     int F_ExiLot = 0;
-                                    rset2 = con.consulta("select SUM(F_ExiLot) as F_ExiLot from tb_lote where F_ClaPro = '" + claPro + "' ");
-
+                                    rset2 = con.consulta("select (F_ExiLot) as F_ExiLot from tb_lote where F_ClaPro = '" + claPro + "' and F_ExiLot!=0 union all select -F_Cant from clavefact where F_ClaPro = '" + claPro + "' and F_StsFact<5");
                                     while (rset2.next()) {
-                                        F_ExiLot = rset2.getInt("F_ExiLot");
+                                        F_ExiLot += rset2.getInt("F_ExiLot");
+
                                     }
 
-                                    rset2 = con.consulta("select SUM(F_ExiLot) as F_ExiLot from tb_lote where F_ClaPro = '" + claPro + "'  ");
-                                    while (rset2.next()) {
-                                        totalClave = rset2.getInt("F_ExiLot");
-                                    }
-
+                                    ExiLot = F_ExiLot;
                                     rset2 = con.consulta("select SUM(F_CantSur) as F_CantSur from tb_factura where F_ClaPro = '" + claPro + "' and F_StsFact='A'  ");
                                     while (rset2.next()) {
                                         remisionadoClave = rset2.getDouble("F_CantSur");
                                     }
+
                                     if (remisionadoClave > 0) {
                                         CPM = (remisionadoClave / difd) * 30;
-                                        NIM = (double) totalClave / CPM;
+                                        NIM = (double) F_ExiLot / CPM;
                                     }
                                     banNIM = 1;
 
+                                    rset2 = con.consulta("select TIMESTAMPDIFF(month, now(), '2016-02-01' ) as meses;");
+                                    while (rset2.next()) {
+                                        meses = rset2.getInt(1);
+                                    }
                         %>
                         <div class="row">
                             <label class="col-sm-2 text-right">
@@ -350,33 +359,17 @@
                                 }
                                 con.cierraConexion();
                             } catch (Exception e) {
-
+                                out.println(e);
                             }
                         %>
 
 
                         <div class="row">
-                            <%
-                                String cantidad = "0";
-                                try {
-                                    conLinux.conectar();
-                                    ResultSet rset = conLinux.consulta(" select SUM(F_ExiLot) from tb_lote where F_ClaPro = '" + claPro + "' group by F_ClaPro  ");
-                                    while (rset.next()) {
-                                        cantidad = rset.getString(1);
-                                    }
-                                    if (cantidad == null) {
-                                        cantidad = "0";
-                                    }
-                                    conLinux.cierraConexion();
-                                } catch (Exception e) {
-                                    System.out.println(e.getMessage());
-                                }
-                            %>
                             <label class="col-sm-2 text-center">
                                 <h4>Exist. en Almacén:</h4>
                             </label>
                             <div class="col-sm-2">
-                                <input type="text" class="form-control" name="CantAlm" id="CantAlm" readonly="" value="<%=formatter.format(Integer.parseInt(cantidad))%>" />
+                                <input type="text" class="form-control" name="CantAlm" id="CantAlm" readonly="" value="<%=formatter.format((ExiLot))%>" />
                             </div>
                             <label class="col-sm-2 text-center">
                                 <h4>No. de Entrega:</h4>
@@ -415,7 +408,7 @@
                                  if (banNIM == 1) {
                                      if (NIM == 0) {
                                          out.println("alert-danger");
-                                     } else if (NIM > 6) {
+                                     } else if (NIM > meses) {
                                          out.println("alert-info");
                                      }                                  %>
                              ">
@@ -423,14 +416,14 @@
                             <%
                                     if (NIM == 0) {
                                         out.println("Agotada:");
-                                    } else if (NIM > 6) {
+                                    } else if (NIM > meses) {
                                         out.println("Sobre Abasto:");
                                     }
                                 }
                             %>
 
 
-                            Meses de Inventario <%=formatter.format(NIM)%>
+                            Meses de Inventario <%=formatter2.format(NIM)%>
                         </div>
                         <div class="row">
                             <label class="col-sm-2 text-right">
@@ -535,7 +528,7 @@
                              $("#Fecha1").datepicker();
                              $("#Fecha1").datepicker('option', {dateFormat: 'dd/mm/yy'});
                              });*/
-                            $(function() {
+                            $(function () {
                                 $("#CadPro").datepicker();
                                 $("#CadPro").datepicker('option', {dateFormat: 'dd/mm/yy'});
                             });

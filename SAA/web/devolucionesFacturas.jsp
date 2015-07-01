@@ -326,12 +326,12 @@
         <script src="js/jquery.dataTables.js"></script>
         <script src="js/dataTables.bootstrap.js"></script>
         <script>
-                                    $(document).ready(function () {
+                                    $(document).ready(function() {
                                         $('#datosCompras').dataTable();
                                     });
         </script>
         <script type="text/javascript">
-            $(function () {
+            $(function() {
                 $("#fecha").datepicker();
                 $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
             });
@@ -357,37 +357,38 @@
                     //$(id[1]).prop("disabled", true);
                 }
             }
-            $('#ContraDevoM').keyup(function(){
-                if($('#ContraDevoM').val()==="rosalino"){
-                   $('#devM').removeClass("disabled");
+            $('#ContraDevoM').keyup(function() {
+                if ($('#ContraDevoM').val() === "rosalino") {
+                    $('#devM').removeClass("disabled");
                 } else {
                     $('#devM').addClass("disabled");
                 }
             });
-            $('#devM').click(function(){
+            $('#devM').click(function() {
                 if (document.getElementById('ObserM').value === "") {
                     alert("Ingrese las observaciones de la devolución");
                     return false;
                 }
                 var dir = "DevolucionMultiple";
-                var ObserM=$('#ObserM').val();
+                var ObserM = $('#ObserM').val();
                 $.ajax({
-                        url: dir,
-                        data: {que: "g", ObserM: ObserM},
-                        success: function (data) {
-                            if(data!=="no"){
-                                alert('Devoluciones Exitosas');
-                                window.location.reload();
-                            }else{
-                                alert('Error al Realizar las Devoluciones');
-                                window.location.reload();
-                            }      
-                        },
-                        error: function () {
+                    url: dir,
+                    data: {que: "g", ObserM: ObserM},
+                    success: function(data) {
+                        if (data !== "no") {
+                            var dataArray = data.split("|");
+                            alert('Devoluciones Exitosas\n' + dataArray[1]);
+                            window.location.reload();
+                        } else {
                             alert('Error al Realizar las Devoluciones');
-                            window.location.href='devolucionesFacturas.jsp';
+                            window.location.reload();
                         }
-                    });
+                    },
+                    error: function() {
+                        alert('Error al Realizar las Devoluciones');
+                        window.location.href = 'devolucionesFacturas.jsp';
+                    }
+                });
             });
             function Pruebachk(chk, folio) {
                 if (chk.checked === true) {
@@ -396,11 +397,11 @@
                     $.ajax({
                         url: dir,
                         data: {que: "add", id: id, folio: folio},
-                        success: function (data) {
+                        success: function(data) {
                             $('#devolVarias').removeClass("disabled");
                             $('#tbDev').load('devolucionesFacturas.jsp #tbDev');
                         },
-                        error: function () {
+                        error: function() {
                             alert("Ocurrió un error");
                         }
                     });
@@ -410,10 +411,10 @@
                     $.ajax({
                         url: dir,
                         data: {que: "rem", id: id, folio: folio},
-                        success: function (data) {
+                        success: function(data) {
                             $('#tbDev').load('devolucionesFacturas.jsp #tbDev');
                         },
-                        error: function () {
+                        error: function() {
                             alert("Ocurrió un error");
                         }
                     });

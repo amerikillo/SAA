@@ -20,19 +20,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author Americo
  */
 public class CompraAutomatica extends HttpServlet {
-
-    ConectionDB con = new ConectionDB();
-    NuevoISEM nuevo = new NuevoISEM();
-    CorreoConfirmaRemision correoConfirma = new CorreoConfirmaRemision();
-
-    DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-    DateFormat df3 = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,9 +42,29 @@ public class CompraAutomatica extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion = request.getSession(true);
+        ConectionDB con = new ConectionDB();
+        NuevoISEM nuevo = new NuevoISEM();
+        JSONObject json = new JSONObject();
+        JSONArray jsona = new JSONArray();
+        CorreoConfirmaRemision correoConfirma = new CorreoConfirmaRemision();
+
+        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df3 = new SimpleDateFormat("dd/MM/yyyy");
+
         PrintWriter out = response.getWriter();
         try {
-            System.out.println(request.getParameter("accion") + "*****");
+            String mensaje = "";
+            if (request.getParameter("accion").equals("buscarFolio")) {
+                con.conectar();
+                ResultSet rset = con.consulta("select F_FolRemi from tb_compra where F_FolRemi='" + request.getParameter("F_FolRemi") + "' and F_OrdCom='" + request.getParameter("F_OrdCom") + "' limit 1");
+                while (rset.next()) {
+                    json.put("mensaje", "FolioCapturado");
+                    jsona.add(json);
+                    json = new JSONObject();
+                }
+                out.println(jsona);
+                System.out.println(jsona);
+            }
             if (request.getParameter("accion").equals("seleccionaClave")) {
                 String folio = request.getParameter("folio");
                 String folioRemi = request.getParameter("folioRemi");
@@ -192,6 +207,7 @@ public class CompraAutomatica extends HttpServlet {
 
             }
             if (request.getParameter("accion").equals("guardarLote")) {
+
                 try {
                     String posCla = sesion.getAttribute("posClave").toString();
                     String folio = request.getParameter("folio");
