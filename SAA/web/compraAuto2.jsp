@@ -16,6 +16,13 @@
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%java.text.DateFormat df1 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%
+    /**
+     *
+     *
+     * JSP para ingresos pero vía PC
+     *
+     *
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -26,15 +33,24 @@
     HttpSession sesion = request.getSession();
     String usua = "";
     String tipo = "";
+    /**
+     * Valida sesión usuario
+     */
     if (sesion.getAttribute("nombre") != null) {
         usua = (String) sesion.getAttribute("nombre");
         tipo = (String) sesion.getAttribute("Tipo");
     } else {
         response.sendRedirect("index.jsp");
     }
+    /**
+     * Conexion a la BDD
+     */
     ConectionDB con = new ConectionDB();
     ConectionDB_Nube conNube = new ConectionDB_Nube();
     try {
+        /**
+         * Si se está buscando nueva orden de compra limpia valores anteriores
+         */
         if (request.getParameter("accion").equals("Buscar")) {
             sesion.setAttribute("posClave", "0");
             sesion.setAttribute("folioRemi", "");
@@ -46,11 +62,19 @@
 
     int totalClaves = 0, clavesCapturadas = 0;
     String fecha = "", noCompra = "", Proveedor = "", Fecha = "";
+    String CodBar = "", Lote = "", Cadu = "";
     String nomProvee = "";
+    String posClave = "0";
+    int numRenglones = 0;
+    String folioRemi = "";
+
     if (request.getParameter("selceccionaOC") != null) {
         noCompra = "";
         sesion.setAttribute("NoCompra", "");
     }
+    /**
+     * Obtención de los parametros fecha, no compra, proveedor
+     */
     try {
         fecha = request.getParameter("Fecha");
     } catch (Exception e) {
@@ -67,6 +91,10 @@
     if (fecha == null) {
         fecha = "";
     }
+    /**
+     * Si no compra es null entonces se busca en sesión, si sigue siendo nulo
+     * hace un string vacío
+     */
     if (noCompra == null) {
         try {
             noCompra = (String) sesion.getAttribute("NoCompra");
@@ -76,17 +104,20 @@
             noCompra = "";
         }
     }
-    System.out.println(noCompra);
     if (Proveedor == null) {
         Proveedor = "";
     }
-
-    String posClave = "0";
+    /**
+     * Es para cuando estaba paginada la captura de las ordenes de compra.
+     */
     try {
         posClave = sesion.getAttribute("posClave").toString();
     } catch (Exception e) {
 
     }
+    /**
+     * Se reiniciaba la posicion al hace nueva busqueda
+     */
     if (posClave == null || posClave.equals("")) {
         posClave = "0";
     }
@@ -99,10 +130,6 @@
 
     }
 
-    int numRenglones = 0;
-
-    String folioRemi = "";
-
     if (folioRemi.equals("")) {
         try {
             folioRemi = (String) sesion.getAttribute("folioRemi");
@@ -110,6 +137,9 @@
         }
     }
 
+    /**
+     * Si la remision es null se hace un vacío
+     */
     if (folioRemi == null) {
         folioRemi = "";
     }
@@ -122,7 +152,6 @@
         Fecha = "";
     }
 
-    String CodBar = "", Lote = "", Cadu = "";
     try {
         CodBar = (String) sesion.getAttribute("CodBar");
     } catch (Exception e) {
@@ -132,7 +161,6 @@
         CodBar = "";
     }
 
-    System.out.println(CodBar);
     try {
         Lote = (String) sesion.getAttribute("Lote");
     } catch (Exception e) {
@@ -242,6 +270,10 @@
             <form action="CompraAutomatica" method="get" name="formulario1">
                 <br/>
                 <%
+                    /**
+                     * Muestra información de aquellas órdenes de compra las
+                     * cuales su campo de recibido sea 0 y estén confirmadas
+                     */
                     try {
                         con.conectar();
                         ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0' group by F_NoCompra");
@@ -278,6 +310,10 @@
                                     <select class="form-control" name="selectClave" id="selectClave">
                                         <option>-Seleccione-</option>
                                         <%
+                                            /**
+                                             * Arroja las claves faltantes por
+                                             * ingresar al sistema
+                                             */
                                             try {
                                                 con.conectar();
                                                 ResultSet rset2 = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' and F_Recibido = '0' ");
@@ -297,6 +333,10 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <%
+                                        /**
+                                         * Contador del número de claves
+                                         * capturadas
+                                         */
                                         try {
                                             con.conectar();
                                             ResultSet rset5 = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + noCompra + "'");
@@ -320,13 +360,20 @@
                         <div class="panel-body">
                             <%
                                 try {
-                                    System.out.println("*****" + (String) sesion.getAttribute("claveSeleccionada"));
+                                    //System.out.println("*****" + (String) sesion.getAttribute("claveSeleccionada"));
                                     con.conectar();
+                                    /**
+                                     * Ya no se usa esta función
+                                     */
                                     ResultSet rset2 = con.consulta("select s.F_Clave, m.F_DesPro, s.F_Lote, DATE_FORMAT(F_Cadu, '%d/%m/%Y'), s.F_Cant, F_IdIsem, F_Obser from tb_pedidoisem s, tb_medica m where s.F_Clave = m.F_ClaPro and F_NoCompra = '" + rset.getString(1) + "' and F_StsPed = '1'");
                                     while (rset2.next()) {
                                         rset2.last();
                                         numRenglones = rset2.getRow() - 1;
                                     }
+                                    /**
+                                     * Nos devuelve la información de la clave
+                                     * seleccionada
+                                     */
                                     rset2 = con.consulta("select s.F_Clave, m.F_DesPro, s.F_Lote, DATE_FORMAT(F_Cadu, '%d/%m/%Y'), s.F_Cant, F_IdIsem, F_Obser from tb_pedidoisem s, tb_medica m where s.F_Clave = m.F_ClaPro and F_NoCompra = '" + rset.getString(1) + "' and F_Clave = '" + sesion.getAttribute("claveSeleccionada") + "' ");
                                     while (rset2.next()) {
 
@@ -361,6 +408,10 @@
 
                                         </td>
                                         <%
+                                            /**
+                                             * Para obtener el número de de
+                                             * lotes distintos
+                                             */
                                             int contadorLotes = 0;
                                             String idMarca = "";
                                             if (!CodBar.equals("")) {
@@ -375,6 +426,11 @@
 
                                                 }
                                             }
+                                            /**
+                                             * Si es más de 1 lote se pondran en
+                                             * un select los lotes y las
+                                             * caducidades
+                                             */
                                             if (contadorLotes > 1) {
                                                 //Mas de 1 lote
 %>
@@ -428,6 +484,14 @@
                                             </select>
                                         </td>
                                         <%
+                                            /**
+                                             * En caso de que sea 1 lote o menos
+                                             * Se obtiene el lote y la caducidad
+                                             * única y se pone en input para
+                                             * aceptarlo o modificarlo desde
+                                             * allí
+                                             *
+                                             */
                                         } else {
                                             //1 Lote o menos
                                         %>
@@ -476,6 +540,16 @@
                                         <td>
                                             <strong>Cantidad Recibida</strong>
                                             <%
+                                                /**
+                                                 * Cálculo de la cantidad
+                                                 * recibida, es la cantidad que
+                                                 * se supone debe llegar en esa
+                                                 * orden de compra menos lo que
+                                                 * entró previamente en compras
+                                                 * de esta clave - la candiad
+                                                 * que se está ingresando en
+                                                 * compra temporal
+                                                 */
                                                 int cantRecibida = 0;
                                                 try {
                                                     con.conectar();
@@ -503,6 +577,15 @@
                                                     <select class="form-control" name="list_marca" onKeyPress="return tabular(event, this)" id="list_marca">
                                                         <option value="">Marca</option>
                                                         <%
+                                                            /**
+                                                             * Nos devuelve las
+                                                             * marcas y
+                                                             * preseleccionada
+                                                             * la última afín a
+                                                             * la clave con la
+                                                             * que se está
+                                                             * trabajando
+                                                             */
                                                             try {
                                                                 con.conectar();
                                                                 ResultSet rset3 = con.consulta("SELECT F_ClaMar,F_DesMar FROM v_marcaprovee where F_NomPro = '" + nomProvee + "'");
@@ -548,19 +631,36 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6"> 
+                                                <!--
+                                                Para actualizar pantalla
+                                                -->
                                                 <button class="btn btn-block btn-primary glyphicon glyphicon-refresh" type = "submit" value = "refresh" name = "accion" ></button>
                                             </div>
                                             <div class="col-sm-6">
+                                                <!--
+                                                Para abrir ventana de marcas y agregar nuevas
+                                                -->
                                                 <a href="marcas.jsp" target="_blank"><h4>Alta</h4></a>
                                             </div>
+                                            <!--
+                                            Para tener el parametro de la clave en el formulaio
+                                            -->
                                             <input value="<%=rset.getString("p.F_ClaProve")%>" name="claPro" id="claPro" class="hidden" onkeypress="return tabular(event, this)" />
                                         </td>
                                         <td colspan="5">
                                             <strong>Observaciones</strong>
+                                            <!--
+                                            Observaciones de la tabla tb_pedidoisem
+                                            -->
                                             <textarea class="form-control" readonly><%=rset2.getString(7)%></textarea>
                                         </td>
                                     </tr>
+
+                                    <!--
+                          Aqui es donde se capturan las piezas dependiendo de las tarimas cajas y piezas por caja
+                          En cada keyup de los campos se manda llamar la función que hace los calculos
+                                    -->
                                     <tr>
                                         <td colspan="6">
                                             <h5><strong>Tarimas Completas</strong></h5>
@@ -643,6 +743,10 @@
                                     <%}%>
                                 </div>
                                 <%
+                                    /**
+                                     * Se muestra el botón de ingresar sólo a
+                                     * usuarios válidos
+                                     */
                                     if (tipo.equals("2") || tipo.equals("3") || tipo.equals("1") || tipo.equals("8")) {
                                 %>
                                 <div class="col-sm-4">
@@ -737,6 +841,9 @@
 
                         }
                         if (banCompra == 1) {
+                            /**
+                             * si existen renglones se muestran lo botones
+                             */
                     %>
                     <tr>
 
@@ -811,7 +918,9 @@
 
 
         <!--
-        Modal
+      Modal
+      
+      Ventana para los rechazos, no se utiliza mucho, se acostumbra más recalendarizar o aceptar la compra y completarla otro día
         -->
         <div class="modal fade" id="Rechazar" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -829,6 +938,10 @@
                             <div class="row">
                                 <%
                                     try {
+                                        /**
+                                         * Nos muestra información de la orden
+                                         * de compra capturada por ISEM
+                                         */
                                         con.conectar();
                                         ResultSet rset = con.consulta("select i.F_NoCompra, i.F_FecSur, i.F_HorSur, p.F_NomPro, p.F_ClaProve from tb_pedidoisem i, tb_proveedor p where i.F_Provee = p.F_ClaProve and F_StsPed = '1' and F_NoCompra = '" + noCompra + "' and F_recibido='0' group by F_NoCompra");
                                         while (rset.next()) {
@@ -907,6 +1020,11 @@
                                 <div class="col-sm-12">
                                     <table class="table table-bordered">
                                         <%
+                                            /**
+                                             * Se arma la cuadrícula de las
+                                             * claves para seleccionarlas y
+                                             * recalendarizar o cancelar
+                                             */
                                             try {
                                                 con.conectar();
                                                 ResultSet rset = con.consulta("select F_Clave from tb_pedidoisem where F_NoCompra = '" + noCompra + "' ");
@@ -995,6 +1113,11 @@
                                 });
 
                                 function checkea(obj) {
+                                    /**
+                                     * 
+                                     * @type @exp;document@call;getElementsByName
+                                     * Para seleccionar todos los insumos 
+                                     */
                                     var cbs = document.getElementsByName('chkCancela');
                                     if (obj.checked) {
                                         for (var i = 0; i < cbs.length; i++)
@@ -1009,6 +1132,12 @@
                                     }
                                 }
                                 function validaRechazo() {
+                                    /**
+                                     * 
+                                     * @type @exp;document@call;getElementById@pro;value
+                                     * 
+                                     * Valida el rechazo, que se tengan los datos necesarios para enviar el submit
+                                     */
                                     var obser = document.getElementById('rechazoObser').value;
                                     var fechaN = document.getElementById('FechaOrden').value;
                                     var horaN = document.getElementById('HoraOrden').value;
@@ -1037,12 +1166,20 @@
                                     //return false;
                                 }
 
-                                $(function() {
+                                $(function() {  /**
+                                 * Para que el campo con id Fecha sea un tipo datepicker
+                                 */
                                     $("#Fecha").datepicker();
                                     $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
                                 });
                                 function justNumbers(e)
                                 {
+                                    /**
+                                     * 
+                                     * @type @exp;window@pro;event@pro;keyCode|@exp;e@pro;which
+                                     * 
+                                     * Función para que solo se puedan ingresar números a un campo de texto
+                                     */
                                     var keynum = window.event ? window.event.keyCode : e.which;
                                     if ((keynum === 8) || (keynum === 46))
                                         return true;
@@ -1051,6 +1188,12 @@
 
                                 otro = 0;
                                 function LP_data(e, esto) {
+                                    /**
+                                     * 
+                                     * @type @exp;e@pro;keyCode|@exp;e@pro;which
+                                     * 
+                                     * Función para que solo se puedan ingresar números a un campo de texto
+                                     */
                                     var key = (document.all) ? e.keyCode : e.which; //codigo de tecla. 
                                     if (key < 48 || key > 57)//si no es numero 
                                         return false; //anula la entrada de texto.
@@ -1082,6 +1225,12 @@
                                     //alert(id);
                                 }
                                 var formatNumber = {
+                                    /**
+                                     * 
+                                     * @type String
+                                     * 
+                                     * Para dar formato a los campos de totales de tarimas cajas y piezas
+                                     */
                                     separador: ",", // separador para los miles
                                     sepDecimal: '.', // separador para los decimales
                                     formatear: function(num) {
@@ -1105,6 +1254,13 @@
                                  $("#cad").datepicker('option', {dateFormat: 'dd/mm/yy'});
                                  });*/
                                 function totalPiezas() {
+
+                                    /**
+                                     * 
+                                     * @type @exp;document@call;getElementById@pro;value|Number
+                                     * 
+                                     * Función para el cálculo de las tarimas, cajas y piezas según lo que se va ingresando, se manda llamar con un onkeyup
+                                     */
                                     var TarimasC = document.getElementById('TarimasC').value;
                                     var CajasxTC = document.getElementById('CajasxTC').value;
                                     var PzsxCC = document.getElementById('PzsxCC').value;
@@ -1126,6 +1282,9 @@
                                     if (CajasxTI === "") {
                                         CajasxTI = 0;
                                     }
+                                    /**
+                                     * Si el resto es diferente de 0 se agrega una caja incompleta y una tarima
+                                     */
                                     if (Resto === "") {
                                         Resto = 0;
                                         var totalCajas = parseInt(CajasxTC) * parseInt(TarimasC) + parseInt(CajasxTI);
@@ -1151,6 +1310,13 @@
                                 }
 
                                 function validaCadu() {
+                                    /**
+                                     * 
+                                     * @type @exp;document@call;getElementById@pro;value
+                                     * 
+                                     * Valida la caducidad a 276 días (9 meses prox)
+                                     * el 276 es el que se cambia para modificar el mínimo aceptable
+                                     */
                                     var cad = document.getElementById('cad').value;
                                     if (cad === "") {
                                         alert("Falta Caducidad");
@@ -1163,7 +1329,7 @@
                                             return false;
                                         } else {
                                             var dtFechaActual = new Date();
-                                            var sumarDias = parseInt(276);
+                                            var sumarDias = parseInt(276);// 9 meses 276
                                             dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
                                             var fechaSpl = cad.split("/");
                                             var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
@@ -1179,6 +1345,15 @@
                                 }
 
                                 function validaCompra() {
+                                    /**
+                                     * 
+                                     * @type @exp;document@call;getElementById@pro;value
+                                     * 
+                                     * 
+                                     * Valida que vayan todos los datos de la compra
+                                     * 
+                                     * En el caso del folio de remisión no se mantiene para que no sea tan facil el equivocarse o no lo ingresen a otros folio
+                                     */
 
                                     var folioRemi = document.getElementById('folioRemi').value;
                                     if (folioRemi === "") {
@@ -1208,6 +1383,13 @@
                                         return false;
                                     }
 
+                                    /**
+                                     * 
+                                     * @type @exp;document@call;getElementById@pro;value
+                                     * 
+                                     * 
+                                     * Se hace una segunda validación de la caducidad
+                                     */
                                     var cad = document.getElementById('cad').value;
                                     if (cad === "") {
                                         alert("Falta Caducidad");
@@ -1215,7 +1397,7 @@
                                         return false;
                                     } else {
                                         var dtFechaActual = new Date();
-                                        var sumarDias = parseInt(270);
+                                        var sumarDias = parseInt(276);//9 meses=276
                                         dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
                                         var fechaSpl = cad.split("/");
                                         var Caducidad = fechaSpl[2] + "-" + fechaSpl[1] + "-" + fechaSpl[0];
@@ -1252,6 +1434,9 @@
 
                                 function tabular(e, obj)
                                 {
+                                    /**
+                                     * Funcion para que al presionar 'enter' en un campo salte al siguiente elemento en el formulario
+                                     */
                                     tecla = (document.all) ? e.keyCode : e.which;
                                     if (tecla != 13)
                                         return;
@@ -1272,6 +1457,12 @@
                                 }
 
                                 function cambiaLoteCadu(elemento) {
+                                    /**
+                                     * 
+                                     * @type @exp;elemento@pro;selectedIndex
+                                     * 
+                                     * Para que se seleccione en automático la caducidad
+                                     */
                                     var indice = elemento.selectedIndex;
                                     document.getElementById('list_cadu').selectedIndex = indice;
                                     document.getElementById('lot').value = document.getElementById('list_lote').value;

@@ -13,6 +13,9 @@
 <%java.text.DateFormat df1 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Consulta de las ordenes de compra para ISEM, viene de indexISEM
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -57,7 +60,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
     </head>

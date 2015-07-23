@@ -25,6 +25,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 /**
  *
  * @author amerikillo
+ * 
+ * 
+ * Esta clase no se utiliza ya que los rurales jamás se comenzaron a surtir.
  */
 public class CargaExcelReqRural {
 
@@ -74,6 +77,11 @@ public class CargaExcelReqRural {
 
         return vectorData;
     }
+    
+    /**
+     * A partir de aquí se hacen las inserciones, sin embargo no se utiliza la clase
+     * @param vectorData 
+     */
 
     public void displayDataExcelXLSX(Vector vectorData) {
         // Looping every row data in vector
@@ -81,6 +89,9 @@ public class CargaExcelReqRural {
         int idFact = 0;
         for (int i = 0; i < vectorData.size(); i++) {
             Vector vectorCellEachRowData = (Vector) vectorData.get(i);
+            /**
+             * Creación del query de inserción a partir de la lectura del archivo XLSX
+             */
             String qry = "insert into tb_unireqrurales values (";
             // && !F_FecApl.equals(vectorCellEachRowData.get(1).toString())
             if (!F_ClaCli.equals(vectorCellEachRowData.get(0).toString())) {

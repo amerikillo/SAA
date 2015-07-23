@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Para generar el excel de las facturas
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -54,6 +57,9 @@
 <div>
     <h4>Folio de Factura: <%=request.getParameter("fol_gnkl")%></h4>
     <%
+        /**
+         * Obtención de datos de cabecera de la factura
+         */
         try {
             con.conectar();
             try {
@@ -114,6 +120,9 @@
                 </thead>
                 <tbody>
                     <%
+                        /**
+                         * Obtención del detalle de la factura
+                         */
                         try {
                             con.conectar();
                             try {

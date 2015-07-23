@@ -39,6 +39,10 @@ public class JQInvenCiclico extends HttpServlet {
         try {
             try {
                 if (request.getParameter("accion").equals("GuardarInsumo")) {
+                    /**
+                     * Guardar insumos via ajax se van insertando en la tabla de
+                     * tb_loteinv, esto para los inventarios cíclicos
+                     */
                     con.conectar();
                     String F_IdLote = "";
                     int FolCant = 0;
@@ -56,6 +60,10 @@ public class JQInvenCiclico extends HttpServlet {
                     }
                     con.cierraConexion();
                 } else if (request.getParameter("accion").equals("buscaDescrip")) {
+                    /**
+                     * Buscar un insumo vía ajax y lo devuelve en un json para
+                     * su impresión en el jsp correspondiente
+                     */
                     con.conectar();
                     JSONObject json = new JSONObject();
                     JSONArray jsona = new JSONArray();
@@ -69,6 +77,9 @@ public class JQInvenCiclico extends HttpServlet {
                     out.println(jsona);
                     System.out.println(jsona);
                 } else if (request.getParameter("accion").equals("buscaClaUbi")) {
+                    /**
+                     * Para buscar las ubicaciones por la clave de esta
+                     */
                     con.conectar();
                     JSONObject json = new JSONObject();
                     JSONArray jsona = new JSONArray();
@@ -82,6 +93,11 @@ public class JQInvenCiclico extends HttpServlet {
                     out.println(jsona);
                     System.out.println(jsona);
                 } else if (request.getParameter("accion").equals("BuscarUbi")) {
+                    /**
+                     * Para buscar la ubcacion con base en su CB, imprime en la
+                     * cadena de las busquedas para jarlarlas con un json
+                     *
+                     */
                     con.conectar();
                     JSONObject json = new JSONObject();
                     JSONArray jsona = new JSONArray();
@@ -92,7 +108,7 @@ public class JQInvenCiclico extends HttpServlet {
                         json = new JSONObject();
                         ResultSet rset2 = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad from tb_loteinv where F_Ubica = '" + rset.getString("F_ClaUbi") + "'");
                         while (rset2.next()) {
-                            json.put("F_ClaPro", rset2.getString("F_ClaPro"));
+                            json.put("F_ClaPro", rset2.getString("F_ClaPro"));//Para poder jalar la información es con base en el primer parámetros 'F_ClaPro'
                             json.put("F_ClaLot", rset2.getString("F_ClaLot"));
                             json.put("F_FecCad", rset2.getString("F_FecCad"));
                             jsona.add(json);
@@ -103,28 +119,29 @@ public class JQInvenCiclico extends HttpServlet {
                     out.println(jsona);
                     System.out.println(jsona);
                 } else if (request.getParameter("accion").equals("BuscarCBMed")) {/*
-                    con.conectar();
-                    JSONObject json = new JSONObject();
-                    JSONArray jsona = new JSONArray();
-                    ResultSet rset = con.consulta("select F_Ubica from tb_lote where F_Cb= '" + request.getParameter("F_CBMed") + "' group by F_Ubica");
-                    while (rset.next()) {
-                        json.put("F_ClaUbi", rset.getString(1));
-                        jsona.add(json);
-                        json = new JSONObject();
-                    }
+                     con.conectar();
+                     JSONObject json = new JSONObject();
+                     JSONArray jsona = new JSONArray();
+                     ResultSet rset = con.consulta("select F_Ubica from tb_lote where F_Cb= '" + request.getParameter("F_CBMed") + "' group by F_Ubica");
+                     while (rset.next()) {
+                     json.put("F_ClaUbi", rset.getString(1));
+                     jsona.add(json);
+                     json = new JSONObject();
+                     }
 
-                    //out.println(jsona);
-                    rset = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad from tb_loteinv where F_Cb = '" + request.getParameter("F_CBMed") + "' group by F_ClaPro, F_ClaLot, F_FecCad");
-                    while (rset.next()) {
-                        json.put("F_ClaPro", rset.getString("F_ClaPro"));
-                        json.put("F_ClaLot", rset.getString("F_ClaLot"));
-                        json.put("F_FecCad", rset.getString("F_FecCad"));
-                        jsona.add(json);
-                        json = new JSONObject();
-                    }
-                    con.cierraConexion();
-                    out.println(jsona);
-                    System.out.println(jsona);*/
+                     //out.println(jsona);
+                     rset = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad from tb_loteinv where F_Cb = '" + request.getParameter("F_CBMed") + "' group by F_ClaPro, F_ClaLot, F_FecCad");
+                     while (rset.next()) {
+                     json.put("F_ClaPro", rset.getString("F_ClaPro"));
+                     json.put("F_ClaLot", rset.getString("F_ClaLot"));
+                     json.put("F_FecCad", rset.getString("F_FecCad"));
+                     jsona.add(json);
+                     json = new JSONObject();
+                     }
+                     con.cierraConexion();
+                     out.println(jsona);
+                     System.out.println(jsona);*/
+
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());

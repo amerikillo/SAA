@@ -45,7 +45,11 @@ public class CapturaPedidos extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession sesion = request.getSession(true);
         try {
+            /**
+             * Al parecer esta sección no se usa
+             */
             if (request.getParameter("accion").equals("verFolio")) {
+
                 try {
                     con.conectar();
                     ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, p.F_ClaProve from tb_pedidoisem o, tb_proveedor p where o.F_Provee = p.F_ClaProve and F_NoCompra = '" + request.getParameter("NoCompra") + "'  group by o.F_NoCompra");
@@ -62,6 +66,9 @@ public class CapturaPedidos extends HttpServlet {
                 }
                 response.sendRedirect("verFoliosIsem.jsp");
             }
+            /**
+             * Para eliminar un registro de la tabla pedido isem
+             */
             if (request.getParameter("accion").equals("eliminaClave")) {
                 con.conectar();
                 try {
@@ -72,6 +79,9 @@ public class CapturaPedidos extends HttpServlet {
                 con.cierraConexion();
                 response.sendRedirect("capturaISEM.jsp");
             }
+            /**
+             * Para buscar una clave
+             */
             if (request.getParameter("accion").equals("Clave")) {
                 System.out.println("Hola");
                 int ordenCapturada = 0;
@@ -86,9 +96,17 @@ public class CapturaPedidos extends HttpServlet {
                     System.out.println(e.getMessage());
                 }
                 if (ordenCapturada == 1) {
+                    /**
+                     * Se tenía esta validación cuando ellos capturaban el No de
+                     * Compra, no se utiliza.
+                     */
                     out.println("<script>alert('Orden Ya Capturada Previamente')</script>");
                     out.println("<script>window.location='capturaISEM.jsp'</script>");
                 } else {
+                    /**
+                     * Se busca la clave y se agregan los datos a variables de
+                     * sesión
+                     */
                     String NoCompra = (String) sesion.getAttribute("NoCompra");
                     int ban = 0;
                     con.conectar();
@@ -108,11 +126,16 @@ public class CapturaPedidos extends HttpServlet {
                         System.out.println(e.getMessage());
                     }
                     con.cierraConexion();
-
+                    /**
+                     * Si existe
+                     */
                     if (ban == 1) {
                         try {
                             if (NoCompra.equals("") || NoCompra == null) {
                                 try {
+                                    /**
+                                     * Bandera de si existe ese número de compra
+                                     */
                                     int ban2 = 0;
                                     con.conectar();
                                     ResultSet rset = con.consulta("select F_IdIsem from tb_pedidoisem where F_NoCompra = '" + request.getParameter("NoCompra") + "'");
@@ -121,6 +144,9 @@ public class CapturaPedidos extends HttpServlet {
                                     }
                                     con.cierraConexion();
                                     if (ban2 == 1) {
+                                        /**
+                                         * Si existe se avisa, y se limpian las variables de sesión
+                                         */
                                         sesion.setAttribute("NoCompra", "");
                                         sesion.setAttribute("clave", "");
                                         sesion.setAttribute("descripcion", "");
@@ -137,6 +163,9 @@ public class CapturaPedidos extends HttpServlet {
 
                         out.println("<script>window.location='capturaISEM.jsp'</script>");
                     } else {
+                        /**
+                         * Si no existe la clave se limpian las variables de sesión
+                         */
                         sesion.setAttribute("clave", "");
                         sesion.setAttribute("descripcion", "");
                         out.println("<script>alert('Insumo Inexistente')</script>");
@@ -146,6 +175,9 @@ public class CapturaPedidos extends HttpServlet {
 
             }
 
+            /**
+             * Nunca se entra al if de descripción ya que las busquedas son sólo por clave
+             */
             if (request.getParameter("accion").equals("Descripcion")) {
                 String NoCompra = (String) sesion.getAttribute("NoCompra");
                 int ban = 0;
@@ -201,9 +233,18 @@ public class CapturaPedidos extends HttpServlet {
                     out.println("<script>window.location='capturaISEM.jsp'</script>");
                 }
             }
+            /**
+             * Finaliza el if de DESCRIPCIÓN
+             * 
+             * IF de capturar, para ir insertando los registros en la tabla tb_pedidoisem
+             * 
+             */
             if (request.getParameter("accion").equals("capturar")) {
                 con.conectar();
                 String ClaPro = "", Priori = "", Lote = "", Cadu = "", Cant = "", Observaciones = "";
+                /**
+                 * Obtencion de parametros
+                 */
                 ClaPro = request.getParameter("ClaPro");
                 Priori = request.getParameter("Prioridad");
                 Lote = request.getParameter("LotPro");
@@ -214,6 +255,9 @@ public class CapturaPedidos extends HttpServlet {
                 if (Priori.equals("")) {
                     Priori = "-";
                 }
+                /**
+                 * No se captura ni lote ni caducidad, por eso se cambian los valores.
+                 */
                 if (Lote.equals("")) {
                     Lote = "-";
                 }
@@ -222,6 +266,9 @@ public class CapturaPedidos extends HttpServlet {
                 }
 
                 try {
+                    /**
+                     * Inserción de los registros
+                     */
                     con.insertar("insert into tb_pedidoisem values(0,'" + (String) sesion.getAttribute("NoCompra") + "','" + (String) sesion.getAttribute("proveedor") + "','" + ClaPro + "','','" + Priori + "','" + Lote + "','" + df.format(df2.parse(Cadu)) + "','" + Cant + "','" + Observaciones + "',CURRENT_TIMESTAMP(),'" + (String) sesion.getAttribute("fec_entrega") + "','" + (String) sesion.getAttribute("hor_entrega") + "','" + (String) sesion.getAttribute("Usuario") + "','0','0')");
                     sesion.setAttribute("clave", "");
                     sesion.setAttribute("descripcion", "");
@@ -232,6 +279,11 @@ public class CapturaPedidos extends HttpServlet {
                 con.cierraConexion();
                 out.println("<script>window.location='capturaISEM.jsp'</script>");
             }
+            /**
+             * Del boton 'Limpiar pantalla', para cancelar la orden
+             * 
+             * el Estauts 2 del campo F_StsPed de la tabla tb_pedidoisem indica pedido cancelado
+             */
             if (request.getParameter("accion").equals("cancelaOrden")) {
                 con.conectar();
                 try {
@@ -261,6 +313,9 @@ public class CapturaPedidos extends HttpServlet {
                 con.cierraConexion();
                 response.sendRedirect("verFoliosIsem.jsp");
             }
+            /**
+             * Para eliminar los registros que están en proceso de captura
+             */
             if (request.getParameter("accion").equals("cancelar")) {
                 con.conectar();
                 try {
@@ -275,6 +330,9 @@ public class CapturaPedidos extends HttpServlet {
                 con.cierraConexion();
                 response.sendRedirect("capturaISEM.jsp");
             }
+            /**
+             * Para confirmar la orden de compra se cambia a Status 1
+             */
             if (request.getParameter("accion").equals("confirmar")) {
                 con.conectar();
                 try {
@@ -291,32 +349,42 @@ public class CapturaPedidos extends HttpServlet {
                 con.cierraConexion();
                 response.sendRedirect("capturaISEM.jsp");
             }
+            /**
+             * Función para reactivar órdenes de compra cambia el estatus F_Recibido a 0, esto por parte del encargado de almacén (oscar)
+             */
             if (request.getParameter("accion").equals("reactivar")) {
                 con.conectar();
                 try {
-                    con.insertar("update tb_pedidoisem set F_Recibido='0' where F_NoCompra = '"+request.getParameter("NoCompra")+"'  ");
+                    con.insertar("update tb_pedidoisem set F_Recibido='0' where F_NoCompra = '" + request.getParameter("NoCompra") + "'  ");
                     //con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"'  ");
                 } catch (Exception e) {
                 }
                 con.cierraConexion();
-                out.println("<script>alert('Se reactivo la orden "+request.getParameter("NoCompra")+" corrercetamente')</script>");
+                out.println("<script>alert('Se reactivo la orden " + request.getParameter("NoCompra") + " corrercetamente')</script>");
                 out.println("<script>window.location='ordenesCompra.jsp'</script>");
             }
+            /**
+             * Para cerrar una orden de compra, cambia F_Recibido a 1, se cierran todos los registros para ya no tomarla en cuenta al momento de estar en proceso de recibo
+             */
             if (request.getParameter("accion").equals("cerrar")) {
                 con.conectar();
                 try {
-                    con.insertar("update tb_pedidoisem set F_Recibido='1' where F_NoCompra = '"+request.getParameter("NoCompra")+"'  ");
-                    con.insertar("delete from tb_compratemp where F_OrdCom = '"+request.getParameter("NoCompra")+"'  ");
+                    con.insertar("update tb_pedidoisem set F_Recibido='1' where F_NoCompra = '" + request.getParameter("NoCompra") + "'  ");
+                    con.insertar("delete from tb_compratemp where F_OrdCom = '" + request.getParameter("NoCompra") + "'  ");
                 } catch (Exception e) {
                 }
                 con.cierraConexion();
-                out.println("<script>alert('Se cerró la orden "+request.getParameter("NoCompra")+" corrercetamente')</script>");
+                out.println("<script>alert('Se cerró la orden " + request.getParameter("NoCompra") + " corrercetamente')</script>");
                 out.println("<script>window.location='ordenesCompra.jsp'</script>");
             }
         } catch (Exception e) {
         }
     }
 
+    /**
+     * Funcion para obtener el siguiente número de Orden de Compra
+     * @return String para la siguiente orden de compra
+     */
     public String noCompra() {
         String indice = "0";
         try {

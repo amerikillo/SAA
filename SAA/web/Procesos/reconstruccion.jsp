@@ -8,6 +8,10 @@
 <table border="1">
 
     <%
+        /**
+         * No SE USA
+         */
+
         ConectionDB con = new ConectionDB();
         con.conectar();
         ResultSet rset = con.consulta("select F_ClaPro, F_ExiLot, F_Ubica from tb_lote where F_FolLot='2174' ");

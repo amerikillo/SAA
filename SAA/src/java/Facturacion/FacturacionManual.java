@@ -290,14 +290,13 @@ public class FacturacionManual extends HttpServlet {
                                 MontoIva = Monto + IVAPro;
                                 //Obtencion de indice de movimiento
 
-                                ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
-                                while (FolioMov.next()) {
-                                    FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
-                                }
-                                FolMov = FolioMovi + 1;
-                                con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");
+                                /*ResultSet FolioMov = con.consulta("SELECT F_IndMov FROM tb_indice");
+                                 while (FolioMov.next()) {
+                                 FolioMovi = Integer.parseInt(FolioMov.getString("F_IndMov"));
+                                 }
+                                 FolMov = FolioMovi + 1;
+                                 con.actualizar("update tb_indice set F_IndMov='" + FolMov + "'");*/
                                 //Inserciones
-
                                 con.insertar("insert into tb_movinv values(0,curdate(),'" + FolioFactura + "','51','" + Clave + "','" + cantidad + "','" + Costo + "','" + MontoIva + "','-1','" + FolioLote + "','" + Ubicacion + "','" + ClaProve + "',curtime(),'" + sesion.getAttribute("nombre") + "')");
                                 con.insertar("insert into tb_factura values(0,'" + FolioFactura + "','" + ClaUni + "','A',curdate(),'" + Clave + "','" + cantidad + "','" + cantidad + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + FolioLote + "','" + FechaE + "',curtime(),'" + sesion.getAttribute("nombre") + "','" + Ubicacion + "','')");
                                 con.actualizar("update tb_facttemp set F_StsFact='5' where F_Id='" + F_Id + "'");

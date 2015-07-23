@@ -13,14 +13,16 @@
 <%java.text.DateFormat df1 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Detalle de las ordenes de compra
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
     custom.setGroupingSeparator(',');
     formatter.setDecimalFormatSymbols(custom);
     HttpSession sesion = request.getSession();
-    String usua = "",obs="",producto="";
+    String usua = "", obs = "", producto = "";
     if (sesion.getAttribute("Usuario") != null) {
         usua = (String) sesion.getAttribute("Usuario");
     } else {
@@ -54,7 +56,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -157,7 +159,7 @@
                                     ResultSet rset = con.consulta("SELECT I.F_Clave,M.F_DesPro, I.F_Lote, DATE_FORMAT(I.F_Cadu, '%d/%m/%Y'), I.F_Cant, I.F_IdIsem FROM tb_pedidoisem I INNER JOIN tb_medica M ON I.F_Clave=M.F_ClaPro WHERE I.F_NoCompra='" + NoCompra + "' GROUP BY I.F_Clave,M.F_DesPro, I.F_Lote");
                                     while (rset.next()) {
                                         producto = rset.getString("I.F_Clave");
-                                        
+
                             %>
                             <tr>
                                 <td><%=rset.getString(1)%></td>
@@ -166,15 +168,15 @@
                                 <td><%=rset.getString(4)%></td-->
                                 <td><%=formatter.format(rset.getInt(5))%></td>
                                 <%
-                                ResultSet rset3 = con.consulta("SELECT F_Obser  FROM tb_compra where F_OrdCom='"+NoCompra+"' and F_ClaPro='"+producto+"' and F_Obser <> ''");
+                                    ResultSet rset3 = con.consulta("SELECT F_Obser  FROM tb_compra where F_OrdCom='" + NoCompra + "' and F_ClaPro='" + producto + "' and F_Obser <> ''");
                                     while (rset3.next()) {
                                         obs = rset3.getString("F_Obser");
                                     }
-                             
+
                                 %>
                                 <td><%=obs%></td>
                             </tr>
-                            <%obs="";
+                            <%obs = "";
                                     }
                                     con.cierraConexion();
                                 } catch (Exception e) {
@@ -187,7 +189,6 @@
                 </div>
             </div>
         </div>
-    </body>
     <!-- 
     ================================================== -->
     <!-- Se coloca al final del documento para que cargue mas rapido -->
@@ -207,4 +208,5 @@
             $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
         });
     </script>
+    </body>
 </html>

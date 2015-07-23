@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Para captura manual, no se usa en este proyecto
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -90,7 +93,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <title>SIALSS</title>
     </head>
@@ -99,7 +102,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
             <div class="panel panel-primary">
                 <div class="panel-heading">

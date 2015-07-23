@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Para generar los concentrados
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -42,7 +45,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <title>SIALSS</title>
 
@@ -53,7 +56,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
         </div>
         <div class="container">
@@ -65,10 +68,9 @@
                     <form class="form-horizontal" role="form" name="formulario1" id="formulario1" method="post" action="Facturacion">
                         <div class="form-group">
                             <div class="form-group">
-                                <!--label for="Clave" class="col-xs-2 control-label">Clave*</label>
-                                <div class="col-xs-2">
-                                    <input type="text" class="form-control" id="Clave" name="Clave" placeholder="Clave" onKeyPress="return tabular(event, this)" autofocus >
-                                </div-->
+                                <!--
+                                Se selecciona la unidad, una ves que nos dice lo que se acaba de cargar seleccionamos la fecha de entrega y se genera el concentrado
+                                -->
                                 <label for="Nombre" class="col-xs-1 control-label">Clave Unidad</label>
                                 <div class="col-xs-7">
                                     <select id="Nombre" name="Nombre" class="form-control">
@@ -105,7 +107,7 @@
                             <div class="form-group">
                                 <label for="FecFab" class="col-sm-1 control-label">Fec Entrega</label>
                                 <div class="col-sm-2">
-                                    <input type="date" class="form-control" id="FecFab" name="FecFab" placeholder="FecFab" maxlength="10" />
+                                    <input type="date" class="form-control" id="FecFab" name="FecFab" />
                                 </div>
                             </div>
                         </div>
@@ -136,7 +138,7 @@
                                     ResultSet rset = con.consulta("SELECT M.F_ClaPro,M.F_DesPro,REQ.F_CajasReq, REQ.F_PiezasReq FROM tb_unireq REQ INNER JOIN tb_medica M ON REQ.F_ClaPro=M.F_ClaPro WHERE F_ClaUni='" + Clave + "' and F_Status =0");
                                     while (rset.next()) {
                             %>
-                            <tr class="odd gradeX">
+                            <tr >
                                 <td><small><%=rset.getString(1)%></small></td>
                                 <td><small><%=rset.getString(2)%></small></td>
                                 <td><small><%=formatter.format(rset.getInt(3))%></small></td>
@@ -160,152 +162,153 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-</html>
 
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script>
                             $(document).ready(function() {
                                 $('#datosProv').dataTable();
                             });
-</script>
-<script>
+        </script>
+        <script>
 
 
-    function isNumberKey(evt, obj)
-    {
-        var charCode = (evt.which) ? evt.which : event.keyCode;
-        if (charCode === 13 || charCode > 31 && (charCode < 48 || charCode > 57)) {
-            if (charCode === 13) {
+            function isNumberKey(evt, obj)
+            {
+                var charCode = (evt.which) ? evt.which : event.keyCode;
+                if (charCode === 13 || charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    if (charCode === 13) {
+                        frm = obj.form;
+                        for (i = 0; i < frm.elements.length; i++)
+                            if (frm.elements[i] === obj)
+                            {
+                                if (i === frm.elements.length - 1)
+                                    i = -1;
+                                break
+                            }
+                        /*ACA ESTA EL CAMBIO*/
+                        if (frm.elements[i + 1].disabled === true)
+                            tabular(e, frm.elements[i + 1]);
+                        else
+                            frm.elements[i + 1].focus();
+                        return false;
+                    }
+                    return false;
+                }
+                return true;
+
+            }
+
+            function valida_clave() {
+                var missinginfo = "";
+                if ($("#Nombre").val() == "") {
+                    missinginfo += "\n El campo Clave de la Unidad no debe de estar vacío";
+                }
+                if (missinginfo != "") {
+                    missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
+                    alert(missinginfo);
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            function valida_alta() {
+                var missinginfo = "";
+                if ($("#Nombre").val() == "") {
+                    missinginfo += "\n El campo Clave de la Unidad no debe de estar vacío";
+                }
+                if ($("#FecFab").val() == "") {
+                    missinginfo += "\n El campo Fecha Entrega no debe de estar vacío";
+                }
+                if (missinginfo != "") {
+                    missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
+                    alert(missinginfo);
+
+                    return false;
+                } else {
+
+                    return true;
+                }
+            }
+        </script>
+        <script language="javascript">
+            function justNumbers(e)
+            {
+                var keynum = window.event ? window.event.keyCode : e.which;
+                if ((keynum == 8) || (keynum == 46))
+                    return true;
+
+                return /\d/.test(String.fromCharCode(keynum));
+            }
+            otro = 0;
+            function LP_data() {
+                var key = window.event.keyCode;//codigo de tecla. 
+                if (key < 48 || key > 57) {//si no es numero 
+                    window.event.keyCode = 0;//anula la entrada de texto. 
+                }
+            }
+            function anade(esto) {
+                if (esto.value.length === 0) {
+                    if (esto.value.length == 0) {
+                        esto.value += "(";
+                    }
+                }
+                if (esto.value.length > otro) {
+                    if (esto.value.length == 4) {
+                        esto.value += ") ";
+                    }
+                }
+                if (esto.value.length > otro) {
+                    if (esto.value.length == 9) {
+                        esto.value += "-";
+                    }
+                }
+                if (esto.value.length < otro) {
+                    if (esto.value.length == 4 || esto.value.length == 9) {
+                        esto.value = esto.value.substring(0, esto.value.length - 1);
+                    }
+                }
+                otro = esto.value.length
+            }
+
+
+            function tabular(e, obj)
+            {
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla != 13)
+                    return;
                 frm = obj.form;
                 for (i = 0; i < frm.elements.length; i++)
-                    if (frm.elements[i] === obj)
+                    if (frm.elements[i] == obj)
                     {
-                        if (i === frm.elements.length - 1)
+                        if (i == frm.elements.length - 1)
                             i = -1;
                         break
                     }
                 /*ACA ESTA EL CAMBIO*/
-                if (frm.elements[i + 1].disabled === true)
+                if (frm.elements[i + 1].disabled == true)
                     tabular(e, frm.elements[i + 1]);
                 else
                     frm.elements[i + 1].focus();
                 return false;
             }
-            return false;
-        }
-        return true;
+            /*
+             $(function() {
+             $("#FecFab").datepicker();
+             $("#FecFab").datepicker('option', {dateFormat: 'dd/mm/yy'});
+             });
+             */
+        </script> 
 
-    }
+    </body>
+</html>
 
-    function valida_clave() {
-        var missinginfo = "";
-        if ($("#Nombre").val() == "") {
-            missinginfo += "\n El campo Clave de la Unidad no debe de estar vacío";
-        }
-        if (missinginfo != "") {
-            missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
-            alert(missinginfo);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    function valida_alta() {
-        var missinginfo = "";
-        if ($("#Nombre").val() == "") {
-            missinginfo += "\n El campo Clave de la Unidad no debe de estar vacío";
-        }
-        if ($("#FecFab").val() == "") {
-            missinginfo += "\n El campo Fecha Entrega no debe de estar vacío";
-        }
-        if (missinginfo != "") {
-            missinginfo = "\n TE HA FALTADO INTRODUCIR LOS SIGUIENTES DATOS PARA ENVIAR PETICIÓN DE SOPORTE:\n" + missinginfo + "\n\n ¡INGRESA LOS DATOS FALTANTES Y TRATA OTRA VEZ!\n";
-            alert(missinginfo);
-
-            return false;
-        } else {
-
-            return true;
-        }
-    }
-</script>
-<script language="javascript">
-    function justNumbers(e)
-    {
-        var keynum = window.event ? window.event.keyCode : e.which;
-        if ((keynum == 8) || (keynum == 46))
-            return true;
-
-        return /\d/.test(String.fromCharCode(keynum));
-    }
-    otro = 0;
-    function LP_data() {
-        var key = window.event.keyCode;//codigo de tecla. 
-        if (key < 48 || key > 57) {//si no es numero 
-            window.event.keyCode = 0;//anula la entrada de texto. 
-        }
-    }
-    function anade(esto) {
-        if (esto.value.length === 0) {
-            if (esto.value.length == 0) {
-                esto.value += "(";
-            }
-        }
-        if (esto.value.length > otro) {
-            if (esto.value.length == 4) {
-                esto.value += ") ";
-            }
-        }
-        if (esto.value.length > otro) {
-            if (esto.value.length == 9) {
-                esto.value += "-";
-            }
-        }
-        if (esto.value.length < otro) {
-            if (esto.value.length == 4 || esto.value.length == 9) {
-                esto.value = esto.value.substring(0, esto.value.length - 1);
-            }
-        }
-        otro = esto.value.length
-    }
-
-
-    function tabular(e, obj)
-    {
-        tecla = (document.all) ? e.keyCode : e.which;
-        if (tecla != 13)
-            return;
-        frm = obj.form;
-        for (i = 0; i < frm.elements.length; i++)
-            if (frm.elements[i] == obj)
-            {
-                if (i == frm.elements.length - 1)
-                    i = -1;
-                break
-            }
-        /*ACA ESTA EL CAMBIO*/
-        if (frm.elements[i + 1].disabled == true)
-            tabular(e, frm.elements[i + 1]);
-        else
-            frm.elements[i + 1].focus();
-        return false;
-    }
-    /*
-     $(function() {
-     $("#FecFab").datepicker();
-     $("#FecFab").datepicker('option', {dateFormat: 'dd/mm/yy'});
-     });
-     */
-</script> 

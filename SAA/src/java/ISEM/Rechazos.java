@@ -33,6 +33,8 @@ public class Rechazos extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
+     * Clase para los rechazos, no se utiliza
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,7 +48,9 @@ public class Rechazos extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         try {
             try {
-
+                /**
+                 * Rechazar órdenes de compra
+                 */
                 if (request.getParameter("accion").equals("Rechazar")) {
                     try {
                         CorreoRechaza correo = new CorreoRechaza();

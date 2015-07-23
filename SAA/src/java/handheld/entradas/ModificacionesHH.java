@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Americo
+ * 
+ * Las mismas funciones que el servlet modificaciones, pero para HandHelds
  */
 public class ModificacionesHH extends HttpServlet {
 

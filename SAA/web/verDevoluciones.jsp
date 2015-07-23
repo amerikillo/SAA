@@ -12,7 +12,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Para ver el estado de las devoluciones tanto pendientes como aplicadas
+     *
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -47,7 +50,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
         <title>SIALSS</title>
@@ -76,6 +79,9 @@
                     </thead>
                     <tbody>
                         <%
+                            /**
+                             * El status 0 es que aún no se aplican
+                             */
                             try {
                                 con.conectar();
                                 ResultSet rset = con.consulta("select F_ClaDoc, F_ClaCli, DATE_FORMAT(F_FecApl, '%d/%m/%Y') as F_FecApl, F_ClaPro, F_CantSur, F_Monto, F_Obs from tb_factdevol where F_FactSts=0");
@@ -121,6 +127,9 @@
                     </thead>
                     <tbody>
                         <%
+                            /**
+                             * El estatus 1 es que ya se aplicaron
+                             */
                             try {
                                 con.conectar();
                                 ResultSet rset = con.consulta("select F_ClaDoc, F_ClaCli, DATE_FORMAT(F_FecApl, '%d/%m/%Y') as F_FecApl, F_ClaPro, F_CantSur, F_Monto, F_Obs from tb_factdevol where F_FactSts=1");

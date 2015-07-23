@@ -12,6 +12,9 @@
 <%@ page import="java.sql.*" %> 
 <% /*Parametros para realizar la conexión*/
 
+    /**
+     * reimpreison de devoluciones de compras
+     */
     HttpSession sesion = request.getSession();
     ConectionDB con = new ConectionDB();
     String usua = "";

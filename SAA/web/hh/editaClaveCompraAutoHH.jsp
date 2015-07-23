@@ -25,7 +25,10 @@
     ConectionDB con = new ConectionDB();
     String folio_gnk = "", fecha = "", folio_remi = "", orden = "", provee = "", recib = "", entrega = "", origen = "", coincide = "", observaciones = "", clave = "", descrip = "", cod_bar = "", um = "", lote = "", cadu = "", cajas = "", piezas = "", tarimas = "", marca = "", fec_fab = "", proveedor = "", tarimasInc = "";
     int PzxCaja = 0, tarimasC = 0, tarimasI = 0, cajasPorTarimaC = 0, cajasPorTarimaI = 0, resto = 0, cajasI = 0;
-
+    /**
+     * Se ontiene el número de registro desde sesión y se sacan todos los datos
+     * de este para poder hacer las modificaciones
+     */
     try {
         con.conectar();
         ResultSet rset = con.consulta("select F_ClaPro, F_Lote, F_FecCad, F_FecFab, F_Marca, F_Cb, F_Cajas, F_Pz, F_Tarimas, F_Resto, F_TarimasI, F_CajasI, F_FolRemi, F_Provee from tb_compratemp where F_IdCom = '" + ((String) sesion.getAttribute("id")) + "' ");
@@ -60,6 +63,9 @@
             while (rset2.next()) {
                 marca = rset2.getString(1);
             }
+            /**
+             * Calculo de tarmias, cajas y piezas
+             */
             PzxCaja = (Integer.parseInt(piezas) - resto) / Integer.parseInt(cajas);
             tarimasC = Integer.parseInt(tarimas) - Integer.parseInt(tarimasInc);
             tarimasI = Integer.parseInt(tarimasInc);
@@ -90,7 +96,7 @@
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <title>SIALSS</title>
         <!-- -->
@@ -100,7 +106,7 @@
     <body onload="totalPiezas();">
         <div class="container">
             <h1>SIE</h1>
-            
+
             <%@include file="../jspf/menuPrincipal.jspf"%>
 
             <div class="panel panel-primary">
@@ -112,11 +118,11 @@
                         <div class="row">
                             <label for="folio" class="col-sm-2 control-label">Folio GNK</label>
                             <div class="col-sm-2">
-                                <input type="folio" class="form-control" id="folio" name="folio" placeholder="Folio" readonly value="<%=folio_gnk%>"/>
+                                <input type="text" class="form-control" id="folio" name="folio" placeholder="Folio" readonly value="<%=folio_gnk%>"/>
                             </div>
                             <label for="fecha" class="col-sm-1 control-label">ID</label>
                             <div class="col-sm-2">
-                                <input type="fecha" class="form-control" id="id" name="id" placeholder="Fecha" readonly value="<%=((String) sesion.getAttribute("id"))%>">
+                                <input type="text" class="form-control" id="id" name="id" placeholder="Fecha" readonly value="<%=((String) sesion.getAttribute("id"))%>">
                             </div>
                             <div class="col-sm-2">
                                 <a class="btn btn-block btn-success"  href="compraAuto3.jsp" >Regresar</a>
@@ -125,21 +131,21 @@
                         <div class="row">
                             <label for="fol_rem" class="col-sm-2 control-label">Folio Remisión</label>
                             <div class="col-sm-3">
-                                <input type="fol_rem" class="form-control" id="folio_remi" name="folio_remi" placeholder="Folio Remisión" onKeyPress="return tabular(event, this)"  value="<%=folio_remi%>" readonly>
+                                <input type="text" class="form-control" id="folio_remi" name="folio_remi" placeholder="Folio Remisión" onKeyPress="return tabular(event, this)"  value="<%=folio_remi%>" readonly>
                             </div>
                             <label for="orden" class="col-sm-2 control-label">Orden de Compra</label>
                             <div class="col-sm-3">
-                                <input type="orden" class="form-control" id="orden" name="orden" placeholder="Orden de Compra" onKeyPress="return tabular(event, this)" value="<%=orden%>"/ readonly="readonly">
+                                <input type="text" class="form-control" id="orden" name="orden" placeholder="Orden de Compra" onKeyPress="return tabular(event, this)" value="<%=orden%>"/ readonly="readonly">
                             </div>
                         </div>
                         <div class="row">
                             <label for="prov" class="col-sm-2 control-label">Proveedor</label>
                             <div class="col-sm-3">
-                                <input type="prov" class="form-control" id="provee" name="provee" placeholder="Proveedor" onKeyPress="return tabular(event, this)" value="<%=proveedor%>" readonly />
+                                <input type="text" class="form-control" id="provee" name="provee" placeholder="Proveedor" onKeyPress="return tabular(event, this)" value="<%=proveedor%>" readonly />
                             </div>
                             <label for="recib" class="col-sm-2 control-label">Recibido por</label>
                             <div class="col-sm-3">
-                                <input type="recib" class="form-control" id="recib" name="recib" placeholder="Recibe" onKeyPress="return tabular(event, this)" value = "<%=usua%>" readonly>
+                                <input type="text" class="form-control" id="recib" name="recib" placeholder="Recibe" onKeyPress="return tabular(event, this)" value = "<%=usua%>" readonly>
                             </div>
                         </div>
 
@@ -151,7 +157,7 @@
                         <div class="row">
                             <label for="clave1" class="col-sm-1 control-label">Clave</label>
                             <div class="col-sm-2">
-                                <input type="clave1" class="form-control" id="clave1" name="clave1" placeholder="Clave" value="<%=clave%>" readonly onKeyPress="return tabular(event, this)">
+                                <input type="text" class="form-control" id="clave1" name="clave1" placeholder="Clave" value="<%=clave%>" readonly onKeyPress="return tabular(event, this)">
                             </div>
                             <label for="descr1" class="col-sm-1 control-label">Descripción</label>
                             <div class="col-sm-3">
@@ -159,14 +165,14 @@
                             </div>
                             <label for="cb" class="col-sm-2 control-label">Código de Barras</label>
                             <div class="col-sm-2">
-                                <input type="cb" class="form-control" id="cb" name="cb" placeholder="C. B." onKeyPress="return tabular(event, this)" value="<%=cod_bar%>" />
+                                <input type="text" class="form-control" id="cb" name="cb" placeholder="C. B." onKeyPress="return tabular(event, this)" value="<%=cod_bar%>" />
                             </div>
                         </div>
                         <br/>
                         <div class="row">
                             <label for="Marca" class="col-sm-1 control-label">Marca</label>
                             <div class="col-sm-2">
-                                <input type="Marca" class="form-control" id="Marca" name="Marca" readonly="" placeholder="Marca" onKeyPress="return tabular(event, this)" value="<%=marca%>" />
+                                <input type="text" class="form-control" id="Marca" name="Marca" readonly="" placeholder="Marca" onKeyPress="return tabular(event, this)" value="<%=marca%>" />
                             </div>
                             <label for="pres" class="col-sm-1 control-label">Presentación</label>
                             <div class="col-sm-2">
@@ -174,7 +180,7 @@
                             </div>
                             <label for="Lote" class="col-sm-1 control-label">Lote</label>
                             <div class="col-sm-2">
-                                <input type="Lote" class="form-control" id="Lote" name="Lote" placeholder="Lote" onKeyPress="return tabular(event, this)" value="<%=lote%>" />
+                                <input type="text" class="form-control" id="Lote" name="Lote" placeholder="Lote" onKeyPress="return tabular(event, this)" value="<%=lote%>" />
                             </div>
                             <label for="FecFab" class="col-sm-1 control-label">Fec Fab</label>
                             <div class="col-sm-2">
@@ -197,16 +203,16 @@
 
                             <label for="Cajas" class="col-sm-2 control-label">Tarimas</label>
                             <div class="col-sm-1">
-                                <input type="Cajas" class="form-control" id="TarimasC" name="TarimasC" placeholder="0" onKeyPress="return justNumbers(event);
+                                <input type="text" class="form-control" id="TarimasC" name="TarimasC" placeholder="0" onKeyPress="return justNumbers(event);
                                         return handleEnter(even);" onkeyup="totalPiezas();" value="<%=tarimasC%>" />
                             </div>
                             <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
                             <div class="col-sm-1">
-                                <input type="pzsxcaja" class="form-control" id="CajasxTC" name="CajasxTC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=cajasPorTarimaC%>" />
+                                <input type="text" class="form-control" id="CajasxTC" name="CajasxTC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=cajasPorTarimaC%>" />
                             </div>
                             <label for="Resto" class="col-sm-2 control-label">Piezas x Caja</label>
                             <div class="col-sm-1">
-                                <input type="Resto" class="form-control" id="PzsxCC" name="PzsxCC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=PzxCaja%>" />
+                                <input type="text" class="form-control" id="PzsxCC" name="PzsxCC" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=PzxCaja%>" />
                             </div>
                         </div>
                         <br/>
@@ -215,16 +221,16 @@
 
                             <label for="Cajas" class="hidden">Tarimas</label>
                             <div class="hidden">
-                                <input type="Cajas" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
+                                <input type="text" class="form-control" id="TarimasI" name="TarimasI" placeholder="0" onKeyPress="return justNumbers(event);
                                         return handleEnter(even);" onkeyup="totalPiezas();" value="<%=tarimasI%>" />
                             </div>
                             <label for="pzsxcaja" class="col-sm-2 control-label">Cajas x Tarima</label>
                             <div class="col-sm-1">
-                                <input type="pzsxcaja" class="form-control" id="CajasxTI" name="CajasxTI" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=cajasPorTarimaI%>" />
+                                <input type="text" class="form-control" id="CajasxTI" name="CajasxTI" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=cajasPorTarimaI%>" />
                             </div>
                             <label for="pzsxcaja" class="col-sm-2 control-label">Resto</label>
                             <div class="col-sm-1">
-                                <input type="pzsxcaja" class="form-control" id="Resto" name="Resto" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=resto%>" />
+                                <input type="text" class="form-control" id="Resto" name="Resto" placeholder="0" onKeyPress="return justNumbers(event);" onkeyup="totalPiezas();" value="<%=resto%>" />
                             </div>
                         </div>
                         <br/>
@@ -268,59 +274,69 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-</html>
 
 
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
-<script src="../js/jquery-1.9.1.js"></script>
-<script src="../js/bootstrap.js"></script>
-<script src="../js/jquery-ui-1.10.3.custom.js"></script>
-<script src="../js/bootstrap-datepicker.js"></script>
-<script>
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/bootstrap-datepicker.js"></script>
+        <script>
+
+
                             $(function() {
+                                /**
+                                 * 
+                                 * @returns {undefined}
+                                 * 
+                                 * Para que caducidad y fabricacion sean tipo date picker
+                                 */
                                 $("#Caducidad").datepicker();
                                 $("#Caducidad").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                            });
-                            $(function() {
                                 $("#FecFab").datepicker();
                                 $("#FecFab").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                            });
-                            $(function() {
+
+
+                                /**
+                                 * Autocomplete en la descripción, (NO SE USA)
+                                 */
                                 var availableTags = [
-    <%
-        try {
-            con.conectar();
-            ResultSet rset = con.consulta("select descrip from clave_med");
-            while (rset.next()) {
-                out.println("\'" + rset.getString("descrip") + "\',");
-            }
-            con.cierraConexion();
-        } catch (Exception e) {
-        }
-    %>
+            <%
+                try {
+                    con.conectar();
+                    ResultSet rset = con.consulta("select descrip from clave_med");
+                    while (rset.next()) {
+                        out.println("\'" + rset.getString("descrip") + "\',");
+                    }
+                    con.cierraConexion();
+                } catch (Exception e) {
+                }
+            %>
                                 ];
                                 $("#descr").autocomplete({
                                     source: availableTags
                                 });
-                            });
-                            $(function() {
+
+
+                                /**
+                                 * Autocomplete en proveedores
+                                 */
                                 var availableTags = [
-    <%
-        try {
-            con.conectar();
-            ResultSet rset = con.consulta("select f_nomprov from provee_all");
-            while (rset.next()) {
-                out.println("\'" + rset.getString("f_nomprov") + "\',");
-            }
-            con.cierraConexion();
-        } catch (Exception e) {
-        }
-    %>
+            <%
+                try {
+                    con.conectar();
+                    ResultSet rset = con.consulta("select f_nomprov from provee_all");
+                    while (rset.next()) {
+                        out.println("\'" + rset.getString("f_nomprov") + "\',");
+                    }
+                    con.cierraConexion();
+                } catch (Exception e) {
+                }
+            %>
                                 ];
                                 $("#provee").autocomplete({
                                     source: availableTags
@@ -341,25 +357,28 @@
 
 
                             function tabular(e, obj)
-                            {
-                                tecla = (document.all) ? e.keyCode : e.which;
-                                if (tecla != 13)
-                                    return;
-                                frm = obj.form;
-                                for (i = 0; i < frm.elements.length; i++)
-                                    if (frm.elements[i] == obj)
+                                    /**
+                                     * Enter siguiente elemento
+                                     */
                                     {
-                                        if (i == frm.elements.length - 1)
-                                            i = -1;
-                                        break
+                                        tecla = (document.all) ? e.keyCode : e.which;
+                                        if (tecla != 13)
+                                            return;
+                                        frm = obj.form;
+                                        for (i = 0; i < frm.elements.length; i++)
+                                            if (frm.elements[i] == obj)
+                                            {
+                                                if (i == frm.elements.length - 1)
+                                                    i = -1;
+                                                break
+                                            }
+                                        /*ACA ESTA EL CAMBIO*/
+                                        if (frm.elements[i + 1].disabled == true)
+                                            tabular(e, frm.elements[i + 1]);
+                                        else
+                                            frm.elements[i + 1].focus();
+                                        return false;
                                     }
-                                /*ACA ESTA EL CAMBIO*/
-                                if (frm.elements[i + 1].disabled == true)
-                                    tabular(e, frm.elements[i + 1]);
-                                else
-                                    frm.elements[i + 1].focus();
-                                return false;
-                            }
 
                             function foco() {
                                 if (document.formulario1.folio_remi.value !== "") {
@@ -583,4 +602,6 @@
                                 var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
                                 document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
                             }
-</script> 
+        </script> 
+    </body>
+</html>

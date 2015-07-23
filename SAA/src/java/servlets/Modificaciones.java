@@ -24,9 +24,7 @@ import java.text.*;
  */
 public class Modificaciones extends HttpServlet {
 
-    ConectionDB con = new ConectionDB();
     //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,6 +33,12 @@ public class Modificaciones extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     *
+     *
+     *
+     *
+     *
+     *
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -44,12 +48,14 @@ public class Modificaciones extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession sesion = request.getSession(true);
+        ConectionDB con = new ConectionDB();
         try {
             if (request.getParameter("accion").equals("actualizarRemi")) {
-
+                /**
+                 * Para actualizar el Folio de Remision y la fecha de esta
+                 */
                 con.conectar();
                 try {
-
                     String remi = request.getParameter("remiCorrecta");
                     String fecha = request.getParameter("fecRemision");
                     System.out.println(remi + "---" + fecha);
@@ -81,13 +87,22 @@ public class Modificaciones extends HttpServlet {
                 out.println("<script>window.location='reimpresion.jsp'</script>");
                 con.cierraConexion();
             }
+
             if (request.getParameter("accion").equals("modificarVerifica")) {
+                /**
+                 * Mandar el parametro de que se modificara por parte de los
+                 * auditores en el proceso de entrada
+                 */
                 System.out.println("modificar");
                 request.getSession().setAttribute("id", request.getParameter("id"));
                 response.sendRedirect("editaClaveVerifica.jsp");
             }
             if (request.getParameter("accion").equals("eliminarVerifica")) {
-                System.out.println("hola");
+                //System.out.println("hola");
+
+                /**
+                 * Eliminar por parte de verificardor ciertos insumos
+                 */
                 try {
                     con.conectar();
                     con.borrar2("delete from tb_compratemp where F_IdCom = '" + request.getParameter("id") + "'");
@@ -98,6 +113,10 @@ public class Modificaciones extends HttpServlet {
                 response.sendRedirect("verificarCompraAuto.jsp");
             }
             if (request.getParameter("accion").equals("verificarCompraAuto")) {
+                /**
+                 * Se pasa a F_Status 2 desde compra automática para que el
+                 * verificador pueda visualizarla
+                 */
                 try {
                     con.conectar();
                     try {
@@ -116,6 +135,10 @@ public class Modificaciones extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("verificarCompraManual")) {
+                /**
+                 * Se pasa a F_Status 2 desde compra manual para que el
+                 * verificador pueda visualizarla
+                 */
                 try {
                     con.conectar();
                     try {
@@ -135,6 +158,9 @@ public class Modificaciones extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("eliminarCompraAuto")) {
+                /**
+                 * Eliminar registros que están en proceso de captura
+                 */
                 System.out.println("eliminar");
                 try {
                     con.conectar();
@@ -150,11 +176,17 @@ public class Modificaciones extends HttpServlet {
                 response.sendRedirect("compraAuto2.jsp");
             }
             if (request.getParameter("accion").equals("modificarCompraAuto")) {
+                /**
+                 * Manda el ID del insumo a modificar desde la parte de captura
+                 */
                 System.out.println("modificar");
                 request.getSession().setAttribute("id", request.getParameter("id"));
                 response.sendRedirect("editaClaveCompraAuto.jsp");
             }
             if (request.getParameter("accion").equals("eliminar")) {
+                /**
+                 * Eliminar registro de la compra temporal en proceso de captura
+                 */
                 System.out.println("eliminar");
                 try {
                     con.conectar();
@@ -170,11 +202,18 @@ public class Modificaciones extends HttpServlet {
                 response.sendRedirect("captura.jsp");
             }
             if (request.getParameter("accion").equals("modificar")) {
+                /**
+                 * IF para modificar en captura manual
+                 */
                 System.out.println("modificar");
                 request.getSession().setAttribute("id", request.getParameter("id"));
                 response.sendRedirect("edita_clave.jsp");
             }
             if (request.getParameter("accion").equals("actualizar")) {
+                /**
+                 * Para actualizar en captura manual, este ya no se utiliza.
+                 *
+                 */
                 System.out.println("actualizar");
                 int cajas = Integer.parseInt((request.getParameter("Cajas")).replace(",", ""));
                 int piezas = Integer.parseInt((request.getParameter("Piezas")).replace(",", ""));
@@ -209,6 +248,11 @@ public class Modificaciones extends HttpServlet {
             }
 
             if (request.getParameter("accion").equals("actualizarCompraAuto")) {
+                /**
+                 * Para aplicar las modificaciones desde la parte de captura por
+                 * recibo con base en el Id de la compra temporal.
+                 *
+                 */
                 System.out.println("actualizar");
                 int cajas = Integer.parseInt((request.getParameter("Cajas")).replace(",", ""));
                 int piezas = Integer.parseInt((request.getParameter("Piezas")).replace(",", ""));
@@ -243,6 +287,12 @@ public class Modificaciones extends HttpServlet {
             }
 
             if (request.getParameter("accion").equals("actualizarVerifica")) {
+                /**
+                 * Para aplicar las modificaciones desde la parte de
+                 * verificación por auditoria con base en el Id de la compra
+                 * temporal.
+                 *
+                 */
                 System.out.println("actualizar");
                 int cajas = Integer.parseInt((request.getParameter("Cajas")).replace(",", ""));
                 int piezas = Integer.parseInt((request.getParameter("Piezas")).replace(",", ""));

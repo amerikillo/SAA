@@ -19,6 +19,9 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Americo
+ *
+ *
+ * Clase para proveedores
  */
 public class Proveedor extends HttpServlet {
 
@@ -44,6 +47,11 @@ public class Proveedor extends HttpServlet {
              *Para actualizar Registros
              */
             if (request.getParameter("accion").equals("actualizar")) {
+                /**
+                 * Para actualizar los registro de los proveedores, se tienen
+                 * comentadas las lineas que se utilizaban para SGW
+                 *
+                 */
                 //consql.conectar();
                 con.conectar();
                 try {
@@ -76,6 +84,9 @@ public class Proveedor extends HttpServlet {
              *Manda al jsp el id del registro a editar
              */
             if (request.getParameter("accion").equals("editar")) {
+                /**
+                 * Manda el ID para editar el proveedor
+                 */
                 request.getSession().setAttribute("id", request.getParameter("id"));
                 response.sendRedirect("editar_proveedor.jsp");
             }
@@ -83,6 +94,9 @@ public class Proveedor extends HttpServlet {
              *Para eliminar registro
              */
             if (request.getParameter("accion").equals("eliminar")) {
+                /**
+                 * Para eliminar el proveedor
+                 */
                 //consql.conectar();
                 con.conectar();
                 try {
@@ -104,6 +118,9 @@ public class Proveedor extends HttpServlet {
              *Guarda Registros
              */
             if (request.getParameter("accion").equals("guardar")) {
+                /**
+                 * Para guardar el proveedor
+                 */
                 try {
                     String Nombre = "";
                     //consql.conectar();
@@ -135,6 +152,10 @@ public class Proveedor extends HttpServlet {
             }
 
             if (request.getParameter("accion").equals("obtieneProvee")) {
+                /**
+                 * Se utilizaba para mandar los proveedores a SGW (YA no se
+                 * usa)
+                 */
                 try {
                     proveedores();
                     out.println("<script>alert('Se obtuvieron los Proveedores Correctamente')</script>");

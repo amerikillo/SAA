@@ -48,7 +48,7 @@ public class ConectionDB_ReqDist {
          this.driverClassName = "org.gjt.mm.mysql.Driver";*/
         this.usuario = "root";
         this.clave = "eve9397";
-        this.url = "jdbc:mysql://192.168.0.180:3306/gnkl_reqisemcc";
+        this.url = "jdbc:mysql://localhost:3306/gnkl_reqisemcc";
         this.driverClassName = "org.gjt.mm.mysql.Driver";
     }
 

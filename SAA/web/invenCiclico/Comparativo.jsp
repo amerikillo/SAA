@@ -14,6 +14,11 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * Comparativo para inventarios Cíclicos, poca veces se utilizan los módulos
+     * de inventarios cíclicos
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -38,7 +43,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <title>SIALSS</title>
     </head>
@@ -61,6 +66,9 @@
                     <td>Diferencia</td>
                 </tr>
                 <%
+                    /**
+                     * Comparativa entre inventarios
+                     */
                     try {
                         con.conectar();
                         ResultSet rset = con.consulta("select *, DATE_FORMAT(F_FecCad, '%d/%m/%Y') as FechaCad from tb_loteinv where F_ExiLot !=0;");
@@ -98,14 +106,15 @@
                     Todos los Derechos Reservados
                 </div>
             </div>
+        </div>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/funcInvCiclico.js"></script>
+        <script src="../js/jquery-ui.js"></script>
     </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/funcInvCiclico.js"></script>
-    <script src="../js/jquery-ui.js"></script>
 </html>
 

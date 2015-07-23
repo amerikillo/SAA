@@ -14,6 +14,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * Muesta las existencias sin lo que se tiene en proceso de facturación
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatter2 = new DecimalFormat("#,###,###.##");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -90,6 +94,7 @@
                                     <td>Cantidad</td>
                                     <td>Costo U.</td>
                                     <td>Monto</td>
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,10 +107,14 @@
                                             Claves = "";
                                         }
 
+                                        /**
+                                         * Para consultar la existencia de las
+                                         * claves
+                                         */
                                         if (Claves.equals("")) {
-                                            rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 GROUP BY l.F_ClaPro");
+                                            rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad, m.F_CambioPres FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 GROUP BY l.F_ClaPro");
                                         } else {
-                                            rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 and l.F_ClaPro='" + Claves + "' GROUP BY l.F_ClaPro");
+                                            rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad, m.F_CambioPres FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 and l.F_ClaPro='" + Claves + "' GROUP BY l.F_ClaPro");
                                         }
                                         while (rset.next()) {
                                             double monto1 = 0, montoApar = 0;
@@ -117,16 +126,31 @@
                                             } else {
                                                 monto1 = (Double.parseDouble(rset.getString("monto")) * 1.16);
                                             }
-
+                                            /**
+                                             * Se obtiene lo apartado para esa
+                                             * clave, (cualquiera que no se haya
+                                             * remisionado)
+                                             */
                                             ResultSet rset3 = con.consulta("select SUM(F_Cant) as F_Cant, SUM(c.F_Cant * m.F_Costo) as Importe from clavefact c, tb_medica m where m.F_ClaPro = c.F_ClaPro and c.F_ClaPro = '" + rset.getString("F_ClaPro") + "' and F_StsFact<5 ");
                                             while (rset3.next()) {
                                                 cantApar = rset3.getInt("F_Cant");
                                                 montoApar = rset3.getDouble("Importe");
                                             }
+                                            /**
+                                             * Calculo de las existencias
+                                             * disponibles y el monto de estas
+                                             */
                                             cantTotal = cantExi - cantApar;
+                                            if (cantTotal < 0) {
+                                                cantTotal = 0;
+                                            }
                                             Cantidad = Cantidad + cantTotal;
                                             monto = monto + monto1;
+                                            monto1 = monto1 - montoApar;
                                             monto = monto - montoApar;
+                                            if (cantTotal == 0) {
+                                                monto1 = 0;
+                                            }
                                 %>
                                 <tr>
                                     <td><%=rset.getString(1)%></td>
@@ -135,6 +159,14 @@
                                     <td><%=formatter.format(cantTotal)%></td>
                                     <td><%=formatter2.format(rset.getDouble(10))%></td>
                                     <td><%=formatter2.format(monto1)%></td>
+                                    <td>
+                                        <%
+                                            if (rset.getString("F_CambioPres").equals("1")) {
+                                                out.println("Cambio de Presentacion");
+                                            }
+                                        %>
+
+                                    </td>
                                 </tr>
                                 <%
                                         }

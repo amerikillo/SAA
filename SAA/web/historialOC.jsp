@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Para generar el histórico y status de las órdenes de compra
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator(',');
@@ -28,23 +31,23 @@
     ConectionDB con = new ConectionDB();
     String Fecha = "";
     String fechaCap = "";
-    String Proveedor = "",imagen="";
+    String Proveedor = "", imagen = "";
     try {
         fechaCap = df2.format(df3.parse(request.getParameter("Fecha")));
         Fecha = request.getParameter("Fecha");
     } catch (Exception e) {
 
     }
-    if(fechaCap==null){
-        fechaCap="";
+    if (fechaCap == null) {
+        fechaCap = "";
     }
     try {
         Proveedor = request.getParameter("Proveedor");
     } catch (Exception e) {
 
     }
-    if(Proveedor==null){
-        Proveedor="";
+    if (Proveedor == null) {
+        Proveedor = "";
     }
 %>
 <html>
@@ -54,7 +57,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -64,61 +67,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            <!--div class="navbar navbar-default">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="main_menu.jsp">Inicio</a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Entrada Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
-                                    <li><a href="kardexClave.jsp">Kardex Claves</a></li>
-                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>    
-                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                     
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-                            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
-                        </ul>
-                    </div><!--/.nav-collapse>
-                </div>
-            </div-->
+
             <hr/>
 
             <div>
@@ -130,6 +79,9 @@
                             <select class="form-control" name="Proveedor" id="Proveedor" onchange="this.form.submit();">
                                 <option value="">--Proveedor--</option>
                                 <%
+                                    /**
+                                     * Filtros por proveedor o fecha
+                                     */
                                     try {
                                         con.conectar();
                                         ResultSet rset = con.consulta("select F_ClaProve, F_NomPro from tb_proveedor order by F_NomPro");
@@ -179,11 +131,12 @@
                         </thead>
                         <tbody>
                             <%
+                                    
                                 try {
                                     con.conectar();
-                                    ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_Fecha, '%d/%m/%Y') AS F_Fecha, SUM(o.F_Cant), DATE_FORMAT(o.F_FecSur, '%d/%m/%Y') AS F_FecSur, o.F_StsPed from tb_pedidoisem o, tb_proveedor p where o.F_Provee = F_ClaProve and o.F_FecSur like '%" + fechaCap + "%' and p.F_ClaProve like '%"+Proveedor+"%' and F_StsPed != 0 group by  o.F_NoCompra");
+                                    ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_Fecha, '%d/%m/%Y') AS F_Fecha, SUM(o.F_Cant), DATE_FORMAT(o.F_FecSur, '%d/%m/%Y') AS F_FecSur, o.F_StsPed from tb_pedidoisem o, tb_proveedor p where o.F_Provee = F_ClaProve and o.F_FecSur like '%" + fechaCap + "%' and p.F_ClaProve like '%" + Proveedor + "%' and F_StsPed != 0 group by  o.F_NoCompra");
                                     while (rset.next()) {
-                                        String pendiente="", abierta="";
+                                        String pendiente = "", abierta = "";
                                         String cancelado = "";
                                         if (rset.getString(6).equals("2")) {
                                             cancelado = "X";
@@ -196,22 +149,22 @@
                                             cantRecib = rset2.getInt(2);
                                             fecRecibo = rset2.getString(3);
                                         }
-                                        
-                                        if(rset.getInt(4)>cantRecib && cantRecib!=0){
+
+                                        if (rset.getInt(4) > cantRecib && cantRecib != 0) {
                                             recibido = "";
-                                            abierta="X";
-                                        } 
-                                        if(cantRecib==0){
-                                            pendiente="X";
+                                            abierta = "X";
                                         }
-                                        if (cancelado.equals("X")){
-                                            pendiente="";
+                                        if (cantRecib == 0) {
+                                            pendiente = "X";
+                                        }
+                                        if (cancelado.equals("X")) {
+                                            pendiente = "";
                                         }
                                         /*ResultSet rset3 = con.consulta("SELECT F_Ima FROM TB_ImaRe where F_OrdCom = '" + rset.getString(1) + "'");
-                                        while(rset3.next())
-                                        {
-                                        imagen = rset3.getString("F_Ima");
-                                        }*/
+                                         while(rset3.next())
+                                         {
+                                         imagen = rset3.getString("F_Ima");
+                                         }*/
                             %>
                             <tr>
                                 <td><%=rset.getString(1)%></td>
@@ -225,15 +178,15 @@
                                 <td class="text-center"><%=recibido%></td>
                                 <td><%=fecRecibo%></td>
                                 <td class="text-right"><%=formatter.format(cantRecib)%></td>
-                                <td><button class="btn btn-success" onclick="javascript:window.open('verOrdenCompra.jsp?NoCompra=<%=rset.getString(1)%>','','width=600,height=400,left=50,top=50,toolbar=no')"><span class="glyphicon glyphicon-search"></span></button></td>
-                                <%if(imagen.equals("")){%>
+                                <td><button class="btn btn-success" onclick="javascript:window.open('verOrdenCompra.jsp?NoCompra=<%=rset.getString(1)%>', '', 'width=600,height=400,left=50,top=50,toolbar=no')"><span class="glyphicon glyphicon-search"></span></button></td>
+                                        <%if (imagen.equals("")) {%>
                                 <td>&nbsp;</td>
-                                <%}else{%>
+                                <%} else {%>
                                 <td><a href="Rechazo/<%=imagen%>.jpg"  rel="lightbox" target="_black"><button class="btn btn-success"><span class="glyphicon glyphicon-picture"></span></button></a></td>
-                                <%}%>
+                                            <%}%>
                             </tr>
                             <%
-                            imagen="";
+                                        imagen = "";
                                     }
                                     con.cierraConexion();
                                 } catch (Exception e) {
@@ -267,9 +220,9 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                $(document).ready(function() {
-                                    $('#datosCompras').dataTable();
-                                });
+                                    $(document).ready(function() {
+                                        $('#datosCompras').dataTable();
+                                    });
 </script>
 <script>
     $(function() {

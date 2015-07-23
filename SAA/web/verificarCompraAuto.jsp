@@ -16,6 +16,9 @@
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%java.text.DateFormat df1 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%
+    /**
+     * Para verificar las compras que están en proceso de ingreso
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -45,6 +48,10 @@
         String Folio = "";
         String folio[] = null;
         Folio = request.getParameter("NoCompra");
+        /**
+         * Se obtiene la compra, a esta se le aplica un split para hacer la
+         * busqeda en los 2 campos de la tabla
+         */
         if (!Folio.equals("")) {
             folio = Folio.split(",");
             sesion.setAttribute("vOrden", folio[0]);
@@ -63,7 +70,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <!---->
         <title>SIALSS</title>
@@ -158,6 +165,11 @@
                             <%
                                 int banBtn = 0;
                                 try {
+                                    /**
+                                     * Se busca con base en la orden de compra y
+                                     * la remisión y que el estado sea 2 para
+                                     * poder validar su entrada a almacén
+                                     */
                                     con.conectar();
                                     ResultSet rset = con.consulta("SELECT C.F_Cb,C.F_ClaPro,M.F_DesPro,C.F_Lote,C.F_FecCad,C.F_Pz,F_IdCom, C.F_Costo, C.F_ImpTo, C.F_ComTot, C.F_FolRemi, C.F_Obser FROM tb_compratemp C INNER JOIN tb_medica M ON C.F_ClaPro=M.F_ClaPro WHERE F_OrdCom='" + vOrden + "' and F_FolRemi = '" + vRemi + "'  and F_Estado = '2'");
                                     while (rset.next()) {
@@ -202,6 +214,9 @@
                     <hr/>
                 </div>
                 <%                                if (banBtn == 1) {
+                        /**
+                         * Para mostrar el botón de liberación
+                         */
                 %>
 
                 <div class="panel-body table-responsive">
@@ -244,6 +259,7 @@
 
 
         <!--
+        NO SE USA
         Modal
         -->
         <div class="modal fade" id="Rechazar" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
@@ -357,11 +373,11 @@
         <script src="js/jquery-ui-1.10.3.custom.js"></script>
         <script src="js/bootstrap-datepicker.js"></script>
         <script type="text/javascript">
-                                    function desactivaBotones() {
-                                        /*$('#EliminarVerifica').prop('disabled', true);
-                                        $('#GuardarAbiertaVerifica').prop('disabled', true);
-                                        $('#GuardarVerifica').prop('disabled', true);*/
-                                    }
+                                function desactivaBotones() {
+                                    /*$('#EliminarVerifica').prop('disabled', true);
+                                     $('#GuardarAbiertaVerifica').prop('disabled', true);
+                                     $('#GuardarVerifica').prop('disabled', true);*/
+                                }
         </script>
     </body>
 </html>

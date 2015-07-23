@@ -32,6 +32,8 @@ public class EnviarCedisSendero extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
+     * Para enviar muchas remisiones al CEDIS SENDERO
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,6 +42,9 @@ public class EnviarCedisSendero extends HttpServlet {
         HttpSession sesion = request.getSession();
         ConectionDB con = new ConectionDB();
         ConectionDB_CedisSendero conSendero = new ConectionDB_CedisSendero();
+        /**
+         * Se obtienen los folios de remision a enviar a sendero
+         */
         ArrayList<String> listEnvSen;
         try {
             if (request.getParameter("que").equals("add")) {
@@ -67,6 +72,7 @@ public class EnviarCedisSendero extends HttpServlet {
                     }
                 }
             } else if ("g".equals(request.getParameter("que"))) {
+                //Se envian las múltiples remisiones al Distribuidor
                 try {
                     listEnvSen = (ArrayList<String>) sesion.getAttribute("listEnvSen");
                     System.out.println("->"+listEnvSen);

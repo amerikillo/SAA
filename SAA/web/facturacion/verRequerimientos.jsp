@@ -13,7 +13,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Donde se muestran todos los requerimientos que se cargaron para
+     * remisionarse.
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -101,9 +104,9 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script type="text/javascript">
-                        $(document).ready(function() {
-                            $("#tblReq2").dataTable();
-                        });
+                            $(document).ready(function() {
+                                $("#tblReq2").dataTable();
+                            });
         </script>
 
     </body>

@@ -3,6 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+/**
+ * Evita que se manden los submits.
+ */
 $('#formBusca').submit(function() {
     return false;
 });
@@ -10,7 +14,17 @@ $('#formBusca').submit(function() {
 $('#formIngresa').submit(function() {
     return false;
 });
+
+/**
+ * 
+ */
 $('#btnGuardar').click(function() {
+    /**
+     * 
+     * @type @call;$@call;va
+     * 
+     * Para guardar el registro
+     */
     var F_ClaPro = $('#F_ClaPro').val();
     var F_ClaLot = $('#F_ClaLot').val();
     var F_FecCad = $('#F_FecCad').val();
@@ -30,6 +44,13 @@ $('#btnGuardar').click(function() {
             url: dir,
             data: form.serialize(),
             success: function(data) {
+                /**
+                 * 
+                 * @param {type} data
+                 * @returns {undefined}
+                 * 
+                 * Despues de guardarlos se limpian los datos de los input y se recarga la tabla para ver los nuevos registros
+                 */
                 LimpiaDatos();
                 recargaTabla(F_ClaUbi);
             },
@@ -50,7 +71,12 @@ $('#btnGuardar').click(function() {
         }
     }
 });
+
+/**
+ * Para buscar el insumo, sólo se busca con base en la ubicación
+ */
 $('#btnBuscar').click(function() {
+
     var CBUbi = $('#buscarUbi').val();
     var CBMed = $('#buscarMed').val();
     var Descrip = $('#buscarDescrip').val();
@@ -74,6 +100,12 @@ $('#btnBuscar').click(function() {
             $('#tbInsumo').load('capturaClave.jsp?F_Ubica=' + Ubica + ' #tbInsumo');
         }
         function poneDatos(data) {
+            /**
+             * 
+             * @type @exp;JSON@call;parse
+             * 
+             * Se limpian los select y porterior a eso se anexa la información obtenida (ciclo for).
+             */
             var json = JSON.parse(data);
             $('#selectClave').empty();
             $('#selectClave').append(
@@ -124,68 +156,68 @@ $('#btnBuscar').click(function() {
         }
     } else if (CBMed !== "") {
         /*var dir = '../JQInvenCiclico?accion=BuscarCBMed';
-        var form = $('#formBusca');
-        $.ajax({
-            type: form.attr('method'),
-            url: dir,
-            data: form.serialize(),
-            success: function(data) {
-                poneDatos(data);
-            },
-            error: function(data) {
-                alert('Error al leer del CB de la Ubicación');
-            }
-        });
-        function recargaTabla(Ubica) {
-            $('#tbInsumo').load('capturaClave.jsp?F_CBMed=' + Ubica + ' #tbInsumo');
-        }
-        function poneDatos(data) {
-            var json = JSON.parse(data);
-            $('#selectClave').empty();
-            $('#selectLote').empty();
-            $('#selectCadu').empty();
-            $('#selectUbica').empty();
-            $('#selectUbica').append(
-                    $('<option>', {
-                        value: "",
-                        text: "--Ubicación--"
-                    })
-                    );
-            $('#selectUbica').attr('value', json[0].F_ClaUbi);
-            for (var i = 0; i < json.length; i++) {
-                //alert(json[i].F_ClaPro);
-                if (typeof (json[i].F_ClaUbi) !== "undefined") {
-                    $('#selectUbica').append(
-                            $('<option>', {
-                                value: json[i].F_ClaUbi,
-                                text: json[i].F_ClaUbi
-                            })
-                            );
-                }
-                if (typeof (json[i].F_ClaPro) !== "undefined") {
-
-                    $('#selectClave').append(
-                            $('<option>', {
-                                value: json[i].F_ClaPro,
-                                text: json[i].F_ClaLot
-                            })
-                            );
-                    $('#selectLote').append(
-                            $('<option>', {
-                                value: json[i].F_ClaLot,
-                                text: json[i].F_ClaLot
-                            })
-                            );
-                    $('#selectCadu').append(
-                            $('<option>', {
-                                value: json[i].F_FecCad,
-                                text: json[i].F_FecCad
-                            })
-                            );
-                }
-            }
-            recargaTabla(json[0].F_ClaUbi);
-        }*/
+         var form = $('#formBusca');
+         $.ajax({
+         type: form.attr('method'),
+         url: dir,
+         data: form.serialize(),
+         success: function(data) {
+         poneDatos(data);
+         },
+         error: function(data) {
+         alert('Error al leer del CB de la Ubicación');
+         }
+         });
+         function recargaTabla(Ubica) {
+         $('#tbInsumo').load('capturaClave.jsp?F_CBMed=' + Ubica + ' #tbInsumo');
+         }
+         function poneDatos(data) {
+         var json = JSON.parse(data);
+         $('#selectClave').empty();
+         $('#selectLote').empty();
+         $('#selectCadu').empty();
+         $('#selectUbica').empty();
+         $('#selectUbica').append(
+         $('<option>', {
+         value: "",
+         text: "--Ubicación--"
+         })
+         );
+         $('#selectUbica').attr('value', json[0].F_ClaUbi);
+         for (var i = 0; i < json.length; i++) {
+         //alert(json[i].F_ClaPro);
+         if (typeof (json[i].F_ClaUbi) !== "undefined") {
+         $('#selectUbica').append(
+         $('<option>', {
+         value: json[i].F_ClaUbi,
+         text: json[i].F_ClaUbi
+         })
+         );
+         }
+         if (typeof (json[i].F_ClaPro) !== "undefined") {
+         
+         $('#selectClave').append(
+         $('<option>', {
+         value: json[i].F_ClaPro,
+         text: json[i].F_ClaLot
+         })
+         );
+         $('#selectLote').append(
+         $('<option>', {
+         value: json[i].F_ClaLot,
+         text: json[i].F_ClaLot
+         })
+         );
+         $('#selectCadu').append(
+         $('<option>', {
+         value: json[i].F_FecCad,
+         text: json[i].F_FecCad
+         })
+         );
+         }
+         }
+         recargaTabla(json[0].F_ClaUbi);
+         }*/
     } else if (Descrip !== "") {
 
     }
@@ -232,6 +264,12 @@ $('#selectResto').change(function() {
 
 
 function cambiaLoteCadu(elemento) {
+    /**
+     * 
+     * @type @exp;elemento@pro;selectedIndex
+     * 
+     * cambia en automático, clave lote caducidad
+     */
     var indice = elemento.selectedIndex;
     document.getElementById('selectLote').selectedIndex = indice;
     document.getElementById('selectCadu').selectedIndex = indice;

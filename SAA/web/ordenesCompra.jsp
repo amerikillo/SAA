@@ -13,7 +13,9 @@
 <%java.text.DateFormat df1 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Para visualizar el detalle de las órdenes de compra
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -57,7 +59,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
         <title>SIALSS</title>
@@ -66,70 +68,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            <!--div class="navbar navbar-default">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="main_menu.jsp">Inicio</a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Entrada Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
-                                    <li><a href="kardexClave.jsp">Kardex Claves</a></li>
-                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>     
-                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                  
-                                </ul>
-                            </li>
-            <!--li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href="../captura.jsp">Captura de Insumos</a></li>
-                    <li class="divider"></li>
-                    <li><a href="../catalogo.jsp">Catálogo de Proveedores</a></li>
-                    <li><a href="../reimpresion.jsp">Reimpresión de Docs</a></li>
-                </ul>
-            </li>
-            
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
-        </ul>
-    </div><!--/.nav-collapse >
-</div>
-</div-->
+
             <hr/>
 
             <form method="post" action="ordenesCompra.jsp">
@@ -231,6 +170,10 @@
 
                                 }
                                 try {
+                                    /**
+                                     * Listado de las órdenes buscadas segun
+                                     * fecha, usuario o proveedor
+                                     */
                                     con.conectar();
                                     ResultSet rset = con.consulta("select o.F_NoCompra, u.F_Usuario, p.F_NomPro,DATE_FORMAT(o.F_FecSur, '%d/%m/%Y') F_FecSur, F_HorSur, F_Fecha from tb_pedidoisem o, tb_proveedor p, tb_usuariosisem u where u.F_IdUsu = o.F_IdUsu and  o.F_Provee = p.F_ClaProve and o.F_FecSur like  '%" + fecha + "%' and o.F_IdUsu like '%" + request.getParameter("Usuario") + "' and o.F_Provee like '%" + request.getParameter("Proveedor") + "' group by o.F_NoCompra");
                                     while (rset.next()) {
@@ -263,6 +206,9 @@
                     <div class="panel-body">
                         <%                try {
                                 con.conectar();
+                                /**
+                                 * Detalle de la orden de compra
+                                 */
                                 ResultSet rset = con.consulta("select o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_FecSur, '%d/%m/%Y'), F_HorSur, F_Usuario, F_StsPed, F_Recibido from tb_pedidoisem o, tb_proveedor p, tb_usuariosisem u where u.F_IdUsu = o.F_IdUsu and  o.F_Provee = p.F_ClaProve and F_NoCompra = '" + NoCompra + "' group by o.F_NoCompra");
                                 while (rset.next()) {
                                     int recibido = 0;
@@ -321,6 +267,9 @@
                                 <%
                                     System.out.println("###" + rset.getString("F_StsPed"));
                                     if (rset.getString("F_StsPed").equals("2")) {
+                                        /**
+                                         * Saber si el folio ha sido cancelado
+                                         */
                                         String obserRechazo = "";
                                         rset2 = con.consulta("select F_Observaciones from tb_obscancela where F_NoCompra = '" + rset.getString(1) + "' ");
                                         while (rset2.next()) {

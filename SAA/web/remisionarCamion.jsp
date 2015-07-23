@@ -14,6 +14,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * Para generar las remisiones a partir de los marbetes
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -51,6 +55,9 @@
         Clave = "";
     }
     try {
+        /**
+         * Cambia a status 4 de area de embarque (eso se remisionará)
+         */
         con.conectar();
         con.insertar("update tb_facttemp set F_StsFact='4', F_User ='" + usua + "' where F_Id = '" + request.getParameter("CB") + "' and F_StsFact = '2'");
 
@@ -70,7 +77,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
         <title>SIALSS</title>
@@ -94,6 +101,10 @@
                                 <select id="Nombre" name="Nombre" class="form-control">
                                     <option value="">Unidad</option>
                                     <%
+                                        /**
+                                         * Busqueda del marbete de remisionado
+                                         * por su CB
+                                         */
                                         try {
                                             con.conectar();
                                             ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli from tb_uniatn u, tb_facttemp f where u.F_StsCli = 'A' and f.F_ClaCli = u.F_ClaCli group by u.F_ClaCli");
@@ -128,6 +139,9 @@
                         </div>
                     </form>
                 </div>
+                <!--
+                Insumo a remisionar
+                -->
                 <form action="FacturacionManual" method="post" name="FormFactura" id="FormFactura">
                     <input name="Nombre" value="<%=Clave%>" class="hidden" />
                     <input name="Fecha" value="<%=Fecha%>" class="hidden" />
@@ -219,6 +233,8 @@
 
         <!--
                 Modal
+        
+        Para ingresar las observaciones, el tipo y el numero de requerimiento
         -->
         <div class="modal fade" id="Observaciones" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -275,27 +291,27 @@
         <script src="js/jquery.dataTables.js"></script>
         <script src="js/dataTables.bootstrap.js"></script>
         <script>
-                                    function validaRemision() {
-                                        var seg = confirm('Desea Remisionar este Insumo?');
-                                        if (seg == false) {
-                                            return false;
-                                        } else {
-                                            document.getElementById('Loader').style.display = 'block';
-                                            var observaciones = document.getElementById('Obser').value;
-                                            document.getElementById('Obs').value = observaciones;
-                                            var req = document.getElementById('Requerimiento').value;
-                                            document.getElementById('F_Req').value = req;
-                                            var tipo = document.getElementById('tipo').value;
-                                            document.getElementById('F_Tipo').value = tipo;
+                                function validaRemision() {
+                                    var seg = confirm('Desea Remisionar este Insumo?');
+                                    if (seg == false) {
+                                        return false;
+                                    } else {
+                                        document.getElementById('Loader').style.display = 'block';
+                                        var observaciones = document.getElementById('Obser').value;
+                                        document.getElementById('Obs').value = observaciones;
+                                        var req = document.getElementById('Requerimiento').value;
+                                        document.getElementById('F_Req').value = req;
+                                        var tipo = document.getElementById('tipo').value;
+                                        document.getElementById('F_Tipo').value = tipo;
 
 
-                                            document.getElementById('Facturar').click();
-                                        }
-
+                                        document.getElementById('Facturar').click();
                                     }
-                                    /*$(document).ready(function() {
-                                     $('#datosProv').dataTable();
-                                     });*/
+
+                                }
+                                /*$(document).ready(function() {
+                                 $('#datosProv').dataTable();
+                                 });*/
 
         </script>
     </body>

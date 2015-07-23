@@ -12,7 +12,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Listado de concentrados globales para su reimpresión
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     String tipo = "";
@@ -49,7 +51,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -87,6 +89,9 @@
                                 <%                                    try {
                                         con.conectar();
                                         try {
+                                            /**
+                                             * Listado de concentrados
+                                             */
                                             ResultSet rset = con.consulta("SELECT u.F_NomCli, DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as FecEnt, l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'),	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs),	(f.F_Cant MOD p.F_Pzs) FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p WHERE	f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro GROUP BY f.F_IdFact;");
                                             while (rset.next()) {
                                 %>
@@ -113,7 +118,11 @@
                                     <td>
                                         <form action="Facturacion" method="post">
                                             <%
-                                                if (usua.equals("esteban")||tipo.equals("7")) {
+                                                if (usua.equals("esteban") || tipo.equals("7")) {
+                                                    /**
+                                                     * Opcion para poder
+                                                     * eliminarlos (Facturistas)
+                                                     */
                                             %>
                                             <input class="hidden" name="fol_gnkl" value="<%=rset.getString("F_IdFact")%>">
                                             <button class="btn btn-block btn-danger" name="accion" value="EliminaConcentrado" onclick="return confirm('Seguro de eliminar este concentrado?')"><span class="glyphicon glyphicon-remove"></span></button>
@@ -130,7 +139,7 @@
                                     </td>
                                     <td>
                                         <%
-                                            if (usua.equals("esteban") || usua.equals("americo") || usua.equals("sistemas")||tipo.equals("7")) {
+                                            if (usua.equals("esteban") || usua.equals("americo") || usua.equals("sistemas") || tipo.equals("7")) {
                                         %>
                                         <button class="btn btn-block btn-success" name="btnEditar" id="btnEditar" value="Editar" onclick="EditarConcentrado('<%=rset.getString("F_IdFact")%>', '<%=rset.getString("F_NomCli")%>', '<%=rset.getString("FecEnt")%>')" data-toggle="modal" data-target="#EditarConcentrado"><span class="glyphicon glyphicon-edit"></span></button>
                                             <%
@@ -162,6 +171,9 @@
             </div>
         </div>
         <div id="EditarConcentrado" class="modal fade in" aria-hidden="true">
+            <!--
+            Para edición de los concentrados
+            -->
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -177,6 +189,9 @@
                                 <label>Fecha: </label><span id="lbFecha"></span>
                             </div><br/>
                             <div class="row">
+                                <!--
+                                Se busca contra el ID de factura temporal para la edición
+                                -->
                                 <label class="col-sm-2">Buscar Id</label>
                                 <div class="col-sm-2">
                                     <input class="form-control" type="text" id="txtId" name="txtId" value="">
@@ -228,6 +243,10 @@
                                                 $('#datosCompras').dataTable();
                                             });
                                             function EditarConcentrado(idCon, distri, fecha) {
+                                                /**
+                                                 * 
+                                                 * jala informacion de la compra
+                                                 */
                                                 $('#hdIdCon').val(idCon);
                                                 $('#lbIdCon').html("  " + idCon);
                                                 $('#lbPun').html("  " + distri);
@@ -242,6 +261,10 @@
                                                 $('#txtCant').val("");
                                             }
                                             $('#btnBuscarId').click(function() {
+                                                /**
+                                                 * 
+                                                 * Busca del id seleccionado los datos para editarlos
+                                                 */
                                                 var dir = "Concentrados";
                                                 var id = $('#txtId').val();
                                                 $.ajax({
@@ -269,6 +292,9 @@
                                                 });
                                             });
                                             $('#btnModificar').click(function() {
+                                                /**
+                                                 * Para la edición de la cantidad de los solicitado, ('solo menor')
+                                                 */
                                                 if ($('#txtCant').val() === "" || parseInt($('#txtCant').val()) > parseInt($('#lbCantidad').html())) {
                                                     alert("La cantida no puede ser cero o mayor a la actual");
                                                     $('#txtCant').focus();

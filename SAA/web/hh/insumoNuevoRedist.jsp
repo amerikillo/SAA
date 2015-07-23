@@ -28,6 +28,10 @@
         response.sendRedirect("../index.jsp");
     }
     ConectionDB con = new ConectionDB();
+
+    /**
+     * Menú de opciones para la redistribución
+     */
 %>
 <html>
     <head>
@@ -36,7 +40,7 @@
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SIALSS</title>
@@ -44,7 +48,7 @@
     <body>
         <div class="container">
             <h1>SIALSS</h1>
-            
+
             <%@include file="../jspf/menuPrincipal.jspf"%>
 
             <h4>Redistribución</h4>
@@ -60,15 +64,15 @@
                 <button type="submit" class="btn btn-block btn-warning btn-lg">Por Clave o Lote de Insumo</button>
             </form>
         </div>
+        <!-- 
+    ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/bootstrap-datepicker.js"></script>
     </body>
-    <!-- 
-================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="../js/bootstrap-datepicker.js"></script>
 </html>

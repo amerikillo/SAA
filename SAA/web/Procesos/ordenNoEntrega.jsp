@@ -2,6 +2,10 @@
 <%@page import="conn.ConectionDB"%>
 <%
 
+    /**
+     * Comparativa de ordenes de compra para saber el detalle de la clave que
+     * ingresó
+     */
     response.setContentType("application/vnd.ms-excel");
     response.setHeader("Content-Disposition", "attachment;filename=\"ordenNoEntrega.xls\"");
 %>
@@ -23,9 +27,14 @@
         <td>O. C.</td>
         <td>Entrega</td>
     </tr>
-    <%        try {
+    <%
+        try {
             ConectionDB con = new ConectionDB();
             con.conectar();
+            /**
+             * Reecorrido por las ordenes de compra enlazandola a lotes para
+             * obtener la info
+             */
             ResultSet rset = con.consulta("SELECT c.F_ClaDoc, p.F_NomPro, c.F_FecApl, c.F_Hora, c.F_ClaPro, c.F_CanCom, c.F_Costo, c.F_ImpTo, c.F_ComTot, c.F_FolRemi, c.F_OrdCom, i.F_Priori, l.F_ClaLot, l.F_FecCad, m.F_DesMar from tb_compra c, tb_proveedor p, tb_pedidoisem i, tb_lote l, tb_marca m where l.F_ClaMar = m.F_ClaMar and c.F_Lote = l.F_FolLot and c.F_OrdCom = i.F_NoCompra and c.F_ProVee = p.F_ClaProve group by c.F_IdCom");
             while (rset.next()) {
 

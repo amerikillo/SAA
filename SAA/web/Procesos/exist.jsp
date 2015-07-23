@@ -14,6 +14,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * NO SE USA
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatter2 = new DecimalFormat("#,###,###.##");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -44,7 +48,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -230,7 +234,7 @@
 <script src="js/dataTables.bootstrap.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#datosProv').dataTable();
     });
 </script>
@@ -353,7 +357,7 @@
         return false;
     }
 
-    $(function () {
+    $(function() {
         $("#FecFab").datepicker();
         $("#FecFab").datepicker('option', {dateFormat: 'dd/mm/yy'});
     });

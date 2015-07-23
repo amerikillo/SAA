@@ -11,6 +11,10 @@
 <%@page import="conn.ConectionDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+
+    /**
+     * Para consultar las ubicaciones en el CEDIS
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -24,7 +28,17 @@
     int totalPiezas = 0;
     ResultSet rset = null;
     ResultSet rset2 = null;
+    /**
+     * Para la existencia total
+     */
     String qry1 = "select sum(F_ExiLot) as totalPiezas from tb_lote";
+    /**
+     * Para buscar por: clave, lote, ubicacion o CB del insumo desde
+     * v_existencias
+     *
+     * En todos los casos se calcula el total de piezas con base en la busqueda
+     *
+     */
     String qry2 = "";
     try {
         if (request.getParameter("accion").equals("buscar")) {
@@ -45,11 +59,17 @@
                 qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where F_Cb = '" + request.getParameter("F_Cb") + "'";
             }
         }
+        /**
+         * Si es por ubicar mostrará todo lo que esté en la ubicación nueva
+         */
         if (request.getParameter("accion").equals("porUbicar")) {
 
             qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_DesPro from v_existencias where  F_Ubica='NUEVA' and F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias where  F_Ubica='NUEVA'";
         }
+        /**
+         * Si se da mostrar todas, mostrará toda la información de v_existencias
+         */
         if (request.getParameter("accion").equals("mostrarTodas")) {
             qry2 = "select F_ClaPro, F_DesPro, F_ClaLot,  DATE_FORMAT(F_FecCad, '%d/%m/%Y') as F_FecCad, F_DesUbi, F_ExiLot, F_IdLote, F_Ubica, F_FolLot, F_DesPro from v_existencias where F_ExiLot!=0";
             qry1 = "select sum(F_ExiLot) as totalPiezas from v_existencias";
@@ -59,6 +79,9 @@
         System.out.println(e.getMessage());
     }
 
+    /**
+     * Cálculo del total de piezas
+     */
     try {
         con.conectar();
         rset = con.consulta("select sum(F_ExiLot) as totalPiezas from tb_lote");
@@ -76,7 +99,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.css">
         <!---->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -89,59 +112,64 @@
             <!--div class="row">
                 <div class="col-sm-6">
                     Nivel de ocupación en almacén:
-                    <%
-                        int totalPosiciones = 0;
-                        int totalOcupada = 0;
-                        try {
-                            con.conectar();
-                            ResultSet rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'A%'");
-                            while (rsetUbica.next()) {
-                                totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
-                            }
-                            rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'A%' and F_ExiLot!=0 group by F_Ubica");
-                            while (rsetUbica.next()) {
-                                totalOcupada++;
-                            }
+            <%
+                /**
+                 * Serie de consultas para calcular porcentaje ocupado en cuanto
+                 * a ubicaciones, no se utilia ya que se necesita un análisis de
+                 * ubicaciones para poder hacer la comparación
+                 */
+                int totalPosiciones = 0;
+                int totalOcupada = 0;
+                try {
+                    con.conectar();
+                    ResultSet rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'A%'");
+                    while (rsetUbica.next()) {
+                        totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
+                    }
+                    rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'A%' and F_ExiLot!=0 group by F_Ubica");
+                    while (rsetUbica.next()) {
+                        totalOcupada++;
+                    }
 
-                            rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'B%'");
-                            while (rsetUbica.next()) {
-                                totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
-                            }
-                            rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'B%' and F_ExiLot!=0 group by F_Ubica");
-                            while (rsetUbica.next()) {
-                                totalOcupada++;
-                            }
+                    rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'B%'");
+                    while (rsetUbica.next()) {
+                        totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
+                    }
+                    rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'B%' and F_ExiLot!=0 group by F_Ubica");
+                    while (rsetUbica.next()) {
+                        totalOcupada++;
+                    }
 
-                            rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'C%'");
-                            while (rsetUbica.next()) {
-                                totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
-                            }
-                            rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'C%' and F_ExiLot!=0 group by F_Ubica");
-                            while (rsetUbica.next()) {
-                                totalOcupada++;
-                            }
+                    rsetUbica = con.consulta("select count(F_Cb) from tb_ubica where F_ClaUbi like 'C%'");
+                    while (rsetUbica.next()) {
+                        totalPosiciones = totalPosiciones + rsetUbica.getInt(1);
+                    }
+                    rsetUbica = con.consulta("select F_Ubica from tb_lote where F_Ubica like 'C%' and F_ExiLot!=0 group by F_Ubica");
+                    while (rsetUbica.next()) {
+                        totalOcupada++;
+                    }
 
-                            con.cierraConexion();
-                        } catch (Exception e) {
+                    con.cierraConexion();
+                } catch (Exception e) {
 
-                        }
-                        double porcentaje = (double) totalOcupada * 100 / (double) totalPosiciones;
-                        //out.print(formatter.format(totalPosiciones));
-                        int piezasUbica = totalPiezas / totalOcupada;
-                        int ubicaRestantes = totalPosiciones - totalOcupada;
-                    %>
+                }
+                double porcentaje = (double) totalOcupada * 100 / (double) totalPosiciones;
+                //out.print(formatter.format(totalPosiciones));
+                int piezasUbica = totalPiezas / totalOcupada;
+                int ubicaRestantes = totalPosiciones - totalOcupada;
+            %>
 
-                    <%=formatter.format(totalOcupada)%> de <%=formatter.format(totalPosiciones)%> posiciones
-                </div>
+            <%=formatter.format(totalOcupada)%> de <%=formatter.format(totalPosiciones)%> posiciones
+        </div>
 
-                <div class="col-sm-6">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <%=formatterDecimal.format(porcentaje)%>%;">
-                            <%=formatterDecimal.format(porcentaje)%>%
-                        </div>
-                    </div>
-                </div>
-            </div-->
+        <div class="col-sm-6">
+            <div class="progress">
+                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <%=formatterDecimal.format(porcentaje)%>%;">
+            <%=formatterDecimal.format(porcentaje)%>%
+        </div>
+    </div>
+</div>
+</div-->
             <!--div class="row">
                 <div class="col-sm-6">
                     Piezas aprox. por Ubicación: <%=formatter.format(piezasUbica)%>
@@ -191,6 +219,7 @@
                     <button class="btn btn-block btn-primary btn-sm" name="accion" value="mostrarTodas">Mostrar Todas</button>
                 </div>
                 <div class="col-sm-2">
+                    <!--Para descargar las exitencias--> 
                     <a class="btn btn-block btn-success btn-sm" href="../Procesos/descargaInventario.jsp">Descargar Inventario</a>
                 </div>
             </div>
@@ -210,6 +239,9 @@
             </thead>
             <tbody>
                 <%
+                    /**
+                     * Impresión de la consulta a v_existencias
+                     */
                     try {
                         con.conectar();
                         rset2 = con.consulta(qry2);
@@ -244,6 +276,12 @@
         <h3>Total de Piezas: <%=formatter.format(totalPiezas)%></h3>
         <hr />
         <h3>Modula</h3>
+        <div class="row">
+            <div class="col-sm-1 col-sm-offset-11">
+                <!--Para descargar las existencias en módula-->
+                <a class="btn btn-block btn-success btn-sm" href="gnrExistModula.jsp"><span class="glyphicon glyphicon-download"></span></a>
+            </div>
+        </div>
         <table border="1" class="table table-bordered table-condensed table-striped" id="existModula">
             <thead>
                 <tr>
@@ -258,14 +296,17 @@
             </thead>
             <tbody>
                 <%
-                int totalModula=0;
+                    /**
+                     * Impresión de las ubicaciones en módula
+                     */
+                    int totalModula = 0;
                     try {
 
                         conModula.conectar();
                         con.conectar();
                         ResultSet rset4 = conModula.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0 order by SCO_ARTICOLO");
                         while (rset4.next()) {
-                            totalModula=totalModula+rset4.getInt("SCO_GIAC");
+                            totalModula = totalModula + rset4.getInt("SCO_GIAC");
                             String Descrip = "";
                             ResultSet rset5 = con.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + rset4.getString("SCO_ARTICOLO") + "'");
                             while (rset5.next()) {
@@ -292,7 +333,7 @@
                 %>
             </tbody>
         </table>
-            <h3>Total Modula: <%=formatter.format(totalModula)%></h3>
+        <h3>Total Modula: <%=formatter.format(totalModula)%></h3>
         <!-- 
         ================================================== -->
         <!-- Se coloca al final del documento para que cargue mas rapido -->

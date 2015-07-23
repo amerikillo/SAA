@@ -20,6 +20,8 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Americo
+ * 
+ * Clase para agregar Ceros para dar el formato a los numeros, (NO SE USA)
  */
 public class agregaCeros extends HttpServlet {
 

@@ -12,7 +12,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Pagina de inicio del sistema
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -30,7 +32,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <title>SIALSS</title>
     </head>
@@ -45,6 +47,10 @@
                 <img src="imagenes/Logo GNK claro2.jpg" width="200" height="100" alt="Logo GNK claro2"/>
                 <br/><br/><%
                     if (usua.equals("oscar")) {
+                        /**
+                         * Tabla que se utiliza para que oscar se de cuenta de
+                         * las devoluciones que tiene pendientes
+                         */
                 %>
                 <div class="panel panel-danger">
                     <div class="panel-heading">

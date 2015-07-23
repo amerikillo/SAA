@@ -12,7 +12,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Para validar por surtido las remisiones
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -57,7 +59,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <title>SIALSS</title>
     </head>
@@ -65,7 +67,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <h3>
@@ -83,6 +85,10 @@
                                 <select id="Nombre" name="Nombre" class="form-control">
                                     <option value="">Unidad</option>
                                     <%
+                                        /**
+                                         * Seleccion del concentrado con el cual
+                                         * trabajar
+                                         */
                                         try {
                                             con.conectar();
                                             ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli, f.F_IdFact from tb_uniatn u, tb_facttemp f where u.F_StsCli = 'A' and f.F_ClaCli = u.F_ClaCli and f.F_StsFact<>'5'group by f.F_IdFact order by f.F_IdFact desc;");
@@ -94,7 +100,7 @@
                                                     out.println("selected");
                                                 }
                                             %>
-                                            ><%=rset.getString(3)+" - "+rset.getString(2)%></option>
+                                            ><%=rset.getString(3) + " - " + rset.getString(2)%></option>
                                     <%
                                             }
                                             con.cierraConexion();
@@ -121,6 +127,9 @@
                         </div>
                     </form>
                     <%
+                        /**
+                         * Busqueda por clave o por CB
+                         */
                         try {
                             con.conectar();
                             ResultSet rset = null;
@@ -164,6 +173,10 @@
                                     <td></td>
                                 </tr>
                                 <%
+                                    /**
+                                     * Para validar el insumo y pueda ser
+                                     * validado por surtido
+                                     */
                                     int banBtnVal = 0;
                                     try {
                                         con.conectar();
@@ -243,6 +256,9 @@
         Modal
         -->
         <%
+            /**
+             * Para rechazar, NO SE USA
+             */
             try {
                 con.conectar();
                 ResultSet rset = null;
@@ -312,16 +328,15 @@
         <!--
         /Modal
         -->
-    </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
 
-    <script>
+        <script>
                                 function validaCliente() {
                                     var Cliente = document.getElementById('Nombre').value;
                                     if (Cliente === "") {
@@ -329,7 +344,8 @@
                                         return false;
                                     }
                                 }
-    </script>
+        </script>
 
+    </body>
 </html>
 

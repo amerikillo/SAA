@@ -13,7 +13,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * No se usa!!!
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -55,7 +57,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <title>SIALSS</title>
     </head>
@@ -67,7 +69,7 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span clss="icon-bar"></span>
+                            <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
@@ -83,9 +85,9 @@
                                     <li class="divider"></li>
                                     <li><a href="hh/compraAuto3.jsp">HANDHELD | Entrada Automática OC ISEM</a></li>
                                     <li class="divider"></li>
-                                    <%
-                                        if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")) {
-                                    %>
+                                        <%
+                                            if (tipo.equals("2") || tipo.equals("3") || tipo.equals("5")) {
+                                        %>
                                     <li><a href="../verificarCompraAuto.jsp">Verificar OC</a></li>
                                         <%
                                             }
@@ -294,14 +296,14 @@
                 Todos los Derechos Reservados
             </div>
         </div>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
     </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
 
 </html>
 

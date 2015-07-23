@@ -30,6 +30,8 @@ public class Concentrados extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
+     * 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,6 +41,10 @@ public class Concentrados extends HttpServlet {
         ConectionDB con = new ConectionDB();
         JSONObject json = new JSONObject();
         try {
+            /**
+             * Para buscar el id de un concentrado para editarlo.
+             * imprime el json que se leerá en el archivo SAA/reimpConcentrado.jsp
+             */
             if (request.getParameter("que").equals("b")) {
                 try {
                     con.conectar();
@@ -61,7 +67,12 @@ public class Concentrados extends HttpServlet {
                 } catch (Exception ex) {
                     System.out.println("ErroB->" + ex);
                 }
-            }else if (request.getParameter("que").equals("mod")) {
+            }
+            /**
+             * Para editar la cantidad del id en la tabla tb_facttemp
+             * imprime bandera 'msg' 1 si success 0 si error
+             */
+            else if (request.getParameter("que").equals("mod")) {
                 try {
                     con.conectar();
                     con.actualizar("update tb_facttemp set F_Cant='"+request.getParameter("cant")+"' where F_Id='"+request.getParameter("id")+"'");

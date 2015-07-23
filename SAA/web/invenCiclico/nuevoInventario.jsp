@@ -22,6 +22,10 @@
         response.sendRedirect("index.jsp");
     }
     ConectionDB con = new ConectionDB();
+
+    /**
+     * Para elegir entre nuevo inventario o continuar con el actual
+     */
 %>
 <html>
     <head>
@@ -30,7 +34,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <title>SIALSS</title>
     </head>
@@ -44,6 +48,10 @@
                 <h3>Inventarios Cíclicos</h3>
                 <div class="row">
                     <div class="col-lg-12">
+                        <!--
+                        Para nuevo inventario cíclico
+                        Basicamente se limpian las tablas de las comparativas
+                        -->
                         <a class="btn btn-success" href="../InventarioCiclico?accion=nuevoInventario">Nuevo Inventario</a>
                     </div>
                 </div>
@@ -63,14 +71,14 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
 
+    </body>
 </html>
 

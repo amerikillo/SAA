@@ -135,10 +135,18 @@ public class Medicamentos extends HttpServlet {
 
             }
 
+            /**
+             * Para actualizar serie de registros tanto en la BDD de SAA como en
+             * la de MODULA
+             */
             if (request.getParameter("accion").equals("Actualizar")) {
                 try {
                     conModula.conectar();
                     con.conectar();
+                    /**
+                     * Se da un recorrido en toda la tabla de medicamentos para
+                     * ver que falta en modula y enviar el registro
+                     */
                     ResultSet rset = con.consulta("select * from tb_medica");
                     while (rset.next()) {
                         int banMedicamento = 0;
@@ -146,15 +154,16 @@ public class Medicamentos extends HttpServlet {
                         while (rset2.next()) {
                             banMedicamento = 1;
                         }
+                        /**
+                         * En este proyecto no se manejan máximos y mínimos
+                         */
                         if (banMedicamento == 0) {
                             try {
                                 con.insertar("insert into tb_maxmodula values('" + rset.getString("F_ClaPro") + "','0','0','0')");
                             } catch (Exception e) {
                             }
                         } else {
-
                             try {
-
                                 con.insertar("update tb_maxmodula set F_Max = '0', F_Min ='0' where F_ClaPro='" + rset.getString("F_ClaPro") + "'");
                             } catch (Exception e) {
                             }
@@ -165,6 +174,9 @@ public class Medicamentos extends HttpServlet {
                             banMedicamento = 1;
                             min = rset2.getInt("F_Min");
                         }
+                        /**
+                         * Se insertan los nuevos articulos en las tablas de modula
+                         */
                         if (rset.getString("F_DesPro").length() > 40) {
                             conModula.ejecutar("insert into IMP_ARTICOLI (ART_OPERAZIONE, ART_ARTICOLO, ART_DES, ART_UMI, ART_MIN, ART_PROY) values ('I','" + rset.getString("F_ClaPro") + "','" + (rset.getString("F_DesPro").substring(1, 40)) + "','PZ','" + min + "', 'CC')");
                         } else {

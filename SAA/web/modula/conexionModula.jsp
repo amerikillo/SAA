@@ -13,6 +13,10 @@
 <!DOCTYPE html>
 
 <%
+
+    /**
+     * JSP primeros pasos con módula
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -26,9 +30,8 @@
     if (con.conectar()) {
         //out.println("Conexión Exitosa");
         try {
-            /*
-             La I es de insercion
-        
+            /**
+             * La I es de insercion Para avisos de ingreso
              */
             //con.ejecutar("insert into IMP_AVVISIINGRESSO values('I','0437','LOTE12','100','20160517','','')");
         } catch (Exception e) {
@@ -42,7 +45,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <title>SIALSS</title>
     </head>
@@ -61,6 +64,9 @@
                 try {
                     con.conectar();
                     conMysql.conectar();
+                    /**
+                     * Para consultas a módula
+                     */
                     ResultSet rset = con.consulta("select * from VIEW_MODULA_UBICACION where SCO_GIAC!=0 order by SCO_ARTICOLO");
                     while (rset.next()) {
                         String Descrip = "";

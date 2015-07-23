@@ -12,6 +12,10 @@
 <%@ page import="java.sql.*" %> 
 <% /*Parametros para realizar la conexión*/
 
+
+    /**
+     * Reimpresion de marbete
+     */
     HttpSession sesion = request.getSession();
     ConectionDB con = new ConectionDB();
     String usua = "";
@@ -42,50 +46,57 @@
             Descrip = rset.getString("M.F_DesPro");
             Orden = rset.getString("C.F_OrdCom");
 
-            if (CajasI > 0){
-            Tarimas = TTarimas - 1;
-            }else{
+            /**
+             * Calculo de piezas, cajas y tarimas para la reimpresion de los
+             * marbetes
+             */
+            if (CajasI > 0) {
+                Tarimas = TTarimas - 1;
+            } else {
                 Tarimas = TTarimas;
             }
-                Piezas = TPiezas - Resto;
-                if(Resto > 0){
-                    if (TCajas > 1){
+            Piezas = TPiezas - Resto;
+            if (Resto > 0) {
+                if (TCajas > 1) {
                     PiezasC = Piezas / (TCajas - 1);
-                    
-                    Cajas = TCajas - ( CajasI + 1 );  
-                    }else{
+
+                    Cajas = TCajas - (CajasI + 1);
+                } else {
                     Cajas = TCajas;
-                    }
-                }else{
-                PiezasC = Piezas / TCajas;    
-                Cajas = TCajas - CajasI;  
                 }
-                
-                //Cajas = TCajas - CajasI;                 
-                PiezasT = Cajas * PiezasC;
-                
-                if (Cajas > 0 && Tarimas != 0){
-                    
-                    TotalP = PiezasT  / Tarimas;
-                    
-                for (int i = 0; i < Tarimas; i++) {
-                    if (CajasI == 0){
-                        Restop = Resto;
-                        if(Restop > 0){
-                        TotalP = TotalP + Resto;
-                        Resto = Resto - Resto;
-                        }
-                        con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ TotalP +"','0')");
-                    }else{
-                        con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ TotalP +"','0')");
-                    }
-                    
+            } else {
+                PiezasC = Piezas / TCajas;
+                Cajas = TCajas - CajasI;
             }
+
+            //Cajas = TCajas - CajasI;                 
+            PiezasT = Cajas * PiezasC;
+
+            /**
+             * De depositan en la tabla tb_marbetes para su impresión
+             */
+            if (Cajas > 0 && Tarimas != 0) {
+
+                TotalP = PiezasT / Tarimas;
+
+                for (int i = 0; i < Tarimas; i++) {
+                    if (CajasI == 0) {
+                        Restop = Resto;
+                        if (Restop > 0) {
+                            TotalP = TotalP + Resto;
+                            Resto = Resto - Resto;
+                        }
+                        con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '" + Orden + "', '" + TotalP + "','0')");
+                    } else {
+                        con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '" + Orden + "', '" + TotalP + "','0')");
+                    }
+
                 }
-                if (CajasI > 0 ){
-                PiezasTI = (CajasI * PiezasC) + Resto;                
-                con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '"+ Orden +"', '"+ PiezasTI +"','0')");
-                }
+            }
+            if (CajasI > 0) {
+                PiezasTI = (CajasI * PiezasC) + Resto;
+                con.insertar("insert into tb_marbetes values ('" + folio_gnk + "','" + Cb + "','" + Clave + "','" + Descrip + "','" + Lote + "','" + Cadu + "', '" + Orden + "', '" + PiezasTI + "','0')");
+            }
         }
         con.cierraConexion();
     } catch (Exception e) {

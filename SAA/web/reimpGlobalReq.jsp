@@ -12,6 +12,10 @@
 <%@ page import="java.sql.*" %> 
 <% /*Parametros para realizar la conexión*/
 
+
+    /**
+     * Reimpresion de Concentrados Globales
+     */
     HttpSession sesion = request.getSession();
     ConectionDB con = new ConectionDB();
     String usua = "";

@@ -14,6 +14,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * Para reintegrar insumos desvueltos por facturacion
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -57,7 +61,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -67,13 +71,16 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div>
                 <h3>Devoluciones</h3>
                 <h4>Folio de Factura: <%=request.getParameter("fol_gnkl")%></h4>
                 <%
+                    /**
+                     * Cabecera de la factura
+                     */
                     try {
                         con.conectar();
                         try {
@@ -110,6 +117,9 @@
                     <a href="reimp_factura.jsp" class="btn btn-default">Regresar</a>
                     <%
                         if (banReint == 1) {
+                            /**
+                             * Para reingegrar los insumos pendientes
+                             */
                     %>
                     <a href="FacturacionManual?accion=reintegrarInsumo&F_ClaDoc=<%=request.getParameter("fol_gnkl")%>" class="btn btn-success" onclick="return confirm('Seguro que desea reintegrar el insumo a inventario?')">Reintegrar Insumo</a>
                     <%
@@ -147,6 +157,9 @@
                             </thead>
                             <tbody>
                                 <%
+                                    /**
+                                     * Detalle de la factura
+                                     */
                                     try {
                                         con.conectar();
                                         try {
@@ -206,6 +219,8 @@
 
         <!--
                 Modal
+        
+        NO SE USA
         -->
         <%
             try {
@@ -280,50 +295,49 @@
         <!--
         /Modal
         -->
-    </body>
-</html>
 
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
                                     $(document).ready(function() {
                                         $('#datosCompras').dataTable();
                                     });
-</script>
-<script>
-    $(function() {
-        $("#fecha").datepicker();
-        $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
+        </script>
+        <script>
+            $(function() {
+                $("#fecha").datepicker();
+                $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+            });
 
-    function validaDevolucion(e) {
-        var id = e;
-        if (document.getElementById('Obser' + id).value === "") {
-            alert("Ingrese las observaciones de la devolución")
-            return false;
-        }
-    }
+            function validaDevolucion(e) {
+                var id = e;
+                if (document.getElementById('Obser' + id).value === "") {
+                    alert("Ingrese las observaciones de la devolución")
+                    return false;
+                }
+            }
 
-    function validaContra(elemento) {
-        //alert(elemento);
-        var pass = document.getElementById(elemento).value;
-        var id = elemento.split("ContraDevo");
-        if (pass === "rosalino") {
-            //alert(pass);
-            document.getElementById(id[1]).disabled = false;
-            //$(id[1]).prop("disabled", false);
-        } else {
-            document.getElementById(id[1]).disabled = true;
-            //$(id[1]).prop("disabled", true);
-        }
-    }
-</script>
+            function validaContra(elemento) {
+                //alert(elemento);
+                var pass = document.getElementById(elemento).value;
+                var id = elemento.split("ContraDevo");
+                if (pass === "rosalino") {
+                    //alert(pass);
+                    document.getElementById(id[1]).disabled = false;
+                    //$(id[1]).prop("disabled", false);
+                } else {
+                    document.getElementById(id[1]).disabled = true;
+                    //$(id[1]).prop("disabled", true);
+                }
+            }
+        </script>
+    </body>
+</html>

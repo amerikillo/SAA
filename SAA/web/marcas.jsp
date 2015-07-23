@@ -12,7 +12,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Catálogo de las marcas
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -29,7 +31,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
         <title>SIALSS</title>
@@ -38,61 +40,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            <!--div class="navbar navbar-default">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="main_menu.jsp">Inicio</a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Entrada Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
-                                    <li><a href="kardexClave.jsp">Kardex Claves</a></li>
-                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>    
-                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                     
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-                            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
-                        </ul>
-                    </div><!--/.nav-collapse>
-                </div>
-            </div-->
+
             <hr/>
         </div>
         <div class="container">
@@ -139,7 +87,7 @@
                                     ResultSet rset = con.consulta("SELECT * FROM tb_marca ORDER BY F_DesMar ASC");
                                     while (rset.next()) {
                             %>
-                            <tr class="odd gradeX">
+                            <tr >
                                 <td><small><%=rset.getString(1)%></small></td>
                                 <td><small><%=rset.getString(2)%></small></td>                                                            
 

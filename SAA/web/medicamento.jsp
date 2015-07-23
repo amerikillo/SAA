@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Catálogo de las claves de medicamento
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -37,7 +40,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
         <title>SIALSS</title>
@@ -54,6 +57,9 @@
                 </div>
                 <div class="panel-body ">
                     <form class="form-horizontal" role="form" name="formulario1" id="formulario1" method="post" action="Medicamentos">
+                        <!--
+                        formulario para agregar nuevas claves
+                        -->
                         <div class="row">
                             <div class="form-group">                                
                                 <label for="Clave" class="col-xs-1 control-label">Clave*</label>
@@ -96,6 +102,9 @@
                 </div>
                 <div class="panel-footer">
                     <form method="post" action="Medicamentos">
+                        <!--
+                        Listado de medicamentos
+                        -->
                         <table class="table table-striped table-bordered" id="datosProv">
                             <thead>
                                 <tr>
@@ -145,6 +154,9 @@
                                 %>
                             </tbody>
                         </table>
+                        <!--
+                        Para actualizar todos los insumos y enviarlos a modula
+                        -->
                         <button class="btn btn-success btn-block" name="accion" value="Actualizar">Actualizar</button>
                     </form>
                 </div>

@@ -44,6 +44,9 @@ public class CargaExcelRural extends HttpServlet {
             CargaExcelReqRural lee = new CargaExcelReqRural();
             String Unidad = "";
 
+            /**
+             * Se obtienen las partes del formulario
+             */
             boolean isMultiPart = ServletFileUpload.isMultipartContent(request);
             if (isMultiPart) {
                 ServletFileUpload upload = new ServletFileUpload();
@@ -53,6 +56,9 @@ public class CargaExcelRural extends HttpServlet {
                     while (itr.hasNext()) {
                         FileItemStream item = itr.next();
                         if (item.isFormField()) {
+                            /**
+                             * Si es de un campo (que no sea el del archivo)
+                             */
                             String fielName = item.getFieldName();
                             InputStream is = item.openStream();
                             byte[] b = new byte[is.available()];
@@ -60,6 +66,9 @@ public class CargaExcelRural extends HttpServlet {
                             String value = new String(b);
                             response.getWriter().println(fielName + ":" + value + "<br/>");
                         } else {
+                            /**
+                             * Si es del archivo
+                             */
                             String path = getServletContext().getRealPath("/");
                             if (CargaExcelRuralModel.processFile(path, item)) {
                                 //response.getWriter().println("file uploaded successfully");

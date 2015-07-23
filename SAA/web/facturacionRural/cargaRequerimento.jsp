@@ -12,7 +12,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * No se usa, era para proyecto de entrega a rurales
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -32,7 +34,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
     </head>
     <body>
@@ -40,8 +42,8 @@
 
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
-            <%@include file="jspf/menuPrincipal.jspf"%>
+
+            <%@include file="../jspf/menuPrincipal.jspf"%>
 
             <div>
                 <div class="panel panel-primary">

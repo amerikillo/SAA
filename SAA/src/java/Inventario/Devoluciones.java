@@ -33,6 +33,9 @@ public class Devoluciones extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     *
+     *
+     * Para cambios físicos
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,13 +52,18 @@ public class Devoluciones extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         try {
             try {
+
                 if (request.getParameter("accion").equals("devolucion")) {
                     con.conectar();
                     //consql.conectar();
                     String ClaPro = "", Total = "", Ubicacion = "", Provee = "", FolLote = "", ClaLot = "", FecCad = "", F_IdLote = "";
                     String F_Cb = "", F_ClaMar = "";
                     String FolLotSql = "";
-                    int cantSQL = 0, cant = 0;
+                    int cantSQL = 0, cant = 0, F_ExiLot = 0;
+
+                    /**
+                     * Se obtienen los datos para el cambio físico
+                     */
                     ResultSet rset = con.consulta("select * from tb_lote where F_IdLote = '" + request.getParameter("IdLote") + "'");
                     while (rset.next()) {
                         ClaPro = rset.getString("F_ClaPro");
@@ -77,36 +85,63 @@ public class Devoluciones extends HttpServlet {
                     double importe = devuelveImporte(ClaPro, cant);
                     double iva = devuelveIVA(ClaPro, cant);
                     double costo = devuelveCosto(ClaPro);
-                    int ncant = cantSQL - cant;
+                    int ncant = cant;
 
                     String indMov = objSql.dameidMov();
 
                     byte[] a = request.getParameter("Obser").getBytes("ISO-8859-1");
                     String Observaciones = (new String(a, "UTF-8")).toUpperCase();
 
+                    /**
+                     * Se insertan las observaciones
+                     */
                     con.insertar("insert into tb_devolcompra values ('" + request.getParameter("IdLote") + "','" + Observaciones + "','0','" + cant + "','','')");
                     String F_FolLot = "";
 
+                    /**
+                     * Se actualiza el cambio, esto ya que se genera el cambio
+                     * físico total
+                     */
                     con.insertar("update tb_lote set F_ExiLot = '0' where F_IdLote = '" + request.getParameter("IdLote") + "' ");
-                    ResultSet rset2 = con.consulta("select F_FolLot, F_IdLote, F_Ubica from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_FecCad = '" + request.getParameter("F_FecCad") + "' AND F_Ubica in ('NUEVA', 'REJA', 'REDFRIA');");
+
+                    /**
+                     * Se obtienen los datos de la ubicación donde se depositará
+                     * en caso de que exista el registro
+                     */
+                    ResultSet rset2 = con.consulta("select F_FolLot, F_IdLote, F_Ubica, F_ExiLot from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ClaLot = '" + request.getParameter("F_ClaLot") + "' and F_FecCad = '" + request.getParameter("F_FecCad") + "' AND F_Ubica in ('NUEVA', 'REJA', 'REDFRIA');");
                     String F_Ubica = "";
                     while (rset2.next()) {
                         F_FolLot = rset2.getString("F_FolLot");
                         F_IdLote = rset2.getString("F_IdLote");
                         F_Ubica = rset2.getString("F_Ubica");
+                        F_ExiLot = rset2.getInt("F_ExiLot");
                     }
+                    /**
+                     * Obtenemos la fecha de fabricación de la nueva caducidad
+                     */
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(df3.parse(request.getParameter("F_FecCad")));
                     cal.add(Calendar.YEAR, -3);
                     String Fecfab = "" + df3.format(cal.getTime());
                     if (F_FolLot.equals("")) {
                         F_Ubica = "NUEVA";
+                        /**
+                         * En caso de que no exista el registro se inserta uno
+                         * nuevo en nueva
+                         */
                         F_FolLot = devuelveIndLote() + "";
-                        con.insertar("insert into tb_lote values (0,'" + ClaPro + "','" + request.getParameter("F_ClaLot") + "','" + request.getParameter("F_FecCad") + "','" + cant + "','" + F_FolLot + "','" + Provee + "','" + F_Ubica + "','" + Fecfab + "','" + F_Cb + "','" + F_ClaMar + "') ");
+                        con.insertar("insert into tb_lote values (0,'" + ClaPro + "','" + request.getParameter("F_ClaLot") + "','" + request.getParameter("F_FecCad") + "','" + cant + "','" + F_FolLot + "','" + Provee + "','NUEVA','" + Fecfab + "','" + F_Cb + "','" + F_ClaMar + "') ");
                     } else {
-                        con.insertar("update tb_lote set F_ExiLot = '" + (-ncant) + "' where F_IdLote = '" + F_IdLote + "' ");
+                        /**
+                         * Si existe se actualiza la cantidad que se tenía
+                         * anteriormente más lo que se agregará
+                         */
+                        con.insertar("update tb_lote set F_ExiLot = '" + (cant + F_ExiLot) + "' where F_IdLote = '" + F_IdLote + "' ");
                     }
 
+                    /**
+                     * Inserción de movimientos de entrada y salida
+                     */
                     con.insertar("insert into tb_movinv values('0',CURDATE(),'0','53','" + ClaPro + "','" + cant + "','" + costo + "','" + importe + "','-1','" + FolLote + "','" + Ubicacion + "','" + Provee + "',CURTIME(),'" + (String) sesion.getAttribute("nombre") + "')");
                     con.insertar("insert into tb_movinv values('0',CURDATE(),'0','4','" + ClaPro + "','" + cant + "','" + costo + "','" + importe + "','1','" + F_FolLot + "','" + F_Ubica + "','" + Provee + "',CURTIME(),'" + (String) sesion.getAttribute("nombre") + "')");
 
@@ -125,6 +160,14 @@ public class Devoluciones extends HttpServlet {
         }
     }
 
+    /**
+     * Metodo para que nos devuelva el importe de una clave
+     *
+     * @param clave
+     * @param cantidad
+     * @return
+     * @throws SQLException
+     */
     public double devuelveImporte(String clave, int cantidad) throws SQLException {
 
         ConectionDB con = new ConectionDB();
@@ -148,6 +191,14 @@ public class Devoluciones extends HttpServlet {
         return MontoIva;
     }
 
+    /**
+     * Metodo para obtener el iva de una clave y su cantidad
+     *
+     * @param clave
+     * @param cantidad
+     * @return
+     * @throws SQLException
+     */
     public double devuelveIVA(String clave, int cantidad) throws SQLException {
 
         ConectionDB con = new ConectionDB();
@@ -169,6 +220,13 @@ public class Devoluciones extends HttpServlet {
         return IVAPro;
     }
 
+    /**
+     * Metodo para obtener el costo de un insumo
+     *
+     * @param Clave
+     * @return
+     * @throws SQLException
+     */
     public double devuelveCosto(String Clave) throws SQLException {
         ConectionDB con = new ConectionDB();
         double Costo = 0.0;
@@ -181,6 +239,12 @@ public class Devoluciones extends HttpServlet {
 
     }
 
+    /**
+     * Metodo para obtener el indice del nuevo lote
+     *
+     * @return
+     * @throws SQLException
+     */
     public int devuelveIndLote() throws SQLException {
         ConectionDB con = new ConectionDB();
         int indice = 0;

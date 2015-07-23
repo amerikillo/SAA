@@ -21,6 +21,9 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Americo
+ * 
+ * Este súper servlet extremo fue desarrollado por aníbal, pero actualmente ya no se utiliza
+ * 
  */
 public class ServletK extends HttpServlet {
 

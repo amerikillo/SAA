@@ -36,6 +36,8 @@ public class nuevoAutomaticaLotes extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     *
+     * Clase para ingresar compras.
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,6 +50,9 @@ public class nuevoAutomaticaLotes extends HttpServlet {
         String accion = request.getParameter("accion");
         int F_IndCom = 0;
         try {
+            /**
+             * En la parte de verificar las órdenes de compra, para eliminarlas.
+             */
             if (request.getParameter("accion").equals("EliminarVerifica")) {
                 try {
                     con.conectar();
@@ -62,6 +67,12 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 } catch (Exception e) {
                 }
             }
+            /**
+             * Para guardar la compra, se deja abierta para que no modifique el
+             * campo F_Recibido en la tabla tb_pedidoisem y se pueda continuar
+             * capturando de manera posterior.
+             *
+             */
             if (request.getParameter("accion").equals("GuardarAbiertaVerifica")) {
                 try {
                     con.conectar();
@@ -211,6 +222,10 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                     }
 
                     con.actualizar("delete from tb_compratemp where F_OrdCom = '" + request.getParameter("vOrden") + "' and F_FolRemi = '" + request.getParameter("vRemi") + "'");
+
+                    /**
+                     * Aqui es donde no se actualiza campo F_Recibido
+                     */
                     //con.actualizar("update tb_pedidoisem set F_Recibido = '1' where F_NoCompra = '" + F_OrdCom + "' and F_FolRemi = '" + request.getParameter("vRemi") + "'");
                     con.cierraConexion();
                     //consql.cierraConexion();
@@ -228,6 +243,12 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 out.println("<script>window.location='verificarCompraAuto.jsp'</script>");
 
             }
+
+            /**
+             * Para guardar la compra, en este caso se pasa el F_Recibido a 1
+             * para indicar que se ingresó completamente la clave
+             *
+             */
             if (request.getParameter("accion").equals("GuardarVerifica")) {
                 try {
                     con.conectar();
@@ -389,7 +410,10 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 //correoConfirma.enviaCorreo(F_IndCom);
                 out.println("<script>window.location='verificarCompraAuto.jsp'</script>");
             }
-
+            /**
+             * Para eliminar de tb_compratemp los registros referentes a una
+             * orden de compra
+             */
             if (request.getParameter("accion").equals("Eliminar")) {
 
                 try {
@@ -420,6 +444,12 @@ public class nuevoAutomaticaLotes extends HttpServlet {
                 out.println("<script>alert('Compra cancelada')</script>");
                 out.println("<script>window.location='compraAuto2.jsp'</script>");
             }
+            
+            /**
+             * 
+             * Metodo anterior que se utilizaba para confirmar directamente las compras, ya no se utiliza ya que se manejan Confirmacion Abierta o Cerrada
+             * 
+             */
             if (request.getParameter("accion").equals("Guardar")) {
                 try {
                     con.conectar();
@@ -638,6 +668,10 @@ public class nuevoAutomaticaLotes extends HttpServlet {
 
                 out.println("<script>alert('Compra realizada, datos transferidos correctamente')</script>");
             }
+            
+            /**
+             * Cuando no se tenían las verificaciones por auditores se confirmaba directamente
+             */
             if (request.getParameter("accion").equals("GuardarAbierta")) {
                 try {
                     con.conectar();
@@ -872,6 +906,14 @@ public class nuevoAutomaticaLotes extends HttpServlet {
         //response.sendRedirect("captura.jsp");
     }
 
+    /**
+     * Metodos que ya no se utilizan ya que eran para SQL Server SGW
+     * 
+     * @param obser
+     * @return 
+     */
+    
+    
     public String insertaObservacionesCompra(String obser) {
         String id = dameIdObser();
         /*

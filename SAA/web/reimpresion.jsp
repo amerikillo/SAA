@@ -12,7 +12,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Consulta de folios de compra para reimpresion de marbetes y remisiones
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -47,7 +49,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -57,70 +59,6 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            <!--div class="navbar navbar-default">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="main_menu.jsp">Inicio</a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Entrada Manual</a></li>
-                                    <li><a href="compraAuto2.jsp">Entrada Automática OC ISEM</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="ordenesCompra.jsp">Órdenes de Compras</a></li>
-                                    <li><a href="kardexClave.jsp">Kardex Claves</a></li>
-                                    <li><a href="Ubicaciones/Consultas.jsp">Ubicaciones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturación<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li><a href="factura.jsp">Facturación Automática</a></li>
-                                     <li><a href="reimp_factura.jsp">Administrar Remisiones</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catálogos<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fecha Recibo<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>     
-                                    <li><a href="historialOC.jsp">Historial OC</a></li>                                  
-                                </ul>
-                            </li>
-            <!--li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href="../captura.jsp">Captura de Insumos</a></li>
-                    <li class="divider"></li>
-                    <li><a href="../catalogo.jsp">Catálogo de Proveedores</a></li>
-                    <li><a href="../reimpresion.jsp">Reimpresión de Docs</a></li>
-                </ul>
-            </li>
-            
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href=""><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
-        </ul>
-    </div><!--/.nav-collapse >
-</div>
-</div-->
             <hr/>
 
             <div>
@@ -149,6 +87,11 @@
                                     try {
                                         con.conectar();
                                         try {
+                                            /**
+                                             * Se agrupa con base en el folio de
+                                             * la remision y la orden de compra
+                                             * no por la clave de documento
+                                             */
                                             ResultSet rset = con.consulta("SELECT c.F_ClaDoc, c.F_FolRemi, c.F_OrdCom, c.F_FecApl, c.F_User, p.F_NomPro FROM tb_compra c, tb_proveedor p where F_FecApl>'2015-01-01' and c.F_ProVee = p.F_ClaProve GROUP BY F_OrdCom, F_FolRemi; ");
                                             while (rset.next()) {
                                 %>
@@ -264,7 +207,9 @@
         <div class="modal fade" id="EditaRemision" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-
+                    <!--
+                    Para la edicion de las remisiones
+                    -->
                     <form action="Modificaciones">
                         <div class="modal-header">
                             <h3>Edición de remisiones</h3>
@@ -310,76 +255,75 @@
         <!--
         /Modal
         -->
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
+                                    $(document).ready(function() {
+                                        $('#datosCompras').dataTable();
+                                    });
+        </script>
+        <script>
+            $(function() {
+                $("#fecha").datepicker();
+                $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+            });
+
+            function ponerFolio(id) {
+                document.getElementById('idCom').value = id;
+                document.getElementById('F_FolRemi').value = document.getElementById("F_FR" + id).value;
+                document.getElementById('F_OrdCom').value = document.getElementById("F_OC" + id).value;
+            }
+
+            function validaISEM() {
+                if (document.getElementById('NoContrato').value === "") {
+                    alert('Capture el número de contrato');
+                    return false;
+                }
+                if (document.getElementById('NoFolio').value === "") {
+                    alert('Capture el número de folio');
+                    return false;
+                }
+                if (document.getElementById('fecRecepcionISEM').value === "") {
+                    alert('Capture la fecha');
+                    return false;
+                }
+            }
+
+            function ponerRemision(id) {
+                var elem = id.split(',');
+                document.getElementById('idRem').value = elem[0];
+                document.getElementById('remiIncorrecta').value = elem[1];
+            }
+
+            function validaRemision() {
+                var remiCorrecta = document.getElementById('remiCorrecta').value;
+                var fecRemision = document.getElementById('fecRemision').value;
+
+                if (remiCorrecta === "" && fecRemision === "") {
+                    alert('Ingrese al menos una corrección')
+                    return false;
+                }
+            }
+
+            function validaContra(elemento) {
+                //alert(elemento);
+                var pass = document.getElementById(elemento).value;
+                //alert(pass);
+                if (pass === "GnKlTolu2014") {
+                    document.getElementById('actualizaRemi').disabled = false;
+                } else {
+                    document.getElementById('actualizaRemi').disabled = true;
+                }
+            }
+        </script>
     </body>
 </html>
 
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script>
-                                    $(document).ready(function () {
-                                        $('#datosCompras').dataTable();
-                                    });
-</script>
-<script>
-    $(function () {
-        $("#fecha").datepicker();
-        $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
-
-    function ponerFolio(id) {
-        document.getElementById('idCom').value = id;
-        document.getElementById('F_FolRemi').value = document.getElementById("F_FR" + id).value;
-        document.getElementById('F_OrdCom').value = document.getElementById("F_OC" + id).value;
-    }
-
-    function validaISEM() {
-        if (document.getElementById('NoContrato').value === "") {
-            alert('Capture el número de contrato');
-            return false;
-        }
-        if (document.getElementById('NoFolio').value === "") {
-            alert('Capture el número de folio');
-            return false;
-        }
-        if (document.getElementById('fecRecepcionISEM').value === "") {
-            alert('Capture la fecha');
-            return false;
-        }
-    }
-
-    function ponerRemision(id) {
-        var elem = id.split(',');
-        document.getElementById('idRem').value = elem[0];
-        document.getElementById('remiIncorrecta').value = elem[1];
-    }
-
-    function validaRemision() {
-        var remiCorrecta = document.getElementById('remiCorrecta').value;
-        var fecRemision = document.getElementById('fecRemision').value;
-
-        if (remiCorrecta === "" && fecRemision === "") {
-            alert('Ingrese al menos una corrección')
-            return false;
-        }
-    }
-
-    function validaContra(elemento) {
-        //alert(elemento);
-        var pass = document.getElementById(elemento).value;
-        //alert(pass);
-        if (pass === "GnKlTolu2014") {
-            document.getElementById('actualizaRemi').disabled = false;
-        } else {
-            document.getElementById('actualizaRemi').disabled = true;
-        }
-    }
-</script>

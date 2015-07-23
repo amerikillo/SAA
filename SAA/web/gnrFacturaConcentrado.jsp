@@ -14,6 +14,12 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * Para generar el Excel del concentrado de facturas por año
+     *
+     *
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -95,18 +101,15 @@
                         <tbody>
                             <%
                                 String where = "";
-                                /*try {
-                                 if (session.getAttribute("whereRF") == null) {
-                                 where = "WHERE facturas.F_ClaMar = m.F_ClaMar AND (facturas.F_FecEnt BETWEEN '01/01/01' AND '01/01/01')";
-                                 } else {
-                                 where = "WHERE facturas.F_ClaMar = m.F_ClaMar AND (facturas.F_FecEnt BETWEEN DATE_FORMAT('"+session.getAttribute("fIniRF")+"','%d/%m/%Y') AND DATE_FORMAT('"+session.getAttribute("fFinRF")+"','%d/%m/%Y'))";
-                                 }
-                                 } catch (Exception ex) {
-                                 where = "WHERE facturas.F_ClaMar = m.F_ClaMar AND (facturas.F_FecEnt BETWEEN '01/01/01' AND '01/01/01')";
-                                 }*/
+
                                 try {
                                     con.conectar();
                                     try {
+                                        /**
+                                         * Dependiendo del año se cambia el
+                                         * query de consulta, la información se
+                                         * obtiene de la vista facturas
+                                         */
                                         ResultSet rset = con.consulta("SELECT F_NomCli,F_FecEnt,F_ClaDoc,F_ClaPro,F_DesPro,F_ClaLot,F_FecCad,F_CantReq,F_CantSur,F_Costo,F_Monto, F_Ubicacion, F_StsFact, F_DesMar, DATE_FORMAT(F_FecFab,'%d/%m/%Y') AS F_FecFab, F_Req, F_Tipo FROM facturas, tb_marca m WHERE facturas.F_ClaMar = m.F_ClaMar and  F_Fecha between '2014-01-01' and '2014-12-31'");
 
                                         if (fecha.equals("2015")) {

@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Ver detalle de factura
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -56,7 +59,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -70,6 +73,9 @@
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div>
+                <!--
+                Cabecera de la receta
+                -->
                 <h3>Ver Facturas</h3>
                 <h4>Folio de Factura: <%=request.getParameter("fol_gnkl")%></h4>
                 <%
@@ -97,6 +103,9 @@
                 %>
 
                 <div class="row">
+                    <!--
+                    Se envia el abasto al distribuidor en este caso CEDIS Sendero
+                    -->
                     <form action="AbastecerDistribuidor?accion=enviarCEDISSendero" onsubmit="mandaRemision()" method="post">
                         <h5 class="col-sm-3">Total Solicitado: <%=formatter.format(req)%></h5>
                         <h5 class="col-sm-3">Total Surtido: <%=formatter.format(sur)%></h5>
@@ -139,6 +148,9 @@
                             </thead>
                             <tbody>
                                 <%
+                                    /**
+                                     * Detalle de la remision
+                                     */
                                     try {
                                         con.conectar();
                                         try {

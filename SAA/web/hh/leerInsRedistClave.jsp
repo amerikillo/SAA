@@ -28,7 +28,9 @@
         response.sendRedirect("../index.jsp");
     }
     ConectionDB con = new ConectionDB();
-
+    /**
+     * Se obtiene la clave del producto, para consulta
+     */
     String ClaPro = "", UbiAnt = "", UbiCb = "";
     try {
         ClaPro = request.getParameter("ClaPro");
@@ -70,7 +72,7 @@
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SIALSS</title>
@@ -78,7 +80,7 @@
     <body>
         <div class="container">
             <h1>SIALSS</h1>
-            
+
             <%@include file="../jspf/menuPrincipal.jspf"%>
 
             <h4>Redistribución</h4>
@@ -106,6 +108,9 @@
             <h4>Insumos Médicos</h4>
             <%
                 try {
+                    /**
+                     * Se busca el insumo con base en la clave o el lote
+                     */
                     if (!UbiAnt.equals("PorUbicar")) {
 
                         con.conectar();
@@ -138,7 +143,9 @@
             <%
                 }
             } else {
-
+                /**
+                 * En caso contrario muestra todo
+                 */
                 con.conectar();
                 ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, l.F_Cb from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
                 while (rset.next()) {
@@ -177,14 +184,14 @@
             %>
         </div>
 
-    </body>
-    <!-- 
-================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <!-- 
+    ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="../js/bootstrap-datepicker.js"></script>
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/bootstrap-datepicker.js"></script>
+    </body>
 </html>

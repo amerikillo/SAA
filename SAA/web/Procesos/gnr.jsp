@@ -12,7 +12,10 @@
       xmlns="http://www.w3.org/TR/REC-html40">
     <%
 
-        ConectionDB_SAA con = new ConectionDB_SAA();
+        /**
+         * NO SE USA
+         */
+        ConectionDB con = new ConectionDB();
         NumberFormat nf1 = NumberFormat.getInstance(Locale.US);
         DecimalFormat formatter2 = new DecimalFormat("#,###,###.##");
 
@@ -58,81 +61,81 @@
 
         <table border="1">
 
-                        <tr  >
-                            <td  >Información</td>
-                            <td colspan=2 style='mso-ignore:colspan'></td>
-                        </tr>
-                        <tr  >
-                            <td  >Total de Piezas:</td>
-                            <%total_pzs = Integer.parseInt(totPzs);%>
-                            <td class=xl72 align=right><%=nf1.format(total_pzs)%></td>
-                            <td  style='mso-ignore:colspan'></td>
-                        </tr>
-                        <tr  >
-                            <td  >&nbsp;</td>
-                            <td class=xl73 align=right>&nbsp;</td>
-                            <td style='mso-ignore:colspan'></td>
-                        </tr>
+            <tr  >
+                <td  >Información</td>
+                <td colspan=2 style='mso-ignore:colspan'></td>
+            </tr>
+            <tr  >
+                <td  >Total de Piezas:</td>
+                <%total_pzs = Integer.parseInt(totPzs);%>
+                <td class=xl72 align=right><%=nf1.format(total_pzs)%></td>
+                <td  style='mso-ignore:colspan'></td>
+            </tr>
+            <tr  >
+                <td  >&nbsp;</td>
+                <td class=xl73 align=right>&nbsp;</td>
+                <td style='mso-ignore:colspan'></td>
+            </tr>
 
-                        <tr  >
-                            <td  colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
-                        </tr>
-                        <%
-                            ResultSet rset2 = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 GROUP BY l.F_ClaPro,l.F_ClaLot,l.F_FecCad,l.F_Ubica, l.F_Cb, u.F_DesUbi");
+            <tr  >
+                <td  colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+            </tr>
+            <%
+                ResultSet rset2 = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 GROUP BY l.F_ClaPro,l.F_ClaLot,l.F_FecCad,l.F_Ubica, l.F_Cb, u.F_DesUbi");
 
-                        %>
-                        <tr  >
-                            <td  style='height:15.0pt;mso-ignore:colspan'>Clave</td>
-                            <td >Descripción</td>
-                            <td >Lote</td>
-                            <td >Caducidad</td>
-                            <td >Ubicacion</td>
-                            <td >Marca</td>
-                            <td >Cantidad</td>
-                            <td >Costo U.</td>
-                            <td >Monto</td>
-                        </tr>
-                        <tr  >
+            %>
+            <tr  >
+                <td  style='height:15.0pt;mso-ignore:colspan'>Clave</td>
+                <td >Descripción</td>
+                <td >Lote</td>
+                <td >Caducidad</td>
+                <td >Ubicacion</td>
+                <td >Marca</td>
+                <td >Cantidad</td>
+                <td >Costo U.</td>
+                <td >Monto</td>
+            </tr>
+            <tr  >
 
-                            <%     while (rset2.next()) {
+                <%     while (rset2.next()) {
 
-                                    ixt_cad = rset2.getString("SUM(F_ExiLot)");
-                                    ixt_uni = Integer.parseInt(ixt_cad);
-                                    double monto1 = 0;
-                                    System.out.println(rset2.getString(1));
-                                    if (rset2.getInt("F_ClaPro") < 9999) {
-                                        monto1 = Double.parseDouble(rset2.getString("monto"));
-                                    } else {
-                                        monto1 = (Double.parseDouble(rset2.getString("monto")) * 1.16);
-                                    }
-                            %>
-                            <td  class=xl75 ><%=rset2.getString("l.F_ClaPro")%></td>
-                            <td  class=xl75 ><%=rset2.getString("m.F_DesPro")%></td>
-                            <td  class=xl75 style='height:15.0pt;mso-number-format:"@"'><%=rset2.getString("l.F_ClaLot")%></td>
-                            <td  class=xl75 ><%=rset2.getString("F_FecCad")%></td>
-                            <td  class=xl75 ><%=rset2.getString("u.F_DesUbi")%></td>
-                            <td  class=xl75 ><%=rset2.getString("F_DesMar")%></td>
-                            <td class=xl68><div align="center"><%=nf1.format(ixt_uni)%></div></td>
-                            <td class=xl68 style='mso-number-format:"#,##0.00"'><div align="center"><%=rset2.getDouble("m.F_Costo")%></div></td>
-                            <td class=xl68 style='mso-number-format:"#,##0.00"'><div align="center"><%=monto1%></div></td>
+                        ixt_cad = rset2.getString("SUM(F_ExiLot)");
+                        ixt_uni = Integer.parseInt(ixt_cad);
+                        double monto1 = 0;
+                        System.out.println(rset2.getString(1));
+                        if (rset2.getInt("F_ClaPro") < 9999) {
+                            monto1 = Double.parseDouble(rset2.getString("monto"));
+                        } else {
+                            monto1 = (Double.parseDouble(rset2.getString("monto")) * 1.16);
+                        }
+                %>
+                <td  class=xl75 ><%=rset2.getString("l.F_ClaPro")%></td>
+                <td  class=xl75 ><%=rset2.getString("m.F_DesPro")%></td>
+                <td  class=xl75 style='height:15.0pt;mso-number-format:"@"'><%=rset2.getString("l.F_ClaLot")%></td>
+                <td  class=xl75 ><%=rset2.getString("F_FecCad")%></td>
+                <td  class=xl75 ><%=rset2.getString("u.F_DesUbi")%></td>
+                <td  class=xl75 ><%=rset2.getString("F_DesMar")%></td>
+                <td class=xl68><div align="center"><%=nf1.format(ixt_uni)%></div></td>
+                <td class=xl68 style='mso-number-format:"#,##0.00"'><div align="center"><%=rset2.getDouble("m.F_Costo")%></div></td>
+                <td class=xl68 style='mso-number-format:"#,##0.00"'><div align="center"><%=monto1%></div></td>
 
-                        </tr>
-                        <% } %>
-                        <tr height=0 style='display:none'>
-                            <td width=120 style='width:90pt'></td>
-                            <td width=117 style='width:88pt'></td>
-                            <td width=101 style='width:76pt'></td>
-                            <td width=101 style='width:76pt'></td>
-                        </tr>
-                        </table>
+            </tr>
+            <% } %>
+            <tr height=0 style='display:none'>
+                <td width=120 style='width:90pt'></td>
+                <td width=117 style='width:88pt'></td>
+                <td width=101 style='width:76pt'></td>
+                <td width=101 style='width:76pt'></td>
+            </tr>
+        </table>
 
-                        </body>
+    </body>
 
-                        </html>
-                        <%
-                                con.cierraConexion();
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
+</html>
+<%
+        con.cierraConexion();
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
 
-                        %>
+%>

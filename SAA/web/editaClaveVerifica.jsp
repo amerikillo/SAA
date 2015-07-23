@@ -13,6 +13,9 @@
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
 
+    /**
+     * Modificacion de las verificaciones
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     String tipo = "";
@@ -26,6 +29,9 @@
     String folio_gnk = "", fecha = "", folio_remi = "", orden = "", provee = "", recib = "", entrega = "", origen = "", coincide = "", observaciones = "", clave = "", descrip = "", cod_bar = "", um = "", lote = "", cadu = "", cajas = "", piezas = "", tarimas = "", marca = "", fec_fab = "", proveedor = "", tarimasInc = "";
     int PzxCaja = 0, tarimasC = 0, tarimasI = 0, cajasPorTarimaC = 0, cajasPorTarimaI = 0, resto = 0, cajasI = 0;
 
+    /**
+     * Obtención de la información a del registro a editar
+     */
     try {
         con.conectar();
         ResultSet rset = con.consulta("select F_ClaPro, F_Lote, F_FecCad, F_FecFab, F_Marca, F_Cb, F_Cajas, F_Pz, F_Tarimas, F_Resto, F_TarimasI, F_CajasI, F_FolRemi, F_Provee from tb_compratemp where F_IdCom = '" + ((String) sesion.getAttribute("id")) + "' ");
@@ -65,6 +71,9 @@
                 cajasResto = 1;
             }
             int cajasInt = 0;
+            /**
+             * Calculo de las tarimas, cajas, piezas y resto
+             */
             cajasInt = Integer.parseInt(cajas) - cajasResto;
             PzxCaja = (Integer.parseInt(piezas) - resto) / cajasInt;
             tarimasC = Integer.parseInt(tarimas) - Integer.parseInt(tarimasInc);
@@ -96,7 +105,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <title>SIALSS</title>
         <!-- -->
@@ -106,7 +115,7 @@
     <body>
         <div class="container">
             <h1>SAA</h1>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <div class="panel panel-primary">
@@ -274,64 +283,66 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-</html>
 
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script>
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script>
                             $(function() {
                                 $("#Caducidad").datepicker();
                                 $("#Caducidad").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                            });
-                            $(function() {
+
                                 $("#FecFab").datepicker();
                                 $("#FecFab").datepicker('option', {dateFormat: 'dd/mm/yy'});
-                            });
-                            $(function() {
+                                /**
+                                 * Autocomplete para la descripcion
+                                 */
                                 var availableTags = [
-    <%
-        try {
-            con.conectar();
-            ResultSet rset = con.consulta("select descrip from clave_med");
-            while (rset.next()) {
-                out.println("\'" + rset.getString("descrip") + "\',");
-            }
-            con.cierraConexion();
-        } catch (Exception e) {
-        }
-    %>
+            <%
+                try {
+                    con.conectar();
+                    ResultSet rset = con.consulta("select descrip from clave_med");
+                    while (rset.next()) {
+                        out.println("\'" + rset.getString("descrip") + "\',");
+                    }
+                    con.cierraConexion();
+                } catch (Exception e) {
+                }
+            %>
                                 ];
                                 $("#descr").autocomplete({
                                     source: availableTags
                                 });
-                            });
-                            $(function() {
+
+                                /*
+                                 * Autocomplete para proveedores
+                                 */
                                 var availableTags = [
-    <%
-        try {
-            con.conectar();
-            ResultSet rset = con.consulta("select f_nomprov from provee_all");
-            while (rset.next()) {
-                out.println("\'" + rset.getString("f_nomprov") + "\',");
-            }
-            con.cierraConexion();
-        } catch (Exception e) {
-        }
-    %>
+            <%
+                try {
+                    con.conectar();
+                    ResultSet rset = con.consulta("select f_nomprov from provee_all");
+                    while (rset.next()) {
+                        out.println("\'" + rset.getString("f_nomprov") + "\',");
+                    }
+                    con.cierraConexion();
+                } catch (Exception e) {
+                }
+            %>
                                 ];
                                 $("#provee").autocomplete({
                                     source: availableTags
                                 });
                             });
+                            /**
+                             * Poner el seleccionado en el campo de texto
+                             */
                             function ubi() {
                                 var ubi = document.formulario1.ubica.value;
                                 document.formulario1.ubicacion.value = ubi;
@@ -346,6 +357,9 @@
                             }
 
 
+                            /**
+                             * Para saltar al presionar un enter
+                             */
                             function tabular(e, obj)
                             {
                                 tecla = (document.all) ? e.keyCode : e.which;
@@ -377,7 +391,9 @@
                                 }
                             }
 
-
+                            /**
+                             * Validar campos para la modificación 
+                             */
                             function validaCapturaVacios() {
                                 var mensaje = "\n";
                                 var RegExPattern = /^\d{1,2}\/\d{1,2}\/\d{4,4}$/;
@@ -451,10 +467,10 @@
                                 var sumarDias = parseInt(93);
                                 dtFechaActual.setDate(dtFechaActual.getDate() + sumarDias);
                                 var cadu = Caducidad.split('/');
-                                var cad = cadu[2] + '-' + cadu[1] + "-" + cadu[0]
+                                var cad = cadu[2] + '-' + cadu[1] + "-" + cadu[0];
 
                                 var fecfa = FecFab.split('/');
-                                var fecf = fecfa[2] + '-' + fecfa[1] + "-" + fecfa[0]
+                                var fecf = fecfa[2] + '-' + fecfa[1] + "-" + fecfa[0];
 
                                 if (Date.parse(dtFechaActual) > Date.parse(cad)) {
                                     alert("La fecha de caducidad no puede ser menor a tres meses próximos");
@@ -465,7 +481,7 @@
                                     return false;
                                 }
 
-                                if ((Caducidad.match(RegExPattern)) && (Caducidad != '')) {
+                                if ((Caducidad.match(RegExPattern)) && (Caducidad !== '')) {
                                 } else {
                                     alert("Caducidad Incorrecta, verifique.");
                                     return false;
@@ -476,7 +492,15 @@
                             }
 
 
-                            function validaCompra() {
+                            function validaCompra() {  /**
+                             * 
+                             * @type @exp;document@call;getElementById@pro;value
+                             * 
+                             * 
+                             * Valida que vayan todos los datos de la compra
+                             * 
+                             * En el caso del folio de remisión no se mantiene para que no sea tan facil el equivocarse o no lo ingresen a otros folio
+                             */
                                 var RegExPattern = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
                                 var folio_remi = document.formulario1.folio_remi.value;
                                 var orden = document.formulario1.orden.value;
@@ -581,4 +605,6 @@
                                 var totalPiezas = parseInt(PzsxCC) * parseInt(totalCajas);
                                 document.getElementById('Piezas').value = formatNumber.new(totalPiezas + parseInt(Resto));
                             }
-</script> 
+        </script> 
+    </body>
+</html>

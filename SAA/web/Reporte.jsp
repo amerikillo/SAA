@@ -11,6 +11,9 @@
 <%@ page import="java.sql.*" %> 
 <% /*Parametros para realizar la conexión*/
 
+    /**
+     * Ejemplo de impresión a PDF
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     if (sesion.getAttribute("nombre") != null) {

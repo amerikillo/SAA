@@ -15,6 +15,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * JSP para consulta de las entregas por parte de ISEM sólo funcional para
+     * 2014 ya que ellos nos pasaron la información
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator(',');
@@ -55,7 +59,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -337,7 +341,7 @@
                                 </div>
                             </div>
                             <hr/>
-                            
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <h4>Bodega</h4>
@@ -345,12 +349,16 @@
                                 <div class="col-sm-12">
                                     <select name="Bode_<%=rset.getString(1)%>" id="Bode_<%=rset.getString(1)%>" class="form-control">
                                         <option value="">--Seleccione--</option>
-                                        <option <% if (rset.getString("F_Bodega").equals("Industria Automotriz No. 18 interior 3-C")){out.println("Selected");} %>>Industria Automotriz No. 18 interior 3-C</option>
-                                        <option <% if (rset.getString("F_Bodega").equals("Avenida Emiliano Zapata Lote 2")){out.println("Selected");} %>>Avenida Emiliano Zapata Lote 2</option>
+                                        <option <% if (rset.getString("F_Bodega").equals("Industria Automotriz No. 18 interior 3-C")) {
+                                                out.println("Selected");
+                                            } %>>Industria Automotriz No. 18 interior 3-C</option>
+                                        <option <% if (rset.getString("F_Bodega").equals("Avenida Emiliano Zapata Lote 2")) {
+                                                out.println("Selected");
+                                            }%>>Avenida Emiliano Zapata Lote 2</option>
                                     </select>
                                 </div>
                             </div>
-                                
+
                             <div class="row">
                                 <div class="col-sm-12">
                                     <h4>Observaciones de Recalendarización</h4>
@@ -442,12 +450,12 @@
                                         alert("Ingrese las Observaciones");
                                         return false;
                                     }
-                                    
+
                                     if (correo === "") {
                                         alert("Ingrese correo");
                                         return false;
                                     }
-                                    
+
                                     if (bodega === "") {
                                         alert("Seleccione una Bodega");
                                         return false;

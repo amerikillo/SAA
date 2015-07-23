@@ -3,6 +3,9 @@
 <%@page import="conn.ConectionDB"%>
 <table border="1">
     <%
+        /**
+         * NO SE USA
+         */
         try {
 
             ConectionDB_Linux con = new ConectionDB_Linux();

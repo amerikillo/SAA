@@ -11,7 +11,9 @@
 <!DOCTYPE html>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%
-
+    /**
+     * Para seleccionar de donde se tomará el insumo en la facturación manual
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -57,7 +59,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <title>SIALSS</title>
     </head>
@@ -160,18 +162,32 @@
                     <td>Seleccionar</td>
                 </tr>
                 <%
+                    /**
+                     * Listado de insumos para seleccionar. NO se puede tomar de
+                     * la ubicación reja_devol
+                     */
                     try {
                         con.conectar();
                         ResultSet rset = con.consulta("select F_ClaPro, F_ClaLot, DATE_FORMAT(F_FecCad, '%d/%m/%Y'), F_Ubica, F_ExiLot, F_IdLote, F_FolLot from tb_lote where F_ClaPro = '" + ClaPro + "' and F_ExiLot!=0 and F_Ubica != 'REJA_DEVOL' order by F_FecCad asc  ");
                         while (rset.next()) {
                             int cant = 0, cantTemp = 0;
                             int cantLot = rset.getInt(5);
+                            /**
+                             * Se resta la cantidad apartada para el insumo en
+                             * específico
+                             */
                             ResultSet rset2 = con.consulta("select SUM(F_Cant) from tb_facttemp where F_IdLot = '" + rset.getString("F_IdLote") + "' and F_StsFact <5 ");
                             while (rset2.next()) {
                                 cantTemp = rset2.getInt(1);
                             }
 
                             cant = cantLot - cantTemp;
+
+                            /**
+                             * Se muestran los registros de donde se puede tomar
+                             * el insumo, no se puede tomar de uno que tenga
+                             * menos de lo que se solicita
+                             */
                 %>
                 <tr>
                     <td><%=rset.getString(1)%></td>
@@ -220,6 +236,9 @@
                                 }
 
                                 function validaCantidad(e) {
+                                    /**
+                                     * Aquí se compara el solicitado contra lo de almacén para ver que se exceda
+                                     */
                                     var cantidadSol = document.getElementById('Cantidad').value;
                                     document.getElementById('Cant' + e).value = cantidadSol;
                                     var cantidadAlm = document.getElementById('CantAlm_' + e).value;

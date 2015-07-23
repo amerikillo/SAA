@@ -35,6 +35,9 @@ public class InventarioCiclico extends HttpServlet {
         ConectionDB con = new ConectionDB();
         try {
             try {
+                /**
+                 * Para iniciar un nuevo inventario ciclico
+                 */
                 if (request.getParameter("accion").equals("nuevoInventario")) {
                     con.conectar();
                     con.insertar("delete from tb_loteinv");

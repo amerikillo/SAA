@@ -18,6 +18,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * Captura de Ordenes de compra por ISEM
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatter2 = new DecimalFormat("#,###,###.##");
     DecimalFormat formNoCom = new DecimalFormat("000");
@@ -119,7 +123,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 
@@ -265,6 +269,10 @@
                             int meses = 0;
                             int banNIM = 0;
                             try {
+                                /**
+                                 * Se obtiene la información de la clave a
+                                 * capturar
+                                 */
                                 con.conectar();
                                 ResultSet rset = con.consulta("select pp.F_CantMax, pp.F_CantMin, m.F_PrePro from tb_prodprov pp, tb_medica m where m.F_ClaPro = pp.F_ClaPro and pp.F_ClaPro = '" + claPro + "' and pp.F_ClaProve='" + proveedor + "' ");
                                 while (rset.next()) {
@@ -272,18 +280,27 @@
                                     int cantMax = 0;
                                     double totalClave = 0, remisionadoClave = 0, CPM = 0, CPCM2014 = 0, invMen2014 = 0;
                                     cantMax = rset.getInt(1);
-                                    ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_pedidoisem where F_Clave='" + claPro + "' and F_Provee='" + proveedor + "' and F_StsPed !='2'");
+                                    /**
+                                     * Pedido anteriormente
+                                     */
+                                    ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_pedidoisem where F_Clave='" + claPro + "' and F_Provee='" + proveedor + "' and F_StsPed !='2' and F_NoCompra like '%-2015%'");
                                     while (rset2.next()) {
                                         cantUsada = rset2.getInt(1);
                                     }
                                     int cantRestante = cantMax - cantUsada;
 
+                                    /**
+                                     * Saber a que catálogo pertenece. NO SE USA
+                                     */
                                     String catalogo = "2014";
                                     rset2 = con.consulta("select F_ClaPro from tb_cat2015 where F_ClaPro = '" + claPro + "'");
                                     while (rset2.next()) {
                                         catalogo = "2015";
                                     }
 
+                                    /**
+                                     * Si es de ambos catálogos
+                                     */
                                     rset2 = con.consulta("select t1.F_ClaPro from tb_cat2015 t1, tb_cat2014 t2 where t1.F_ClaPro = t2.F_ClaPro and t1.F_ClaPro = '" + claPro + "'");
                                     while (rset2.next()) {
                                         catalogo = "2014/2015";
@@ -299,10 +316,18 @@
                                     while (rset2.next()) {
                                         difd = rset2.getInt(1);
                                     }
+                                    /**
+                                     * Se calculan lo días de diferencia como en
+                                     * el ASF
+                                     */
                                     if (difd2 > difd) {
                                         difd = difd2;
                                     }
 
+                                    /**
+                                     * Calculo de existencias quitando lo
+                                     * apartado
+                                     */
                                     int F_ExiLot = 0;
                                     rset2 = con.consulta("select (F_ExiLot) as F_ExiLot from tb_lote where F_ClaPro = '" + claPro + "' and F_ExiLot!=0 union all select -F_Cant from clavefact where F_ClaPro = '" + claPro + "' and F_StsFact<5");
                                     while (rset2.next()) {
@@ -310,12 +335,18 @@
 
                                     }
 
+                                    /**
+                                     * Total del remisionado por clave
+                                     */
                                     ExiLot = F_ExiLot;
                                     rset2 = con.consulta("select SUM(F_CantSur) as F_CantSur from tb_factura where F_ClaPro = '" + claPro + "' and F_StsFact='A'  ");
                                     while (rset2.next()) {
                                         remisionadoClave = rset2.getDouble("F_CantSur");
                                     }
 
+                                    /**
+                                     * Calculo del ASF
+                                     */
                                     if (remisionadoClave > 0) {
                                         CPM = (remisionadoClave / difd) * 30;
                                         NIM = (double) F_ExiLot / CPM;
@@ -528,7 +559,10 @@
                              $("#Fecha1").datepicker();
                              $("#Fecha1").datepicker('option', {dateFormat: 'dd/mm/yy'});
                              });*/
-                            $(function () {
+                            $(function() {
+                                /**
+                                 * Para hacer tipo datepicker a los inputs
+                                 */
                                 $("#CadPro").datepicker();
                                 $("#CadPro").datepicker('option', {dateFormat: 'dd/mm/yy'});
                             });
@@ -536,6 +570,12 @@
 
 
                             function validaClaDes(boton) {
+                                /**
+                                 * 
+                                 * @type @exp;boton@pro;value
+                                 * 
+                                 * Valida el boton
+                                 */
                                 var btn = boton.value;
                                 var prove = document.getElementById('Proveedor').value;
                                 var fecha = document.getElementById('Fecha').value;
@@ -563,6 +603,12 @@
                             }
 
                             function validaCaptura() {
+                                /**
+                                 * 
+                                 * @type @exp;document@call;getElementById@pro;value
+                                 * 
+                                 * Valida las capturas
+                                 */
                                 var ClaPro = document.getElementById('ClaPro').value;
                                 var DesPro = document.getElementById('DesPro').value;
                                 var CanPro = document.getElementById('CanPro').value;
@@ -586,6 +632,9 @@
 
 
                             function SelectProve(form) {
+                                /**
+                                 * Para armar las claves dependiendo del proveedor seleccionado
+                                 */
             <%
                 try {
                     con.conectar();

@@ -6,7 +6,10 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="conn.ConectionDB_ReqDist"%>
 <%
-
+    /**
+     * Para exportar los requerimientos de los distribuidores desde la base de
+     * datos gnkl_reqisemcc.
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {

@@ -18,6 +18,9 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Americo
+ * 
+ * 
+ * Para loguearnos en Captura de Ordenes de compras
  */
 public class loginISEM extends HttpServlet {
 

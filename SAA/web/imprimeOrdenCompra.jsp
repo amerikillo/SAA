@@ -10,7 +10,8 @@
 <%@ page import="java.util.*" %> 
 <%@ page import="java.io.*" %> 
 <%@ page import="java.sql.*" %> 
-<% /*Parametros para realizar la conexión*/
+<%
+    /*Parametros para realizar la conexión*/
 
     HttpSession sesion = request.getSession();
     ConectionDB con = new ConectionDB();

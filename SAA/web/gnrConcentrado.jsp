@@ -8,6 +8,10 @@
 <%@page import="conn.ConectionDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+
+    /**
+     * Para generar excel del concentrado
+     */
     ConectionDB con = new ConectionDB();
     String cli = "", fec = "";
 

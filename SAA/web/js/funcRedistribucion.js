@@ -4,7 +4,14 @@
  * and open the template in the editor.
  */
 
-
+/**
+ * 
+ * @param {type} e
+ * @returns {undefined}
+ * 
+ * Función para eliminar un registro que aparta una clave en tb_facttemp
+ * tambien recarga los divs divApartados y divApartados1 de la pagina ingCantRedist para que se vean reflejados los cambios
+ */
 function eliminarFactTemp(e) {
     //return false;
     var confirma = confirm('Seguro de eliminar el registro?');
@@ -29,6 +36,9 @@ function eliminarFactTemp(e) {
     }
 }
 
+/**
+ * Para el autocopmlete de las ubicaciones
+ */
 $('#F_ClaUbi').keyup(function() {
     var descripcion = $('#F_ClaUbi').val();
     $('#F_ClaUbi').autocomplete({
@@ -46,6 +56,13 @@ $('#F_ClaUbi').keyup(function() {
     };
 });
 
+
+/**
+ * 
+ * @returns {Boolean}
+ * 
+ * Valida las redistribuciones de que los parametros sean válidos
+ */
 function validaRedist() {
     var CantAnt = document.getElementById('CantAnt').value;
     var CantMov = document.getElementById('CantMov').value;

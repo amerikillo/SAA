@@ -37,6 +37,9 @@ public class CompraAutomatica extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     *
+     *
+     * Funciones para la compra automática
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,6 +57,11 @@ public class CompraAutomatica extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             String mensaje = "";
+            /**
+             * Para obtener el folio de remisión y depositarlo en un JSON Se
+             * utiliza en el JSP de compraAuto2.jsp Nos dice si esa remisión con
+             * ese folio ya se ha utilizado.
+             */
             if (request.getParameter("accion").equals("buscarFolio")) {
                 con.conectar();
                 ResultSet rset = con.consulta("select F_FolRemi from tb_compra where F_FolRemi='" + request.getParameter("F_FolRemi") + "' and F_OrdCom='" + request.getParameter("F_OrdCom") + "' limit 1");
@@ -65,6 +73,10 @@ public class CompraAutomatica extends HttpServlet {
                 out.println(jsona);
                 System.out.println(jsona);
             }
+            /**
+             * Del botón 'Clave' nos almacena en sesion el valor de la clave
+             * incluyendo el número de compra y el folio de remisión
+             */
             if (request.getParameter("accion").equals("seleccionaClave")) {
                 String folio = request.getParameter("folio");
                 String folioRemi = request.getParameter("folioRemi");
@@ -77,9 +89,13 @@ public class CompraAutomatica extends HttpServlet {
                 sesion.setAttribute("claveSeleccionada", seleccionaClave);
                 response.sendRedirect("compraAuto2.jsp");
             }
+
+            /**
+             * Del botón 'CB' nos almacena en sesion el valor de la clave
+             * incluyendo el número de compra y el folio de remisión
+             */
             if (request.getParameter("accion").equals("CodigoBarras")) {
                 try {
-
                     String posCla = sesion.getAttribute("posClave").toString();
                     String folio = request.getParameter("folio");
                     String folioRemi = request.getParameter("folioRemi");
@@ -99,6 +115,10 @@ public class CompraAutomatica extends HttpServlet {
                     System.out.println(e.getMessage());
                 }
             }
+            /**
+             * Método para generar el siguiente código de barras para insumos
+             * que no cuentan con código (Mat Cur)
+             */
             if (request.getParameter("accion").equals("GeneraCodigo")) {
                 String CodBar = "";
                 try {
@@ -115,6 +135,9 @@ public class CompraAutomatica extends HttpServlet {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                /**
+                 * Se almacenan datos en variables de sesión
+                 */
                 try {
                     String posCla = sesion.getAttribute("posClave").toString();
                     String folio = request.getParameter("folio");
@@ -131,6 +154,10 @@ public class CompraAutomatica extends HttpServlet {
                     System.out.println(e.getMessage());
                 }
             }
+            /**
+             * Método que se utilizaba cuando estaba paginado el proceso, ya no
+             * se usan
+             */
             if (request.getParameter("accion").equals("verFolio")) {
                 try {
                     String posCla = sesion.getAttribute("posClave").toString();
@@ -149,6 +176,9 @@ public class CompraAutomatica extends HttpServlet {
                     System.out.println(e.getMessage());
                 }
             }
+            /**
+             * Para refrescar la pagina
+             */
             if (request.getParameter("accion").equals("refresh")) {
                 try {
                     String posCla = sesion.getAttribute("posClave").toString();
@@ -167,6 +197,9 @@ public class CompraAutomatica extends HttpServlet {
                     System.out.println(e.getMessage());
                 }
             }
+            /**
+             * Metodo para avanzar el paginado, (YA NO SE USA)
+             */
             if (request.getParameter("accion").equals("siguiente")) {
                 try {
                     String posCla = sesion.getAttribute("posClave").toString();
@@ -185,7 +218,10 @@ public class CompraAutomatica extends HttpServlet {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-            }
+            } 
+            /**
+             * Metodo para regresar el paginado, (YA NO SE USA)
+             */
             if (request.getParameter("accion").equals("anterior")) {
                 try {
                     String posCla = sesion.getAttribute("posClave").toString();
@@ -206,6 +242,9 @@ public class CompraAutomatica extends HttpServlet {
                 }
 
             }
+             /**
+             * Metodo para guardar el lote que se está ingresando
+             */
             if (request.getParameter("accion").equals("guardarLote")) {
 
                 try {
@@ -229,6 +268,12 @@ public class CompraAutomatica extends HttpServlet {
                 String cadu = df2.format(df3.parse(request.getParameter("cad")));
                 c1.setTime(df3.parse(request.getParameter("cad")));
 
+                /**
+                 * Para obtener costo y generar la fecha de fabricación
+                 * 
+                 * Tipo: 2504 Medicamento sin IVA tres años atras para fecha de fabricación
+                 * Tipo: 2505 Mat Cur con IVA5 años para atras para fecha de fabricación
+                 */
                 ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + Clave + "'");
                 while (rset_medica.next()) {
                     Tipo = rset_medica.getString("F_TipMed");
@@ -241,6 +286,10 @@ public class CompraAutomatica extends HttpServlet {
                         c1.add(Calendar.YEAR, -5);
                     }
                 }
+                
+                /**
+                 * Si la fecha de fabricación es mayor que la actual se resta a la actual 1 año
+                 */
                 Calendar FecAct = GregorianCalendar.getInstance();
                 FecAct.setTime(new Date());
                 while (c1.after(FecAct)) {
@@ -257,6 +306,11 @@ public class CompraAutomatica extends HttpServlet {
                 String TCajas = request.getParameter("TCajas");
                 TCajas = TCajas.replace(",", "");
 
+                /**
+                 * 
+                 * Obtención de las cantidades en cuanto cajas piezas y restos
+                 * se quitan las 'comas' ya que se envian en el parametro
+                 */
                 if (Tarimas.equals("")) {
                     Tarimas = "0";
                 }
@@ -289,23 +343,41 @@ public class CompraAutomatica extends HttpServlet {
                     Costo = Costo / 30;
                 }
                 Resto = Resto.replace(",", "");
+                
+                /**
+                 * Se calculan costos
+                 */
                 IVAPro = (Double.parseDouble(Piezas) * Costo) * IVA;
                 Monto = Double.parseDouble(Piezas) * Costo;
                 MontoIva = Monto + IVAPro;
+                
+                /**
+                 * Inserción en la tabla temporal 
+                 */
                 con.insertar("insert into tb_compratemp values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','" + Marca + "','" + claPro + "','" + CodBar + "','" + Tarimas + "','" + TCajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + claPro + "','" + sesion.getAttribute("nombre") + "','1')"
                 );
+                /**
+                 * Inserción en la tabla de registros de compras, esto para llevar un historico completo aunque se cancelen
+                 */
                 con.insertar("insert into tb_compraregistro values(0,CURDATE(),'" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "','" + Marca + "','" + claPro + "','" + CodBar + "','" + Tarimas + "','" + TCajas + "','" + Piezas + "','" + TarimasI + "','" + CajasxTI + "','" + Resto + "','" + Costo + "','" + IVAPro + "','" + MontoIva + "','" + F_Obser + "','" + request.getParameter("folioRemi") + "','" + request.getParameter("folio") + "','" + claPro + "','" + sesion.getAttribute("nombre") + "')"
                 );
                 try {
                     con.insertar("insert into tb_pzcaja values (0,'" + claPro + "','" + Marca + "','" + request.getParameter("PzsxCC") + "','" + Clave + "')");
                 } catch (Exception e) {
                 }
+                /**
+                 * Inserción en la tabla de tb_cb para tener todo el registro de insutmos: clave, lote, caducidad, fec fabricacion, marca referentes a ese lote
+                 */
                 con.insertar("insert into tb_cb values(0,'" + CodBar + "','" + Clave + "','" + lote + "','" + cadu + "','" + fecFab + "', '" + Marca + "')");
                 //con.insertar("update tb_pedidoisem set F_Recibido = '1' where F_Clave = '" + Clave + "' and  ");
 
                 con.cierraConexion();
                 response.sendRedirect("compraAuto2.jsp");
             }
+            
+            /**
+             * Se utilizaba para inserta en la compra manual, ya no se utiliza porque se termina validando por parte de auditorías
+             */
             if (request.getParameter("accion").equals("confirmar")) {
                 con.conectar();
                 try {
@@ -386,6 +458,7 @@ public class CompraAutomatica extends HttpServlet {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                
                 con.cierraConexion();
                 int F_IndCom = nuevo.Guardar((String) sesion.getAttribute("nombre"));
                 sesion.setAttribute("folioRemi", "");

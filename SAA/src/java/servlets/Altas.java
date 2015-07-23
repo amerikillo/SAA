@@ -36,6 +36,17 @@ public class Altas extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
+     * 
+     * 
+     */
+    
+    /**
+     * Esta Clase se utiliza para la captura de insumos de manera manual, por tanto en este proyecto no se utiliza
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,6 +59,9 @@ public class Altas extends HttpServlet {
         String ancla = "";
         try {
             if (request.getParameter("accion").equals("codigo")) {
+                /**
+                 * 
+                 */
                 try {
                     con.conectar();
                     ResultSet rset = con.consulta("SELECT F_Cb,COUNT(F_Cb) as cuenta FROM tb_cb WHERE F_Cb='" + request.getParameter("codigo") + "' GROUP BY F_Cb");
@@ -68,6 +82,9 @@ public class Altas extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("clave")) {
+                /**
+                 * Nos devuelve información del insumo a partir de su clave
+                 */
                 try {
                     con.conectar();
                     cb = request.getParameter("cb");
@@ -84,6 +101,9 @@ public class Altas extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("CodBar")) {
+                /**
+                 * Para geneara un nuevo código de barrass
+                 */
                 try {
                     con.conectar();
                     ResultSet rset = con.consulta("SELECT MAX(F_IdCb) AS F_IdCb FROM tb_gencb");
@@ -107,6 +127,9 @@ public class Altas extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("descripcion")) {
+                /**
+                 * Nos devuelve información del insumo a partir de su descripcioón
+                 */
                 try {
                     con.conectar();
                     cb = request.getParameter("cb");
@@ -123,6 +146,9 @@ public class Altas extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("refresh")) {
+                /**
+                 * Para recargar la pagina
+                 */
                 try {
                     ban1 = 1;
                     descr = request.getParameter("descripci");
@@ -133,24 +159,38 @@ public class Altas extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("capturar")) {
+                /**
+                 * Para capturar un insumo
+                 */
                 ban1 = 1;
                 String cla_pro = request.getParameter("clave1");
                 String Tipo = "", FechaC = "", FechaF = "";
                 double Costo = 0.0, IVA = 0.0, Monto = 0.0, IVAPro = 0.0, MontoIva = 0.0;
                 int fcdu = 0, anofec = 0;
                 String lot_pro = request.getParameter("Lote").toUpperCase();
+                
+                /**
+                 * Se maneja la fecha en 3 campos por lo que después de obtenerla se formatea
+                 */
                 String cdd = request.getParameter("cdd");
                 String cmm = request.getParameter("cmm");
                 String caa = request.getParameter("caa");
+                
                 String FeCad = caa + "-" + cmm + "-" + cdd;
 
                 try {
+                    /**
+                     * Se obtiene el total de cajas, piezas y tarimas
+                     */
                     int cajas = Integer.parseInt((request.getParameter("Cajas")).replace(",", ""));
                     int piezas = Integer.parseInt((request.getParameter("Piezas")).replace(",", ""));
                     int tarimas = Integer.parseInt((request.getParameter("Tarimas")).replace(",", ""));
 
                     con.conectar();
 
+                    /**
+                     * Tipo de medicamento para calcular fecha de fabricación y su iva
+                     */
                     ResultSet rset_medica = con.consulta("SELECT F_TipMed,F_Costo FROM tb_medica WHERE F_ClaPro='" + cla_pro + "'");
                     while (rset_medica.next()) {
                         Tipo = rset_medica.getString("F_TipMed");
@@ -165,13 +205,23 @@ public class Altas extends HttpServlet {
                             anofec = fcdu - 5;
                         }
                     }
+                    /**
+                     * Para esta clave en especifico se calcula el costo entre 30 ya que fué una modificación posterior al inicio del proyecto solicitada por ISEM
+                     */
                     if (cla_pro.equals("4186")) {
                         Costo = Costo / 30;
                     }
+                    
+                    /**
+                     * Calculo de Fecha de fabricación e importe
+                     */
                     String FeFab = anofec + "-" + cmm + "-" + cdd;
                     IVAPro = (piezas * Costo) * IVA;
                     Monto = piezas * Costo;
                     MontoIva = Monto + IVAPro;
+                    /**
+                     * Restos e incompletas
+                     */
                     String tarimaI = request.getParameter("TarimasI");
                     if (tarimaI.equals("")) {
                         tarimaI = "0";
@@ -184,8 +234,17 @@ public class Altas extends HttpServlet {
                     if (cajasI.equals("")) {
                         cajasI = "0";
                     }
+                    
+                    /**
+                     * Obtención de las observaciones
+                     * Se cacha en un tipo byte para que los acentos y las ñ no afecten en nada
+                     */
                     byte[] a = request.getParameter("Observaciones").getBytes("ISO-8859-1");
                     String Obser = (new String(a, "UTF-8")).toUpperCase();
+                    
+                    /**
+                     * Inserción en compra temporal
+                     */
                     con.insertar("insert into tb_compratemp values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + tarimas + "', '" + cajas + "', '" + piezas + "', '" + tarimaI + "','" + cajasI + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "','" + Obser + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "','1') ");
                     con.insertar("insert into tb_compraregistro values (0,curdate(),'" + cla_pro.toUpperCase() + "','" + lot_pro + "','" + FeCad + "','" + FeFab + "','" + request.getParameter("Marca") + "','" + request.getParameter("provee") + "','" + request.getParameter("cb") + "', '" + tarimas + "', '" + cajas + "', '" + piezas + "', '" + tarimaI + "','" + cajasI + "', '" + resto + "', '" + Costo + "', '" + IVAPro + "', '" + MontoIva + "','" + Obser + "' , '" + request.getParameter("folio_remi") + "', '" + request.getParameter("orden") + "','" + request.getParameter("provee") + "' ,'" + sesion.getAttribute("nombre") + "') ");
 
@@ -198,6 +257,11 @@ public class Altas extends HttpServlet {
                 }
             }
             if (request.getParameter("accion").equals("capturarcb")) {
+                
+                /**
+                 * Capturar con base del CB
+                 * no se utiliza
+                 */
                 ban1 = 1;
                 String cla_pro = request.getParameter("clave1");
                 String Tipo = "", FechaC = "", FechaF = "";

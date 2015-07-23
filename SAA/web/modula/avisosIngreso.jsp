@@ -15,7 +15,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Para ver los avisos de ingreso en módula y su status
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -40,7 +42,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <title>SIALSS</title>
     </head>
@@ -67,11 +69,19 @@
             <tbody>
                 <%
                     try {
+                        /**
+                         * Es una vista que se nos generó para ver los avisos de
+                         * ingreso que están pendientes en módula, en cuanto se
+                         * confirman desaparecen de la vista.
+                         */
                         conModula.conectar();
                         con.conectar();
                         ResultSet rset = conModula.consulta("select RIG_RIGA, RIG_ARTICOLO, RIG_SUB1, RIG_SUB2, RIG_DSCAD, RIG_REQ_NOTE, RIG_STARIORD, RIG_QTAR, RIG_QTAI, RIG_QTAE, RIG_ORDINE from VIEW_MODULA_AVVISOINGRESO");
                         while (rset.next()) {
                             String F_DesPro = "", estado = "";
+                            /**
+                             * Se obtiene la descripción y se describe el status
+                             */
                             ResultSet rset2 = con.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + rset.getString("RIG_ARTICOLO") + "'");
                             while (rset2.next()) {
                                 F_DesPro = rset2.getString("F_DesPro");
@@ -186,7 +196,7 @@
     <script src="../js/jquery.dataTables.js"></script>
     <script src="../js/dataTables.bootstrap.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#tablaMovMod').dataTable();
             $('#tablaMovMod2').dataTable();
         });

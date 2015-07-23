@@ -30,10 +30,17 @@
     ConectionDB con = new ConectionDB();
 
     String ClaPro = "", UbiAnt = "", UbiCb = "";
+
+    /**
+     * Se obtiene la ubicación de donde se redistribuirá el insumo, si viene
+     * desde la opción de insumo recién ingresado en automático será la
+     * ubicación NUEVA
+     */
     try {
         ClaPro = request.getParameter("ClaPro");
         UbiAnt = request.getParameter("UbiAnt");
         con.conectar();
+
         ResultSet rset = con.consulta("select l.F_Cb from tb_lote l, tb_ubica u where l.F_Ubica = u.F_ClaUbi and F_ClaPro= '" + ClaPro + "' and u.F_Cb='" + UbiAnt + "'");
         while (rset.next()) {
             ClaPro = rset.getString("F_Cb");
@@ -51,6 +58,12 @@
 
     try {
         con.conectar();
+        /**
+         * Se busca con base en la clave de la ubicación, si desvuelve algo
+         * quiere decir que era clave en caso contrario el CB de la ubicación en
+         * cualquier caso no devuelve el CB de la ubicación
+         *
+         */
         ResultSet rset = con.consulta("select F_Cb from tb_ubica where F_ClaUbi='" + UbiAnt + "'");
         while (rset.next()) {
             UbiCb = rset.getString("F_Cb");
@@ -70,7 +83,7 @@
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SIALSS</title>
@@ -78,7 +91,7 @@
     <body>
         <div class="container">
             <h1>SIALSS</h1>
-            
+
             <%@include file="../jspf/menuPrincipal.jspf"%>
 
             <h4>Redistribución</h4>
@@ -87,6 +100,9 @@
                 <button class="btn btn-success" type="submit" name="UbiAnt" value="PorUbicar">Por Ubicar</button>
             </form>
             <%
+                /**
+                 * Para imprimir el nombre de la ubicación con base en el CB
+                 */
                 try {
                     con.conectar();
                     ResultSet rset = con.consulta("select F_DesUbi from tb_ubica where F_Cb= '" + UbiAnt + "' ");
@@ -119,7 +135,13 @@
             <h4>Insumos Médicos</h4>
             <%
                 try {
+
                     if (!UbiAnt.equals("PorUbicar")) {
+                        /**
+                         * Si la orden es diferente a 'PorUbicar' nos mostrará
+                         * todas las claves o la clave seleccionada que está en
+                         * la ubicación previamente buscada
+                         */
                         ResultSet rset = null;
                         con.conectar();
                         if (!ClaPro.equals("")) {
@@ -148,6 +170,9 @@
             <form action="ingCantRedist.jsp" method="post">
                 <input class="hidden" name="UbiAnt" value="<%=UbiAnt%>" />
                 <input class="hidden" name="ClaPro" value="<%=ClaPro%>" />
+                <!--
+                Desde aquí se mandan los parámetros al jsp ingCantRedist.jsp para la redistribución
+                -->
                 <input value="<%=rset.getString("F_IdLote")%>" class="hidden" name="idLote" />
                 <button class="btn btn-block btn-success" type="submit">Seleccionar</button>
             </form>
@@ -155,7 +180,9 @@
             <%
                 }
             } else {
-
+                /**
+                 * Se muestran todos los registros con ubicación de nueva
+                 */
                 System.out.println("3");
                 con.conectar();
                 ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and u.F_Cb = '1'  ");
@@ -193,14 +220,14 @@
             %>
         </div>
 
-    </body>
-    <!-- 
-================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <!-- 
+    ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="../js/bootstrap-datepicker.js"></script>
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/bootstrap-datepicker.js"></script>
+    </body>
 </html>

@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Cambios físicos
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -37,7 +40,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
         <title>SIALSS</title>
@@ -68,6 +71,9 @@
                         </tr>
 
                         <%                        try {
+                                /**
+                                 * Se muestran aquellos insums que se
+                                 */
                                 con.conectar();
                                 ResultSet rset = con.consulta("select l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS F_FecCad, l.F_ExiLot, l.F_Ubica, l.F_IdLote from tb_lote l, tb_medica m where l.F_ClaPro = m.F_ClaPro and l.F_Ubica='REJA_DEVOL' and l.F_ExiLot!=0");
                                 while (rset.next()) {
@@ -81,6 +87,10 @@
                             <td>
                                 <%
                                     if (tipo.equals("3")) {
+                                        /**
+                                         * Se crea el llamado a la ventana para
+                                         * generar el cambio físico
+                                         */
                                 %>
 
                                 <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdLote")%>"><span class="glyphicon glyphicon-remove-circle"></span></a></a>
@@ -121,6 +131,10 @@
                 try {
                     ResultSet rset = con.consulta("select l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad,'%d/%m/%Y') AS F_FecCad, l.F_ExiLot, l.F_Ubica, l.F_IdLote from tb_lote l, tb_medica m where l.F_ClaPro = m.F_ClaPro and l.F_Ubica='REJA_DEVOL' and l.F_ExiLot!=0");
                     while (rset.next()) {
+
+                        /**
+                         * Creación de las venatnas
+                         */
         %>
         <div class="modal fade" id="Devolucion<%=rset.getString("F_IdLote")%>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -213,18 +227,20 @@
         <!--
         /Modal
         -->
-    </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="js/jquery.dataTables.js"></script>
-    <script src="js/dataTables.bootstrap.js"></script>
-    <script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
                                     function validaDevolucion(e) {
+                                        /**
+                                         * Validacion de que la devolución esté correcta la información
+                                         */
                                         var id = e;
 
                                         if (document.getElementById('Obser' + id).value === "" || document.getElementById('Lote' + id).value === "" || document.getElementById('Cadu' + id).value === "") {
@@ -235,6 +251,9 @@
 
 
                                     function validaContra(elemento) {
+                                        /**
+                                         * Valida la contraseña
+                                         */
                                         //alert(elemento);
                                         var pass = document.getElementById(elemento).value;
                                         var id = elemento.split("ContraDevo");
@@ -247,6 +266,7 @@
                                             //$(id[1]).prop("disabled", true);
                                         }
                                     }
-    </script>
+        </script>
+    </body>
 </html>
 

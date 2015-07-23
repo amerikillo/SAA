@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Para aplicar devoluciones a las facturas generadas
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatterDecimal = new DecimalFormat("#,###,##0.00");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -33,6 +36,9 @@
     ConectionDB con = new ConectionDB();
 
     String fol_gnkl = "", fol_remi = "", orden_compra = "", fecha = "";
+    /**
+     * Obtención de los parámetros
+     */
     try {
         if (request.getParameter("accion").equals("buscar")) {
             fol_gnkl = request.getParameter("fol_gnkl");
@@ -57,7 +63,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -74,6 +80,9 @@
                 <h3>Devoluciones</h3>
                 <h4>Folio de Factura: <%=request.getParameter("fol_gnkl")%></h4>
                 <%
+                    /**
+                     * Se muestran los datos generales de la factura
+                     */
                     try {
                         con.conectar();
                         try {
@@ -137,6 +146,9 @@
                                     try {
                                         con.conectar();
                                         try {
+                                            /**
+                                             * Detalle de la factura
+                                             */
                                             ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_IdFact, F.F_StsFact, F.F_Obs FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
                                             while (rset.next()) {
                                 %>
@@ -154,7 +166,9 @@
                                         <%
                                             if (rset.getString("F_StsFact").equals("A")) {
                                         %>
-
+                                        <!--
+                                        Manda llamar al modal referente al id
+                                        -->
                                         <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#Devolucion<%=rset.getString("F_IdFact")%>"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                         <input class="checkbox-inline" value="<%=rset.getString("F_IdFact")%>" onchange="Pruebachk(this,<%=request.getParameter("fol_gnkl")%>)" type="checkbox" id="chkDev" name="chkDev">
                                         <%
@@ -241,6 +255,9 @@
                     ResultSet rset = con.consulta("SELECT U.F_NomCli,DATE_FORMAT(F.F_FecEnt,'%d/%m/%Y') AS F_FecEnt,F.F_ClaDoc,F.F_ClaPro,M.F_DesPro,L.F_ClaLot,DATE_FORMAT(L.F_FecCad,'%d/%m/%Y') AS F_FecCad,F.F_CantReq,F.F_CantSur,F.F_Costo,F.F_Monto, F.F_Ubicacion, F.F_IdFact FROM tb_factura F INNER JOIN tb_medica M ON F.F_ClaPro=M.F_ClaPro INNER JOIN tb_lote L ON F.F_Lote=L.F_FolLot INNER JOIN tb_uniatn U ON F.F_ClaCli=U.F_ClaCli WHERE F.F_ClaDoc='" + request.getParameter("fol_gnkl") + "' GROUP BY F.F_IdFact");
                     while (rset.next()) {
         %>
+        <!--
+        Generación de cada uno de los modales que se mandaran llamar
+        -->
         <div class="modal fade" id="Devolucion<%=rset.getString("F_IdFact")%>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
             <div class="modal-dialog">
                 <form action="FacturacionManual">
@@ -337,6 +354,10 @@
             });
 
             function validaDevolucion(e) {
+                /**
+                 * 
+                 * Para valida que se llenen los datos necesarios
+                 */
                 var id = e;
                 if (document.getElementById('Obser' + id).value === "") {
                     alert("Ingrese las observaciones de la devolución");
@@ -345,6 +366,9 @@
             }
 
             function validaContra(elemento) {
+                /**
+                 * Valida la contraseña
+                 */
                 //alert(elemento);
                 var pass = document.getElementById(elemento).value;
                 var id = elemento.split("ContraDevo");
@@ -358,6 +382,9 @@
                 }
             }
             $('#ContraDevoM').keyup(function() {
+                /*
+                 * Valida contraseña 
+                 */
                 if ($('#ContraDevoM').val() === "rosalino") {
                     $('#devM').removeClass("disabled");
                 } else {
@@ -365,6 +392,9 @@
                 }
             });
             $('#devM').click(function() {
+                /**
+                 * Aplicar devoluciones multiples
+                 */
                 if (document.getElementById('ObserM').value === "") {
                     alert("Ingrese las observaciones de la devolución");
                     return false;
@@ -391,6 +421,9 @@
                 });
             });
             function Pruebachk(chk, folio) {
+                /**
+                 * Seleccionar multiples facturas a devolver
+                 */
                 if (chk.checked === true) {
                     var id = chk.value;
                     var dir = "DevolucionMultiple";

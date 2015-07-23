@@ -12,7 +12,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Generar marbetes manuales
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -26,6 +28,9 @@
     String ClaPro = "", CB = "";
     String DesPro = "";
 
+    /**
+     * Se obtiene la clave y la descripción con base en el CB del insumo
+     */
     try {
         con.conectar();
         CB = request.getParameter("CB");
@@ -56,7 +61,6 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
         <!---->
         <title>SIALSS</title>
     </head>
@@ -94,6 +98,9 @@
                                     <option value="">Seleccione</option>
                                     <%
                                         try {
+                                            /**
+                                             * Listado de las posibles claves
+                                             */
                                             con.conectar();
                                             if (ClaPro != null) {
                                                 ResultSet rset = con.consulta("select F_Cb from tb_lote where F_ClaPro = '" + ClaPro + "' group by F_Cb");
@@ -143,6 +150,9 @@
                                         try {
                                             con.conectar();
                                             if (ClaPro != null) {
+                                                /**
+                                                 * Listado de los posibles lotes
+                                                 */
                                                 ResultSet rset = con.consulta("select F_ClaLot from tb_lote where F_Cb = '" + CB + "' group by F_ClaLot");
                                                 while (rset.next()) {
                                     %>
@@ -168,6 +178,9 @@
                                     <%                                    try {
                                             con.conectar();
                                             if (ClaPro != null) {
+                                                /**
+                                                 * Listado de las caducidades
+                                                 */
                                                 ResultSet rset = con.consulta("select DATE_FORMAT(F_FecCad, '%d/%m/%Y') from tb_lote where F_Cb = '" + CB + "' group by F_FecCad");
                                                 while (rset.next()) {
                                     %>
@@ -211,15 +224,17 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script>
+                                    /**
+                                     * Funciones para que se coloque el valor seleccionado en el textfiels
+                                     */
                                     function cambiaLote(e) {
                                         var lote = e.value;
                                         document.getElementById('LotPro').value = lote;
@@ -232,6 +247,7 @@
                                         var cb = e.value;
                                         document.getElementById('CB').value = cb;
                                     }
-    </script>
+        </script>
+    </body>
 </html>
 

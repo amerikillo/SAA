@@ -14,6 +14,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * Semaforiación por caducidades de insumos
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatter2 = new DecimalFormat("#,###,###.##");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -44,7 +48,7 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -58,77 +62,14 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>SISTEMA INTEGRAL DE ADMINISTRACIÓN Y LOGÍSTICA PARA SERVICIOS DE SALUD</h4>
-            <div class="navbar navbar-default">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="indexMain.jsp">Inicio</a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Men&uacute; de Opciones <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="indexMain.jsp">Men&uacute; Principal</a></li>
-                                    <li><a href="semaforo.jsp">Semaforización</a></li>
-                                    <li><a href="entregas.jsp">Entrega a Proveedores</a></li>
-                                    <li><a href="exist.jsp">Existencias en CEDIS</a></li>
-                                    <li><a href="Entrega.jsp">Fecha de Recibo en CEDIS</a></li>
-                                    <li><a href="historialOC.jsp">Historial OC</a></li>
-                                    <li><a href="factura.jsp">Ingresos en Almac&eacute;n</a></li>
-                                    <li><a href="ordenesCompra.jsp">Órdenes de Compra</a></li>
-                                    <!--li><a href="rep.jsp">Reporteador</a></li>
-                                    <!--li><a href="requerimiento.jsp">Carga de Requerimiento</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="medicamento.jsp">Catálogo de Medicamento</a></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="marcas.jsp">Catálogo de Marcas</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Compras</a></li>
-                                    <li><a href="reimp_factura.jsp">Reimpresión de Facturas</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="http://192.168.2.170:8081/UbicacionesConsolidado" target="_blank">Ubicaciones</a></li-->
-                                </ul>
-                            </li>
-                            <!--li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">ADASU<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="captura.jsp">Captura de Insumos</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="catalogo.jsp">Catálogo de Proveedores</a></li>
-                                    <li><a href="reimpresion.jsp">Reimpresión de Docs</a></li>
-                                </ul>
-                            </li-->
-                            <%
-                                if (usua.equals("root")) {
-                            %>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Usuario<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="usuarios/usuario_nuevo.jsp">Nuevo Usuario</a></li>
-                                    <li><a href="usuarios/edita_usuario.jsp">Edicion de Usuarios</a></li>
-                                </ul>
-                            </li>
-                            <%                                }
-                            %>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="indexMain.jsp"><span class="glyphicon glyphicon-user"></span> <%=usua%></a></li>
-                            <li class="active"><a href="index.jsp"><span class="glyphicon glyphicon-log-out"></span></a></li>
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
+
         </div>
         <div class="container">
             <form action="semaforo.jsp" method="post">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Semaforización
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--input type="text" name="clave" id="clave" placeholder="Clave" > <button class="btn btn-sm btn-success" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button-->&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="1" onchange="this.form.submit();" /> Menor a 9 Meses&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="2" onchange="this.form.submit();" /> Entre 9 y 12 Meses&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="3" onchange="this.form.submit();" />Mayor a 12 Meses <!--a href="gnr.jsp">Descargar<label class="glyphicon glyphicon-download"></label></a-->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="semaforo.jsp">Actualizar<label class="glyphicon glyphicon-refresh"></label></a></h3>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--input type="text" name="clave" id="clave" placeholder="Clave" > <button class="btn btn-sm btn-success" id="btn-buscar2">BUSCAR&nbsp;<label class="glyphicon glyphicon-search"></label></button-->&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="1" onchange="this.form.submit();" /> Menor a 9 Meses&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="2" onchange="this.form.submit();" /> Entre 9 y 12 Meses&nbsp;&nbsp;&nbsp;<input type="checkbox" name="kardex" id="kardex" value="3" onchange="this.form.submit();" />Mayor a 12 Meses <a href="gnrSemaforo.jsp">Descargar<label class="glyphicon glyphicon-download"></label></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="semaforo.jsp">Actualizar<label class="glyphicon glyphicon-refresh"></label></a></h3>
                     </div>
 
                     <div class="panel-footer">
@@ -150,7 +91,11 @@
                                     try {
                                         con.conectar();
                                         Kardex = request.getParameter("kardex");
-
+                                        /**
+                                         * Busqueda dependiendo del parametro
+                                         * seleccionado, menor que 9 meses,
+                                         * entre 9 y 12 y mas de 12
+                                         */
                                         if (Kardex.equals("1")) {
                                             rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, SUM(F_ExiLot), (m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo FROM tb_lote l, tb_medica m, tb_ubica u WHERE m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 AND F_FecCad < DATE_ADD(CURDATE(), INTERVAL 9 MONTH) GROUP BY l.F_ClaPro,l.F_ClaLot,l.F_FecCad");
                                         } else if (Kardex.equals("2")) {
@@ -187,6 +132,9 @@
                                 </tr>
                                 <%
                                         }
+                                        /**
+                                         * Calculo de la sumatoria
+                                         */
                                         if (Kardex.equals("1")) {
                                             rset2 = con.consulta("SELECT SUM(F_ExiLot) as suma,sum((m.F_Costo*l.F_ExiLot)) as monto, l.F_ClaPro FROM tb_lote l INNER JOIN tb_medica m on l.F_ClaPro=m.F_ClaPro where F_FecCad < DATE_ADD(CURDATE(), INTERVAL 9 MONTH) group by l.F_ClaPro");
                                         } else if (Kardex.equals("2")) {
@@ -223,9 +171,6 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-</html>
-
 
 <!-- 
 ================================================== -->
@@ -368,3 +313,6 @@
 </script> 
 
 
+
+    </body>
+</html>

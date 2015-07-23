@@ -13,6 +13,10 @@
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
 
+    /**
+     * Para actualizar precios de compras con base en nuevos precios de
+     * catálogo, no se usa
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -23,10 +27,17 @@
     ConectionDB_Linux con = new ConectionDB_Linux();
 
     try {
+
+        /**
+         * Recorrido por toda la tabla de compra
+         */
         con.conectar();
         ResultSet rset = con.consulta("select F_ClaPro, F_IdCom, F_CanCom from tb_compra");
         while (rset.next()) {
             double costo = 0.0;
+            /**
+             * Obtención del costo según catálogo
+             */
             ResultSet rset2 = con.consulta("select F_Costo from tb_medica where F_ClaPro ='" + rset.getString("F_ClaPro") + "'");
             while (rset2.next()) {
                 costo = rset2.getDouble("F_Costo");
@@ -36,6 +47,9 @@
             double impuesto = 0.0;
             double total = 0.0;
 
+            /**
+             * Calculo del importe
+             */
             if (F_ClaPro < 9999) {
                 total = cantidad * costo;
             } else {
@@ -43,6 +57,9 @@
                 impuesto = (cantidad * costo) * 0.16;
             }
 
+            /**
+             * Actualización
+             */
             con.insertar("update tb_compra set F_Costo= '" + costo + "', F_ImpTo = '" + impuesto + "', F_ComTot = '" + total + "' where F_IdCom = '" + rset.getString("F_IdCom") + "' ");
         }
         con.cierraConexion();

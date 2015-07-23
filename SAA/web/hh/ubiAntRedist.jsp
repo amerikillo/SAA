@@ -13,6 +13,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Donde se ingresa la ubicación en donde se buscará el insumo, de aquí se
+     * va a leerInsRedist.jsp
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -36,7 +40,7 @@
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link href="../css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <!---->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SIALSS</title>
@@ -44,7 +48,7 @@
     <body>
         <div class="container">
             <h1>SIALSS</h1>
-            
+
             <%@include file="../jspf/menuPrincipal.jspf"%>
             <h4>Redistribución</h4>
             <a class="btn btn-default" href="insumoNuevoRedist.jsp">Regresar</a>
@@ -64,15 +68,15 @@
             </form>
         </div>
 
-    </body>
-    <!-- 
-================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <!-- 
+    ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
 
-    <script src="../js/jquery-1.9.1.js"></script>
-    <script src="../js/bootstrap.js"></script>
-    <script src="../js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="../js/bootstrap-datepicker.js"></script>
-    <script src="../js/funcRedistribucion.js"></script>
+        <script src="../js/jquery-1.9.1.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="../js/bootstrap-datepicker.js"></script>
+        <script src="../js/funcRedistribucion.js"></script>
+    </body>
 </html>

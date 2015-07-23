@@ -1,7 +1,9 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="conn.ConectionDB"%>
 <%
-
+    /**
+     * PARA EXPORTAR A EXCEL.
+     */
     response.setContentType("application/vnd.ms-excel");
     response.setHeader("Content-Disposition", "attachment;filename=\"ComparativaOCClave.xls\"");
 %>
@@ -21,15 +23,21 @@
             ConectionDB con = new ConectionDB();
 
             con.conectar();
+            /**
+             * SE BUSCAN LAS ORDENES DE COMPRA Y LO QUE TENÍA QUE LLEGAR POR  CLAVE
+             */
             ResultSet rset = con.consulta("SELECT o.F_NoCompra, p.F_NomPro, DATE_FORMAT(o.F_Fecha, '%d/%m/%Y') AS F_Fecha, o.F_Clave, SUM(o.F_Cant), DATE_FORMAT(o.F_FecSur, '%d/%m/%Y') AS F_FecSur, o.F_StsPed FROM tb_pedidoisem o, tb_proveedor p WHERE o.F_Provee = F_ClaProve AND F_StsPed = 1 GROUP BY o.F_Clave, o.F_NoCompra ORDER BY o.F_NoCompra;");
             while (rset.next()) {
                 int cantRecbida = 0;
+                /**
+                 * SE BUSCA CUANTO LLEGO DE ESA CLAVE REFERIDA A LA ORDEN DE COMPRA
+                 */
                 ResultSet rset2 = con.consulta("SELECT F_OrdCom, F_ClaPro, SUM(F_CanCom) FROM tb_compra where F_OrdCom = '" + rset.getString("F_NoCompra") + "' and F_ClaPro = '" + rset.getString("F_Clave") + "'  GROUP BY F_ClaPro ;");
                 while (rset2.next()) {
                     cantRecbida = rset2.getInt(3);
                 }
-                
-                int recibir = rset.getInt(5)-cantRecbida;
+
+                int recibir = rset.getInt(5) - cantRecbida;
     %>
     <tr>
         <td><%=rset.getString(1)%></td>

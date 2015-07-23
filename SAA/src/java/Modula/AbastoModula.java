@@ -29,16 +29,26 @@ public class AbastoModula {
             con.conectar();
             conModula.conectar();
             try {
+                /**
+                 * Para insertar los pedidos de deposito en módula
+                 *
+                 * Primero se eliminan los avisos previos, comenzando por
+                 * cabecera y despues detallse
+                 */
                 conModula.ejecutar("delete from IMP_ORDINI_RIGHE where RIG_ORDINE='" + F_OrdCom + "-" + F_FolRemi + "'");
                 conModula.ejecutar("delete from IMP_ORDINI where ORD_ORDINE='" + F_OrdCom + "-" + F_FolRemi + "'");
                 ResultSet rset = con.consulta("select F_FecApl from tb_compratemp where F_OrdCom = '" + F_OrdCom + "' and F_FolRemi = '" + F_FolRemi + "' group by F_OrdCom, F_FolRemi");
                 while (rset.next()) {
+                    /**
+                     * Se inserta cabecera del pedido de depósito
+                     */
                     conModula.ejecutar("insert into IMP_ORDINI values ('" + F_OrdCom + "-" + F_FolRemi + "','A','','" + df4.format(df3.parse(rset.getString("F_FecApl"))) + "','V','','1')");
                 }
                 rset = con.consulta("select F_FecApl, F_FolRemi, F_OrdCom, F_ClaPro, F_Lote, F_FecCad, F_Cb, F_Pz from tb_compratemp where F_OrdCom = '" + F_OrdCom + "' and F_FolRemi = '" + F_FolRemi + "'");
                 while (rset.next()) {
-                    /*
-                     * La 'A' es de inserción
+                    /**
+                     * Se inserta el detalle del pedido. 
+                     * La 'A' es de inserción.
                      */
                     conModula.ejecutar("insert into IMP_ORDINI_RIGHE values('" + F_OrdCom + "-" + F_FolRemi + "','','" + rset.getString("F_ClaPro") + "','" + rset.getString("F_Lote") + "','1','" + rset.getString("F_Pz") + "','" + rset.getString("F_Cb") + "','" + df.format(df3.parse(rset.getString("F_FecCad"))) + "','')");
                     //con.insertar("update tb_factttemp set F_StsFact='0' where F_Id='" + rset.getString("F_Id") + "'");

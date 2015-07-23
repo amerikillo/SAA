@@ -20,6 +20,9 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Americo
+ * 
+ * 
+ * Otra clase que no se utiliza
  */
 public class Altas_handheld extends HttpServlet {
 

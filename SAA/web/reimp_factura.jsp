@@ -13,6 +13,9 @@
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
 
+    /**
+     * Administración de las remisiones elaboradas
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     String tipo = "";
@@ -49,7 +52,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -111,6 +114,13 @@
                             </thead>
                             <tbody>
                                 <%
+                                    /**
+                                     * Listado de las remisiones
+                                     *
+                                     * el where es para que se definan los
+                                     * parametros de fechas de busqueda de las
+                                     * remisiones
+                                     */
                                     String where = "";
                                     try {
                                         if (session.getAttribute("whereRF") == null) {
@@ -148,6 +158,10 @@
                                     </td>
                                     <td>
                                         <%
+                                            /**
+                                             * Para que se muestre el boton de
+                                             * devoluciones
+                                             */
                                             if (tipo.equals("7") || tipo.equals("8")) {
                                         %>
                                         <form action="devolucionesFacturas.jsp" method="post">
@@ -160,6 +174,10 @@
                                     </td>
                                     <%
                                         if (usua.equals("oscar") || tipo.equals("8")) {
+                                            /**
+                                             * Para aplicar la reintegración de
+                                             * las devoluciones
+                                             */
                                     %>
                                     <td>
                                         <%

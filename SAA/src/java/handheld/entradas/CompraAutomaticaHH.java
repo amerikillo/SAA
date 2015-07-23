@@ -25,6 +25,10 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Americo
+ * 
+ * 
+ * Clase que tiene las mismas funciones que CompraAutomática, sin embargo se utiliza para las HandHelds
+ * 
  */
 public class CompraAutomaticaHH extends HttpServlet {
 

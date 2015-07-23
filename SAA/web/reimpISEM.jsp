@@ -12,8 +12,12 @@
 <%@ page import="java.sql.*" %> 
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
-<% /*Parametros para realizar la conexión*/
+<%
+    /*Parametros para realizar la conexión*/
 
+    /**
+     * Reimpresion de marbetes para isem, es para auditorias
+     */
     HttpSession sesion = request.getSession();
     ConectionDB con = new ConectionDB();
     String usua = "";

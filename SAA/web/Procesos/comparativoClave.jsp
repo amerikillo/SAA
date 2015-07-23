@@ -10,6 +10,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%
+
+    /**
+     * COMPARATIVO DE ENTRADAS CONTRA SALIDAS POR CLAVE
+     */
     ConectionDB con = new ConectionDB();
     //response.setContentType("application/vnd.ms-excel");
     //response.setHeader("Content-Disposition", "attachment;filename=\"Existencias_" + df2.format(new Date()) + "_.xls\"");
@@ -21,7 +25,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.css">
 
         <!--<link href="//cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>-->
@@ -44,26 +48,43 @@
             <tbody>
                 <%
                     con.conectar();
+                    /**
+                     * RECORRIDO POR TODAS LAS CLAVES Y OBTENER SU EXISTENCIA
+                     */
                     ResultSet rset = con.consulta("select F_ClaPro, SUM(F_ExiLot) as F_ExiLot from tb_lote group by F_ClaPro");
                     while (rset.next()) {
                         int cantComprada = 0;
                         int cantSurtida = 0;
                         int cantDevuelta = 0;
                         int existencia = rset.getInt("F_ExiLot");
+
+                        /**
+                         * Obtención de lo comprado
+                         */
                         ResultSet rset2 = con.consulta("select SUM(F_CanCom) as F_CanCom from tb_compra where F_ClaPro = '" + rset.getString("F_ClaPro") + "' group by F_ClaPro");
                         while (rset2.next()) {
                             cantComprada = rset2.getInt("F_CanCom");
                         }
 
+                        /**
+                         * OBTENCION DE LO SURTIDO
+                         */
                         rset2 = con.consulta("select F_ClaPro,sum(F_CantSur) as F_CantSur from tb_factura where F_ClaPro = '" + rset.getString("F_ClaPro") + "' GROUP BY F_ClaPro;");
                         while (rset2.next()) {
                             cantSurtida = rset2.getInt("F_CantSur");
                         }
 
+                        /**
+                         * Obtención de las devoluciones
+                         */
                         rset2 = con.consulta("select F_ClaPro,sum(F_CantSur) as F_CantSur from tb_factura where F_StsFact='C' and F_ClaPro = '" + rset.getString("F_ClaPro") + "' GROUP BY F_ClaPro;");
                         while (rset2.next()) {
                             cantDevuelta = rset2.getInt("F_CantSur");
                         }
+
+                        /**
+                         * Calculo de de diferencias
+                         */
                         int dif1 = ((existencia) - (cantComprada - cantSurtida));
                         int dif2 = dif1 - cantDevuelta;
 
@@ -96,7 +117,7 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script type="text/javascript">
-            $(document).ready(function () {
+            $(document).ready(function() {
                 $("#diferencias").dataTable();
             });
         </script>

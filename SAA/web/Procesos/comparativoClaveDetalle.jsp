@@ -10,6 +10,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%
+    /**
+     * Detalle de comparativa
+     */
     ConectionDB con = new ConectionDB();
     //response.setContentType("application/vnd.ms-excel");
     //response.setHeader("Content-Disposition", "attachment;filename=\"Existencias_" + df2.format(new Date()) + "_.xls\"");
@@ -23,7 +26,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.css">
 
         <!--<link href="//cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>-->
@@ -31,6 +34,9 @@
     </head>
     <body class="container">
         <%
+            /**
+             * Recorrido por los lotes de la clave
+             */
             ResultSet rset3 = con.consulta("select F_ClaLot, F_FecCad, F_FolLot, F_ClaPro from tb_lote where F_ClaPro = '" + request.getParameter("F_ClaPro") + "' group by F_FolLot");
             while (rset3.next()) {
         %>
@@ -53,22 +59,35 @@
             </thead>
             <tbody>
                 <%
+                    /**
+                     * Obtención de exitencia por lote
+                     */
                     ResultSet rset = con.consulta("select F_ClaPro, SUM(F_ExiLot) as F_ExiLot from tb_lote where  F_ClaPro = '" + rset3.getString("F_ClaPro") + "' and F_FolLot='" + rset3.getString("F_FolLot") + "' group by F_FolLot");
                     while (rset.next()) {
                         int cantComprada = 0;
                         int cantSurtida = 0;
                         int cantDevuelta = 0;
                         int existencia = rset.getInt("F_ExiLot");
+
+                        /**
+                         * Cantidad Comprada
+                         */
                         ResultSet rset2 = con.consulta("select SUM(F_CanCom) as F_CanCom from tb_compra where F_ClaPro = '" + rset3.getString("F_ClaPro") + "' and F_Lote='" + rset3.getString("F_FolLot") + "' group by F_ClaPro");
                         while (rset2.next()) {
                             cantComprada = rset2.getInt("F_CanCom");
                         }
 
+                        /**
+                         * Cantidad surtida
+                         */
                         rset2 = con.consulta("select F_ClaPro,sum(F_CantSur) as F_CantSur from tb_factura where F_ClaPro = '" + rset3.getString("F_ClaPro") + "' and F_Lote='" + rset3.getString("F_FolLot") + "'  GROUP BY F_ClaPro;");
                         while (rset2.next()) {
                             cantSurtida = rset2.getInt("F_CantSur");
                         }
 
+                        /**
+                         * Devoluciones
+                         */
                         rset2 = con.consulta("select F_ClaPro,sum(F_CantSur) as F_CantSur from tb_factura where F_StsFact='C' and F_ClaPro = '" + rset3.getString("F_ClaPro") + "' and F_Lote='" + rset3.getString("F_FolLot") + "'  GROUP BY F_ClaPro;");
                         while (rset2.next()) {
                             cantDevuelta = rset2.getInt("F_CantSur");
@@ -109,7 +128,7 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script type="text/javascript">
-            $(document).ready(function () {
+            $(document).ready(function() {
                 $("#diferencias").dataTable();
             });
         </script>

@@ -12,7 +12,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Consulta de los concentrados globales creados a la fecha y el status de
+     * cada uno de sus registros
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -54,7 +57,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
         <title>SIALSS</title>
@@ -63,7 +66,7 @@
         <div class="container">
             <h1>SIALSS</h1>
             <h4>Módulo - Sistema de Administración de Almacenes (SAA)</h4>
-            
+
             <%@include file="jspf/menuPrincipal.jspf"%>
 
             <h3>
@@ -81,6 +84,9 @@
                                 <select id="Nombre" name="Nombre" class="form-control">
                                     <option value="">Unidad</option>
                                     <%
+                                        /**
+                                         * Listado de los concentrados
+                                         */
                                         try {
                                             con.conectar();
                                             ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli, f.F_IdFact from tb_uniatn u, tb_facttemp f where u.F_StsCli = 'A' and f.F_ClaCli = u.F_ClaCli group by f.F_IdFact");
@@ -151,10 +157,19 @@
                         <tbody>
                             <%
                                 try {
+
+                                    /**
+                                     * Muestra los registros del concentrado
+                                     */
                                     con.conectar();
                                     ResultSet rset = null;
                                     rset = con.consulta("SELECT	u.F_NomCli,	DATE_FORMAT(f.F_FecEnt, '%d/%m/%Y') as Fecha,	l.F_ClaPro,	l.F_ClaLot,	DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as feccad,	(f.F_Cant+0) as F_Cant,	l.F_Ubica,	f.F_IdFact,	l.F_Cb,	p.F_Pzs,	(f.F_Cant DIV p.F_Pzs) as cajas,	(f.F_Cant MOD p.F_Pzs) as resto, f.F_Id, f.F_StsFact, m.F_DesPro, f.F_IdReq FROM	tb_facttemp f,	tb_lote l,	tb_uniatn u,	tb_pzxcaja p, tb_medica m WHERE l.F_ClaPro = m.F_ClaPro and f.F_IdLot = l.F_IdLote AND f.F_ClaCli = u.F_ClaCli AND p.F_ClaPro = l.F_ClaPro and f.F_IdFact='" + Clave + "' group by f.F_Id;");
                                     while (rset.next()) {
+                                        /**
+                                         * Se consulta tb_regvalida para ver
+                                         * quien validó dependiendo el status en
+                                         * el que está
+                                         */
                             %>
                             <tr>
                                 <td><%=rset.getString("F_Cb")%></td>
@@ -250,20 +265,20 @@
                 Todos los Derechos Reservados
             </div>
         </div>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#datosProv').dataTable();
+            });
+        </script>
     </body>
-    <!-- 
-    ================================================== -->
-    <!-- Se coloca al final del documento para que cargue mas rapido -->
-    <!-- Se debe de seguir ese orden al momento de llamar los JS -->
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.js"></script>
-    <script src="js/jquery.dataTables.js"></script>
-    <script src="js/dataTables.bootstrap.js"></script>
-    <script>
-                                        $(document).ready(function() {
-                                            $('#datosProv').dataTable();
-                                        });
-    </script>
 </html>
 

@@ -14,6 +14,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * Reporte que nos dice el detalle de las entradas por fecha, solicitado por
+     * Ingresos
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator(',');
@@ -35,16 +39,16 @@
     } catch (Exception e) {
 
     }
-    if(fechaCap==null){
-        fechaCap="";
+    if (fechaCap == null) {
+        fechaCap = "";
     }
     try {
         Proveedor = request.getParameter("Proveedor");
     } catch (Exception e) {
 
     }
-    if(Proveedor==null){
-        Proveedor="";
+    if (Proveedor == null) {
+        Proveedor = "";
     }
 %>
 <html>
@@ -54,7 +58,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -123,18 +127,21 @@
                                 try {
                                     con.conectar();
                                     ResultSet rset = null;
-                                    if ((Proveedor.equals("")) && (fechaCap.equals(""))){
-                                        
-                                    rset = con.consulta("SELECT p.F_NomPro,c.F_ClaPro,l.F_ClaLot,SUM(F_CanCom),DATE_FORMAT(F_FecApl,'%d/%m/%Y'),c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User FROM tb_compra c INNER JOIN tb_proveedor p on c.F_ClaOrg=p.F_ClaProve INNER JOIN (SELECT F_FolLot,F_ClaLot FROM tb_lote GROUP BY F_FolLot) l on c.F_Lote=l.F_FolLot GROUP BY p.F_NomPro,c.F_ClaPro,l.F_ClaLot,c.F_FecApl,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User ");
-                                    }else if (!(Proveedor.equals("")) && (fechaCap.equals(""))){
-                                        
-                                    rset = con.consulta("SELECT p.F_NomPro,c.F_ClaPro,l.F_ClaLot,SUM(F_CanCom),DATE_FORMAT(F_FecApl,'%d/%m/%Y'),c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User FROM tb_compra c INNER JOIN tb_proveedor p on c.F_ClaOrg=p.F_ClaProve INNER JOIN (SELECT F_FolLot,F_ClaLot FROM tb_lote GROUP BY F_FolLot) l on c.F_Lote=l.F_FolLot where p.F_ClaProve='"+Proveedor+"' GROUP BY p.F_NomPro,c.F_ClaPro,l.F_ClaLot,c.F_FecApl,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User");                                        
-                                    }else{                     
-                                        
-                                    rset = con.consulta("SELECT p.F_NomPro,c.F_ClaPro,l.F_ClaLot,SUM(F_CanCom),DATE_FORMAT(F_FecApl,'%d/%m/%Y'),c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User FROM tb_compra c INNER JOIN tb_proveedor p on c.F_ClaOrg=p.F_ClaProve INNER JOIN (SELECT F_FolLot,F_ClaLot FROM tb_lote GROUP BY F_FolLot) l on c.F_Lote=l.F_FolLot where c.F_FecApl='"+fechaCap+"' GROUP BY p.F_NomPro,c.F_ClaPro,l.F_ClaLot,c.F_FecApl,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User ");
+                                    /**
+                                     * Consultas para a las tablas, para fecha o proveedor
+                                     */
+                                    if ((Proveedor.equals("")) && (fechaCap.equals(""))) {
+
+                                        rset = con.consulta("SELECT p.F_NomPro,c.F_ClaPro,l.F_ClaLot,SUM(F_CanCom),DATE_FORMAT(F_FecApl,'%d/%m/%Y'),c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User FROM tb_compra c INNER JOIN tb_proveedor p on c.F_ClaOrg=p.F_ClaProve INNER JOIN (SELECT F_FolLot,F_ClaLot FROM tb_lote GROUP BY F_FolLot) l on c.F_Lote=l.F_FolLot GROUP BY p.F_NomPro,c.F_ClaPro,l.F_ClaLot,c.F_FecApl,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User ");
+                                    } else if (!(Proveedor.equals("")) && (fechaCap.equals(""))) {
+
+                                        rset = con.consulta("SELECT p.F_NomPro,c.F_ClaPro,l.F_ClaLot,SUM(F_CanCom),DATE_FORMAT(F_FecApl,'%d/%m/%Y'),c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User FROM tb_compra c INNER JOIN tb_proveedor p on c.F_ClaOrg=p.F_ClaProve INNER JOIN (SELECT F_FolLot,F_ClaLot FROM tb_lote GROUP BY F_FolLot) l on c.F_Lote=l.F_FolLot where p.F_ClaProve='" + Proveedor + "' GROUP BY p.F_NomPro,c.F_ClaPro,l.F_ClaLot,c.F_FecApl,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User");
+                                    } else {
+
+                                        rset = con.consulta("SELECT p.F_NomPro,c.F_ClaPro,l.F_ClaLot,SUM(F_CanCom),DATE_FORMAT(F_FecApl,'%d/%m/%Y'),c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User FROM tb_compra c INNER JOIN tb_proveedor p on c.F_ClaOrg=p.F_ClaProve INNER JOIN (SELECT F_FolLot,F_ClaLot FROM tb_lote GROUP BY F_FolLot) l on c.F_Lote=l.F_FolLot where c.F_FecApl='" + fechaCap + "' GROUP BY p.F_NomPro,c.F_ClaPro,l.F_ClaLot,c.F_FecApl,c.F_OrdCom,c.F_ClaDoc,c.F_FolRemi,c.F_User ");
                                     }
                                     while (rset.next()) {
-                                       
+
                             %>
                             <tr>
                                 <td><%=rset.getString(1)%></td>
@@ -166,28 +173,27 @@
                 Todos los Derechos Reservados
             </div>
         </div>
-    </body>
-</html>
 
-
-<!-- 
-================================================== -->
-<!-- Se coloca al final del documento para que cargue mas rapido -->
-<!-- Se debe de seguir ese orden al momento de llamar los JS -->
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.dataTables.js"></script>
-<script src="js/dataTables.bootstrap.js"></script>
-<script>
+        <!-- 
+        ================================================== -->
+        <!-- Se coloca al final del documento para que cargue mas rapido -->
+        <!-- Se debe de seguir ese orden al momento de llamar los JS -->
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/jquery.dataTables.js"></script>
+        <script src="js/dataTables.bootstrap.js"></script>
+        <script>
                                 $(document).ready(function() {
                                     $('#datosCompras').dataTable();
                                 });
-</script>
-<script>
-    $(function() {
-        $("#Fecha").datepicker();
-        $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
-    });
-</script>
+        </script>
+        <script>
+            $(function() {
+                $("#Fecha").datepicker();
+                $("#Fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
+            });
+        </script>
+    </body>
+</html>

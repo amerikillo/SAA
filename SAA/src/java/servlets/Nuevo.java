@@ -21,6 +21,9 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author Americo
+ * 
+ * Clase que se utiliza para una nueva remisión en captura manual
+ * NO SE REQUIERE EN ESTE PROYECTO
  */
 public class Nuevo extends HttpServlet {
 

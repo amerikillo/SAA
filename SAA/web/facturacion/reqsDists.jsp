@@ -13,7 +13,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Listado de los requerimientos que se liberan por ISEM para posterior a
+     * eso remisionarse
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -49,7 +52,7 @@
             </div>
             <h3>Requerimientos Revisados</h3>
 
-            <table id="tblReq2" name="tblReq2"  class="table table-condensed table-bordered table-striped">
+            <table id="tblReq2" class="table table-condensed table-bordered table-striped">
                 <thead> <tr>
                         <td>Distribuidor</td>
                         <td>ID Pedido</td>
@@ -88,6 +91,8 @@
                                 <input value="<%=rset.getString("p.F_ClaCli")%>" name="F_ClaCli"  class="hidden" />
                                 <button class="btn btn-primary btn-sm" name="accion" value="EliminarInsumo"><span class="glyphicon glyphicon-download"></span></button>
                             </form>
+                            <a class="btn btn-success btn-sm"  href="../requerimientoPDF.jsp?F_IdPed=<%=rset.getString("F_IdPed")%>&F_ClaCli=<%=rset.getString("p.F_ClaCli")%>"><span class="glyphicon glyphicon-print"></span></a>
+
                             <!--form action="Capturar?F_IdPed=<%=rset.getString("F_IdPed")%>" method="post" class="col-sm-6">
                                 <button class="btn btn-danger btn-sm" name="accion" onclick="return confirm('Seguro que desea eliminar el pedido?')" value="EliminarPedido">X</button>
                             </form-->

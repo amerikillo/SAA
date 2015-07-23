@@ -12,7 +12,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Consulta de folio para reimpresion por ISEM (auditorias)
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -61,7 +63,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <link href="css/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dataTables.bootstrap.css">
         <!---->
@@ -82,7 +84,7 @@
 
                         <div class="col-sm-5">
                             <select class="form-control" name="Proveedor" id="Proveedor" onchange="SelectProve(this.form);
-                                document.getElementById('Fecha').focus()">
+                                    document.getElementById('Fecha').focus()">
                                 <option value="">--Proveedor--</option>
                                 <%                                try {
                                         con.conectar();
@@ -247,12 +249,12 @@
 <script src="js/jquery.dataTables.js"></script>
 <script src="js/dataTables.bootstrap.js"></script>
 <script>
-                                    $(document).ready(function () {
+                                    $(document).ready(function() {
                                         $('#datosCompras').dataTable();
                                     });
 </script>
 <script>
-    $(function () {
+    $(function() {
         $("#fecha").datepicker();
         $("#fecha").datepicker('option', {dateFormat: 'dd/mm/yy'});
     });

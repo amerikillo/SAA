@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 /**
  *
  * @author Americo
+ * 
+ * Para mandar los pedidos de retirada a modula
  */
 public class RequerimientoModula {
     

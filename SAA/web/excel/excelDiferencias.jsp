@@ -12,6 +12,10 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+
+    /**
+     * Para cálculo de diferencias contra SGW, ya no se usa
+     */
     response.setContentType("application/vnd.ms-excel");
     response.setHeader("Content-Disposition", "attachment;filename=\"Diferencias.xls\"");
     HttpSession sesion = request.getSession();

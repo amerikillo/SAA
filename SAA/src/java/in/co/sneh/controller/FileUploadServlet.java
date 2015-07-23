@@ -28,11 +28,12 @@ public class FileUploadServlet extends HttpServlet {
 
     LeeExcel lee = new LeeExcel();
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ConectionDB con = new ConectionDB();
+        //ConectionDB con = new ConectionDB();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        String Unidad = "";
+        //String Unidad = "";
 
         boolean isMultiPart = ServletFileUpload.isMultipartContent(request);
         if (isMultiPart) {
@@ -43,6 +44,9 @@ public class FileUploadServlet extends HttpServlet {
                 while (itr.hasNext()) {
                     FileItemStream item = itr.next();
                     if (item.isFormField()) {
+                        /**
+                         * Si es de un campo (que no sea el del archivo)
+                         */
                         String fielName = item.getFieldName();
                         InputStream is = item.openStream();
                         byte[] b = new byte[is.available()];
@@ -50,6 +54,9 @@ public class FileUploadServlet extends HttpServlet {
                         String value = new String(b);
                         response.getWriter().println(fielName + ":" + value + "<br/>");
                     } else {
+                        /**
+                         * Si es del archivo
+                         */
                         String path = getServletContext().getRealPath("/");
                         if (FileUpload.processFile(path, item)) {
                             //response.getWriter().println("file uploaded successfully");

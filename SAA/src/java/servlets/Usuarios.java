@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author Americo
+ *
+ * Clase para la administración de usuarios
  */
 public class Usuarios extends HttpServlet {
 
@@ -39,6 +41,9 @@ public class Usuarios extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
+            /**
+             * Para guardar usuarios
+             */
             if (request.getParameter("accion").equals("Guardar")) {
                 try {
                     con.conectar();
@@ -54,7 +59,9 @@ public class Usuarios extends HttpServlet {
                 out.println("<script>alert('Usuario Capturado Correctamente')</script>");
                 out.println("<script>window.location='usuarios/usuario_nuevo.jsp'</script>");
             }
-
+            /**
+             * Para modificar usuarios
+             */
             if (request.getParameter("accion").equals("Modificar")) {
                 try {
                     con.conectar();
@@ -70,7 +77,10 @@ public class Usuarios extends HttpServlet {
                 out.println("<script>alert('Usuario Actualizado Correctamente')</script>");
                 out.println("<script>window.location='usuarios/edita_usuario.jsp'</script>");
             }
-            
+
+            /**
+             * Para eliminar usuarios
+             */
             if (request.getParameter("accion").equals("Eliminar")) {
                 try {
                     con.conectar();

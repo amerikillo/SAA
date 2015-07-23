@@ -8,9 +8,12 @@
         <td>Piezas x Caja</td>
     </tr>
     <%
+        /**
+         * NO SE USA
+         */
         try {
 
-            ConectionDB_Linux con = new ConectionDB();
+            ConectionDB con = new ConectionDB();
 
             con.conectar();
             ResultSet rset = con.consulta("select c.*, m.F_DesPro from tb_compraregistro c, tb_medica m, tb_marca mar where mar.F_ClaMar c.F_ClaPro = m.F_ClaPro order by c.F_ClaPro");

@@ -18,6 +18,8 @@ import conn.*;// package que contiene la Clase ConectionDBS
 /**
  *
  * @author wence
+ * 
+ * Para Loguearnos en SAA
  */
 @WebServlet(name = "login", urlPatterns = {"/login"})
 public class login extends HttpServlet {

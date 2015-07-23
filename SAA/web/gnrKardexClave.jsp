@@ -11,6 +11,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+
+    /**
+     * Genera el reporte de trazabilidad de una clave lote en específico
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -33,6 +37,9 @@
         <h3>Lote: <%=request.getParameter("Lote")%></h3>
         <h3>Caducidad: <%=request.getParameter("Cadu")%></h3>
         <%
+            /**
+             * Descripción del insumo
+             */
             try {
                 con.conectar();
                 ResultSet rset = con.consulta("select F_DesPro from tb_medica where F_ClaPro = '" + request.getParameter("Clave") + "'");
@@ -47,6 +54,9 @@
         <br/>
         <h4>Existencia Actual</h4>
         <%
+            /**
+             * Existencia actual
+             */
             try {
                 con.conectar();
                 ResultSet rset = con.consulta("select SUM(F_ExiLot) from tb_lote where F_ClaPro = '" + request.getParameter("Clave") + "' and F_ClaLot ='" + request.getParameter("Lote") + "' and F_FecCad = STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y')  and F_ExiLot !=0");
@@ -75,6 +85,9 @@
                 <td>Cantidad</td>
             </tr>
             <%
+                /**
+                 * Detalle de ubicaciones de ese producto en específico
+                 */
                 try {
                     con.conectar();
                     ResultSet rset = con.consulta("select F_ClaPro, F_ClaLot, F_FecCad, F_Ubica, F_ExiLot from tb_lote where F_ClaPro = '" + request.getParameter("Clave") + "' and F_ClaLot ='" + request.getParameter("Lote") + "' and F_FecCad = STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y')  and F_ExiLot !=0");
@@ -120,6 +133,9 @@
             </thead>
             <tbody>
                 <%
+                    /**
+                     * Detalle de entradas y salidas
+                     */
                     try {
                         con.conectar();
                         ResultSet rset = con.consulta("select m.F_User, m.F_ConMov, c.F_DesCon, m.F_ProMov, l.F_ClaLot,  DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), (m.F_CantMov*m.F_SigMov), m.F_CostMov, u.F_DesUbi, DATE_FORMAT(m.F_FecMov, '%d/%m/%Y'), m.F_hora, m.F_DocMov, m.F_IdMov FROM tb_movinv m, tb_coninv c, tb_ubica u, tb_lote l WHERE m.F_ConMov = c.F_IdCon AND m.F_UbiMov = u.F_ClaUbi AND m.F_LotMov = l.F_FolLot and m.F_ProMov = '" + request.getParameter("Clave") + "' and l.F_ClaLot ='" + request.getParameter("Lote") + "' and l.F_FecCad=STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y') and m.F_ConMov!=1000 GROUP BY m.F_IdMov ORDER BY m.F_IdMov");
@@ -223,6 +239,9 @@
             </thead>
             <tbody>
                 <%
+                    /**
+                     * Detalle de redistribuciones
+                     */
                     try {
                         con.conectar();
                         ResultSet rset = con.consulta("select m.F_User, m.F_ConMov, c.F_DesCon, m.F_ProMov, l.F_ClaLot,  DATE_FORMAT(l.F_FecCad, '%d/%m/%Y'), (m.F_CantMov*m.F_SigMov), m.F_CostMov, u.F_DesUbi, DATE_FORMAT(m.F_FecMov, '%d/%m/%Y'), m.F_hora, m.F_DocMov, com.F_FolRemi, m.F_IdMov FROM tb_movinv m, tb_coninv c, tb_ubica u, tb_lote l, tb_compra com WHERE l.F_FolLot = com.F_Lote and m.F_ConMov = c.F_IdCon AND m.F_UbiMov = u.F_ClaUbi AND m.F_LotMov = l.F_FolLot and m.F_ProMov = '" + request.getParameter("Clave") + "' and l.F_ClaLot ='" + request.getParameter("Lote") + "' and l.F_FecCad=STR_TO_Date('" + request.getParameter("Cadu") + "', '%d/%m/%Y') and (m.F_ConMov=1000 or m.F_ConMov = 1) GROUP BY m.F_IdMov ORDER BY m.F_IdMov");

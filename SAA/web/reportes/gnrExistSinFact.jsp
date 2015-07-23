@@ -14,6 +14,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * PAra descargar las existencias disponibles
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormat formatter2 = new DecimalFormat("#,###,###.##");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
@@ -36,7 +39,9 @@
      Clave="";
      }*/
     ConectionDB con = new ConectionDB();
-
+    /**
+     * Para generar el excel
+     */
     response.setContentType("application/vnd.ms-excel");
     response.setHeader("Content-Disposition", "attachment; filename=Existencias en CEDIS sin Facts.xls");
 %>
@@ -49,6 +54,7 @@
             <td>Cantidad</td>
             <td>Costo U.</td>
             <td>Monto</td>
+            <td></td>
         </tr>
     </thead>
     <tbody>
@@ -62,12 +68,12 @@
                 }
 
                 if (Claves.equals("")) {
-                    rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 GROUP BY l.F_ClaPro");
+                    rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad, m.F_CambioPres FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 GROUP BY l.F_ClaPro");
                 } else {
-                    rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 and l.F_ClaPro='" + Claves + "' GROUP BY l.F_ClaPro");
+                    rset = con.consulta("SELECT l.F_ClaPro, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') AS F_FecCad, l.F_Ubica, l.F_Cb, SUM(F_ExiLot), u.F_DesUbi,(m.F_Costo*SUM(l.F_ExiLot)) as monto,m.F_Costo, F_DesMar, l.F_FecCad as F_FechaCad, m.F_CambioPres FROM tb_marca mar, tb_lote l, tb_medica m, tb_ubica u WHERE mar.F_ClaMar = l.F_ClaMar and m.F_ClaPro = l.F_ClaPro AND l.F_Ubica = u.F_ClaUbi AND F_ExiLot != 0 and l.F_ClaPro='" + Claves + "' GROUP BY l.F_ClaPro");
                 }
                 while (rset.next()) {
-                    double monto1 = 0, montoApar=0;
+                    double monto1 = 0, montoApar = 0;
                     int cantExi = rset.getInt(7);
                     int cantTotal = 0, cantApar = 0;
                     System.out.println(rset.getString(1));
@@ -83,9 +89,16 @@
                         montoApar = rset3.getDouble("Importe");
                     }
                     cantTotal = cantExi - cantApar;
+                    if (cantTotal < 0) {
+                        cantTotal = 0;
+                    }
                     Cantidad = Cantidad + cantTotal;
                     monto = monto + monto1;
+                    monto1 = monto1 - montoApar;
                     monto = monto - montoApar;
+                    if (cantTotal == 0) {
+                        monto1 = 0;
+                    }
         %>
         <tr>
             <td><%=rset.getString(1)%></td>
@@ -94,6 +107,14 @@
             <td><%=formatter.format(cantTotal)%></td>
             <td><%=formatter2.format(rset.getDouble(10))%></td>
             <td><%=formatter2.format(monto1)%></td>
+            <td>
+                <%
+                    if (rset.getString("F_CambioPres").equals("1")) {
+                        out.println("Cambio de Presentacion");
+                    }
+                %>
+
+            </td>
         </tr>
         <%
                 }

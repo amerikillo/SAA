@@ -11,7 +11,9 @@
 <!DOCTYPE html>
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%
-
+    /**
+     * Para facturación manual
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -23,6 +25,9 @@
     ConectionDB con = new ConectionDB();
 
     String ClaCli = "", FechaEnt = "", ClaPro = "", DesPro = "";
+    /**
+     * Se obtiene el numero de folio
+     */
     String F_IndGlobal = (String) sesion.getAttribute("F_IndGlobal");
     try {
         ClaCli = (String) sesion.getAttribute("ClaCliFM");
@@ -54,7 +59,7 @@
         <!-- Estilos CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.3.custom.css" />
-        <link href="css/navbar-fixed-top.css" rel="stylesheet">
+        <!--link href="css/navbar-fixed-top.css" rel="stylesheet"-->
         <!---->
         <title>SIALSS</title>
     </head>
@@ -148,6 +153,10 @@
                                 <input class="form-control" name="Cantidad" id="Cantidad" onKeyPress="return justNumbers(event);"/>
                             </div>
                             <div class="col-sm-2">
+                                <!--
+                                Para seleccionar de que ubicación se tomará el insumo
+                                
+                                -->
                                 <button class="btn btn-block btn-success" name="accion" value="SeleccionaLote" onclick="return validaSeleccionar();">Seleccionar</button>
                             </div>
                         </div>
@@ -157,7 +166,7 @@
                 <%
                     if (F_IndGlobal != null) {
                 %>
-                <input name="F_IndGlob" value="<%=F_IndGlobal%>" class="hidden">
+                <input name="F_IndGlob" value="<%=F_IndGlobal%>" class="">
                 <table class="table table-condensed table-striped table-bordered table-responsive">
                     <tr>
                         <td>Clave</td>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="26f78653-3935-4222-bfa8-fdb6424aded1">
+	<property name="ireport.zoom" value="2.0490403660952117"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="F_ClaCli" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="F_IdPed" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from v_requerimientos where F_ClaCli =$P{F_ClaCli}  and F_IdPed = $P{F_IdPed}]]>
+	</queryString>
+	<field name="F_ClaCli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_NomCli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_IdPed" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_StsPed" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_FecEnt" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_ClaPro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_DesPro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Cant" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_TipoPed" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="F_Obs" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="53d08239-ed9a-4fec-83df-bce65e836f4c" x="0" y="12" width="77" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cla Cli]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6d964c5-19c6-422a-a56d-8f5fc0cb60a3" x="77" y="12" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0399766d-bf2f-4a4c-a590-7b16bce4b8a0" x="177" y="12" width="54" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IdPed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="74455dd0-244b-4678-85ca-9888ac138ebe" x="231" y="12" width="104" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6778dcc5-2ac8-4095-b227-003fa071cf6f" x="335" y="12" width="85" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Clave]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f605a925-3f1c-4b11-bfd0-d9032a2a2c81" x="420" y="12" width="80" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="da88d78b-f869-4c56-9504-5a6b2d24a90b" x="500" y="12" width="72" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Pedido]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a69b005e-0e83-40b0-9f2d-4f06909713ac" x="0" y="0" width="77" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_ClaCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b3dd203c-c33d-41a8-adfc-0c9ffcbbedb5" stretchType="RelativeToBandHeight" x="77" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_NomCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9a2e19af-c087-4c63-8a02-249911847fa3" x="177" y="0" width="54" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_IdPed}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b7067726-0659-41d7-b5fb-a64ea05e0452" x="231" y="0" width="104" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_FecEnt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9356630b-b799-40ae-8792-173b2bb755ba" x="335" y="0" width="85" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_ClaPro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e9450d4b-4f09-4a06-ace2-8b954399ef94" x="0" y="12" width="572" height="13"/>
+				<textElement>
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_DesPro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="679f7f24-d23a-4db0-9531-bd9b795c31d0" x="420" y="0" width="80" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_Cant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ec7cdac0-6ef3-4bb4-86c3-bb5867af7c45" x="500" y="0" width="72" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{F_TipoPed}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="6be1e642-6285-4312-a25a-691888f54c4e" x="0" y="25" width="572" height="1"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

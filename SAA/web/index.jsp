@@ -8,7 +8,9 @@
 <%
     HttpSession sesion = request.getSession();
     String info = null;
-
+    /**
+     * Archivo de login
+     */
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,18 +21,10 @@
         <link href="css/bootstrap.css" rel="stylesheet" media="screen">
         <link href="css/login.css" rel="stylesheet" media="screen">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-          <script src="../../assets/js/html5shiv.js"></script>
-          <script src="../../assets/js/respond.min.js"></script>
-        <![endif]-->
+
     </head>
     <body>
         <div class="container">
-            <!--div class="row marco" >
-                <div class="col-md-4">.col-md-4</div>
-                <div class="col-md-4">.col-md-4</div>
-                <div class="col-md-4">.col-md-4</div>
-            </div-->
 
             <form name ="form" id="forma-login" class="marco" action="login" method="post" >
                 <!--label for="username" class="uname" data-icon="u" > Your email or username </label-->
@@ -53,7 +47,11 @@
                     <input type="password" name="pass" id="pass" class="form-control"  placeholder="Introduzca Contrase&ntilde;a V&aacute;lida">
                 </div>
                 <div>
-                    <%         info = (String) sesion.getAttribute("mensaje");
+                    <%
+                        /**
+                         * Para obtener el mensaje
+                         */
+                        info = (String) sesion.getAttribute("mensaje");
                         //out.print(info);
                         if (!(info == null || info.equals(null))) {
                     %>
@@ -61,7 +59,11 @@
                     <%
                         }
                         sesion.invalidate();
+
                     %>
+                    <!--
+                    Bandera de login, nos dice que tipo de login será (SAA o ISEM)
+                    -->
                     <input type="hidden" name="ban" value="0" class="form-control">
                 </div>
                 <br>              
@@ -75,7 +77,7 @@
         </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="//code.jquery.com/jquery.js"></script>
+        <script src="js/jquery-1.9.1.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.js"></script>
     </body>

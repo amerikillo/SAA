@@ -46,9 +46,18 @@ public class Facturacion extends HttpServlet {
         ConectionDB con = new ConectionDB();
         //ConectionDB_SQLServer consql = new ConectionDB_SQLServer();
         try {
+
+            /**
+             * Para validar varios registros por auditoria del concentrado
+             * global
+             */
             if (request.getParameter("accion").equals("validarVariasAuditor")) {
                 con.conectar();
                 String[] claveschk = request.getParameterValues("chkId");
+                /**
+                 * Se guardan todos los seleccionados en claveschk y se va
+                 * leyendo cada uno de estos para validarlos
+                 */
                 for (int i = 0; i < claveschk.length; i++) {
                     con.insertar("update tb_facttemp set F_StsFact='2' WHERE F_Id= '" + claveschk[i] + "'");
                     con.insertar("insert into tb_regvalida values ('" + claveschk[i] + "','" + sesion.getAttribute("nombre") + "',0)");
@@ -59,9 +68,17 @@ public class Facturacion extends HttpServlet {
                 out.println("<script>alert('Claves Validadas Correctamente')</script>");
                 out.println("<script>window.location='validacionAuditores.jsp'</script>");
             }
+            /**
+             * Para validar varios registros por area de surtido del concentrado
+             * global
+             */
             if (request.getParameter("accion").equals("validarVariasSurtido")) {
                 con.conectar();
                 String[] claveschk = request.getParameterValues("chkId");
+                /**
+                 * Se guardan todos los seleccionados en claveschk y se va
+                 * leyendo cada uno de estos para validarlos
+                 */
                 for (int i = 0; i < claveschk.length; i++) {
                     con.insertar("update tb_facttemp set F_StsFact='1' WHERE F_Id= '" + claveschk[i] + "'");
                     con.insertar("insert into tb_regvalida values ('" + claveschk[i] + "','" + sesion.getAttribute("nombre") + "',0)");
@@ -72,6 +89,9 @@ public class Facturacion extends HttpServlet {
                 out.println("<script>alert('Claves Validadas Correctamente')</script>");
                 out.println("<script>window.location='validacionSurtido.jsp'</script>");
             }
+            /**
+             * Para actualizar el CB en caso de que auditoría lo detecte mal
+             */
             if (request.getParameter("accion").equals("actualizarCBAuditor")) {
                 try {
                     con.conectar();
@@ -86,6 +106,9 @@ public class Facturacion extends HttpServlet {
                 out.println("<script>alert('Reimprima el Marbete Correcto')</script>");
                 out.println("<script>window.location='validacionAuditores.jsp'</script>");
             }
+            /**
+             * Para actualizar el CB en caso de que surtido lo detecte mal
+             */
             if (request.getParameter("accion").equals("actualizarCB")) {
                 try {
                     con.conectar();
@@ -100,6 +123,9 @@ public class Facturacion extends HttpServlet {
                 out.println("<script>alert('Reimprima el Marbete Correcto')</script>");
                 out.println("<script>window.location='validacionSurtido.jsp'</script>");
             }
+            /**
+             * Para validar un registro por auditor
+             */
             if (request.getParameter("accion").equals("validaAuditor")) {
                 try {
                     con.conectar();
@@ -113,6 +139,9 @@ public class Facturacion extends HttpServlet {
                 out.println("<script>alert('Clave Validada Correctamente')</script>");
                 out.println("<script>window.location='validacionAuditores.jsp'</script>");
             }
+            /**
+             * Para validar un registro por Surtido
+             */
             if (request.getParameter("accion").equals("validaRegistro")) {
                 try {
                     con.conectar();
@@ -126,6 +155,11 @@ public class Facturacion extends HttpServlet {
                 out.println("<script>alert('Clave Validada Correctamente')</script>");
                 out.println("<script>window.location='validacionSurtido.jsp'</script>");
             }
+
+            /**
+             * Función para eliminar todo el concentrado, guarda el respaldo en
+             * tb_facttemp_elim
+             */
             if (request.getParameter("accion").equals("EliminaConcentrado")) {
                 try {
                     con.conectar();
@@ -143,6 +177,9 @@ public class Facturacion extends HttpServlet {
                 }
                 response.sendRedirect("reimpConcentrado.jsp");
             }
+            /**
+             * Para consultar el requerimiento dependiendo de la unidad
+             */
             if (request.getParameter("accion").equals("consultar")) {
                 try {
                     con.conectar();
@@ -157,6 +194,9 @@ public class Facturacion extends HttpServlet {
                 }
             }
 
+            /**
+             * Para cancelar un requerimiento del que no se generará concentrado
+             */
             if (request.getParameter("accion").equals("cancelar")) {
                 try {
                     con.conectar();
@@ -169,7 +209,9 @@ public class Facturacion extends HttpServlet {
             }
             //-------------------------------------------------------------------------------------------------
             if (request.getParameter("accion").equals("guardarGlobal")) {
-
+                /**
+                 * Proceso de generación de Concentrado Global
+                 */
                 ban1 = 1;
                 String ClaUni = request.getParameter("Nombre");
                 String FechaE = request.getParameter("FecFab");
@@ -181,12 +223,20 @@ public class Facturacion extends HttpServlet {
                     con.conectar();
                     //consql.conectar();
 
+                    /**
+                     * Se genera un duplicado de la tabla tb_lote para generar
+                     * el proceso de descuento en ella
+                     */
                     con.insertar("delete from tb_lotetemp");
                     con.insertar("insert into tb_lotetemp select * from tb_lote");
                     /*ResultSet Fechaa = con.consulta("SELECT STR_TO_DATE(" + FechaE + ", '%d/%m/%Y')");
                      while (Fechaa.next()) {
                      FechaE = Fechaa.getString("STR_TO_DATE(" + FechaE + ", '%d/%m/%Y')");
                      }*/
+
+                    /**
+                     * Obtención del siguiente folio del concentrado global
+                     */
                     ResultSet FolioFact = con.consulta("SELECT F_IndGlobal FROM tb_indice");
                     while (FolioFact.next()) {
                         FolioFactura = Integer.parseInt(FolioFact.getString("F_IndGlobal"));
@@ -194,12 +244,23 @@ public class Facturacion extends HttpServlet {
                     FolFact = FolioFactura + 1;
                     con.actualizar("update tb_indice set F_IndGlobal='" + FolFact + "'");
 
-                    ResultSet rset_cantidad = con.consulta("SELECT F_ClaPro,SUM(F_CajasReq) as cajas, SUM(F_PiezasReq) as piezas, F_IdReq, F_Id FROM tb_unireq WHERE F_ClaUni='" + ClaUni + "' and F_Status='0' and F_FecCarg = CURDATE() GROUP BY F_ClaPro");
+                    /**
+                     * Se leen los insusmo y las cantidades solicitadas en
+                     * tb_unireq
+                     */
+                    ResultSet rset_cantidad = con.consulta("SELECT F_ClaPro,SUM(F_CajasReq) as cajas, SUM(F_PiezasReq) as piezas, F_IdReq, F_Id FROM tb_unireq WHERE F_ClaUni='" + ClaUni + "' and F_Status='0' GROUP BY F_ClaPro");
                     while (rset_cantidad.next()) {
+
                         Clave = rset_cantidad.getString("F_ClaPro");
                         int cajasReq = Integer.parseInt(rset_cantidad.getString("cajas"));
                         int piezasReq = Integer.parseInt(rset_cantidad.getString("piezas"));
                         int pzxCaja = 0;
+
+                        /**
+                         * Cálculo de total de piezas dependiendo de las piezas
+                         * que se tiene por caja más el resto que se ingresa
+                         * desde el excel
+                         */
                         ResultSet rsetCP = con.consulta("select F_Pzs from tb_pzxcaja where F_ClaPro = '" + Clave + "' ");
                         while (rsetCP.next()) {
                             pzxCaja = rsetCP.getInt(1);
@@ -208,76 +269,118 @@ public class Facturacion extends HttpServlet {
                         //piezas = Integer.parseInt(rset_cantidad.getString("CANTIDAD"));
 
                         //INICIO DE CONSULTA MYSQL
+                        /**
+                         * el siguiente query es innecesario
+                         */
                         ResultSet r_Org = con.consulta("SELECT F_ClaOrg FROM tb_lotetemp WHERE F_ClaPro='" + Clave + "' GROUP BY F_ClaOrg ORDER BY F_ClaOrg+0");
                         while (r_Org.next()) {
                             Org = Integer.parseInt(r_Org.getString("F_ClaOrg"));
 
-                            if (Org == 1) {
-                                ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,(L.F_ExiLot) AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' and L.F_Ubica !='REJA_DEVOL'  GROUP BY L.F_IdLote ORDER BY L.F_FecCad,L.F_IdLote ASC");
-                                while (FechaLote.next()) {
-                                    if (piezas > 0) {
-                                        FolioLote = FechaLote.getString("F_FolLot");
-                                        String IdLote = FechaLote.getString("F_IdLote");
-                                        existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
-                                        ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_facttemp where F_IdLot = '" + IdLote + "' and F_StsFact!=5");
-                                        while (rset2.next()) {
-                                            existencia = existencia - rset2.getInt(1);
-                                        }
-                                        Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
-                                        if (existencia > 0) {
-                                            if (piezas > existencia) {
-                                                diferencia = piezas - existencia;
-                                                con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
-                                                con.insertar("insert into tb_facttemp values('" + FolioFactura + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + rset_cantidad.getString("F_Id") + "')");
-                                                piezas = diferencia;
-                                            } else {
-                                                diferencia = existencia - piezas;
-                                                if (diferencia >= 0) {
+                            /*if (Org == 1) {
+                             ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,(L.F_ExiLot) AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' and L.F_Ubica !='REJA_DEVOL'  GROUP BY L.F_IdLote ORDER BY L.F_FecCad,L.F_IdLote ASC");
+                             while (FechaLote.next()) {
+                             if (piezas > 0) {
+                             FolioLote = FechaLote.getString("F_FolLot");
+                             String IdLote = FechaLote.getString("F_IdLote");
+                             existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
+                             ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_facttemp where F_IdLot = '" + IdLote + "' and F_StsFact!=5");
+                             while (rset2.next()) {
+                             existencia = existencia - rset2.getInt(1);
+                             }
+                             Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
+                             if (existencia > 0) {
+                             if (piezas > existencia) {
+                             diferencia = piezas - existencia;
+                             con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
+                             con.insertar("insert into tb_facttemp values('" + FolioFactura + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + rset_cantidad.getString("F_Id") + "')");
+                             piezas = diferencia;
+                             } else {
+                             diferencia = existencia - piezas;
+                             if (diferencia >= 0) {
 
-                                                    if (piezas >= 0) {
-                                                        con.insertar("insert into tb_facttemp values('" + FolioFactura + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + rset_cantidad.getString("F_Id") + "')");
-                                                        con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
-                                                    }
+                             if (piezas >= 0) {
+                             con.insertar("insert into tb_facttemp values('" + FolioFactura + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + rset_cantidad.getString("F_Id") + "')");
+                             con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
+                             }
+                             }
+                             piezas = 0;
+                             }
+                             }
+                             }
+                             }
+                             } else {*/
+                            /**
+                             * Búsqueda del insumo y sus ubicaciones tomando en
+                             * cuenta primeras caducidades
+                             */
+                            ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,(L.F_ExiLot) AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' AND L.F_Ubica NOT IN ('REJA_DEVOL','PROX_CADUCA')  GROUP BY L.F_IdLote ORDER BY L.F_FecCad,L.F_IdLote ASC");
+                            while (FechaLote.next()) {
+                                /**
+                                 * Mientras que lo solicitado siga siendo mayor
+                                 * que 0
+                                 */
+                                if (piezas > 0) {
+                                    /**
+                                     * Obtenemos información de la tabla de lote
+                                     */
+                                    FolioLote = FechaLote.getString("F_FolLot");
+                                    String IdLote = FechaLote.getString("F_IdLote");
+                                    existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
+                                    ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_facttemp where F_IdLot = '" + IdLote + "' and F_StsFact!=5");
+                                    /**
+                                     * Se calcula la existencia restando lo que
+                                     * se tiene apartado para ese F_IdLote
+                                     */
+                                    while (rset2.next()) {
+                                        existencia = existencia - rset2.getInt(1);
+                                    }
+                                    Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
+
+                                    if (existencia > 0) {
+                                        if (piezas > existencia) {
+                                            /**
+                                             * Si las piezas que se solicitan
+                                             * son más de las que se tienen en
+                                             * la ubicacion encontrada se
+                                             * atualizarán las exitencias a 0 se
+                                             * tomarán todas y se insertará en
+                                             * la tabla tb_facttemp la
+                                             * referencia la diferencia se
+                                             * convertirá en lo restante de la
+                                             * clave
+                                             */
+                                            diferencia = piezas - existencia;
+                                            con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
+                                            con.insertar("insert into tb_facttemp values('" + FolioFactura + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + rset_cantidad.getString("F_Id") + "')");
+                                            piezas = diferencia;
+                                        } else {
+                                            /**
+                                             * Si la existencia es mayor a lo
+                                             * solicitado se actualiza a la
+                                             * diferencia, se inserta en
+                                             * facttemp lo solicitado y las
+                                             * piezas se vuelven 0
+                                             */
+                                            diferencia = existencia - piezas;
+                                            if (diferencia >= 0) {
+
+                                                if (piezas >= 0) {
+                                                    con.insertar("insert into tb_facttemp values('" + FolioFactura + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + rset_cantidad.getString("F_Id") + "')");
+                                                    con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
                                                 }
-                                                piezas = 0;
                                             }
+                                            piezas = 0;
                                         }
                                     }
-                                }
-                            } else {
-                                ResultSet FechaLote = con.consulta("SELECT L.F_FecCad AS F_FecCad,L.F_FolLot AS F_FolLot,(L.F_ExiLot) AS F_ExiLot, M.F_TipMed AS F_TipMed, M.F_Costo AS F_Costo, L.F_Ubica AS F_Ubica, C.F_ProVee AS F_ProVee, F_ClaLot,F_IdLote FROM tb_lotetemp L INNER JOIN tb_medica M ON L.F_ClaPro=M.F_ClaPro INNER JOIN tb_compra C ON L.F_FolLot=C.F_Lote WHERE L.F_ClaPro='" + Clave + "' AND L.F_ExiLot>'0' AND L.F_Ubica !='REJA_DEVOL'  GROUP BY L.F_IdLote ORDER BY L.F_FecCad,L.F_IdLote ASC");
-                                while (FechaLote.next()) {
-                                    if (piezas > 0) {
-                                        FolioLote = FechaLote.getString("F_FolLot");
-                                        String IdLote = FechaLote.getString("F_IdLote");
-                                        existencia = Integer.parseInt(FechaLote.getString("F_ExiLot"));
-                                        ResultSet rset2 = con.consulta("select sum(F_Cant) from tb_facttemp where F_IdLot = '" + IdLote + "' and F_StsFact!=5");
-                                        while (rset2.next()) {
-                                            existencia = existencia - rset2.getInt(1);
-                                        }
-                                        Tipo = Integer.parseInt(FechaLote.getString("F_TipMed"));
-                                        if (existencia > 0) {
-                                            if (piezas > existencia) {
-                                                diferencia = piezas - existencia;
-                                                con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='0' WHERE F_IdLote='" + IdLote + "'");
-                                                con.insertar("insert into tb_facttemp values('" + FolioFactura + "','" + ClaUni + "','" + IdLote + "','" + existencia + "','" + FechaE + "','0','0','','" + rset_cantidad.getString("F_Id") + "')");
-                                                piezas = diferencia;
-                                            } else {
-                                                diferencia = existencia - piezas;
-                                                if (diferencia >= 0) {
-
-                                                    if (piezas >= 0) {
-                                                        con.insertar("insert into tb_facttemp values('" + FolioFactura + "','" + ClaUni + "','" + IdLote + "','" + piezas + "','" + FechaE + "','0','0','','" + rset_cantidad.getString("F_Id") + "')");
-                                                        con.actualizar("UPDATE tb_lotetemp SET F_ExiLot='" + diferencia + "' WHERE F_IdLote='" + IdLote + "'");
-                                                    }
-                                                }
-                                                piezas = 0;
-                                            }
-                                        }
-                                    }
+                                    //}
                                 }
                             }
                         }
+
+                        /**
+                         * Se va actualizando cada registro a F_Status 2 para
+                         * indicar que fué procesado correctamente
+                         */
                         con.actualizar("update tb_unireq set F_Status='2' where F_IdReq='" + rset_cantidad.getString("F_IdReq") + "'");
                     }
                     try {
@@ -295,12 +398,15 @@ public class Facturacion extends HttpServlet {
                     System.out.println(e);
                     System.out.println(e.getLocalizedMessage());
                 }
-                out.println("<script>window.open('reimpGlobalReq.jsp?fol_gnkl=" + FolFact + "','_blank')</script>");
-                out.println("<script>window.open('reimpGlobalMarbetes.jsp?fol_gnkl=" + FolFact + "','_blank')</script>");
+                out.println("<script>window.open('reimpGlobalReq.jsp?fol_gnkl=" + FolioFactura + "','_blank')</script>");
+                out.println("<script>window.open('reimpGlobalMarbetes.jsp?fol_gnkl=" + FolioFactura + "','_blank')</script>");
             }
             //--------------------------------------------------------------------------------------------------------------------------------------
             if (request.getParameter("accion").equals("guardar")) {
-
+                /**
+                 * Este método ya no se utiliza, es para generar la remisión y
+                 * descontar en el momento
+                 */
                 ban1 = 1;
                 String ClaUni = request.getParameter("Nombre");
                 String FechaE = request.getParameter("FecFab");

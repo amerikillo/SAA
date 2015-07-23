@@ -23,6 +23,8 @@ import java.sql.SQLException;
 /**
  *
  * @author Americo
+ *
+ * Para mandar avisos a modula
  */
 public class AbasteceModula extends HttpServlet {
 
@@ -53,6 +55,10 @@ public class AbasteceModula extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion = request.getSession(true);
         try {
+            /**
+             * No se utiliza el siguiente metodo ya que se creó cuando aún no se
+             * tenía el módula
+             */
             try {
                 if (!request.getParameter("accionEliminar").equals("")) {
                     con.conectar();
@@ -64,6 +70,10 @@ public class AbasteceModula extends HttpServlet {
             } catch (Exception e) {
             }
             try {
+                /**
+                 * No se utiliza el siguiente metodo ya que se creó cuando aún
+                 * no se tenía el módula
+                 */
                 if (request.getParameter("accion").equals("CargarAbasto")) {
                     int ini = 0, fin = 0;
                     //Generar archivo para abasto de Modula
@@ -121,6 +131,10 @@ public class AbasteceModula extends HttpServlet {
                     //response.sendRedirect("modula/gnrAbastoModula.jsp");
                 }
                 if (request.getParameter("accion").equals("btnClave")) {
+                    /**
+                     * No se utiliza el siguiente metodo ya que se creó cuando
+                     * aún no se tenía el módula
+                     */
                     try {
                         String F_IndGlobal = (String) sesion.getAttribute("F_IndGlobal");
                         if (F_IndGlobal == null) {
@@ -142,6 +156,10 @@ public class AbasteceModula extends HttpServlet {
                     }
                 }
 
+                /**
+                 * No se utiliza el siguiente metodo ya que se creó cuando aún
+                 * no se tenía el módula
+                 */
                 if (request.getParameter("accion").equals("SeleccionaLote")) {
                     System.out.println(request.getParameter("Cantidad"));
                     response.setContentType("text/html");
@@ -149,6 +167,10 @@ public class AbasteceModula extends HttpServlet {
                     request.getRequestDispatcher("modula/abasteceModulaSelecLote.jsp").forward(request, response);
                 }
 
+                /**
+                 * No se utiliza el siguiente metodo ya que se creó cuando aún
+                 * no se tenía el módula
+                 */
                 if (request.getParameter("accion").equals("AgregarClave")) {
                     try {
                         con.conectar();
@@ -160,6 +182,10 @@ public class AbasteceModula extends HttpServlet {
                     }
                 }
 
+                /**
+                 * No se utiliza el siguiente metodo ya que se creó cuando aún
+                 * no se tenía el módula
+                 */
                 if (request.getParameter("accion").equals("AbastecerConcentrado")) {
                     con.conectar();
                     conModula.conectar();
@@ -180,6 +206,10 @@ public class AbasteceModula extends HttpServlet {
                     con.cierraConexion();
                     response.sendRedirect("modula/conexionModula.jsp");
                 }
+                
+                /**
+                 * Para mandar los avisos de ingrego a MODULA, es ejemplo
+                 */
                 if (request.getParameter("accion").equals("MandaRequerimento")) {
                     con.conectar();
                     conModula.conectar();

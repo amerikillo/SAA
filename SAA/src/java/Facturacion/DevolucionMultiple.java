@@ -41,6 +41,9 @@ public class DevolucionMultiple extends HttpServlet {
         ArrayList<String> listId;
         String lista = "";
         try {
+            /**
+             * Para agregar claves de la devolución multiple
+             */
             if (request.getParameter("que").equals("add")) {
                 if (sesion.getAttribute("listId") == null) {
                     listId = new ArrayList<String>();

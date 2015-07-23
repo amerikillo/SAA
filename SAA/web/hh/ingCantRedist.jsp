@@ -13,6 +13,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
+    /**
+     * JSP para ingresar la cantidad y la ubicación de la redistribución
+     */
     DecimalFormat formatter = new DecimalFormat("#,###,###");
     DecimalFormatSymbols custom = new DecimalFormatSymbols();
     custom.setDecimalSeparator('.');
@@ -51,6 +54,9 @@
     if (UbiAnt == null) {
         UbiAnt = "";
     }
+    /**
+     * Se obtiene la ubicación del F_IdLote del parametro a redistribuir
+     */
     try {
         con.conectar();
         ResultSet rset = con.consulta("select F_Ubica from tb_lote where F_IdLote='" + idLote + "'");
@@ -89,9 +95,15 @@
                 try {
                     int canApartada = 0;
                     con.conectar();
+                    /**
+                     * Para mostrar información del insumo
+                     */
                     ResultSet rset = con.consulta("select u.F_DesUbi, l.F_ClaPro, l.F_ExiLot, m.F_DesPro, l.F_ClaLot, DATE_FORMAT(l.F_FecCad, '%d/%m/%Y') as F_FecCad, l.F_IdLote, u.F_ClaUbi, u.F_Cb as CbUbica from tb_lote l, tb_medica m, tb_ubica u where l.F_ClaPro = m.F_ClaPro AND l.F_Ubica = u.F_ClaUbi and l.F_ExiLot!=0 and l.F_IdLote = '" + idLote + "' ");
                     while (rset.next()) {
                         int banAlerta = 0;
+                        /**
+                         * Para calcular la cantidad apartada para este insumo
+                         */
                         ResultSet rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
                         while (rset2.next()) {
                             canApartada = rset2.getInt(2);
@@ -113,9 +125,13 @@
                     Caducidad: <%=rset.getString("F_FecCad")%>
                     <br/>
                 </h5>
+                <!--DIV que se recarga-->
                 <div id="divApartados1">
                     <div class="row">
                         <h5 class="col-lg-12">Cantidad a Mover:</h5>
+                        <!--
+                        Se pone la cantidad máxima a mover de la resta entre la existencia en lote menos lo apartado
+                        -->
                         <div class="col-lg-12">
                             <input class="form-control" placeholder="Cantidad a Mover" type="number" name="CantMov" id="CantMov" min="1" max="<%=(rset.getInt("F_ExiLot") - canApartada)%>" />
                         </div>
@@ -130,9 +146,15 @@
                         <input id="aCbUbica" class="hidden" value="<%=rset.getString("CbUbica")%>"/>
                     </div>
                 </div>
+                <!--DIV que se recarga-->
                 <div id="divApartados">
                     <br/>
                     <%
+                        /**
+                         * Nos muestra los registros en donde está apartada la
+                         * clave y se agrega un boton para poder eliminar esos
+                         * registros
+                         */
                         rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact, F_Id from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdFact");
                         while (rset2.next()) {
                             canApartada = rset2.getInt(2);
@@ -147,8 +169,10 @@
                     </div>
                     <%
                         }
-                    %>
-                    <%
+                        
+                        /**
+                         * Nos dice cuál es la cantidad máxima a mover
+                         */
                         rset2 = con.consulta("select F_IdLot, SUM(F_Cant), F_idFact from tb_facttemp where F_IdLot = '" + idLote + "' and F_StsFact <5 group by F_IdLot");
                         while (rset2.next()) {
                             canApartada = rset2.getInt(2);

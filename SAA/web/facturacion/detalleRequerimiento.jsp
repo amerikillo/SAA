@@ -13,7 +13,11 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-    
+    /**
+     * Para ver el detalle de los requerimientos de los distribuidores, estos se
+     * encuentran en la tabla tb_unireq y es posterior a cargarlos, se concatena
+     * el id del requerimiento (CLA_Uni - ID Req)
+     */
     HttpSession sesion = request.getSession();
     String usua = "", tipo = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -55,7 +59,7 @@
                         <td>Clave</td>
                         <td>Total piezas</td>
                     </tr></thead>
-                    <%                        
+                    <%
                         try {
                             con.conectar();
                             ResultSet rset = con.consulta("select u.F_ClaCli, u.F_NomCli, r.F_Id, DATE_FORMAT(r.F_FecCarg, '%d/%m/%Y') as F_FecCarga, (F_PiezasReq) as F_PiezasReq, F_ClaPro from tb_unireq r, tb_uniatn u where u.F_ClaCli=r.F_ClaUni and r.F_Id!='' and F_Status!='1' and F_Id='" + request.getParameter("F_Id") + "' ");
@@ -73,7 +77,7 @@
                         con.cierraConexion();
                     } catch (Exception e) {
                         out.println(e);
-                    }                    
+                    }
                 %>
             </table>
         </div>
@@ -94,9 +98,15 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script type="text/javascript">
-                        $(document).ready(function() {
-                            $("#tblReq2").dataTable();
-                        });
+            /**
+             * 
+             * @type type
+             * 
+             * Función para dar paginacion a la tabla
+             */
+            $(document).ready(function() {
+                $("#tblReq2").dataTable();
+            });
         </script>
 
     </body>

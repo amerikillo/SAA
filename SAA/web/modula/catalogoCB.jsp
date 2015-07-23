@@ -17,7 +17,9 @@
 <%java.text.DateFormat df2 = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 <%java.text.DateFormat df3 = new java.text.SimpleDateFormat("dd/MM/yyyy"); %>
 <%
-
+    /**
+     * Catálogo de CB
+     */
     HttpSession sesion = request.getSession();
     String usua = "";
     if (sesion.getAttribute("nombre") != null) {
@@ -34,7 +36,7 @@
         <!-- Estilos CSS -->
         <link href="../css/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="../css/cupertino/jquery-ui-1.10.3.custom.css" />
-        
+
         <link rel="stylesheet" type="text/css" href="../css/dataTables.bootstrap.css">
         <!---->
         <title>SIE Sistema de Ingreso de Entradas</title>
@@ -58,10 +60,17 @@
                     <%
                         try {
                             con.conectar();
+                            /**
+                             * Obtención de los datos desde la tabla de lote
+                             */
                             ResultSet rset = con.consulta("select l.F_ClaPro, l.F_Cb, m.F_DesPro, l.F_ClaLot, l.F_FecCad from tb_lote l, tb_medica m where l.F_ClaPro = m.F_ClaPro group by l.F_ClaPro, l.F_Cb, l.F_ClaLot, l.F_FecCad");
 
                             while (rset.next()) {
                                 try {
+                                    /**
+                                     * Generación de la imagen con base en el
+                                     * parámetro del código de barras
+                                     */
                                     JBarcodeBean barcode = new JBarcodeBean();
                                     barcode.setCodeType(new Code128());
                                     barcode.setCode(rset.getString("F_Cb"));
@@ -72,6 +81,7 @@
                                     //barcode.
                                     BufferedImage bufferedImage = barcode.draw(new BufferedImage(200, 100, BufferedImage.TYPE_INT_RGB));
                                     File file = new File(getServletContext().getRealPath("imagenes/cb") + "/" + rset.getString("F_Cb") + ".png");
+                                    //Se genera la imagen
                                     ImageIO.write(bufferedImage, "png", file);
                                 } catch (Exception e) {
                                     System.out.println(e.getMessage());
@@ -102,8 +112,9 @@
         <script src="../js/jquery.dataTables.js"></script>
         <script src="../js/dataTables.bootstrap.js"></script>
         <script>
-                $(document).ready(function () {
-            $('#tablaCB').dataTable();     });
+            $(document).ready(function() {
+                $('#tablaCB').dataTable();
+            });
         </script>
     </body>
 </html>

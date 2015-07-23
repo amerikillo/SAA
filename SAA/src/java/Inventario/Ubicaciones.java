@@ -34,6 +34,8 @@ public class Ubicaciones extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
+     * Servlet con las funciones que se utilizan en el proceso de redistribución
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -44,6 +46,11 @@ public class Ubicaciones extends HttpServlet {
         HttpSession sesion = request.getSession(true);
         try {
             try {
+                /**
+                 * Se llama cuando un insumo está apartado por algun Concentrado Global 
+                 * sin embargo ya no se remisionará.
+                 * 
+                 */
                 if (request.getParameter("accion").equals("eliminarFactTemp")) {
                     try {
                         con.conectar();
@@ -52,6 +59,9 @@ public class Ubicaciones extends HttpServlet {
                     } catch (Exception e) {
                     }
                 }
+                /**
+                 * Manda llamar el método 'Reubica' de redistribución en almacén
+                 */
                 if (request.getParameter("accion").equals("Redistribucion")) {
                     
                     int nIdLote = Reubica(request.getParameter("F_IdLote"), request.getParameter("F_ClaUbi"), request.getParameter("CantMov"), (String) sesion.getAttribute("nombre"));
@@ -66,6 +76,17 @@ public class Ubicaciones extends HttpServlet {
         }
     }
     
+    /**
+     * 
+     * @param idLote
+     * @param CBUbica
+     * @param cantMov
+     * @param Nombre
+     * @return
+     * @throws SQLException 
+     * 
+     * Para reubicar en almacén
+     */
     public int Reubica(String idLote, String CBUbica, String cantMov, String Nombre) throws SQLException {
         int idLoteNuevo = 0;
         Devoluciones objDev = new Devoluciones();
@@ -79,6 +100,10 @@ public class Ubicaciones extends HttpServlet {
         int CantMov = Integer.parseInt(cantMov);
         String F_ClaPro = "", F_ClaLot = "", F_FecCad = "", F_FolLot = "", F_ClaOrg = "", F_Ubica = "", F_FecFab = "", F_Cb = "", F_ClaMar = "";
         int F_ExiLot = 0, F_IdLote = 0, F_ExiLotDestino = 0;
+        
+        /**
+         * Se obtienen los datos del insumo a reubicar
+         */
         ResultSet rset = con.consulta("select * from tb_lote where F_IdLote = '" + idLote + "' ");
         while (rset.next()) {
             F_ClaPro = rset.getString("F_ClaPro");
@@ -93,16 +118,29 @@ public class Ubicaciones extends HttpServlet {
             F_ExiLot = rset.getInt("F_ExiLot");
         }
         
+        /**
+         * Se obtiene la nueva ubicación a mover con base en su CB
+         * 
+         */
+        
         rset = con.consulta("select F_ClaUbi from tb_ubica where F_Cb= '" + CBUbica + "' ");
         while (rset.next()) {
             UbicaMov = rset.getString("F_ClaUbi");
         }
+        
+        /**
+         * Se obtiene el ID del lote y la cantidad de la ubicación destino, co nbase en clave lote caducidad y ubicación a donde se moverá
+         * 
+         */
         rset = con.consulta("select F_IdLote, F_ExiLot from tb_lote where F_ClaPro= '" + F_ClaPro + "' and F_ClaLot = '" + F_ClaLot + "' and F_FecCad = '" + F_FecCad + "' and F_Ubica = '" + UbicaMov + "' ");
         while (rset.next()) {
             F_ExiLotDestino = rset.getInt("F_ExiLot");
             F_IdLote = rset.getInt("F_IdLote");
         }
         
+        /**
+         * Para que no se generen negativos
+         */
         if (F_ExiLot - CantMov >= 0) {
             if (F_IdLote != 0) {//Ya existe insumo en el desitno
                 con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLotDestino + CantMov) + "' where F_IdLote='" + F_IdLote + "'");
@@ -119,10 +157,19 @@ public class Ubicaciones extends HttpServlet {
                     conModula.cierraConexion();
                 }
             }
+            
+            /**
+             * Se actualiza la existencia de la antigua ubicación 
+             */
             con.insertar("update tb_lote set F_ExiLot = '" + (F_ExiLot - CantMov) + "' where F_IdLote = '" + idLote + "' ");
             
+            
+            /**
+             * Inserción de los movimientos
+             */
             con.insertar("insert into tb_movinv values (0,CURDATE(),'0','1000','" + F_ClaPro + "','" + CantMov + "','" + objDev.devuelveCosto(F_ClaPro) + "','" + objDev.devuelveImporte(F_ClaPro, CantMov) + "', '-1','" + F_FolLot + "','" + F_Ubica + "','" + F_ClaOrg + "',CURTIME(),'" + Nombre + "')");
             con.insertar("insert into tb_movinv values (0,CURDATE(),'0','1000','" + F_ClaPro + "','" + CantMov + "','" + objDev.devuelveCosto(F_ClaPro) + "','" + objDev.devuelveImporte(F_ClaPro, CantMov) + "', '1','" + F_FolLot + "','" + UbicaMov + "','" + F_ClaOrg + "',CURTIME(),'" + Nombre + "')");
+            
             
             rset = con.consulta("select F_IdLote from tb_lote where F_FolLot = '" + F_FolLot + "' and F_Ubica = '" + UbicaMov + "' ");
             while (rset.next()) {
@@ -133,6 +180,13 @@ public class Ubicaciones extends HttpServlet {
         return idLoteNuevo;
     }
     
+    
+    /**
+     * Método que se utilizaría para reubicar insumo previamente apartado, por cuestiones operativas no se ocupa.
+     * @param idLote
+     * @param nidLote
+     * @throws SQLException 
+     */
     public void ReubicaApartado(String idLote, int nidLote) throws SQLException {
         ConectionDB con = new ConectionDB();
         con.conectar();
